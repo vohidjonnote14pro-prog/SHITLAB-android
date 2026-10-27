@@ -128,7 +128,9 @@ dl.kv dd{margin:0;font-family:var(--f-mono);font-size:.9rem}
 @media (prefers-reduced-motion:reduce){.flow{animation:none}}
 
 .rail{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
-.rail svg{display:block}
+.rail svg{display:block;max-width:none}
+.zoombar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.zoombar .btn{min-width:40px}
 .bp{cursor:pointer}
 .bp .lev{transition:transform .18s cubic-bezier(.5,1.6,.5,1);transform-box:fill-box}
 .bp.off .lev{transform:translateY(19px)}
@@ -374,6 +376,7 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
       </div>
     </div>
     <div class="alert" id="danger" hidden></div>
+    <div class="zoombar"><span class="muted small">Masshtab:</span><button class="btn sm" data-z="-" aria-label="Kichraytirish">−</button><span class="mono small" id="zv">100%</span><button class="btn sm" data-z="+" aria-label="Kattalashtirish">+</button><button class="btn sm" data-z="fit">Butun shit</button><button class="btn sm" data-z="1">Asl o'lcham</button></div>
     <div class="rail" id="rail" aria-label="Yig'ilgan shitning virtual ko'rinishi"></div>
     <p class="note" style="margin-top:-8px">Simlar apparatlardan yuqori kabel kanaliga kiradi, xomut bilan bog'langan dasta bo'lib pastki kanalga tushadi va markirovkali kabel salnik orqali chiqadi. N va PE shinadagi klemma ustidagi raqam o'sha klemmaga ulangan guruh (QF) raqamini bildiradi, noto'g'ri ulanish qizil halqa bilan belgilanadi. Kabel markirovkasini (oq yorliq QF…), guruh nomini yoki shinadagi klemmani bossangiz, o'sha guruh simlarini qayerga ulashni o'zgartiradigan oyna ochiladi. Avtomat dastagini bosib yoqing yoki o'chiring. Avtomat korpusidagi to'q sariq rang uning issiqlik ajratgichi qizishini ko'rsatadi. Kabel rangi harorati bilan o'zgaradi: kulrang me'yorda, sariq 60 °C dan, to'q sariq 70 °C dan (ruxsat chegarasi), qizil 90 °C dan (izolyatsiya eriydi), qora rang esa kabel kuyganini bildiradi.</p>
     <div class="card" id="connEd" hidden></div>
@@ -981,11 +984,15 @@ function renderRail(R){
  $("#rail").innerHTML=s;
  POS={main:{x:mc,y:RY+BH/2}};
  gcols.forEach(c=>{POS[c.r.g.id]={x:c.dx[0].x+c.dx[0].w/2,y:RY+BH/2,lx:c.cx,ly:PB+40,ld:LOADY};});
+ applyZoom();
 }
 function cableColor(T,burnt){if(burnt)return "#1b1b1b";if(T<60)return "var(--sheath)";if(T<70)return "#d8b632";if(T<90)return "#e5862a";return "#d33a25";}
 
 /* ================= EFFEKTLAR ================= */
 let POS={};
+let ZOOM=window.innerWidth<700?0.62:1;
+function applyZoom(){const svg=$("#rail svg");if(!svg)return;const W=+svg.getAttribute("width"),H=+svg.getAttribute("height");svg.style.width=W*ZOOM+"px";svg.style.height=H*ZOOM+"px";$("#zv").textContent=Math.round(ZOOM*100)+"%";}
+function focusOn(id){const p=POS[id],el=$("#rail");if(!p||!el)return;const x=(p.lx||p.x)*ZOOM-el.clientWidth/2;try{el.scrollTo({left:Math.max(0,x),behavior:"smooth"});}catch(e){el.scrollLeft=Math.max(0,x);}}
 const IS_APP=/ShitLabApp/.test(navigator.userAgent)||location.protocol==="file:";
 let SOUND=IS_APP;
 let actx=null;
@@ -1009,7 +1016,7 @@ function spark(x,y,blue){
 }
 function shake(){const el=$("#rail");el.classList.remove("shake");void el.offsetWidth;el.classList.add("shake");}
 function fxTrip(id,kind){
- const p=POS[id];if(!p)return;
+ const p=POS[id];if(!p)return;focusOn(id);
  if(kind==="sc"){spark(p.x,p.y+40);if(p.lx)spark(p.lx,p.ld-6);shake();beep("sc");vib([120,60,160]);}
  else if(kind==="rcd"){spark(p.x+18,p.y,true);beep("click");vib(60);}
  else if(kind==="burn"){if(p.lx){spark(p.lx,p.ly);spark(p.lx,p.ly+30);}shake();beep("sc");vib([200,80,200]);}
@@ -1270,7 +1277,11 @@ document.addEventListener("click",e=>{
   if(b.dataset.scn==="n"){sim.nBreak=true;$("#sim-nbreak").checked=true;R.groups.forEach(r=>{if(!r.three&&r.g.ph==="L1")simG(r.g.id).load=15;});logEv("Ssenariy: kirishda N sim uzildi, L1 fazada yuklama kam.","warn");}
   sim.run=true;$("#sim-play").textContent="Pauza";
   $("#rail").scrollIntoView({behavior:"smooth",block:"start"});
+  const fg=R.groups.find(x=>{const st=sim.g[x.g.id];return st&&(st.sc||st.body||st.load>=150);});if(fg)setTimeout(()=>focusOn(fg.g.id),350);
   return;}
+ if(b.dataset.z){const z=b.dataset.z,el=$("#rail"),svg=$("#rail svg");
+  if(z==="+")ZOOM=Math.min(2,ZOOM*1.2);else if(z==="-")ZOOM=Math.max(.2,ZOOM/1.2);else if(z==="1")ZOOM=1;else if(svg)ZOOM=Math.max(.2,(el.clientWidth-26)/(+svg.getAttribute("width")));
+  applyZoom();return;}
  if(b.id==="sim-play"){sim.run=!sim.run;b.textContent=sim.run?"Pauza":"Davom etish";return;}
  if(b.id==="sim-reset"){resetSim();buildSim();return;}
 });

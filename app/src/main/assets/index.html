@@ -176,6 +176,75 @@ dl.kv dd{margin:0;font-family:var(--f-mono);font-size:.9rem}
 .switch{display:inline-flex;align-items:center;gap:8px;font-weight:600;cursor:pointer}
 
 /* v2 qo'shimchalari */
+.modebar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between}
+.seg{display:flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.mbtn{font:inherit;font-weight:600;font-size:.86rem;border:0;border-right:1px solid var(--line);background:none;color:var(--muted);padding:7px 11px;cursor:pointer}
+.mbtn:last-child{border-right:0}
+.mbtn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.modepanel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.modepanel .hint{font-size:.86rem;color:var(--muted);flex:1 1 260px}
+.railwrap{position:relative}
+#rail.mode-thermal #base{filter:grayscale(1) brightness(.32) contrast(1.15)}
+#rail #thermo{display:none}
+#rail.mode-thermal #thermo{display:inline}
+#rail.mode-thermal{background:#07020f}
+.tbar{width:220px;height:12px;border-radius:3px;background:linear-gradient(90deg,#12002a,#3b0a6e,#8a0f8a,#d0273c,#f2621a,#f9a51d,#fde050,#ffffff)}
+.tscale{display:flex;flex-direction:column;gap:3px;font-family:var(--f-mono);font-size:.76rem}
+.tscale .lbls{display:flex;justify-content:space-between;width:220px;color:var(--muted)}
+.tmax{font-family:var(--f-mono);font-weight:600}
+.chip[aria-pressed="true"]{background:var(--surface-2)}
+.tcctip{position:absolute;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:.8rem;box-shadow:0 6px 20px rgba(0,0,0,.18);pointer-events:none;width:230px;line-height:1.45}
+.palette{display:flex;flex-wrap:wrap;gap:6px;flex:1 1 100%}
+.pal-h{flex-basis:100%;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin-top:4px}
+.pchip{display:flex;flex-direction:column;gap:1px;border:1.5px solid var(--line);background:var(--surface-2);border-radius:6px;padding:6px 9px;cursor:grab;touch-action:none;user-select:none;font-size:.84rem}
+.pchip:hover{border-color:var(--accent)}
+.pchip span{font-size:.72rem;color:var(--muted);font-family:var(--f-mono)}
+.pchip.dev{border-style:dashed}
+.trash{flex-basis:100%;border:2px dashed var(--bad);color:var(--bad);border-radius:6px;padding:10px;text-align:center;font-weight:600;font-size:.86rem}
+.trash.hot{background:var(--bad-soft)}
+.ghost{position:fixed;z-index:90;pointer-events:none;background:var(--accent);color:var(--accent-ink);padding:6px 10px;border-radius:6px;font-weight:700;font-size:.84rem;box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.hand{cursor:grab;touch-action:none}
+.wstat{display:flex;flex-wrap:wrap;gap:8px;align-items:center;flex-basis:100%}
+.whand{touch-action:none}
+.view3d{background:radial-gradient(ellipse at 50% 30%,var(--surface),var(--bg));border:1px solid var(--line);border-radius:8px;padding:30px 10px 16px;overflow:hidden}
+.scene3d{perspective:1600px;display:flex;justify-content:center;align-items:center;min-height:640px;position:relative;touch-action:none;cursor:grab;user-select:none}
+.floor3d{position:absolute;height:60px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.28),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)}
+.box3d{position:relative;transform-style:preserve-3d;transition:transform .08s linear}
+.f3{position:absolute;left:0;top:0;backface-visibility:visible}
+.box3d.metal .f3.side,.box3d.metal .f3.topf,.box3d.metal .f3.bot{background:linear-gradient(90deg,#9aa1a7,#c9ced2 40%,#b0b6bb)}
+.box3d.plastic .f3.side,.box3d.plastic .f3.topf,.box3d.plastic .f3.bot{background:linear-gradient(90deg,#d9dcdd,#f3f4f4 40%,#e2e4e5)}
+.f3.side.r{filter:brightness(.82)}.f3.topf{filter:brightness(1.08)}.f3.bot{filter:brightness(.7)}
+.f3.bot i{position:absolute;top:40%;width:12px;height:12px;border-radius:50%;background:#2a2e32;box-shadow:inset 0 0 0 3px #555c61}
+.f3.back{background:#dfe3e6;box-shadow:inset 0 0 0 6px #b9bec2;overflow:hidden}
+.inside{position:absolute;inset:6px}
+.inside svg{width:100%;height:100%}
+.door3d{position:absolute;left:0;top:0;transform-style:preserve-3d;transform-origin:left center;transform:translateZ(var(--z)) rotateY(0deg);transition:transform 1.1s cubic-bezier(.3,.1,.2,1)}
+.door3d.open{transform:translateZ(var(--z)) rotateY(-118deg)}
+.dface{position:absolute;inset:0;backface-visibility:hidden;border-radius:4px}
+.box3d.metal .dface.out{background:linear-gradient(160deg,#e3e6e8,#c3c8cc 55%,#aeb4b9);box-shadow:inset 0 0 0 3px #9aa1a7}
+.box3d.plastic .dface.out{background:linear-gradient(160deg,#ffffff,#eceeef 60%,#dcdfe0);box-shadow:inset 0 0 0 3px #c9cdcf}
+.dface.in{transform:rotateY(180deg);background:linear-gradient(200deg,#cfd4d8,#b4bac0);box-shadow:inset 0 0 0 3px #9aa1a7}
+.plate{position:absolute;top:8%;left:50%;transform:translateX(-50%);background:#1d2125;color:#e9ecee;font-family:var(--f-mono);font-weight:700;padding:6px 12px;border-radius:3px;text-align:center;font-size:.86rem;white-space:nowrap}
+.plate small{display:block;font-weight:400;font-size:.66rem;opacity:.8}
+.sign{position:absolute;top:36%;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.66rem;font-weight:700;text-align:center;color:#1d1d1d}
+.lock{position:absolute;right:7%;top:50%;width:14px;height:34px;border-radius:7px;background:linear-gradient(90deg,#3a3f44,#7a8086,#3a3f44);transform:translateY(-50%)}
+.hinge{position:absolute;left:-3px;width:7px;height:34px;border-radius:3px;background:#7a8086}.hinge.h1{top:12%}.hinge.h2{bottom:12%}
+.pocket{position:absolute;left:10%;right:10%;top:12%;bottom:30%;background:#fbfbf8;border:1px solid #9aa0a5;border-radius:3px;padding:8px;font-size:.6rem;color:#1d2125;display:flex;flex-direction:column;gap:2px;overflow:hidden;font-family:var(--f-mono)}
+.pocket b{font-family:var(--f-body);font-size:.75rem;margin-bottom:4px}
+.seal{position:absolute;left:3%;right:3%;top:3%;bottom:3%;border:3px solid #2a2e32;border-radius:4px;opacity:.5}
+.cab3d{position:absolute;width:10px;height:150px;border-radius:5px;background:#8c939a;box-shadow:inset -2px 0 0 rgba(0,0,0,.25)}
+@media (max-width:560px){.scene3d{min-height:520px}}
+@media (prefers-reduced-motion:reduce){.door3d{transition:none}}
+.lcdwrap{position:sticky;bottom:10px;margin-top:-120px;margin-left:auto;width:max-content;max-width:100%;z-index:5;pointer-events:none;display:flex;justify-content:flex-end}
+.meter-dev{width:250px;border-radius:14px;padding:10px 12px;background:#e0a21b;border:2px solid #6b4c08;box-shadow:0 8px 24px rgba(0,0,0,.3);color:#1d1d1d}
+.meter-dev.clamp{background:#f2c21b}.meter-dev.megger{background:#c9332a;color:#fff}.meter-dev.ind{background:#2d5fa8;color:#fff}
+.mtitle{font-weight:700;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase}
+.lcd2{margin:6px 0;background:#a9bd93;border:2px solid #56653f;border-radius:6px;padding:4px 10px;text-align:right;font-family:var(--f-mono);color:#1f2a14;display:flex;justify-content:flex-end;align-items:baseline;gap:6px}
+.lcd2 .mval{font-size:2rem;font-weight:700;font-variant-numeric:tabular-nums}
+.lcd2.bad{background:#e9a39b;color:#5a0f0b}.lcd2.warn{background:#f3e08a}
+.msub{font-size:.76rem;line-height:1.3}
+.probe{touch-action:none}
+.tccan{margin:8px 0 0;padding-left:18px;font-size:.9rem;display:flex;flex-direction:column;gap:4px}
 [hidden]{display:none!important}
 .encls{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
 .encl{text-align:left;font:inherit;color:var(--ink);background:var(--surface-2);border:1.5px solid var(--line);border-radius:6px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:3px}
@@ -395,6 +464,7 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
     </div>
     <div class="result" id="fixResult" hidden aria-live="polite"></div>
     <div class="issues" id="issues"></div>
+    <div class="card"><h3 style="margin-bottom:4px">Vaqt-tok egri chiziqlari (selektivlik)</h3><p class="note" style="margin-bottom:8px">Har bir avtomatning o'chish zonasi (to'q rangli maydon), kabelning qisqa vaqtli chidamliligi (shtrix chiziq) va liniya oxiridagi QT toki (tik chiziq). Sichqoncha yoki barmoqni grafik ustida yuriting: shu tokda kim qancha vaqtda o'chishi ko'rinadi.</p><div id="tccCheck"></div></div>
     <h2>Hisob jadvali</h2>
     <div class="tbl"><table id="calcTable"></table></div>
     <div class="two">
@@ -450,8 +520,20 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
       </div>
     </div>
     <div class="alert" id="danger" hidden></div>
-    <div class="zoombar"><span class="muted small">Masshtab:</span><button class="btn sm" data-z="-" aria-label="Kichraytirish">−</button><span class="mono small" id="zv">100%</span><button class="btn sm" data-z="+" aria-label="Kattalashtirish">+</button><button class="btn sm" data-z="fit">Butun shit</button><button class="btn sm" data-z="1">Asl o'lcham</button><span class="muted small" id="enclInfo"></span></div>
-    <div class="rail" id="rail" aria-label="Yig'ilgan shitning virtual ko'rinishi"></div>
+    <div class="modebar" role="toolbar" aria-label="Ko'rinish rejimi">
+      <div class="seg">
+        <button type="button" class="mbtn" data-mode="normal" aria-pressed="true">Oddiy</button>
+        <button type="button" class="mbtn" data-mode="place" aria-pressed="false">Joylashtirish</button>
+        <button type="button" class="mbtn" data-mode="wire" aria-pressed="false">Sim ulash</button>
+        <button type="button" class="mbtn" data-mode="thermal" aria-pressed="false">Issiqlik kamerasi</button>
+        <button type="button" class="mbtn" data-mode="tools" aria-pressed="false">O'lchov asboblari</button>
+        <button type="button" class="mbtn" data-mode="3d" aria-pressed="false">3D</button>
+      </div>
+      <div class="zoombar"><button class="btn sm" data-z="-" aria-label="Kichraytirish">−</button><span class="mono small" id="zv">100%</span><button class="btn sm" data-z="+" aria-label="Kattalashtirish">+</button><button class="btn sm" data-z="fit">Butun shit</button><button class="btn sm" data-z="1">Asl</button><span class="muted small" id="enclInfo"></span></div>
+    </div>
+    <div class="modepanel" id="modePanel" hidden></div>
+    <div class="railwrap"><div class="rail" id="rail" aria-label="Yig'ilgan shitning virtual ko'rinishi"></div><div class="lcdwrap" id="instr" hidden></div></div>
+    <div class="view3d" id="view3d" hidden></div>
     <p class="note" style="margin-top:-8px">Avtomat va boshqa qurilmalar dastagini bosib yoqing yoki o'chiring. Qurilma nomini (QF…, KM…, PV…) bossangiz, u haqidagi ma'lumot yoki ulanishlar oynasi ochiladi. Kabel rangi harorat bilan o'zgaradi: kulrang me'yorda, sariq 60 °C, to'q sariq 70 °C (chegara), qizil 90 °C (izolyatsiya eriydi), qora — kuygan.</p>
     <div class="card" id="connEd" hidden></div>
     <div class="simctl">
@@ -465,6 +547,7 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
     </div>
     <div class="meters" id="meters"></div>
     <div class="card" id="mainCard" style="display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center"></div>
+    <details class="card" id="tccSimCard"><summary style="cursor:pointer;font-weight:700;font-family:var(--f-display);font-size:1.1rem">Vaqt-tok grafigi: jonli ish nuqtasi</summary><p class="note" style="margin:6px 0">Nuqta guruhning hozirgi tokini va avtomat qancha vaqtda o'chishini ko'rsatadi. Yuklamani oshirsangiz, nuqta o'ngga va pastga siljiydi.</p><div id="tccSim"></div></details>
     <div class="simrows" id="simrows"></div>
     <div class="card">
       <h3 style="margin-bottom:6px">Hodisalar va ogohlantirishlar</h3>
@@ -596,6 +679,7 @@ function layout(){
  const items=[];
  panelDevs().forEach(d=>items.push({kind:"p",d,mods:d.mods}));
  S.groups.forEach(g=>{const dv=grpDevs(g);items.push({kind:"g",g,devs:dv,mods:dv.reduce((a,x)=>a+x.mods,0)});});
+ const ord=orderKeys();const kOf=it=>it.kind==="p"?"p:"+it.d.k:"g:"+it.g.id;items.sort((a,b)=>ord.indexOf(kOf(a))-ord.indexOf(kOf(b)));
  let row=0,used=0;const rowsUsed=[0];
  items.forEach(it=>{if(used+it.mods>E.mods&&used>0){row++;used=0;rowsUsed[row]=0;}it.row=row;used+=it.mods;rowsUsed[row]=used;});
  const total=items.reduce((a,x)=>a+x.mods,0);
@@ -1154,11 +1238,14 @@ function groupDevPics(g,r,x,y){
  // boshqaruv simlari (KT/BL/KF -> KM g'altagi)
  const km=placed.find(p=>p.t==="km");
  placed.filter(p=>p.t==="kt"||p.t==="bl"||p.t==="kf").forEach(p=>{const fx=p.x+PW/2,kx=km.x+km.w/2;svg+=`<path d="M${fx} ${y-14} V${y-40} H${kx} V${y-4}" fill="none" stroke="#7a8086" stroke-width="1.6" stroke-dasharray="4 3"/>`;});
- return {svg,w:cx-6-x,placed};
+ const pw=placed.filter(p=>["mcb","rcbo","rcd","km"].includes(p.t));const lastP=pw[pw.length-1],firstP=pw[0];
+ const rcdDev=placed.find(p=>p.t==="rcd"||p.t==="rcbo");
+ const rcdN=rcdDev?{x:rcdDev.x+rcdDev.w-PW/2,y:y+BH-17}:null;
+ return {svg,w:cx-6-x,placed,rcdN,out:lastP?{x:lastP.x+PW/2,y:y+BH-17}:null,inp:firstP?{x:firstP.x+PW/2,y:y+17}:null};
 }
 function renderRail(R){
  const m=S.main,L=R.L;if(!L){$("#rail").innerHTML="";return;}
- const E=L.E,X0=48,TOP=82,ROWSTEP=BH+156;
+ const E=L.E,X0=48,TOP=100,ROWSTEP=BH+156;
  // shinadagi ulanishlar
  const peT=[],nT=[];
  R.groups.forEach(r=>{const g=r.g,rcd=hasRcd(g);
@@ -1166,7 +1253,7 @@ function renderRail(R){
   if(g.peConn!=="none")(g.peConn==="Nbus"?nT:peT).push({r,kind:"PE",col:cVar(g.cPE),wrong:g.peConn==="Nbus"});
  });
  let body="",rowX=Array(L.rows).fill(X0),rowGroups=Array(L.rows).fill(null).map(()=>[]);
- POS={};const gpos={};let firstPanel=null;
+ POS={};const gpos={};let firstPanel=null;GEO={items:[],groups:{},rows:[],ROWSTEP,TOP,X0,bodies:[]};
  L.items.forEach(it=>{
   const y=TOP+it.row*ROWSTEP;let x=rowX[it.row];
   if(it.kind==="p"){
@@ -1176,6 +1263,7 @@ function renderRail(R){
    else p=genericPic(x,y,{t:d.k==="vrelay"?"kv":d.k==="lamps"?"hl":d.k,mods:d.mods});
    body+=p.svg+`<g class="conn" data-infokey="${d.k==="hasMain"?"mcb":d.k}" tabindex="0" role="button" aria-label="${d.name} haqida"><rect x="${x}" y="${y-62}" width="${p.w}" height="16" fill="transparent"/><text class="qf" x="${x+p.w/2}" y="${y-50}" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--ink)" text-decoration="underline">${d.tag}</text></g>`;
    POS[d.k==="hasMain"?"main":d.k]={x:x+p.w/2,y:y+BH/2};if(!firstPanel)firstPanel={x,y,w:p.w,k:d.k};
+   GEO.items.push({key:"p:"+d.k,row:it.row,x0:x,x1:x+p.w,y0:y-62,y1:y+BH+46,cx:x+p.w/2,cy:y+BH/2});
    rowX[it.row]=x+p.w+20;
   }else{
    const g=it.g,r=R.groups.find(z=>z.g.id===g.id);
@@ -1184,6 +1272,8 @@ function renderRail(R){
    body+=`<g class="conn" data-conn="${g.id}" tabindex="0" role="button" aria-label="QF${r.n} ulanishlarini o'zgartirish"><rect x="${cx-18}" y="${y-62}" width="36" height="16" fill="transparent"/><text class="qf" x="${cx}" y="${y-50}" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--ink)" text-decoration="underline">QF${r.n}</text></g>`;
    if(r.state==="bad")body+=badMark(cx+22,y-54);
    gpos[g.id]={x:x+PW/2,y:y+BH/2,row:it.row};rowGroups[it.row].push({x0:x,x1:x+gp.w});
+   GEO.items.push({key:"g:"+g.id,row:it.row,x0:x,x1:x+gp.w,y0:y-62,y1:y+BH+46,cx:x+gp.w/2,cy:y+BH/2});
+   GEO.groups[g.id]={placed:gp.placed,y,x0:x,x1:x+gp.w,row:it.row,rcdN:gp.rcdN,out:gp.out,inp:gp.inp};
    rowX[it.row]=x+gp.w+24;
   }
  });
@@ -1196,7 +1286,7 @@ function renderRail(R){
  const genW=m.ats?150:0;const PW_=W;W+=genW;
  const H=LOADY+64;
  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Yig'ilgan shit">`;
- s+=`<defs><pattern id="peh" width="16" height="12" patternUnits="userSpaceOnUse"><rect width="8" height="12" fill="var(--pe-y)"/></pattern></defs>`;
+ s+=`<defs><pattern id="peh" width="16" height="12" patternUnits="userSpaceOnUse"><rect width="8" height="12" fill="var(--pe-y)"/></pattern><filter id="tblur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter></defs><g id="base">`;
  // korpus
  const bodyBad=m.body!=="1"&&E.mat==="metall";
  s+=`<rect x="4" y="14" width="${PW_-8}" height="${PB-14}" rx="8" fill="${E.mat==="metall"?"var(--surface)":"var(--surface-2)"}" fill-opacity=".35" stroke="${bodyBad?"var(--bad)":"var(--muted)"}" stroke-width="2"/>`;
@@ -1243,7 +1333,9 @@ function renderRail(R){
  const drawTaps=(arr,x0)=>{arr.forEach((t,k)=>{const tx=x0+TS*(k+1.5);
   s+=core(tx,BUSY,MD0+10,t.col==="PE"?"PE":t.col,3)+screwS(tx,BUSY)+`<text x="${tx}" y="${BUSY-10}" text-anchor="middle" font-size="8" font-weight="600" fill="var(--ink)">${t.r.n}</text>`;
   if(t.wrong)s+=`<circle cx="${tx}" cy="${BUSY}" r="8" fill="none" stroke="var(--bad)" stroke-width="2"/>`;
-  s+=`<g class="conn" data-conn="${t.r.g.id}"><circle cx="${tx}" cy="${BUSY-4}" r="9" fill="transparent"/></g>`;});};
+  s+=`<g class="conn" data-conn="${t.r.g.id}"><circle cx="${tx}" cy="${BUSY-4}" r="9" fill="transparent"/></g>`;
+  GEO.taps.push({gid:t.r.g.id,kind:t.kind,bus:x0===PEX?"PE":"N",x:tx,y:BUSY+16});});};
+ GEO.taps=[];
  drawTaps(peT,PEX);drawTaps(nT,NX);
  // kanallar (simlar ustidan): har qator ostida, o'rta, pastki, yon tomonlar
  for(let i=0;i<L.rows;i++){const y=TOP+i*ROWSTEP+BH+38;s+=duct(12,PW_-12,y,y+34,i===0?"kabel kanal":"");}
@@ -1268,11 +1360,23 @@ function renderRail(R){
   nameLines(g.name,11).forEach((t,k)=>{s+=`<text x="${lx}" y="${LOADY+26+k*11}" text-anchor="middle" font-size="8.5" fill="var(--ink)">${esc(t)}</text>`;});
   s+=`<g data-bolt="${g.id}" opacity="0"><path d="M${lx+16} ${LOADY-16} l-6 10 h5 l-4 9 l10-12 h-5 l4-7z" fill="var(--bad)"/></g>`;
   POS[g.id]=Object.assign({},gpos[g.id]||{x:lx,y:LOADY},{lx,ly:PB+40,ld:LOADY});
+  (GEO.bodies=GEO.bodies||[]).push({gid:g.id,x:lx-16,y:LOADY+2});
  });
  if(!R.groups.length)s+=`<text x="${X0}" y="${LD1+30}" font-size="11" fill="var(--muted)">Guruhlar yo'q: 2-bo'limda "+ Guruh qo'shish"</text>`;
- s+=`<g id="fxLayer"></g></svg>`;
+ // issiqlik kamerasi qatlami
+ const TS2=[];
+ Object.entries(GEO.groups).forEach(([gid,G])=>{G.placed.forEach((p,i)=>{if(["mcb","rcbo","rcd","km"].includes(p.t))TS2.push({k:"b:"+gid+":"+i,x:p.x+p.w/2,y:G.y+BH/2+6,kind:p.t,gid:+gid});});
+  if(G.out)TS2.push({k:"t:"+gid,x:G.out.x,y:G.out.y,kind:"term",gid:+gid});});
+ R.groups.forEach(r=>{const lx=bund[r.g.id];TS2.push({k:"cb:"+r.g.id,x:lx,y:(MD1+LD0)/2,kind:"cable",gid:r.g.id});TS2.push({k:"ci:"+r.g.id,x:lx,y:(LD1+PB)/2,kind:"cable",gid:r.g.id});TS2.push({k:"co:"+r.g.id,x:lx,y:PB+44,kind:"cable",gid:r.g.id});TS2.push({k:"co2:"+r.g.id,x:lx,y:LOADY-36,kind:"cable",gid:r.g.id});});
+ if(POS.main)TS2.push({k:"main",x:POS.main.x,y:POS.main.y+6,kind:"main"});
+ if(POS.meter)TS2.push({k:"meter",x:POS.meter.x,y:POS.meter.y,kind:"meter"});
+ TS2.push({k:"nbus",x:NX+nW/2,y:BUSY,kind:"nbus"});
+ GEO.spots=TS2;GEO.PWI=PW_;GEO.nbus={x0:NX,x1:NX+nW,y:BUSY,taps:nT.length};GEO.pebus={x0:PEX,x1:PEX+peW,y:BUSY,taps:peT.length};GEO.bund=bund;GEO.lines={MD0,MD1,LD0,LD1,PB,LOADY,BUSY};GEO.W=W;GEO.H=H;GEO.TS=TS;
+ s+=`</g><g id="thermo"><rect x="0" y="0" width="${W}" height="${H}" fill="#12002a" opacity=".55"/><g filter="url(#tblur)" style="mix-blend-mode:screen">${TS2.map(t=>`<circle class="tspot" data-k="${t.k}" cx="${t.x}" cy="${t.y}" r="14" fill="#3b0a6e" opacity=".3"/>`).join("")}</g><g id="tmaxMark" opacity="0"><circle r="16" fill="none" stroke="#fff" stroke-width="1.5"/><line x1="-24" y1="0" x2="-10" y2="0" stroke="#fff" stroke-width="1.5"/><line x1="10" y1="0" x2="24" y2="0" stroke="#fff" stroke-width="1.5"/><line x1="0" y1="-24" x2="0" y2="-10" stroke="#fff" stroke-width="1.5"/><line x1="0" y1="10" x2="0" y2="24" stroke="#fff" stroke-width="1.5"/><text x="20" y="-18" font-size="12" font-weight="700" fill="#fff" font-family="monospace">0°C</text></g></g>`;
+ s+=`<g id="overlay"></g><g id="fxLayer"></g></svg>`;
  $("#rail").innerHTML=s;
  $("#enclInfo").textContent=`${E.name}: ${L.total}/${L.cap} modul band`;
+ if(MODE==="tools")drawTools();if(MODE==="place")drawPlace();if(MODE==="wire")drawWire();
  applyZoom();
 }
 function cableColor(T,burnt){if(burnt)return "#1b1b1b";if(T<60)return "var(--sheath)";if(T<70)return "#d8b632";if(T<90)return "#e5862a";return "#d33a25";}
@@ -1318,6 +1422,413 @@ function toast(msg,lvl){
  setTimeout(()=>{d.classList.add("out");setTimeout(()=>d.remove(),400);},3600);
 }
 
+/* ================= REJIMLAR ================= */
+let GEO={},MODE="normal";
+const gById=id=>S.groups.find(x=>x.id==id);
+const qfN=id=>{const r=R&&R.groups.find(x=>x.g.id==id);return r?r.n:"?";};
+const MODE_HINT={
+ normal:"",
+ place:"Qurilmani pastdagi palitradan sudrab DIN-reykaga tashlang yoki shitdagi qurilmani ushlab boshqa joyga suring. Telefonda barmoq bilan ushlab torting.",
+ wire:"Guruhni tanlang, keyin uning L, N, PE sim uchlarini ushlab kerakli klemma yoki shinaga olib boring. Mos joylar yashil halqa bilan ko'rsatiladi.",
+ thermal:"Issiqlik kamerasi (teplovizor): qizigan joylar oq-sariq, sovuqlari binafsha. Qo'shni nuqtadan 10 °C dan ortiq issiq joy tekshirilishi kerak.",
+ tools:"Asbobni tanlang va uning shchuplarini (uchlarini) shitdagi nuqtalarga sudrab qo'ying. Nuqtalar kichik doirachalar bilan belgilangan.",
+ "3d":"Shitni barmoq yoki sichqoncha bilan aylantiring. Eshikni ochib-yoping."
+};
+function setMode(m){
+ if(m===MODE)return;
+ if(MODE==="tools")toolsOff();
+ MODE=m;
+ document.querySelectorAll(".mbtn").forEach(b=>b.setAttribute("aria-pressed",b.dataset.mode===m?"true":"false"));
+ $("#rail").className="rail mode-"+m;
+ $("#view3d").hidden=m!=="3d";$(".railwrap").hidden=m==="3d";
+ renderModePanel();
+ if(R){renderRail(R);updateSim();}
+ if(m==="3d")open3D();else close3D();
+}
+function renderModePanel(){
+ const p=$("#modePanel");
+ if(MODE==="normal"){p.hidden=true;p.innerHTML="";return;}
+ p.hidden=false;
+ let h="";
+ if(MODE==="thermal")h=`<div class="tscale"><div class="tbar"></div><div class="lbls"><span>20°C</span><span>50</span><span>80</span><span>110</span><span>130+</span></div></div><div class="tmax" id="tmaxTxt">Eng issiq nuqta: —</div>`;
+ if(MODE==="place")h=placePaletteHTML();
+ if(MODE==="wire")h=wirePanelHTML();
+ if(MODE==="tools")h=toolsPanelHTML();
+ if(MODE==="3d")h=`<button class="btn" data-3d="door">Eshikni ochish / yopish</button><button class="btn" data-3d="front">Old tomondan</button><button class="btn" data-3d="side">Yon tomondan</button><button class="btn" data-3d="spin">Aylantirish</button>`;
+ p.innerHTML=h+`<span class="hint">${MODE_HINT[MODE]||""}</span>`;
+}
+/* ---- 3. Issiqlik kamerasi ---- */
+const TSTOPS=[[20,[18,0,42]],[35,[59,10,110]],[50,[138,15,138]],[65,[208,39,60]],[80,[242,98,26]],[95,[249,165,29]],[110,[253,224,80]],[130,[255,255,255]]];
+function tColor(T){if(T<=TSTOPS[0][0])return "rgb(18,0,42)";for(let i=1;i<TSTOPS.length;i++){const [t1,c1]=TSTOPS[i];const [t0,c0]=TSTOPS[i-1];if(T<=t1){const f=(T-t0)/(t1-t0);return `rgb(${c0.map((v,k)=>Math.round(v+(c1[k]-v)*f)).join(",")})`;}}return "rgb(255,255,255)";}
+function spotT(t){
+ if(t.kind==="cable"){const st=simG(t.gid);return st.burnt?40:st.T+(t.k.startsWith("cb")?(st.T-25)*0.12:0);}
+ if(t.kind==="term"){const st=simG(t.gid),g=gById(t.gid);if(!g)return 25;const k=st.I/Math.max(1,g.In);return Math.max(st.T,25+30*k*k+(g.ferr?0:35*k*k));}
+ if(t.kind==="mcb"||t.kind==="rcbo"||t.kind==="rcd"){const st=simG(t.gid),g=gById(t.gid);if(!g)return 25;const k=st.I/Math.max(1,t.kind==="rcd"?g.rcdIn:g.In);return 25+30*k*k+(t.kind==="rcd"?0:45*st.H);}
+ if(t.kind==="km"){const st=simG(t.gid),g=gById(t.gid);if(!g)return 25;const k=st.I/Math.max(1,g.In);const coil=powered(g,st)?6:0;return 25+26*k*k+coil;}
+ if(t.kind==="main"){const mm=Math.max(...PH.map(p=>(sim._phI||{})[p]||0));const k=mm/Math.max(1,S.main.In);return 25+30*k*k+45*sim.main.H;}
+ if(t.kind==="meter")return 27+Math.min(12,(sim._kw||0)*0.8);
+ if(t.kind==="nbus"){const mm=Math.max(...PH.map(p=>(sim._phI||{})[p]||0));return 25+18*Math.pow(mm/Math.max(25,S.main.In||63),2);}
+ return 25;
+}
+function spotName(t){const n=t.gid?qfN(t.gid):"";return t.kind==="cable"?`QF${n} kabeli`:t.kind==="term"?`QF${n} chiqish klemmasi`:t.kind==="km"?`KM${n} kontaktori`:t.kind==="rcd"?`QF${n} UZO`:t.kind==="main"?"QF0 kirish avtomati":t.kind==="meter"?"Hisoblagich":t.kind==="nbus"?"N shina":`QF${n} avtomati`;}
+function updateThermo(){
+ if(MODE!=="thermal"||!GEO.spots)return;
+ const rail=$("#rail");let best=null;
+ GEO.spots.forEach(t=>{const el=rail.querySelector(`.tspot[data-k="${t.k}"]`);if(!el)return;const T=spotT(t);
+  el.setAttribute("fill",tColor(T));el.setAttribute("r",12+Math.max(0,Math.min(42,(T-25)*0.38)));el.setAttribute("opacity",Math.max(.28,Math.min(1,.3+(T-25)/45)));
+  if(!best||T>best.T)best={T,t};});
+ const mk=rail.querySelector("#tmaxMark");
+ if(best&&mk){mk.setAttribute("transform",`translate(${best.t.x},${best.t.y})`);mk.setAttribute("opacity",1);mk.querySelector("text").textContent=fmt(best.T,1)+"°C";}
+ const tx=$("#tmaxTxt");if(tx&&best)tx.innerHTML=`Eng issiq nuqta: <span style="color:${best.T>90?"var(--bad)":best.T>60?"var(--warn)":"var(--ok)"}">${spotName(best.t)} — ${fmt(best.T,1)}°C</span>`;
+}
+
+/* ---- 5. Vaqt-tok egri chiziqlari ---- */
+const TCC_COL=["#2f7fd1","#d1495b","#2a9d5c","#b8640a","#7b4fd1","#0f8f8f","#c2185b","#5d7a1f"];
+const KLO={B:3,C:5,D:10},KHI={B:5,C:10,D:20};
+let tccSel=null;
+const tU=m=>m<=1.13?1e9:Math.min(7200,120/Math.pow(m-1,2));
+const tL=m=>m<=1.45?1e9:Math.min(3600,22/Math.pow(m-1,2));
+function brkBand(In,ch){ // [{I,t}] polygon
+ const up=[],lo=[];const khi=KHI[ch],klo=KLO[ch];
+ for(let m=1.13;m<khi;m*=1.04)up.push([m*In,Math.max(0.02,tU(m))]);
+ up.push([khi*In,Math.max(0.02,tU(khi))]);up.push([khi*In,0.01]);up.push([30000,0.01]);
+ lo.push([30000,0.003]);lo.push([klo*In,0.003]);
+ const mk=[];for(let m=klo;m>1.45;m/=1.04)mk.push([m*In,Math.max(0.003,tL(m))]);
+ lo.push(...mk);lo.push([1.45*In,3600]);lo.push([1.13*In,7200]);
+ return up.concat(lo);
+}
+function tripRange(I,In,ch){const m=I/In;if(m<1.13)return null;if(m>=KHI[ch])return [0.003,0.01];const hi=tU(m),lo=m>=KLO[ch]?0.003:Math.max(0.003,tL(m));return [lo,hi];}
+function fmtT(t){return t>=3600?fmt(t/3600,1)+" soat":t>=60?fmt(t/60,1)+" daq":t>=1?fmt(t,1)+" s":fmt(t*1000,0)+" ms";}
+function tccSVG(ids,live){
+ const W=760,H=430,ml=58,mr=16,mt=14,mb=42;
+ const x0=1,x1=30000,y0=0.001,y1=10000;
+ const X=I=>ml+(Math.log10(I)-Math.log10(x0))/(Math.log10(x1)-Math.log10(x0))*(W-ml-mr);
+ const Y=t=>mt+(Math.log10(y1)-Math.log10(t))/(Math.log10(y1)-Math.log10(y0))*(H-mt-mb);
+ let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px;display:block" role="img" aria-label="Vaqt-tok egri chiziqlari" data-tcc="1">`;
+ // grid
+ for(let e=0;e<=4;e++){for(let k=1;k<10;k++){const I=Math.pow(10,e)*k;if(I>x1)break;s+=`<line x1="${X(I)}" y1="${mt}" x2="${X(I)}" y2="${H-mb}" stroke="var(--line)" stroke-width="${k===1?1:.5}" opacity="${k===1?1:.6}"/>`;}if(Math.pow(10,e)<=x1)s+=`<text x="${X(Math.pow(10,e))}" y="${H-mb+16}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${Math.pow(10,e)>=1000?Math.pow(10,e)/1000+"k":Math.pow(10,e)}</text>`;}
+ for(let e=-3;e<=4;e++){const t=Math.pow(10,e);s+=`<line x1="${ml}" y1="${Y(t)}" x2="${W-mr}" y2="${Y(t)}" stroke="var(--line)" stroke-width="1"/><text x="${ml-6}" y="${Y(t)+4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${t>=1?t:t===0.1?"0.1":t===0.01?"0.01":"0.001"}</text>`;}
+ s+=`<text x="${(W+ml)/2}" y="${H-6}" text-anchor="middle" font-size="12" fill="var(--muted)">Tok, A (logarifmik)</text><text x="14" y="${(H-mb)/2}" font-size="12" fill="var(--muted)" transform="rotate(-90 14 ${(H-mb)/2})" text-anchor="middle">O'chish vaqti, s</text>`;
+ s+=`<clipPath id="tccclip"><rect x="${ml}" y="${mt}" width="${W-ml-mr}" height="${H-mt-mb}"/></clipPath><g clip-path="url(#tccclip)">`;
+ const poly=(pts,fill,stroke,op)=>`<polygon points="${pts.map(([I,t])=>X(I).toFixed(1)+","+Y(Math.max(y0,Math.min(y1*5,t))).toFixed(1)).join(" ")}" fill="${fill}" fill-opacity="${op}" stroke="${stroke}" stroke-width="1.6"/>`;
+ // kirish avtomati
+ if(S.main.hasMain)s+=poly(brkBand(S.main.In,S.main.ch),"var(--muted)","var(--muted)",.12);
+ const legend=[];
+ ids.forEach((id,i)=>{const r=R.groups.find(x=>x.g.id==id);if(!r)return;const g=r.g,c=TCC_COL[i%TCC_COL.length];
+  s+=poly(brkBand(+g.In,g.ch),c,c,.16);
+  // kabel issiqlik chidamliligi t=(kS/I)^2
+  const k=g.mat==="Al"?76:115;let d="";for(let I=Math.max(1,(r.Iz||10)*0.9);I<x1;I*=1.06){const t=Math.pow(k*g.S/I,2);if(t<y0)break;d+=(d?" L":"M")+X(I).toFixed(1)+" "+Y(Math.min(y1,t)).toFixed(1);}
+  s+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="6 4"/>`;
+  if(r.Iz)s+=`<line x1="${X(r.Iz)}" y1="${mt}" x2="${X(r.Iz)}" y2="${H-mb}" stroke="${c}" stroke-width="1" stroke-dasharray="2 4"/>`;
+  s+=`<line x1="${X(r.Ik)}" y1="${mt}" x2="${X(r.Ik)}" y2="${H-mb}" stroke="${c}" stroke-width="2"/><text x="${X(r.Ik)+4}" y="${mt+14+i*14}" font-size="11" font-weight="700" fill="${c}">QT ${fmt(r.Ik,0)} A</text>`;
+  if(live){const st=simG(id);if(st.I>0.05){const rg=tripRange(st.I,g.In,g.ch);const t=rg?rg[1]:3000;s+=`<g class="tccdot"><circle cx="${X(st.I)}" cy="${Y(Math.min(y1,t))}" r="7" fill="${c}" stroke="var(--surface)" stroke-width="2"/><text x="${X(st.I)+10}" y="${Y(Math.min(y1,t))-8}" font-size="11" font-weight="700" fill="${c}">${fmt(st.I,1)} A</text></g>`;}}
+  legend.push({c,txt:`QF${r.n} ${g.ch}${g.In} · kabel ${g.S} mm²`});
+ });
+ s+=`</g><g class="tcccross" opacity="0"><line class="cx" y1="${mt}" y2="${H-mb}" stroke="var(--ink)" stroke-width="1" stroke-dasharray="3 3"/></g>`;
+ s+=`<rect x="${ml}" y="${mt}" width="${W-ml-mr}" height="${H-mt-mb}" fill="none" stroke="var(--ink)" stroke-width="1"/></svg>`;
+ const leg=`<div class="legend" style="margin-top:6px">${S.main.hasMain?`<span><i class="sw" style="background:var(--muted)"></i>QF0 ${S.main.ch}${S.main.In} (kirish)</span>`:""}${legend.map(l=>`<span><i class="sw" style="background:${l.c}"></i>${l.txt}</span>`).join("")}<span><svg width="24" height="6"><line x1="0" y1="3" x2="24" y2="3" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 4"/></svg>kabel chidamliligi</span><span><svg width="24" height="10"><line x1="12" y1="0" x2="12" y2="10" stroke="var(--ink)" stroke-width="2"/></svg>QT toki</span></div>`;
+ return {svg:s,leg,X,Y,W,ml,mr,x0,x1};
+}
+function tccAnalysis(ids){
+ const out=[];const m=S.main;
+ ids.forEach(id=>{const r=R.groups.find(x=>x.g.id==id);if(!r)return;const g=r.g,In=+g.In;
+  const rg=tripRange(r.Ik,In,g.ch);
+  out.push(r.Ik>=KHI[g.ch]*In?`QF${r.n}: liniya oxiridagi QT (${fmt(r.Ik,0)} A) da ${g.ch}${In} elektromagnit ajratgich bilan ${fmtT(0.01)} ichida o'chadi. ✓`:`QF${r.n}: QT toki ${fmt(r.Ik,0)} A elektromagnit zonaga yetmaydi (${KHI[g.ch]}·In = ${KHI[g.ch]*In} A). O'chish ${rg?fmtT(rg[1]):"juda uzoq"} gacha cho'ziladi ✗`);
+  if(r.Iz&&r.Iz<In)out.push(`QF${r.n}: kabel ruxsat toki (${r.Iz} A) avtomat In dan (${In} A) kichik: grafikda kabel chizig'i avtomat zonasidan chapda, ya'ni kabel birinchi qiziydi ✗`);
+  if(m.hasMain){if(+m.In<=In)out.push(`QF${r.n} va QF0: kirish avtomati guruhdan katta emas, o'ta yuklanishda tartib buziladi ✗`);
+   else if(r.Ik>=KLO[m.ch]*m.In)out.push(`QF${r.n} va QF0: ${fmt(r.Ik,0)} A da ikkala avtomat ham elektromagnit zonada. Modulli avtomatlarda bu odatiy, odatda guruh avtomati tezroq uziladi, lekin to'liq selektivlik kafolatlanmaydi.`);
+   else out.push(`QF${r.n} va QF0: zonalar kesishmaydi, to'liq selektivlik ✓`);}
+ });return out;}
+function renderTCC(boxId,live){
+ const box=$(boxId);if(!box||!R)return;
+ if(!R.groups.length){box.innerHTML=`<p class="muted">Guruhlar qo'shilgach grafik chiziladi.</p>`;return;}
+ if(!tccSel||!tccSel.length||tccSel.some(id=>!gById(id)))tccSel=R.groups.slice(0,Math.min(2,R.groups.length)).map(r=>r.g.id);
+ const t=tccSVG(tccSel,live);
+ box.innerHTML=`<div class="chips" style="margin-bottom:8px">${R.groups.map(r=>`<button type="button" class="chip" data-tcc="${r.g.id}" aria-pressed="${tccSel.includes(r.g.id)}" style="${tccSel.includes(r.g.id)?`border-color:${TCC_COL[tccSel.indexOf(r.g.id)%TCC_COL.length]};font-weight:700`:""}">QF${r.n} ${esc(r.g.name)}</button>`).join("")}</div><div class="tccwrap" style="position:relative">${t.svg}<div class="tcctip" hidden></div></div>${t.leg}${live?"":`<ul class="tccan">${tccAnalysis(tccSel).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`}`;
+ box._tcc=t;
+}
+function tccHover(e){
+ const wrap=e.target.closest(".tccwrap");if(!wrap)return;const box=wrap.parentNode;const t=box._tcc;if(!t)return;
+ const svg=wrap.querySelector("svg");const rc=svg.getBoundingClientRect();const sx=(e.clientX-rc.left)/rc.width*t.W;
+ if(sx<t.ml||sx>t.W-t.mr){wrap.querySelector(".tcctip").hidden=true;svg.querySelector(".tcccross").setAttribute("opacity",0);return;}
+ const I=Math.pow(10,Math.log10(t.x0)+(sx-t.ml)/(t.W-t.ml-t.mr)*(Math.log10(t.x1)-Math.log10(t.x0)));
+ const cr=svg.querySelector(".tcccross");cr.setAttribute("opacity",1);cr.querySelector(".cx").setAttribute("x1",sx);cr.querySelector(".cx").setAttribute("x2",sx);
+ const lines=[`<b>${fmt(I,I<10?1:0)} A</b>`];
+ if(S.main.hasMain){const rg=tripRange(I,S.main.In,S.main.ch);lines.push(`QF0: ${rg?fmtT(rg[0])+" – "+fmtT(rg[1]):"o'chmaydi"}`);}
+ tccSel.forEach((id,i)=>{const g=gById(id);if(!g)return;const rg=tripRange(I,+g.In,g.ch);const k=g.mat==="Al"?76:115;const tc=Math.pow(k*g.S/I,2);lines.push(`<span style="color:${TCC_COL[i%TCC_COL.length]}">QF${qfN(id)}: ${rg?fmtT(rg[0])+" – "+fmtT(rg[1]):"o'chmaydi"}; kabel chidaydi ≈ ${fmtT(tc)}</span>`);});
+ const tip=wrap.querySelector(".tcctip");tip.hidden=false;tip.innerHTML=lines.join("<br>");
+ const px=(e.clientX-rc.left);tip.style.left=Math.min(rc.width-230,Math.max(0,px+12))+"px";tip.style.top="10px";
+}
+
+/* ---- umumiy: SVG koordinatalari va sudrash ---- */
+function svgPt(e){const svg=$("#rail svg");if(!svg)return {x:0,y:0};const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const m=svg.getScreenCTM();return m?p.matrixTransform(m.inverse()):{x:0,y:0};}
+function startDrag(e,onMove,onEnd){
+ e.preventDefault();const tgt=e.target;try{tgt.setPointerCapture(e.pointerId);}catch(_){}
+ const mv=ev=>{onMove(ev);};const up=ev=>{tgt.removeEventListener("pointermove",mv);tgt.removeEventListener("pointerup",up);tgt.removeEventListener("pointercancel",up);onEnd(ev);};
+ tgt.addEventListener("pointermove",mv);tgt.addEventListener("pointerup",up);tgt.addEventListener("pointercancel",up);
+}
+/* ---- 4. O'lchov asboblari ---- */
+const TOOLDEF={
+ mm:{n:"Multimetr",unit:"V~",probes:2,d:"Ikki nuqta orasidagi kuchlanish. Faza–N: ~230 V, faza–PE: ~230 V, N–PE: 0 V bo'lishi kerak."},
+ clamp:{n:"Tok kleshi",unit:"A",probes:1,d:"Kleshni kabel ustiga qo'ying: undan o'tayotgan tokni ko'rsatadi."},
+ megger:{n:"Megommetr",unit:"MΩ",probes:2,d:"Izolyatsiya qarshiligi (500 V). Faqat kuchlanish olingan liniyada! Me'yor ≥ 0,5 MΩ."},
+ ind:{n:"Indikator otvertka",unit:"",probes:1,d:"Uchini nuqtaga tekkizing: fazada chiroq yonadi."}
+};
+let TOOL={t:"mm",probes:[]};
+function toolsPanelHTML(){return `<div class="seg">${Object.entries(TOOLDEF).map(([k,d])=>`<button type="button" class="mbtn" data-tool="${k}" aria-pressed="${TOOL.t===k}">${d.n}</button>`).join("")}</div><span class="hint" style="flex-basis:100%">${TOOLDEF[TOOL.t].d}</span>`;}
+function toolsOff(){$("#instr").hidden=true;}
+function measurePoints(){
+ const pts=[];if(!GEO.groups)return pts;
+ Object.entries(GEO.groups).forEach(([gid,G])=>{const n=qfN(gid);
+  if(G.inp)pts.push({k:"in:"+gid,x:G.inp.x,y:G.inp.y-6,lbl:`QF${n} kirish (faza)`,gid:+gid,type:"in"});
+  if(G.out)pts.push({k:"out:"+gid,x:G.out.x,y:G.out.y+6,lbl:`QF${n} chiqish (faza)`,gid:+gid,type:"out"});
+  if(G.rcdN)pts.push({k:"rn:"+gid,x:G.rcdN.x,y:G.rcdN.y+6,lbl:`QF${n} UZO N chiqish`,gid:+gid,type:"rcdN"});});
+ (GEO.taps||[]).forEach(t=>pts.push({k:"tap:"+t.gid+":"+t.kind,x:t.x,y:t.y,lbl:`QF${qfN(t.gid)} ${t.kind} simi (${t.bus} shinada)`,gid:t.gid,type:t.kind==="N"?"nwire":"pewire",bus:t.bus}));
+ if(GEO.nbus)pts.push({k:"nbus",x:GEO.nbus.x0+6,y:GEO.nbus.y,lbl:"N shina",type:"nbus"});
+ if(GEO.pebus)pts.push({k:"pebus",x:GEO.pebus.x0+6,y:GEO.pebus.y,lbl:"PE shina",type:"pebus"});
+ (GEO.bodies||[]).forEach(b=>pts.push({k:"body:"+b.gid,x:b.x,y:b.y,lbl:`QF${qfN(b.gid)} jihoz korpusi`,gid:b.gid,type:"body"}));
+ if(POS.main)pts.push({k:"mainIn",x:POS.main.x,y:POS.main.y-BH/2+17-6,lbl:"QF0 kirish",type:"src"});
+ return pts;}
+function clampPoints(){const pts=[];if(!GEO.bund)return pts;Object.entries(GEO.bund).forEach(([gid,x])=>pts.push({k:"cab:"+gid,x,y:GEO.lines.PB+58,lbl:`QF${qfN(gid)} kabeli`,gid:+gid,type:"cable"}));
+ if(POS.main)pts.push({k:"mainCab",x:POS.main.x,y:POS.main.y+BH/2+30,lbl:"Kirish (QF0 chiqishi)",type:"main"});return pts;}
+const ANG={L1:0,L2:-2*Math.PI/3,L3:2*Math.PI/3};
+function phasor(ph,mag){return {re:mag*Math.cos(ANG[ph]),im:mag*Math.sin(ANG[ph])};}
+function potential(pt){
+ const Z={re:0,im:0};const V=sim._V||{L1:220,L2:220,L3:220};const Vn=sim._VnC||Z;
+ const g=pt.gid?gById(pt.gid):null,st=pt.gid?simG(pt.gid):null;
+ const ph=g?(g.phases==3?"L1":g.ph):"L1";
+ const srcV=(p)=>srcOn()&&(!S.main.sw||sim.sw)&&sim.phaseLoss!==p?220:0;
+ switch(pt.type){
+  case "src":return phasor("L1",srcV("L1"));
+  case "in":return upOn()&&sim.phaseLoss!==ph?phasor(ph,220):Z;
+  case "out":{const nSw=g&&g.phases!=3&&g.poles==="1P"&&g.kind==="MCB"&&g.sw==="N";const live=nSw?upOn():powered(g,st);if(!live||sim.phaseLoss===ph)return Z;const v=phasor(ph,220);return {re:v.re,im:v.im};}
+  case "rcdN":case "nwire":case "nbus":return Vn;
+  case "pewire":return pt.bus==="N"?Vn:Z;
+  case "pebus":return Z;
+  case "body":{if(!st||!g)return Z;if(st.body&&upOn()){if(g.peConn==="none")return phasor(ph,220);return phasor(ph,Math.min(220,60));}if(g.peConn==="Nbus")return Vn;return Z;}
+ }return Z;}
+const vdiff=(a,b)=>Math.hypot(a.re-b.re,a.im-b.im);
+function nearestPt(x,y,pts){let best=null,bd=30/Math.max(.4,ZOOM);pts.forEach(p=>{const d=Math.hypot(p.x-x,p.y-y);if(d<bd){bd=d;best=p;}});return best;}
+function drawTools(){
+ const ov=$("#overlay");if(!ov||MODE!=="tools")return;
+ const D=TOOLDEF[TOOL.t];const pts=TOOL.t==="clamp"?clampPoints():measurePoints();
+ if(TOOL.probes.length!==D.probes){const bx=(GEO.X0||48)+10,by=40;TOOL.probes=D.probes===2?[{x:bx+40,y:by,pt:null,c:"#d4322a"},{x:bx+80,y:by,pt:null,c:"#1d1d1d"}]:[{x:bx+60,y:by,pt:null,c:TOOL.t==="clamp"?"#e0a21b":"#2d5fa8"}];}
+ TOOL.probes.forEach(p=>{if(p.pt){const q=pts.find(z=>z.k===p.pt);if(q){p.x=q.x;p.y=q.y;}else p.pt=null;}});
+ let s=pts.map(p=>`<g class="mpt"><circle cx="${p.x}" cy="${p.y}" r="6" fill="var(--surface)" fill-opacity=".85" stroke="var(--accent)" stroke-width="2"><title>${esc(p.lbl)}</title></circle></g>`).join("");
+ TOOL.probes.forEach((p,i)=>{
+  if(TOOL.t==="clamp")s+=`<g class="probe" data-probe="${i}" transform="translate(${p.x},${p.y})" style="cursor:grab"><path d="M-22 -8 a22 22 0 1 1 44 0 l-6 0 a16 16 0 1 0 -32 0z" fill="#e0a21b" stroke="#6b4c08" stroke-width="1.5"/><rect x="-12" y="-8" width="24" height="46" rx="5" fill="#e0a21b" stroke="#6b4c08" stroke-width="1.5"/><rect x="-8" y="2" width="16" height="10" rx="2" fill="#1d2a14"/><circle r="26" fill="transparent"/></g>`;
+  else s+=`<g class="probe" data-probe="${i}" transform="translate(${p.x},${p.y})" style="cursor:grab"><path d="M0 0 L-4 -10 L-4 -46 Q-4 -52 0 -52 Q4 -52 4 -46 L4 -10 Z" fill="${p.c}" stroke="#000" stroke-width=".8"/><path d="M0 -52 C0 -80 40 -70 34 -100" fill="none" stroke="${p.c}" stroke-width="3"/>${TOOL.t==="ind"?`<circle class="indlamp" cx="0" cy="-30" r="4" fill="#5a3a0a"/>`:""}<circle cy="-24" r="22" fill="transparent"/><circle r="3" fill="#c7cacc"/></g>`;
+ });
+ ov.innerHTML=s;
+ ov.querySelectorAll(".probe").forEach(el=>el.addEventListener("pointerdown",e=>{const i=+el.dataset.probe;const p=TOOL.probes[i];el.style.cursor="grabbing";
+  startDrag(e,ev=>{const q=svgPt(ev);p.x=q.x;p.y=q.y;p.pt=null;el.setAttribute("transform",`translate(${p.x},${p.y})`);},ev=>{const q=svgPt(ev);const n=nearestPt(q.x,q.y,pts);if(n){p.pt=n.k;p.x=n.x;p.y=n.y;}el.setAttribute("transform",`translate(${p.x},${p.y})`);el.style.cursor="grab";updateTools();});}));
+ updateTools();
+}
+function updateTools(){
+ const box=$("#instr");if(MODE!=="tools"){box.hidden=true;return;}
+ box.hidden=false;const D=TOOLDEF[TOOL.t];
+ const pts=TOOL.t==="clamp"?clampPoints():measurePoints();
+ const at=TOOL.probes.map(p=>p.pt?pts.find(z=>z.k===p.pt):null);
+ let val="----",sub="Shchuplarni nuqtalarga qo'ying",cls="";
+ if(TOOL.t==="mm"&&at[0]&&at[1]){const v=vdiff(potential(at[0]),potential(at[1]));val=(v<0.5?0:v+Math.sin(sim.t*3)*0.4).toFixed(1);sub=`${at[0].lbl} ↔ ${at[1].lbl}`;if(v>253)cls="bad";}
+ if(TOOL.t==="clamp"&&at[0]){let I=0;if(at[0].type==="cable")I=simG(at[0].gid).I||0;else I=Math.max(...PH.map(p=>(sim._phI||{})[p]||0));val=I.toFixed(I>=100?0:2);sub=at[0].lbl;}
+ if(TOOL.t==="megger"&&at[0]&&at[1]){const v=vdiff(potential(at[0]),potential(at[1]))+Math.hypot(potential(at[0]).re,potential(at[0]).im);
+  if(v>20){val="Err";sub="XAVF! Liniya kuchlanish ostida. Avval guruh avtomatini o'chiring.";cls="bad";if(!TOOL._sp){TOOL._sp=true;const p=TOOL.probes[0];spark(p.x,p.y);beep("sc");vib(120);logEv("Megommetr kuchlanish ostidagi liniyaga ulandi! Megommetr faqat o'chirilgan liniyada ishlatiladi.","bad");}}
+  else{TOOL._sp=false;sub=`${at[0].lbl} ↔ ${at[1].lbl}`;const gid=(at[0].gid||at[1].gid);const st=gid?simG(gid):null;const pair=[at[0].type,at[1].type].sort().join("-");
+   let R_=gid?550+((gid*37)%400):999;if(st){if(st.burnt||st.body)R_=0;else if((st.Tmax||25)>90)R_=0.35;else if((st.Tmax||25)>70)R_=14;}
+   if(!/out|nwire|rcdN/.test(pair)||!/pe|body/.test(pair))sub="Faza (yoki N) va PE/korpus orasini o'lchang.";
+   val=R_>=999?">999":R_<0.01?"0.00":R_.toFixed(R_<1?2:0);sub=(R_<0.5?"Izolyatsiya buzilgan! Kabelni almashtiring. ":R_<1?"Chegarada. ":"Me'yorda (≥ 0,5 MΩ). ")+sub;cls=R_<0.5?"bad":"";}}
+ if(TOOL.t==="ind"&&at[0]){const v=Math.hypot(potential(at[0]).re,potential(at[0]).im);val=v>60?"FAZA":"—";sub=at[0].lbl+(v>60?": chiroq yondi":": chiroq yonmadi");const l=$("#overlay .indlamp");if(l)l.setAttribute("fill",v>60?"#ffd23a":"#5a3a0a");cls=v>60?"warn":"";}
+ box.innerHTML=`<div class="meter-dev ${TOOL.t}"><div class="mtitle">${D.n}</div><div class="lcd2 ${cls}"><span class="mval">${val}</span><span class="munit">${val==="----"||val==="Err"||val==="FAZA"||val==="—"?"":D.unit}</span></div><div class="msub">${esc(sub)}</div></div>`;
+}
+
+/* ---- 2. Sudrab joylashtirish ---- */
+const TPL=[
+ {id:"light",n:"Yoritish: avtomat 1P B10",mods:1,g:{name:"Yoritish",type:"light",P:0.5,kc:0.9,ch:"B",In:10,S:1.5}},
+ {id:"sock",n:"Rozetka: difavtomat 2P C16",mods:2,g:{name:"Rozetkalar",type:"socket",P:2,kc:0.6,kind:"RCBO",poles:"2P",In:16,nConn:"rcdOut"}},
+ {id:"wet",n:"Vanna: avtomat + UZO 10 mA",mods:3,g:{name:"Vanna rozetkasi",type:"wet",P:2,kc:0.8,kind:"MCB+RCD",In:16,idn:10,rcdIn:25,nConn:"rcdOut"}},
+ {id:"pow",n:"Jihoz: avtomat 1P C16",mods:1,g:{name:"Jihoz",type:"power",P:2,kc:0.8,In:16}},
+ {id:"f3",n:"3 fazali: avtomat 3P C16",mods:3,g:{name:"3 fazali jihoz",type:"power",phases:3,P:5,kc:0.8,poles:"3P",In:16,cores:5,ph:"L123",cos:1}},
+ {id:"motor",n:"Dvigatel: 3P + KM + РКФ",mods:8,g:{name:"Nasos",type:"power",phases:3,P:3,kc:1,cos:0.8,poles:"3P",ch:"D",In:10,cores:4,ph:"L123",nConn:"none",ctrl:"btn",pfr:true,lay:"air"}},
+ {id:"timer",n:"Taymer: 1P + KM + KT",mods:3,g:{name:"Ventilyatsiya",type:"power",P:0.8,kc:1,In:10,ctrl:"timer"}},
+ {id:"photo",n:"Ko'cha chirog'i: 1P + KM + BL",mods:3,g:{name:"Ko'cha yoritishi",type:"light",P:0.4,kc:1,ch:"B",In:10,S:1.5,ctrl:"photo"}}
+];
+function orderKeys(){
+ const m=S.main,have=[];PDEV.forEach(d=>{if(m[d.k])have.push("p:"+d.k);});S.groups.forEach(g=>have.push("g:"+g.id));
+ const ord=(S.order||[]).filter(k=>have.includes(k));have.forEach(k=>{if(!ord.includes(k)){if(k.startsWith("p:")){const i=ord.findIndex(z=>z.startsWith("g:"));if(i<0)ord.push(k);else ord.splice(i,0,k);}else ord.push(k);}});
+ return ord;}
+function syncGroupOrder(ord){const ids=ord.filter(k=>k.startsWith("g:")).map(k=>+k.slice(2));S.groups.sort((a,b)=>ids.indexOf(a.id)-ids.indexOf(b.id));}
+function placePaletteHTML(){
+ const free=PDEV.filter(d=>!S.main[d.k]);
+ return `<div class="palette"><div class="pal-h">Guruhlar</div>${TPL.map(t=>`<div class="pchip" data-tpl="${t.id}" role="button" tabindex="0"><b>${esc(t.n)}</b><span>${t.mods} modul</span></div>`).join("")}
+ ${free.length?`<div class="pal-h">Kirish qurilmalari</div>${free.map(d=>`<div class="pchip dev" data-pdev="${d.k}" role="button" tabindex="0"><b>${d.tag} · ${esc(d.name)}</b><span>${d.mods} modul</span></div>`).join("")}`:""}</div>
+ <div class="trash" id="trash">Olib tashlash uchun shu yerga tashlang</div>`;
+}
+function insertIndexAt(x,y){
+ const items=GEO.items||[];if(!items.length)return 0;
+ const ord=orderKeys();
+ let row=null;items.forEach(it=>{if(y>=it.y0-20&&y<=it.y1+20)row=it.row;});
+ if(row==null){const rowsY=[...new Set(items.map(i=>i.row))];row=y<items[0].y0?rowsY[0]:rowsY[rowsY.length-1];}
+ const inRow=items.filter(i=>i.row===row).sort((a,b)=>a.x0-b.x0);
+ let tgt=inRow.find(i=>x<i.cx);
+ if(tgt)return {idx:ord.indexOf(tgt.key),x:tgt.x0-10,y0:tgt.y0+40,y1:tgt.y1-20};
+ const last=inRow[inRow.length-1];if(!last)return {idx:ord.length,x:0,y0:0,y1:0};
+ return {idx:ord.indexOf(last.key)+1,x:last.x1+10,y0:last.y0+40,y1:last.y1-20};}
+function marker(ins){const ov=$("#overlay");if(!ov)return;let m=ov.querySelector(".insmark");if(!m){ov.insertAdjacentHTML("beforeend",`<g class="insmark"><line stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle r="7" fill="var(--accent)"/></g>`);m=ov.querySelector(".insmark");}
+ if(!ins){m.setAttribute("opacity",0);return;}m.setAttribute("opacity",1);const l=m.querySelector("line");l.setAttribute("x1",ins.x);l.setAttribute("x2",ins.x);l.setAttribute("y1",ins.y0);l.setAttribute("y2",ins.y1);const c=m.querySelector("circle");c.setAttribute("cx",ins.x);c.setAttribute("cy",ins.y0);}
+function overRail(e){const r=$("#rail").getBoundingClientRect();return e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom;}
+function overTrash(e){const t=$("#trash");if(!t)return false;const r=t.getBoundingClientRect();return e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom;}
+function ghostDiv(txt){const d=document.createElement("div");d.className="ghost";d.textContent=txt;document.body.appendChild(d);return d;}
+function autoScroll(e){const r=$("#rail");const b=r.getBoundingClientRect();if(e.clientX>b.right-40)r.scrollLeft+=12;if(e.clientX<b.left+40)r.scrollLeft-=12;if(e.clientY>window.innerHeight-50)window.scrollBy(0,14);if(e.clientY<60)window.scrollBy(0,-14);}
+function dropAt(key,ins,isNew){
+ const ord=orderKeys().filter(k=>k!==key);let idx=ins.idx;const old=orderKeys().indexOf(key);if(!isNew&&old>=0&&old<idx)idx--;
+ ord.splice(Math.max(0,Math.min(ord.length,idx)),0,key);S.order=ord;syncGroupOrder(ord);
+ renderMain();renderGroups();refresh();
+ setTimeout(()=>{const it=(GEO.items||[]).find(i=>i.key===key);if(it){spark(it.cx,it.y0+70,true);focusOn(key.startsWith("g:")?+key.slice(2):key.slice(2));}},60);}
+function paletteDown(e){
+ const chip=e.target.closest(".pchip");if(!chip)return;e.preventDefault();
+ const label=chip.querySelector("b").textContent;const gh=ghostDiv(label);
+ const mv=ev=>{gh.style.left=ev.clientX+12+"px";gh.style.top=ev.clientY+12+"px";autoScroll(ev);if(overRail(ev)){const q=svgPt(ev);marker(insertIndexAt(q.x,q.y));}else marker(null);};
+ mv(e);
+ const up=ev=>{document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);gh.remove();marker(null);
+  if(!overRail(ev))return;const q=svgPt(ev);const ins=insertIndexAt(q.x,q.y);
+  if(chip.dataset.tpl){const t=TPL.find(z=>z.id===chip.dataset.tpl);const used=new Set(S.groups.map(g=>g.ph));const ph=["L1","L2","L3"].find(p=>!used.has(p))||["L1","L2","L3"][S.groups.length%3];
+   const g=G(Object.assign({},t.g,{id:uid++,ph:t.g.phases==3?"L123":ph,cPh:t.g.phases==3?"bn":PHC[ph]}));S.groups.push(g);resetSim();dropAt("g:"+g.id,ins,true);logEv(`${t.n} qo'shildi.`,"ok");}
+  else if(chip.dataset.pdev){S.main[chip.dataset.pdev]=true;resetSim();dropAt("p:"+chip.dataset.pdev,ins,true);}
+  renderModePanel();};
+ document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);
+}
+function drawPlace(){
+ const ov=$("#overlay");if(!ov||MODE!=="place")return;
+ ov.innerHTML=(GEO.items||[]).map(it=>`<rect class="hand" data-key="${it.key}" x="${it.x0-4}" y="${it.y0+8}" width="${it.x1-it.x0+8}" height="${it.y1-it.y0-8}" rx="6" fill="var(--accent)" fill-opacity=".08" stroke="var(--accent)" stroke-dasharray="6 4" stroke-width="1.5"/>`).join("");
+ ov.querySelectorAll(".hand").forEach(el=>el.addEventListener("pointerdown",e=>{
+  e.preventDefault();const key=el.dataset.key;const it=GEO.items.find(i=>i.key===key);el.setAttribute("fill-opacity",".3");
+  const label=key.startsWith("g:")?`QF${qfN(+key.slice(2))}`:(PDEV.find(d=>"p:"+d.k===key)||{}).tag;const gh=ghostDiv(label+" — ko'chirilmoqda");
+  const mv=ev=>{gh.style.left=ev.clientX+12+"px";gh.style.top=ev.clientY+12+"px";autoScroll(ev);const t=$("#trash");if(t)t.classList.toggle("hot",overTrash(ev));if(overRail(ev)){const q=svgPt(ev);marker(insertIndexAt(q.x,q.y));}else marker(null);};
+  const up=ev=>{document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);gh.remove();marker(null);el.setAttribute("fill-opacity",".08");
+   if(overTrash(ev)){if(key.startsWith("g:")){const id=+key.slice(2);S.groups=S.groups.filter(g=>g.id!==id);logEv(`QF guruhi olib tashlandi.`,"warn");}else{S.main[key.slice(2)]=false;}S.order=(S.order||[]).filter(k=>k!==key);resetSim();renderMain();renderGroups();refresh();renderModePanel();return;}
+   if(!overRail(ev))return;const q=svgPt(ev);dropAt(key,insertIndexAt(q.x,q.y),false);};
+  document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);
+ }));
+}
+
+/* ---- 1. Simlarni qo'lda ulash ---- */
+let wireSel=null;
+function wirePanelHTML(){
+ if(!R||!R.groups.length)return `<span class="hint">Avval guruh qo'shing.</span>`;
+ if(!wireSel||!gById(wireSel))wireSel=R.groups[0].g.id;
+ const g=gById(wireSel),r=R.groups.find(x=>x.g.id==wireSel);
+ const st=k=>{const ok=!R.issues.some(i=>i.gid==wireSel&&i.lvl==="bad"&&i.fx&&Object.keys(i.fx).some(f=>f===k));return ok?"ok":"bad";};
+ const nTxt={Nbus:"N shina",rcdOut:"UZO N chiqishi",PEbus:"PE shina",none:"ulanmagan"}[g.nConn];
+ const peTxt={PEbus:"PE shina",Nbus:"N shina",none:"ulanmagan"}[g.peConn];
+ return `<div class="chips">${R.groups.map(x=>`<button type="button" class="chip" data-wsel="${x.g.id}" aria-pressed="${x.g.id==wireSel}">QF${x.n} ${esc(x.g.name)}</button>`).join("")}</div>
+ <div class="wstat"><span class="pill ${r.three?"ok":st("cPh")}">L: ${r.three?"L1 L2 L3 (taroq)":g.ph+" (taroq)"}</span><span class="pill ${g.nConn==="none"&&r.three&&g.type==="power"?"ok":st("nConn")}">N: ${nTxt}</span><span class="pill ${st("peConn")}">PE: ${peTxt}</span>
+ <button type="button" class="btn sm" data-wreset="1">Simlarni uzib, qaytadan ulash (mashq)</button></div>`;
+}
+function wireTargets(gid){
+ const G=GEO.groups[gid],g=gById(gid);if(!G||!g)return [];
+ const T=[];
+ if(g.phases!=3)["L1","L2","L3"].forEach((p,k)=>T.push({k:"ph:"+p,for:"L",x:G.x0+12+k*28,y:G.y-80,lbl:p+" (taroq shina)",col:wc(p),val:{ph:p}}));
+ if(G.rcdN)T.push({k:"rcdN",for:"N",x:G.rcdN.x,y:G.rcdN.y+30,lbl:"UZO N chiqishi",col:"var(--n)",val:{nConn:"rcdOut"}});
+ // shinalar pastda; yaqin joyda "shinaga" nishonlari (sim kanal orqali boradi)
+ const bx=Math.min(G.x1+30,GEO.W-60);
+ T.push({k:"nbus",for:"NPE",x:bx,y:G.y+BH+40,lbl:"N shina (kanal orqali)",col:"var(--n)",val:null,bus:"N"});
+ T.push({k:"pebus",for:"NPE",x:bx,y:G.y+BH+86,lbl:"PE shina (kanal orqali)",col:"var(--pe-g)",val:null,bus:"PE"});
+ return T;}
+function wireHandles(gid){
+ const g=gById(gid),G=GEO.groups[gid];if(!G)return [];const x=(G.x0+G.x1)/2,y=G.y+BH+62;
+ const H=[];if(g.phases!=3)H.push({c:"L",x:x-32,y,col:cVar(g.cPh)});
+ H.push({c:"N",x,y,col:cVar(g.cN)});H.push({c:"PE",x:x+32,y,col:cVar(g.cPE)});return H;}
+function curTarget(gid,c,T){const g=gById(gid);
+ if(c==="L")return T.find(t=>t.k==="ph:"+g.ph);
+ if(c==="N"){if(g.nConn==="rcdOut")return T.find(t=>t.k==="rcdN")||null;if(g.nConn==="Nbus")return tapPos(gid,"N")||T.find(t=>t.k==="nbus");if(g.nConn==="PEbus")return tapPos(gid,"N")||T.find(t=>t.k==="pebus");return null;}
+ if(c==="PE"){if(g.peConn==="PEbus")return tapPos(gid,"PE")||T.find(t=>t.k==="pebus");if(g.peConn==="Nbus")return tapPos(gid,"PE")||T.find(t=>t.k==="nbus");return null;}}
+function tapPos(gid,kind){const t=(GEO.taps||[]).find(z=>z.gid==gid&&z.kind===kind);return t?{x:t.x,y:t.y-16}:null;}
+const curve=(a,b)=>`M${a.x} ${a.y} C${a.x} ${a.y-90} ${b.x} ${b.y+(b.y<a.y?90:-90)} ${b.x} ${b.y}`;
+function drawWire(){
+ const ov=$("#overlay");if(!ov||MODE!=="wire"||!R||!R.groups.length)return;
+ if(!wireSel||!gById(wireSel))wireSel=R.groups[0].g.id;
+ const gid=wireSel,G=GEO.groups[gid];if(!G)return;
+ const T=wireTargets(gid),H=wireHandles(gid);
+ let s=`<rect x="0" y="0" width="${GEO.W}" height="${GEO.H}" fill="var(--bg)" opacity=".35" pointer-events="none"/><rect x="${G.x0-8}" y="${G.y-70}" width="${G.x1-G.x0+16}" height="${BH+130}" rx="8" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="8 5"/>`;
+ T.forEach(t=>{s+=`<g class="wtgt" data-t="${t.k}"><circle cx="${t.x}" cy="${t.y}" r="13" fill="var(--surface)" stroke="${t.col==="var(--pe-g)"?"var(--pe-g)":t.col}" stroke-width="3"/><text x="${t.x}" y="${t.y+4}" text-anchor="middle" font-size="9" font-weight="700" fill="var(--ink)">${t.k.startsWith("ph:")?t.k.slice(3):t.k==="rcdN"?"N'":t.bus}</text>${t.bus?`<text x="${t.x+18}" y="${t.y+4}" font-size="9" font-weight="600" fill="var(--ink)">${t.bus} shinaga ↓</text>`:""}<title>${esc(t.lbl)}</title></g>`;});
+ H.forEach(h=>{const tg=curTarget(gid,h.c,T);const bad=wireBad(gid,h.c);
+  if(tg)s+=`<path class="wline" data-c="${h.c}" d="${curve(h,tg)}" fill="none" stroke="${bad?"var(--bad)":h.col==="PE"?"var(--pe-g)":h.col}" stroke-width="4" ${bad?'stroke-dasharray="8 5"':""}/>`;
+  s+=`<g class="whand" data-c="${h.c}" style="cursor:grab"><circle cx="${h.x}" cy="${h.y}" r="12" fill="${h.col==="PE"?"var(--pe-g)":h.col}" stroke="${bad||!tg?"var(--bad)":"var(--surface)"}" stroke-width="3"/><text x="${h.x}" y="${h.y+4}" text-anchor="middle" font-size="9" font-weight="800" fill="#fff">${h.c}</text><circle cx="${h.x}" cy="${h.y}" r="15" fill="transparent"/></g>`;});
+ s+=`<path class="wdrag" d="" fill="none" stroke="var(--accent)" stroke-width="4" stroke-dasharray="2 6" stroke-linecap="round"/>`;
+ ov.innerHTML=s;
+ ov.querySelectorAll(".whand").forEach(el=>el.addEventListener("pointerdown",e=>{
+  const c=el.dataset.c,h=H.find(z=>z.c===c);const dp=ov.querySelector(".wdrag");
+  const opts=T.filter(t=>t.for==="NPE"||t.for===c);
+  ov.querySelectorAll(".wtgt").forEach(w=>{const t=T.find(z=>z.k===w.dataset.t);w.style.opacity=opts.includes(t)?1:.25;});
+  startDrag(e,ev=>{const q=svgPt(ev);dp.setAttribute("d",curve(h,q));const n=nearestPt(q.x,q.y,opts);ov.querySelectorAll(".wtgt circle").forEach(cc=>cc.setAttribute("stroke-width",3));if(n)ov.querySelector(`.wtgt[data-t="${n.k}"] circle`).setAttribute("stroke-width",6);autoScroll(ev);},
+   ev=>{const q=svgPt(ev);const n=nearestPt(q.x,q.y,opts);dp.setAttribute("d","");connectWire(gid,c,n);});
+ }));
+}
+function wireBad(gid,c){const k=c==="L"?"cPh":c==="N"?"nConn":"peConn";return R.issues.some(i=>i.gid==gid&&i.lvl==="bad"&&i.fx&&Object.keys(i.fx).includes(k));}
+function connectWire(gid,c,t){
+ const g=gById(gid);const n=qfN(gid);let what;
+ if(!t){if(c==="L"){drawWire();return;}g[c==="N"?"nConn":"peConn"]="none";what=`${c} simi bo'sh qoldirildi (ulanmagan)`;}
+ else if(c==="L"){g.ph=t.k.slice(3);g.cPh=g.cPh==="bu"||g.cPh==="gnye"?g.cPh:PHC[g.ph];what=`faza ${g.ph} ga ulandi`;}
+ else if(c==="N"){g.nConn=t.k==="rcdN"?"rcdOut":t.bus==="N"?"Nbus":"PEbus";what=`N simi ${t.lbl} ga ulandi`;}
+ else{g.peConn=t.bus==="PE"?"PEbus":"Nbus";what=`PE simi ${t.lbl} ga ulandi`;}
+ const ld=sim.g[gid]?sim.g[gid].load:null;delete sim.g[gid];if(ld!=null)simG(gid).load=ld;
+ renderGroups();refresh();renderModePanel();
+ const k=c==="L"?"cPh":c==="N"?"nConn":"peConn";
+ const iss=R.issues.filter(i=>i.gid==gid&&i.fx&&Object.keys(i.fx).includes(k));
+ const tp=t?(t.k==="rcdN"?GEO.groups[gid].rcdN:t.k.startsWith("ph:")?wireTargets(gid).find(z=>z.k===t.k):tapPos(gid,c)||t):null;
+ if(!iss.length){logEv(`QF${n}: ${what}. ✓ To'g'ri.`,"ok");if(tp)spark(tp.x,tp.y,true);beep("click");
+  if(c==="L"&&R.imb>15)logEv(`Fazalar nosimmetriyasi ${fmt(R.imb,0)}%: guruhlarni fazalarga tengroq taqsimlang.`,"warn");}
+ else{const i=iss[0];logEv(`QF${n}: ${what}. ✗ ${i.text.replace(/^QF\d+: /,"")} To'g'risi: ${i.fix}`,"bad");if(tp)spark(tp.x,tp.y);shake();vib([60,40,60]);}
+}
+
+/* ---- 6. 3D ko'rinish (CSS 3D, kutubxonasiz, internetsiz ishlaydi) ---- */
+let V3={rx:-12,ry:-28,door:true,spin:false,timer:null,raf:null};
+function parseDims(E){const m=String(E.dims||"").match(/(\d+)\D+(\d+)\D+(\d+)/);let d=m?{W:+m[1],H:+m[2],D:+m[3]}:{W:120+E.mods*18,H:120+E.rows*125,D:150};
+ // ichki joylashuv baland bo'lsa, korpus ham baland turadi (katalogda ba'zan B×E yoziladi)
+ const tall=GEO.lines&&GEO.PWI&&GEO.lines.PB>GEO.PWI;if(tall&&d.W>d.H)d={W:d.H,H:d.W,D:d.D};if(!tall&&d.H>d.W*1.6&&E.rows<=2)d={W:d.H,H:d.W,D:d.D};return d;}
+function open3D(){
+ const E=enclOf();const box=$("#view3d");if(!E||!R){box.innerHTML="";return;}
+ const d=parseDims(E);const k=Math.min(520/d.H,(Math.min(760,box.clientWidth||760)-120)/d.W);
+ const w=Math.round(d.W*k),h=Math.round(d.H*k),dp=Math.max(46,Math.round(d.D*k));
+ const metal=E.mat==="metall";
+ const sign=`<svg viewBox="0 0 60 54" width="${Math.max(34,w*0.16)}"><path d="M30 3 L57 51 H3 Z" fill="#ffd23a" stroke="#1d1d1d" stroke-width="3" stroke-linejoin="round"/><path d="M33 15 L22 33 H30 L26 46 L39 27 H31 Z" fill="#1d1d1d"/></svg>`;
+ const nG=R.groups.length;
+ let cables="";R.groups.forEach((r,i)=>{const x=Math.round(w*0.12+(w*0.76)*(nG>1?i/(nG-1):0.5));cables+=`<div class="cab3d" data-c3="${r.g.id}" style="left:${x-5}px;top:${h}px;transform:translateZ(${-dp*0.1}px) rotateX(-90deg) rotateX(90deg)"></div>`;});
+ box.innerHTML=`<p class="note" style="text-align:center;margin:0 auto 6px">${esc(E.name)} · ${esc(E.dims)} mm · ${E.rows} qator × ${E.mods} modul · ${metal?"metall":"plastik"} korpus. Ichidagi shit jonli: simulyatsiya holati shu yerda ham ko'rinadi.</p><div class="scene3d" id="scene3d"><div class="floor3d" style="width:${w*1.6}px;margin-top:${h/2+110}px"></div>
+ <div class="box3d ${metal?"metal":"plastic"}" id="box3d" style="width:${w}px;height:${h}px;--d:${dp}px">
+  <div class="f3 back" style="width:${w}px;height:${h}px;transform:translateZ(${-dp/2}px)"><div class="inside" id="inside3d"></div></div>
+  <div class="f3 side" style="width:${dp}px;height:${h}px;left:${(w-dp)/2}px;transform:rotateY(-90deg) translateZ(${w/2}px)"></div>
+  <div class="f3 side r" style="width:${dp}px;height:${h}px;left:${(w-dp)/2}px;transform:rotateY(90deg) translateZ(${w/2}px)"></div>
+  <div class="f3 topf" style="width:${w}px;height:${dp}px;top:${(h-dp)/2}px;transform:rotateX(90deg) translateZ(${h/2}px)"></div>
+  <div class="f3 bot" style="width:${w}px;height:${dp}px;top:${(h-dp)/2}px;transform:rotateX(-90deg) translateZ(${h/2}px)">${R.groups.map((r,i)=>`<i style="left:${Math.round(w*0.12+(w*0.76)*(nG>1?i/(nG-1):0.5))-6}px"></i>`).join("")}</div>
+  <div class="door3d ${V3.door?"open":""}" id="door3d" style="width:${w}px;height:${h}px;--z:${dp/2}px">
+   <div class="dface out"><div class="plate">${esc(E.name)}<small>${esc(E.dims)} mm · ${esc(E.ip||"")}</small></div><div class="sign">${sign}<span>Ehtiyot bo'ling!<br>Elektr kuchlanishi</span></div><div class="lock"></div><div class="hinge h1"></div><div class="hinge h2"></div></div>
+   <div class="dface in"><div class="pocket"><b>Shit sxemasi</b>${R.groups.slice(0,12).map(r=>`<span>QF${r.n} ${r.g.ch}${r.g.In} — ${esc(r.g.name)}</span>`).join("")}</div><div class="seal"></div></div>
+  </div>
+  ${cables}
+ </div></div>`;
+ apply3D();refresh3DInside();
+ clearInterval(V3.timer);V3.timer=setInterval(()=>{if(MODE==="3d"&&!$("#p-sim").hidden)refresh3DInside();},800);
+ const sc=$("#scene3d");
+ sc.addEventListener("pointerdown",e=>{if(e.target.closest(".door3d")&&e.detail===2)return;const sx=e.clientX,sy=e.clientY,rx0=V3.rx,ry0=V3.ry;let moved=false;sc.setPointerCapture(e.pointerId);
+  const mv=ev=>{const dx=ev.clientX-sx,dy=ev.clientY-sy;if(Math.abs(dx)+Math.abs(dy)>4)moved=true;V3.ry=ry0+dx*0.4;V3.rx=Math.max(-70,Math.min(60,rx0-dy*0.3));V3.spin=false;apply3D();};
+  const up=ev=>{sc.removeEventListener("pointermove",mv);sc.removeEventListener("pointerup",up);if(!moved&&ev.target.closest(".door3d")){V3.door=!V3.door;$("#door3d").classList.toggle("open",V3.door);beep("click");}};
+  sc.addEventListener("pointermove",mv);sc.addEventListener("pointerup",up);});
+}
+function apply3D(){const b=$("#box3d");if(b)b.style.transform=`rotateX(${V3.rx}deg) rotateY(${V3.ry}deg)`;}
+function refresh3DInside(){
+ const inn=$("#inside3d"),src=$("#rail svg");if(!inn||!src||!GEO.lines)return;
+ const c=src.cloneNode(true);c.removeAttribute("style");c.setAttribute("width","100%");c.setAttribute("height","100%");c.setAttribute("viewBox",`0 0 ${GEO.PWI||GEO.W} ${GEO.lines.PB}`);c.setAttribute("preserveAspectRatio","xMidYMid meet");
+ const th=c.querySelector("#thermo");if(th&&MODE!=="thermal")th.remove();
+ c.querySelectorAll("[id]").forEach(el=>{if(el.tagName!=="pattern"&&el.tagName!=="filter")el.removeAttribute("id");});
+ const ov=c.querySelector("#overlay");if(ov)ov.remove();
+ inn.replaceChildren(c);
+ document.querySelectorAll(".cab3d").forEach(el=>{const st=simG(+el.dataset.c3);el.style.background=cableColor(st.T,st.burnt).startsWith("var")?"":cableColor(st.T,st.burnt);});
+}
+function spin3D(){if(!V3.spin||MODE!=="3d")return;V3.ry+=0.4;apply3D();V3.raf=requestAnimationFrame(spin3D);}
+function close3D(){clearInterval(V3.timer);V3.spin=false;}
+
 /* ================= SIMULYATSIYA ================= */
 let R=null;
 const sim={run:true,t:0,main:{on:true,H:0},g:{},nBreak:false,log:[],flags:{},sw:true,grid:true,gen:false,ats:"I",atsT:0,genOver:0,vrTrip:false,vrT:0,day:true,kwh:0,phaseLoss:null,surgeT:0,spdUsed:false};
@@ -1348,7 +1859,7 @@ function nVoltages(){
  const ang={L1:0,L2:-2*Math.PI/3,L3:2*Math.PI/3};const sy=Y0.L1+Y0.L2+Y0.L3;
  if(!upOn())return{L1:0,L2:0,L3:0,Vn:0,nBroken};
  if(!nBroken||sy===0){const o={L1:220,L2:220,L3:220,Vn:0,nBroken};if(sim.phaseLoss)o[sim.phaseLoss]=0;return o;}
- let re=0,im=0;PH.forEach(p=>{re+=U1*Math.cos(ang[p])*Y0[p];im+=U1*Math.sin(ang[p])*Y0[p];});re/=sy;im/=sy;
+ let re=0,im=0;PH.forEach(p=>{re+=U1*Math.cos(ang[p])*Y0[p];im+=U1*Math.sin(ang[p])*Y0[p];});re/=sy;im/=sy;sim._VnC={re,im};
  const out={Vn:Math.hypot(re,im),nBroken};PH.forEach(p=>{out[p]=Math.hypot(U1*Math.cos(ang[p])-re,U1*Math.sin(ang[p])-im);});return out;
 }
 function once(st,key,msg,lvl){if(!st.flags[key]){st.flags[key]=true;logEv(msg,lvl);}}
@@ -1370,6 +1881,7 @@ function tick(dt){
  if(m.vrelay){if(abn&&!sim.vrTrip){sim.vrTrip=true;sim.vrT=0;fxTrip("vrelay","rcd");logEv(`KV1 kuchlanish relesi shitni o'chirdi: ${nB?"nol uzilgan, fazalarda kuchlanish og'di":sim.phaseLoss?sim.phaseLoss+" fazada kuchlanish yo'q":"kuchlanish sakradi"}. Jihozlar saqlandi.`,"ok");}
   if(!abn&&sim.vrTrip){sim.vrT+=dt;if(sim.vrT>5){sim.vrTrip=false;logEv("KV1: kuchlanish me'yorga qaytdi, 5 s kutib shitni qayta yoqdi.","ok");}}}
  if(sim.surgeT>0)sim.surgeT-=dt;
+ sim._VnC={re:0,im:0};
  const V=nVoltages();
  const danger=[];
  R.groups.forEach(r=>{
@@ -1424,7 +1936,7 @@ function tick(dt){
   const Iz=r.Iz||1;
   const ss=25+45*Math.pow(st.I/Iz,2);
   const tau=st.I>Iz*3?2:7;
-  st.T+= (Math.min(ss,600)-st.T)*Math.min(1,dt/tau);
+  st.T+= (Math.min(ss,600)-st.T)*Math.min(1,dt/tau);st.Tmax=Math.max(st.Tmax||25,st.T);
   st.Tt=st.T+(g.ferr?0:30*Math.pow(st.I/Math.max(1,g.In),2));
   if(!st.burnt){
    if(st.T>60&&st.T<=70)once(st,"t60",`${t}: kabel ${fmt(st.T,0)}°C, qizishni boshladi.`,"warn");
@@ -1528,6 +2040,8 @@ function updateSim(){
  });
  $("#sim-grid").hidden=sim.grid;
  $("#sim-time").textContent=`Simulyatsiya vaqti: ${fmt(sim.t,1)} s`;
+ updateThermo();if(MODE==="tools")updateTools();
+ if($("#tccSimCard")&&$("#tccSimCard").open&&!$("#p-sim").hidden){sim._tccT=(sim._tccT||0)+1;if(sim._tccT%5===0)renderTCC("#tccSim",true);}
 }
 function toggleDev(id){
  if(id==="sw"){sim.sw=!sim.sw;fxTrip("sw","trip");logEv(sim.sw?"QS1 rubilnik yoqildi.":"QS1 rubilnik o'chirildi: butun shit uzildi.");updateSim();return;}
@@ -1657,7 +2171,7 @@ function initChat(){
 function refresh(){
  gate();
  R=compute();
- renderSummary(R);updateGroupResults(R);renderChecks(R);
+ renderSummary(R);updateGroupResults(R);renderChecks(R);renderTCC("#tccCheck",false);
  $("#schem").innerHTML=schematic(R);
  buildSim();save();
 }
@@ -1699,10 +2213,16 @@ document.addEventListener("input",e=>{
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#infoModal").hidden){$("#infoModal").hidden=true;return;}const ik=e.target.closest&&e.target.closest("[data-infokey]");if(ik&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openInfo(ik.dataset.infokey);return;}const cn=e.target.closest&&e.target.closest("[data-conn]");if(cn&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openConn(+cn.dataset.conn);return;}const bp=e.target.closest&&e.target.closest("[data-bp]");if(bp&&(e.key==="Enter"||e.key===" ")){e.preventDefault();toggleDev(bp.dataset.bp);}});
 document.addEventListener("click",e=>{
  const ik=e.target.closest("[data-infokey]");if(ik){openInfo(ik.dataset.infokey);return;}
- const cn=e.target.closest("[data-conn]");if(cn){openConn(+cn.dataset.conn);return;}
+ const cn=e.target.closest("[data-conn]");if(cn){if(MODE==="wire"){wireSel=+cn.dataset.conn;renderModePanel();drawWire();return;}openConn(+cn.dataset.conn);return;}
  if(e.target.id==="infoModal"){$("#infoModal").hidden=true;return;}
  const bp=e.target.closest("[data-bp]");if(bp){toggleDev(bp.dataset.bp);return;}
  const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.mode){setMode(b.dataset.mode);return;}
+ if(b.dataset["3d"]){const a=b.dataset["3d"];if(a==="door"){V3.door=!V3.door;const d=$("#door3d");if(d)d.classList.toggle("open",V3.door);}if(a==="front"){V3.rx=-6;V3.ry=-8;V3.spin=false;apply3D();}if(a==="side"){V3.rx=-14;V3.ry=-62;V3.spin=false;apply3D();}if(a==="spin"){V3.spin=!V3.spin;if(V3.spin)spin3D();}return;}
+ if(b.dataset.wsel){wireSel=+b.dataset.wsel;renderModePanel();drawWire();focusOn(wireSel);return;}
+ if(b.dataset.wreset){const g=gById(wireSel);if(g){g.nConn="none";g.peConn="none";delete sim.g[g.id];renderGroups();refresh();renderModePanel();logEv(`QF${qfN(g.id)}: N va PE simlari uzildi. Endi ularni o'zingiz to'g'ri joyga ulang.`,"warn");}return;}
+ if(b.dataset.tool){TOOL={t:b.dataset.tool,probes:[]};renderModePanel();drawTools();return;}
+ if(b.dataset.tcc){const id=+b.dataset.tcc;if(tccSel.includes(id)){if(tccSel.length>1)tccSel=tccSel.filter(x=>x!==id);}else{tccSel=[...tccSel,id].slice(-4);}renderTCC("#tccCheck",false);renderTCC("#tccSim",true);return;}
  if(b.dataset.tab){showTab(b.dataset.tab);window.scrollTo({top:0,behavior:"smooth"});return;}
  if(b.dataset.info){e.preventDefault();openInfo(b.dataset.info);return;}
  if(b.id==="imClose"){$("#infoModal").hidden=true;return;}
@@ -1715,7 +2235,7 @@ document.addEventListener("click",e=>{
  if(b.dataset.flt){flt=b.dataset.flt;document.querySelectorAll("[data-flt]").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));renderChecks(R);return;}
  if(b.dataset.del){S.groups=S.groups.filter(g=>g.id!=b.dataset.del);renderGroups();refresh();return;}
  if(b.id==="btn-add"){S.groups.push(G({id:uid++}));renderGroups();refresh();const l=document.querySelector(".g:last-child input");if(l){l.focus();l.select();}return;}
- if(b.id==="btn-reset-ex"){S=JSON.parse(JSON.stringify(EXAMPLE));S.groups.forEach(g=>{g.id=uid++;});resetSim();renderMain();renderGroups();refresh();return;}
+ if(b.id==="btn-reset-ex"){S=JSON.parse(JSON.stringify(EXAMPLE));S.order=null;S.groups.forEach(g=>{g.id=uid++;});resetSim();renderMain();renderGroups();refresh();return;}
  if(b.id==="btn-clear"){S.groups=[];resetSim();renderGroups();refresh();return;}
  if(b.dataset.sc){const st=simG(+b.dataset.sc);if(!powered(null,st))return;st.sc=true;const r=R.groups.find(x=>x.g.id==b.dataset.sc);logEv(`QF${r.n}: liniya oxirida qisqa tutashuv, I QT ≈ ${fmt(r.Ik,0)} A.`,"warn");return;}
  if(b.dataset.body){const st=simG(+b.dataset.body);st.body=true;st.flags.bodyNoPE=false;const r=R.groups.find(x=>x.g.id==b.dataset.body);logEv(`QF${r.n}: jihoz ichida faza sim korpusga tegdi.`,"warn");return;}
@@ -1750,6 +2270,8 @@ document.addEventListener("click",e=>{
  if(b.id==="sim-play"){sim.run=!sim.run;b.textContent=sim.run?"Pauza":"Davom etish";return;}
  if(b.id==="sim-reset"){resetSim();buildSim();return;}
 });
+document.addEventListener("pointermove",e=>{if(e.target.closest&&e.target.closest(".tccwrap"))tccHover(e);});
+document.addEventListener("pointerdown",e=>{if(MODE==="place"&&e.target.closest&&e.target.closest(".pchip"))paletteDown(e);});
 document.addEventListener("submit",e=>{if(e.target.id==="chatForm"){e.preventDefault();ask($("#chatIn").value);}});
 const TABS=["kirish","yigish","tekshir","sxema","sim","info","chat"];
 function showTab(id){
@@ -1760,6 +2282,7 @@ function showTab(id){
  try{history.replaceState(null,"","#"+id);}catch(e){}
 }
 renderMain();renderGroups();refresh();renderInfo();initChat();
+window.ShitLab={state:()=>S,order:()=>orderKeys()};
 (function(){const b=$("#sim-sound");const upd=()=>{b.textContent="Ovoz: "+(SOUND?"yoqiq":"o'chiq");b.setAttribute("aria-pressed",SOUND?"true":"false");};upd();
  b.addEventListener("click",()=>{SOUND=!SOUND;upd();if(SOUND)beep("click");});
  if(IS_APP){const sp=$("#splash");sp.hidden=false;setTimeout(()=>{sp.classList.add("out");setTimeout(()=>{sp.hidden=true;},500);},1500);}})();

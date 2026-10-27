@@ -177,10 +177,52 @@ dl.kv dd{margin:0;font-family:var(--f-mono);font-size:.9rem}
 
 /* v2 qo'shimchalari */
 [hidden]{display:none!important}
+.encls{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.encl{text-align:left;font:inherit;color:var(--ink);background:var(--surface-2);border:1.5px solid var(--line);border-radius:6px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:3px}
+.encl:hover{border-color:var(--ink)}
+.encl[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.encl b{font-family:var(--f-display);font-size:1.1rem}
+.encl .mono{font-size:.8rem;color:var(--muted)}
+.encl svg{margin-bottom:4px}
+.devlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-top:10px}
+.dev{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:6px;padding:9px 10px;background:var(--surface-2)}
+.dev input[type=checkbox]{margin-top:3px;flex:none}
+.dev .t{font-weight:600}
+.dev .d{font-size:.82rem;color:var(--muted)}
+.dev .x{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.dev .x label.f{min-width:120px}
+.ibtn{font:inherit;font-size:.78rem;border:1px solid var(--line);background:var(--surface);color:var(--accent);border-radius:10px;padding:1px 8px;cursor:pointer;margin-left:auto;flex:none}
+.empty{border:1.5px dashed var(--line);border-radius:8px;padding:28px 18px;text-align:center;color:var(--muted);display:flex;flex-direction:column;gap:10px;align-items:center}
+.empty[hidden]{display:none!important}
+.infogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.icard{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.icard h3{display:flex;gap:8px;align-items:center}
+.icard .code{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);font-weight:400}
+.icard dl{margin:0;display:grid;gap:6px}
+.icard dt{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+.icard dd{margin:0;font-size:.92rem}
+.modal{position:fixed;inset:0;z-index:80;background:rgba(10,14,18,.55);display:flex;align-items:flex-start;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px));overflow:auto}
+.modalcard{background:var(--surface);color:var(--ink);border-radius:8px;max-width:620px;width:100%;padding:16px;margin-top:6vh;display:flex;flex-direction:column;gap:10px;animation:tin .25s ease-out}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:.86rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;padding:5px 11px;cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.chat{display:flex;flex-direction:column;gap:10px;min-height:120px}
+.msg{max-width:min(720px,92%);padding:10px 12px;border-radius:10px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word}
+.msg.u{align-self:flex-end;background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:3px}
+.msg.a{align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:3px}
+.msg.a .src{display:block;margin-top:6px;font-size:.74rem;color:var(--muted)}
+.msg table{border-collapse:collapse;margin:6px 0;font-size:.86rem}
+.msg td,.msg th{border:1px solid var(--line);padding:3px 7px;white-space:normal}
+.chatform{display:flex;gap:8px;position:sticky;bottom:0;background:var(--bg);padding:8px 0}
+.chatform input{flex:1}
+.typing::after{content:"…";animation:flick 1s steps(2) infinite}
 section.panel:not([hidden]){animation:tabin .28s ease-out}
 @keyframes tabin{from{opacity:0;transform:translateY(8px)}}
 .flw{stroke:#ffe14d;stroke-width:1.8;stroke-dasharray:3 9;fill:none;stroke-linecap:round;animation:flw 1s linear infinite}
 .flw.off{display:none}
+.fan.run{animation:spin .25s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mled.blink{animation:flick var(--bl,1s) steps(2) infinite}
 @keyframes flw{to{stroke-dashoffset:-24}}
 .spark line{stroke:#ffd23a;stroke-width:2.6;stroke-linecap:round;animation:spk .65s ease-out forwards}
 .spark circle{fill:#fff6c2;transform-box:fill-box;transform-origin:center;animation:fls .5s ease-out forwards}
@@ -255,7 +297,7 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
       <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><rect x="2" y="2" width="40" height="40" rx="4" fill="none" stroke="var(--ink)" stroke-width="2.5"/><line x1="9" y1="12" x2="35" y2="12" stroke="var(--l1)" stroke-width="3"/><line x1="9" y1="18" x2="35" y2="18" stroke="var(--l2)" stroke-width="3"/><line x1="9" y1="24" x2="35" y2="24" stroke="var(--l3)" stroke-width="3"/><line x1="9" y1="30" x2="35" y2="30" stroke="var(--n)" stroke-width="3"/><line x1="9" y1="36" x2="35" y2="36" stroke="var(--pe-g)" stroke-width="3"/><line x1="9" y1="36" x2="35" y2="36" stroke="var(--pe-y)" stroke-width="3" stroke-dasharray="4 4"/></svg>
       <div>
         <h1>ShitLab</h1>
-        <p>Shitni o'zingiz yig'asiz, dastur PUE bo'yicha tekshiradi va ishlatib ko'rsatadi</p>
+        <p>Shit turini tanlang, qurilmalarni o'zingiz yig'ing: dastur PUE bo'yicha tekshiradi, ishlatib ko'rsatadi va savollarga javob beradi</p>
       </div>
     </div>
     <span class="plate" id="plate">3~ 380/220 V · 50 Hz</span>
@@ -264,27 +306,48 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
   <div class="summary" id="summary"></div>
 
   <nav class="tabs" role="tablist" id="tabs">
-    <button role="tab" data-tab="kirish">1. Kirish</button>
-    <button role="tab" data-tab="yigish">2. Guruhlarni yig'ish</button>
+    <button role="tab" data-tab="kirish">1. Shit</button>
+    <button role="tab" data-tab="yigish">2. Guruhlar</button>
     <button role="tab" data-tab="tekshir">3. PUE tekshiruvi</button>
     <button role="tab" data-tab="sxema">4. Sxema</button>
     <button role="tab" data-tab="sim">5. Simulyatsiya</button>
+    <button role="tab" data-tab="info">6. Ma'lumotnoma</button>
+    <button role="tab" data-tab="chat">7. Savol-javob</button>
   </nav>
 
-  <!-- 1. KIRISH -->
+  <!-- 1. SHIT -->
   <section class="panel" id="p-kirish">
     <div class="card">
-      <h3 style="margin-bottom:10px">Tarmoq</h3>
+      <div class="bar" style="justify-content:space-between"><h3>Shit turi va o'lchami</h3><button class="btn sm" data-info="encl">ⓘ Shit qanday tanlanadi</button></div>
+      <p class="note" id="enclHint" style="margin:6px 0 10px">Ish shu yerdan boshlanadi: shit (korpus) turini tanlang. Shundan keyin DIN-reykalar paydo bo'ladi va qurilmalarni joylashtirasiz.</p>
+      <div class="encls" id="encls"></div>
+      <div class="settings" id="enclCustom" hidden style="margin-top:12px">
+        <label class="f">Qatorlar soni<select id="c-rows"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+        <label class="f">Qatordagi modullar<select id="c-mods"><option>8</option><option>12</option><option>18</option><option>24</option><option>36</option></select></label>
+        <label class="f">Eni × bo'yi × chuqurligi, mm<input id="c-dims" type="text" placeholder="400×500×150"></label>
+        <label class="f">Material<select id="c-mat"><option value="metall">Metall</option><option value="plastik">Plastik</option></select></label>
+      </div>
+    </div>
+    <div id="afterEncl" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <div class="bar" style="justify-content:space-between"><h3>Kirish qurilmalari</h3><span class="muted small">Belgilangan qurilma shitga qo'yiladi</span></div>
+      <div class="devlist" id="devlist"></div>
+    </div>
+    <div class="card" id="mainCardCfg">
+      <h3 style="margin-bottom:10px">Kirish avtomati</h3>
+      <div class="settings">
+        <label class="f">Qutblar<select id="m-poles"><option value="3P">3P</option><option value="4P">4P</option><option value="1P">1P</option></select></label>
+        <label class="f">Xarakteristika<select id="m-ch"><option>B</option><option>C</option><option>D</option></select></label>
+        <label class="f">Nominal tok In<select id="m-In"></select></label>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:10px">Tarmoq va kirish kabeli</h3>
       <div class="settings">
         <label class="f">Yerga ulash tizimi<select id="m-earth"><option value="TN-C-S">TN-C-S (4 simli kirish, PEN)</option><option value="TN-S">TN-S (5 simli kirish, N va PE alohida)</option></select></label>
         <label class="f">Tarmoq qarshiligi Zs, Ω<input id="m-zs" type="number" min="0.01" step="0.01"></label>
         <label class="f">Ruxsat ΔU (jami), %<input id="m-du" type="number" min="1" step="0.5"></label>
-      </div>
-    </div>
-    <div class="card">
-      <h3 style="margin-bottom:10px">Kirish kabeli</h3>
-      <div class="settings">
-        <label class="f">Material<select id="m-cMat"><option value="Cu">Mis (Cu)</option><option value="Al">Alyuminiy (Al)</option></select></label>
+        <label class="f">Kabel materiali<select id="m-cMat"><option value="Cu">Mis (Cu)</option><option value="Al">Alyuminiy (Al)</option></select></label>
         <label class="f">Kesim, mm²<select id="m-cS"></select></label>
         <label class="f">Tomirlar soni<select id="m-cCores"><option value="4">4 tomir</option><option value="5">5 tomir</option></select></label>
         <label class="f">Yotqizish<select id="m-cLay"><option value="air">Ochiq, havoda</option><option value="pipe">Truba / devor ichida</option></select></label>
@@ -292,34 +355,36 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
       </div>
     </div>
     <div class="card">
-      <h3 style="margin-bottom:10px">Kirish avtomati va shinalar</h3>
-      <div class="settings">
-        <label class="f">Qutblar<select id="m-poles"><option value="3P">3P</option><option value="4P">4P</option><option value="1P">1P</option></select></label>
-        <label class="f">Xarakteristika<select id="m-ch"><option>B</option><option>C</option><option>D</option></select></label>
-        <label class="f">Nominal tok In<select id="m-In"></select></label>
+      <div class="bar" style="justify-content:space-between"><h3>Shinalar va korpus</h3><button class="btn sm" data-info="pen">ⓘ PEN ajratish</button></div>
+      <div class="settings" style="margin-top:10px">
         <label class="f">PEN ulanishi (TN-C-S)<select id="m-pen"><option value="ok">PEN → PE shina, PE → N peremichka</option><option value="toN">PEN → N shina, N → PE peremichka</option><option value="none">Peremichka yo'q (N shina ulanmagan)</option></select></label>
         <label class="f">Shit korpusi<select id="m-body"><option value="1">PE shinaga ulangan</option><option value="0">Ulanmagan</option></select></label>
       </div>
     </div>
-    <p class="note">Barcha qiymatlarni o'zingiz tanlaysiz. Dastur "Avto" tanlamaydi, faqat tekshiradi va 3-bo'limda to'g'ri qiymatni tavsiya qiladi.</p>
+    </div>
   </section>
 
-  <!-- 2. YIG'ISH -->
+  <!-- 2. GURUHLAR -->
   <section class="panel" id="p-yigish" hidden>
+    <div class="empty" data-empty></div>
+    <div data-need>
     <div class="bar" style="justify-content:space-between">
       <h2>Guruhlar</h2>
       <div class="bar">
-        <button class="btn" id="btn-reset-ex">Namunani tiklash</button>
+        <button class="btn" id="btn-reset-ex">Namunani yuklash</button>
         <button class="btn" id="btn-clear">Hammasini tozalash</button>
         <button class="btn pri" id="btn-add">+ Guruh qo'shish</button>
       </div>
     </div>
-    <p class="note">Namunaviy shitda ataylab bir nechta xato qoldirilgan. Ularni 3-bo'limda toping, shu yerda tuzating va 5-bo'limda nima bo'lishini ko'ring.</p>
+    <p class="note" style="margin:8px 0 12px">Har bir guruh: himoya apparati, kabel, ulanish va xohlasangiz avtomatika (kontaktor, taymer, foto rele, faza nazorat relesi). "Namunani yuklash" tayyor uy shitini ataylab qoldirilgan xatolar bilan ochadi.</p>
     <div class="groups" id="groups"></div>
+    </div>
   </section>
 
   <!-- 3. TEKSHIRUV -->
   <section class="panel" id="p-tekshir" hidden>
+    <div class="empty" data-empty></div>
+    <div data-need style="display:flex;flex-direction:column;gap:16px">
     <div class="bar" style="justify-content:space-between">
       <h2>PUE bo'yicha tekshiruv</h2>
       <div class="filters" id="filters">
@@ -347,10 +412,13 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
       </div>
     </div>
     <p class="note">Ruxsat etilgan toklar PUE-7 1.3.4–1.3.7 jadvallari bo'yicha, +25 °C uchun olingan. Bu o'quv va dastlabki hisob vositasi: haqiqiy obyekt loyihasini litsenziyali muhandis tekshirishi shart.</p>
+    </div>
   </section>
 
   <!-- 4. SXEMA -->
   <section class="panel" id="p-sxema" hidden>
+    <div class="empty" data-empty></div>
+    <div data-need style="display:flex;flex-direction:column;gap:16px">
     <div class="schem" id="schem"></div>
     <div class="legend">
       <span><i class="sw" style="background:var(--l1)"></i>L1 jigarrang</span>
@@ -361,11 +429,14 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
       <span><svg width="10" height="14"><rect x="2" y="1" width="6" height="12" fill="var(--accent)"/></svg>НШВИ uchlik</span>
       <span><svg width="16" height="16"><circle cx="8" cy="8" r="7" fill="var(--bad)"/><text x="8" y="12" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">!</text></svg>Xato bor</span>
     </div>
-    <p class="note">Sxema siz kiritgan ulanishlar bo'yicha chiziladi: sim siz tanlagan rangda, siz tanlagan shinaga boradi. Noto'g'ri ulanish qizil bilan belgilanadi.</p>
+    <p class="note">Sxema siz kiritgan ulanishlar bo'yicha chiziladi. KM — kontaktor, KT — vaqt relesi, BL — foto rele, KV — kuchlanish yoki faza nazorat relesi.</p>
+    </div>
   </section>
 
   <!-- 5. SIMULYATSIYA -->
   <section class="panel" id="p-sim" hidden>
+    <div class="empty" data-empty></div>
+    <div data-need style="display:flex;flex-direction:column;gap:16px">
     <div class="card">
       <h3 style="margin-bottom:8px">Tayyor ssenariylar</h3>
       <div class="simctl">
@@ -373,17 +444,22 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
         <button class="btn pri" data-scn="sc">Qisqa tutashuv</button>
         <button class="btn pri" data-scn="body">Korpusga tok o'tishi</button>
         <button class="btn pri" data-scn="n">Nol uzilishi</button>
+        <button class="btn pri" data-scn="surge">Kuchlanish sakrashi</button>
+        <button class="btn pri" data-scn="phase">Faza uzilishi (L2)</button>
+        <button class="btn pri" data-scn="grid">Tarmoq o'chdi</button>
       </div>
     </div>
     <div class="alert" id="danger" hidden></div>
-    <div class="zoombar"><span class="muted small">Masshtab:</span><button class="btn sm" data-z="-" aria-label="Kichraytirish">−</button><span class="mono small" id="zv">100%</span><button class="btn sm" data-z="+" aria-label="Kattalashtirish">+</button><button class="btn sm" data-z="fit">Butun shit</button><button class="btn sm" data-z="1">Asl o'lcham</button></div>
+    <div class="zoombar"><span class="muted small">Masshtab:</span><button class="btn sm" data-z="-" aria-label="Kichraytirish">−</button><span class="mono small" id="zv">100%</span><button class="btn sm" data-z="+" aria-label="Kattalashtirish">+</button><button class="btn sm" data-z="fit">Butun shit</button><button class="btn sm" data-z="1">Asl o'lcham</button><span class="muted small" id="enclInfo"></span></div>
     <div class="rail" id="rail" aria-label="Yig'ilgan shitning virtual ko'rinishi"></div>
-    <p class="note" style="margin-top:-8px">Simlar apparatlardan yuqori kabel kanaliga kiradi, xomut bilan bog'langan dasta bo'lib pastki kanalga tushadi va markirovkali kabel salnik orqali chiqadi. N va PE shinadagi klemma ustidagi raqam o'sha klemmaga ulangan guruh (QF) raqamini bildiradi, noto'g'ri ulanish qizil halqa bilan belgilanadi. Kabel markirovkasini (oq yorliq QF…), guruh nomini yoki shinadagi klemmani bossangiz, o'sha guruh simlarini qayerga ulashni o'zgartiradigan oyna ochiladi. Avtomat dastagini bosib yoqing yoki o'chiring. Avtomat korpusidagi to'q sariq rang uning issiqlik ajratgichi qizishini ko'rsatadi. Kabel rangi harorati bilan o'zgaradi: kulrang me'yorda, sariq 60 °C dan, to'q sariq 70 °C dan (ruxsat chegarasi), qizil 90 °C dan (izolyatsiya eriydi), qora rang esa kabel kuyganini bildiradi.</p>
+    <p class="note" style="margin-top:-8px">Avtomat va boshqa qurilmalar dastagini bosib yoqing yoki o'chiring. Qurilma nomini (QF…, KM…, PV…) bossangiz, u haqidagi ma'lumot yoki ulanishlar oynasi ochiladi. Kabel rangi harorat bilan o'zgaradi: kulrang me'yorda, sariq 60 °C, to'q sariq 70 °C (chegara), qizil 90 °C (izolyatsiya eriydi), qora — kuygan.</p>
     <div class="card" id="connEd" hidden></div>
     <div class="simctl">
       <button class="btn" id="sim-play">Pauza</button>
       <button class="btn" id="sim-reset">Hammasini tiklash</button>
       <button class="btn" id="sim-sound" aria-pressed="false">Ovoz: o'chiq</button>
+      <button class="btn" id="sim-day" aria-pressed="true">Kunduz</button>
+      <button class="btn" id="sim-grid" hidden>Tarmoqni qaytarish</button>
       <label class="switch"><input type="checkbox" id="sim-nbreak"> Kirishda nol (N) uzildi</label>
       <span class="muted small" id="sim-time"></span>
     </div>
@@ -394,8 +470,41 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
       <h3 style="margin-bottom:6px">Hodisalar va ogohlantirishlar</h3>
       <div class="log" id="log"></div>
     </div>
-    <p class="note">Vaqt tezlashtirilgan: haqiqatda daqiqalar va soatlar davom etadigan qizish bu yerda soniyalarda ko'rsatiladi. Kabel harorati I²/I<sub>ruxsat</sub>² ga mutanosib o'sadi: I<sub>ruxsat</sub> da +70 °C, PVX izolyatsiya uchun chegara.</p>
+    <p class="note">Vaqt tezlashtirilgan: haqiqatda daqiqalar davom etadigan qizish bu yerda soniyalarda ko'rsatiladi.</p>
+    </div>
   </section>
+
+  <!-- 6. MA'LUMOTNOMA -->
+  <section class="panel" id="p-info" hidden>
+    <div class="bar" style="justify-content:space-between">
+      <h2>Ma'lumotnoma</h2>
+      <input id="infoQ" type="search" placeholder="Qidirish: UZO, kontaktor, kabel…" style="max-width:320px" aria-label="Ma'lumotnomadan qidirish">
+    </div>
+    <div class="infogrid" id="infoList"></div>
+  </section>
+
+  <!-- 7. SAVOL-JAVOB -->
+  <section class="panel" id="p-chat" hidden>
+    <div class="bar" style="justify-content:space-between">
+      <h2>Savol-javob</h2>
+      <span class="pill ok" id="chatMode">Hisob yordamchisi</span>
+    </div>
+    <p class="note" id="chatNote">Savolingizni oddiy so'z bilan yozing: "15 kVt uchun qanday kabel?", "40 metrga 7 kVt", "avtomat nimaga qarab tanlanadi". Raqamli savollarga dastur o'zi hisoblab beradi.</p>
+    <div class="chips" id="chips"></div>
+    <div class="chat" id="chatLog" aria-live="polite"></div>
+    <form class="chatform" id="chatForm">
+      <input id="chatIn" type="text" placeholder="Savolingizni yozing…" autocomplete="off" aria-label="Savol">
+      <button class="btn pri" type="submit" id="chatSend">Yuborish</button>
+      <button class="btn" type="button" id="chatStop" hidden>To'xtatish</button>
+    </form>
+  </section>
+</div>
+
+<div class="modal" id="infoModal" hidden role="dialog" aria-modal="true" aria-labelledby="imTitle">
+  <div class="modalcard">
+    <div class="bar" style="justify-content:space-between;align-items:center"><h2 id="imTitle"></h2><button class="btn sm" id="imClose">Yopish</button></div>
+    <div id="imBody"></div>
+  </div>
 </div>
 
 <script>
@@ -422,9 +531,34 @@ const KMAG={B:5,C:10,D:20}, MAG_SIM={B:4,C:7.5,D:15};
 
 const G=(o)=>Object.assign({name:"Yangi guruh",type:"socket",P:1,phases:1,cos:0.95,kc:0.8,len:15,
  kind:"MCB",poles:"1P",ch:"C",In:16,idn:30,rcdIn:25,mat:"Cu",S:2.5,cores:3,lay:"pipe",
- ph:"L1",sw:"L",nConn:"Nbus",peConn:"PEbus",cPh:"bn",cN:"bu",cPE:"gnye",ferr:true},o);
+ ph:"L1",sw:"L",nConn:"Nbus",peConn:"PEbus",cPh:"bn",cN:"bu",cPE:"gnye",ferr:true,ctrl:"none",pfr:false},o);
+// Shit (korpus) katalogi: o'lchamlar taxminiy, ishlab chiqaruvchiga qarab farq qiladi
+const ENCL=[
+ {id:"P12",name:"ЩРН-П-12",type:"Plastik, devorga",rows:1,mods:12,dims:"265×220×95",mat:"plastik",ip:"IP41"},
+ {id:"P24",name:"ЩРН-П-24",type:"Plastik, devorga",rows:2,mods:12,dims:"265×350×95",mat:"plastik",ip:"IP41"},
+ {id:"P36",name:"ЩРН-П-36",type:"Plastik, devorga",rows:3,mods:12,dims:"265×480×95",mat:"plastik",ip:"IP41"},
+ {id:"M24",name:"ЩРН-24",type:"Metall, devorga",rows:2,mods:12,dims:"300×400×120",mat:"metall",ip:"IP31"},
+ {id:"M36",name:"ЩРН-36",type:"Metall, devorga",rows:3,mods:12,dims:"300×500×120",mat:"metall",ip:"IP31"},
+ {id:"M54",name:"ЩРН-54",type:"Metall, devorga",rows:3,mods:18,dims:"400×500×120",mat:"metall",ip:"IP31"},
+ {id:"MP2",name:"ЩМП-2",type:"Metall, montaj panelli",rows:4,mods:18,dims:"500×400×220",mat:"metall",ip:"IP54"},
+ {id:"MP3",name:"ЩМП-3",type:"Metall, montaj panelli",rows:5,mods:24,dims:"650×500×220",mat:"metall",ip:"IP54"},
+ {id:"custom",name:"O'z o'lchamim",type:"Qatorlar va modullarni o'zingiz kiritasiz",rows:0,mods:0,dims:"",mat:"metall",ip:""}
+];
+// Kirish qurilmalari
+const PDEV=[
+ {k:"sw",tag:"QS1",name:"Yuklama uzgich (rubilnik)",mods:3,d:"Butun shitni qo'lda uzish uchun. Qisqa tutashuvdan himoya qilmaydi."},
+ {k:"meter",tag:"PI1",name:"Elektr hisoblagich (3 fazali)",mods:7,d:"Iste'mol qilingan energiyani (kVt·soat) hisoblaydi."},
+ {k:"hasMain",tag:"QF0",name:"Kirish avtomati",mods:3,d:"Butun shitni o'ta yuklanish va qisqa tutashuvdan himoya qiladi."},
+ {k:"spd",tag:"FV1",name:"Impuls kuchlanishdan himoya (УЗИП)",mods:4,d:"Chaqmoq va tarmoqdagi sakrashlarda impulsni PE ga o'tkazadi."},
+ {k:"vrelay",tag:"KV1",name:"Kuchlanish relesi (РН)",mods:2,d:"Kuchlanish 176 V dan past yoki 253 V dan yuqori bo'lsa, shitni o'chiradi."},
+ {k:"lamps",tag:"HL1",name:"Faza indikator lampalari",mods:1,d:"Har bir fazada kuchlanish borligini ko'rsatadi."},
+ {k:"ats",tag:"АВР",name:"Avtomatik zaxiraga o'tish (АВР) + generator",mods:4,d:"Tarmoq o'chsa generatorni yoqib, yuklamani unga o'tkazadi."}
+];
+const CTRL={none:"Yo'q",btn:"Kontaktor (Pusk/Stop tugmasi)",timer:"Kontaktor + vaqt relesi",photo:"Kontaktor + foto rele"};
+const BLANK={main:{encl:null,custom:{rows:3,mods:12,dims:"",mat:"metall"},earth:"TN-C-S",zs:0.15,du:5,cMat:"Cu",cS:16,cCores:4,cLay:"air",cLen:15,
+ hasMain:false,poles:"3P",ch:"C",In:40,pen:"ok",body:"1",sw:false,meter:false,spd:false,vrelay:false,lamps:false,ats:false,genKW:10},groups:[]};
 const EXAMPLE={
- main:{earth:"TN-C-S",zs:0.15,du:5,cMat:"Cu",cS:10,cCores:4,cLay:"air",cLen:15,poles:"3P",ch:"C",In:40,pen:"ok",body:"1"},
+ main:Object.assign(JSON.parse(JSON.stringify(BLANK.main)),{encl:"MP2",cS:10,hasMain:true,sw:true,meter:true,spd:true,vrelay:false,lamps:true,ats:false}),
  groups:[
   G({name:"Yoritish 1-qavat",type:"light",P:0.6,cos:0.95,kc:0.9,len:22,ch:"B",In:10,S:1.5,ph:"L3",cPh:"gy"}),
   G({name:"Yoritish 2-qavat",type:"light",P:0.45,cos:0.95,kc:0.9,len:28,ch:"B",In:10,S:1.5,ph:"L2",cPh:"bk"}),
@@ -433,16 +567,40 @@ const EXAMPLE={
   G({name:"Oshxona rozetkalari",P:3.0,kc:0.7,len:14,kind:"RCBO",poles:"2P",In:16,ph:"L1",cPh:"bn",nConn:"rcdOut"}),
   G({name:"Kir yuvish mashinasi",type:"wet",P:2.2,cos:0.9,kc:0.8,len:12,kind:"MCB+RCD",In:16,rcdIn:25,ph:"L3",cPh:"gy",nConn:"Nbus"}),
   G({name:"Konditsioner",type:"power",P:2.5,cos:0.85,kc:0.8,len:18,In:16,ph:"L2",cPh:"bu",ferr:false}),
-  G({name:"Suv isitgich",type:"power",P:2.0,cos:1,kc:0.7,len:10,kind:"RCBO",poles:"2P",In:16,ph:"L1",cPh:"bn",nConn:"rcdOut"}),
+  G({name:"Hovli yoritishi",type:"light",P:0.4,cos:0.95,kc:1,len:35,ch:"B",In:10,S:1.5,ph:"L1",cPh:"bn",ctrl:"photo"}),
   G({name:"Elektr plita",type:"power",P:7.0,phases:3,cos:1,kc:0.65,len:12,kind:"MCB+RCD",poles:"3P",In:16,rcdIn:25,cores:5,ph:"L123",nConn:"rcdOut"}),
-  G({name:"Nasos",type:"power",P:1.5,phases:3,cos:0.8,kc:1,len:30,poles:"3P",In:6,S:1.5,cores:4,ph:"L123",nConn:"none",lay:"air"})
+  G({name:"Nasos",type:"power",P:1.5,phases:3,cos:0.8,kc:1,len:30,poles:"3P",In:6,S:1.5,cores:4,ph:"L123",nConn:"none",lay:"air",ctrl:"btn",pfr:true})
  ]};
 
-const KEY="shitlab-v2";
+const KEY="shitlab-v3";
 let S;
-function load(){try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(o&&o.groups&&o.main)return o;}}catch(e){}return JSON.parse(JSON.stringify(EXAMPLE));}
+function load(){try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(o&&o.groups&&o.main){o.main=Object.assign(JSON.parse(JSON.stringify(BLANK.main)),o.main);o.groups=o.groups.map(g=>G(g));return o;}}}catch(e){}return JSON.parse(JSON.stringify(BLANK));}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 S=load();
+function enclOf(){const m=S.main;if(!m.encl)return null;const e=ENCL.find(x=>x.id===m.encl);if(!e)return null;if(e.id==="custom")return Object.assign({},e,{rows:+m.custom.rows||1,mods:+m.custom.mods||12,dims:m.custom.dims||"—",mat:m.custom.mat});return e;}
+// modullar
+function grpDevs(g){
+ const three=g.phases==3,list=[];
+ const nP=g.poles==="1P"?1:g.poles==="2P"?2:g.poles==="3P"?3:4;
+ if(g.kind==="RCBO")list.push({t:"rcbo",mods:three?4:2});
+ else{list.push({t:"mcb",mods:nP});if(g.kind==="MCB+RCD")list.push({t:"rcd",mods:three?4:2});}
+ if(g.ctrl!=="none"||g.pfr)list.push({t:"km",mods:three?3:1});
+ if(g.ctrl==="timer")list.push({t:"kt",mods:1});
+ if(g.ctrl==="photo")list.push({t:"bl",mods:1});
+ if(g.pfr)list.push({t:"kf",mods:2});
+ return list;
+}
+function panelDevs(){const m=S.main;return PDEV.filter(d=>m[d.k]).map(d=>Object.assign({},d,{mods:d.k==="hasMain"?(m.poles==="4P"?4:m.poles==="1P"?1:3):d.mods}));}
+function layout(){
+ const E=enclOf();if(!E)return null;
+ const items=[];
+ panelDevs().forEach(d=>items.push({kind:"p",d,mods:d.mods}));
+ S.groups.forEach(g=>{const dv=grpDevs(g);items.push({kind:"g",g,devs:dv,mods:dv.reduce((a,x)=>a+x.mods,0)});});
+ let row=0,used=0;const rowsUsed=[0];
+ items.forEach(it=>{if(used+it.mods>E.mods&&used>0){row++;used=0;rowsUsed[row]=0;}it.row=row;used+=it.mods;rowsUsed[row]=used;});
+ const total=items.reduce((a,x)=>a+x.mods,0);
+ return {E,items,rows:Math.max(E.rows,row+1),over:row+1>E.rows,total,cap:E.rows*E.mods,rowsUsed};
+}
 let uid=1;S.groups.forEach(g=>{g.id=uid++;});
 
 const $=s=>document.querySelector(s);
@@ -489,22 +647,39 @@ function compute(){
 
  R.inSize=SIZES.find(s_=>{const z=izOf(m.cMat,m.cLay,true,s_);return z&&z>=m.In;})||m.cS;
  // ---- kirish tekshiruvi ----
+ R.L=layout();
+ if(R.L){const E=R.L.E;
+  if(R.L.over)add("bad",`Qurilmalar shitga sig'madi: ${R.L.total} modul kerak, ${E.name} da ${R.L.cap} modul (${E.rows}×${E.mods}). Ortiqcha qator qizil bilan chizilgan.`,"Montaj","Kattaroq shit tanlang yoki qurilmalarni kamaytiring.");
+  else if(R.L.total>R.L.cap*0.8)add("info",`Shit ${Math.round(R.L.total/R.L.cap*100)}% band (${R.L.total}/${R.L.cap} modul). Kelajakdagi guruhlar uchun 20% zaxira qoldirish tavsiya etiladi.`,"Montaj","");
+ }
+ if(!m.hasMain)add("bad","Kirish avtomati qo'yilmagan. Kirish kabeli va butun shit qisqa tutashuvdan himoyasiz.","PUE 3.1",`3P C${R.recMain} kirish avtomatini qo'ying.`,null,{hasMain:true});
+ if(!m.meter)add("warn","Elektr hisoblagich qo'yilmagan. Energiya ta'minoti tashkiloti uni kirishda talab qiladi.","PUE 1.5","Hisoblagich qo'ying.",null,{meter:true});
+ if(m.spd&&!m.hasMain)add("warn","УЗИП himoya apparatisiz ulangan. Moduli shikastlanganda qisqa tutashuv bo'lishi mumkin.","Ishlab chiqaruvchi talabi","УЗИП dan oldin avtomat qo'ying.",null,{hasMain:true});
+ if(!m.spd)add("info","Impuls kuchlanishdan himoya (УЗИП) yo'q. Havo liniyasidan kirsa va momaqaldiroq ko'p bo'lsa, tavsiya etiladi.","PUE 7.1.22","",null,{spd:true});
+ if(m.earth==="TN-C-S"&&!m.vrelay)add("info","Kuchlanish relesi (РН) yo'q. TN-C-S da nol uzilsa jihozlarga 300 V gacha tushishi mumkin: РН ularni o'chirib saqlaydi.","Tavsiya","",null,{vrelay:true});
+ if(m.ats&&+m.genKW<R.Pd)add("warn",`Generator quvvati ${m.genKW} kVt hisobiy yuklamadan (${fmt(R.Pd,1)} kVt) kichik. АВР generatorga o'tganda u o'ta yuklanadi.`,"","Kattaroq generator yoki muhim guruhlarnigina zaxiraga ulang.");
+ if(m.hasMain){
  if(m.poles==="1P")add("bad","Uch fazali kirishga 1 qutbli avtomat qo'yilgan: L2 va L3 himoyasiz qoladi.","PUE 3.1",`3P C${R.recMain} qo'ying.`,null,{poles:"3P"});
  if(+m.In<R.Iin)add("bad",`Kirish avtomati ${m.ch}${m.In} hisobiy tokdan kichik (${fmt(R.Iin)} A). Oddiy yuklamada o'chib qoladi.`,"PUE 3.1",`Kamida ${m.ch}${R.recMain}.`,null,{In:R.recMain});
  if(+m.In<=R.maxGroupIn)add("warn",`Selektivlik yo'q: kirish avtomati (${m.In} A) eng katta guruh avtomatidan (${R.maxGroupIn} A) katta emas. Guruhdagi nosozlikda butun shit o'chadi.`,"PUE 3.1",`Kirishni kamida ${BR.find(b=>b>R.maxGroupIn)} A qiling.`,null,{In:BR.find(b=>b>R.maxGroupIn)||m.In});
  if(!R.izIn)add("bad",`Kirish kabeli: ${m.cMat} ${m.cS} mm² jadvalda yo'q.`,"PUE 1.3","",null,{cS:R.inSize});
  else if(R.izIn<+m.In)add("bad",`Kirish kabeli ${m.cCores}×${m.cS} ${m.cMat} (I ruxsat ${R.izIn} A) kirish avtomatidan (${m.In} A) kuchsiz. Kabel avtomatdan oldin qiziydi.`,"PUE 1.3, 3.1",`Kesimni oshiring: ${(SIZES.find(s=>{const z=izOf(m.cMat,m.cLay,true,s);return z&&z>=m.In;}))||"—"} mm².`,null,{cS:R.inSize});
+ }
  if(m.cMat==="Al"&&+m.cS<16)add("bad","Alyuminiy kirish kabeli 16 mm² dan kichik bo'lmasligi kerak.","PUE 7.1.34","Mis kabel yoki Al ≥ 16 mm².",null,{cMat:"Cu"});
  if(m.earth==="TN-S"&&+m.cCores<5)add("bad","TN-S tizimida kirish kabeli 5 tomirli bo'lishi kerak (L1, L2, L3, N, PE).","PUE 1.7","5 tomirli kabel.",null,{cCores:5});
  if(m.earth==="TN-C-S"){
   if(m.pen==="none")add("bad","PEN ajratilmagan: N shina hech narsaga ulanmagan. Bir fazali jihozlar ishlamaydi yoki kuchlanish og'adi.","PUE 1.7.135","PEN → PE shina, PE → N peremichka.",null,{pen:"ok"});
   if(m.pen==="toN")add("bad","PEN avval N shinaga ulangan. PEN o'tkazgich birinchi navbatda PE shinaga ulanishi, N shina undan peremichka orqali olinishi kerak.","PUE 1.7.135","PEN → PE shina, PE → N peremichka.",null,{pen:"ok"});
  }
- if(m.body!=="1")add("bad","Shit korpusi PE shinaga ulanmagan. Ichkarida izolyatsiya buzilsa, korpusda kuchlanish paydo bo'ladi.","PUE 1.7","Korpus va eshikni PE ga ulang.",null,{body:"1"});
+ if(m.body!=="1"&&(!R.L||R.L.E.mat==="metall"))add("bad","Shit korpusi PE shinaga ulanmagan. Ichkarida izolyatsiya buzilsa, korpusda kuchlanish paydo bo'ladi.","PUE 1.7","Korpus va eshikni PE ga ulang.",null,{body:"1"});
  if(R.duIn>2.5)add("warn",`Kirish kabelida kuchlanish yo'qolishi ${fmt(R.duIn,2)}% (katta).`,"PUE / GOST 32144","Kesimni oshiring.",null,{cS:SIZES[Math.min(SIZES.length-1,sIdx(m.cS)+1)]});
  if(R.imb>15)add("warn",`Fazalar nosimmetriyasi ${fmt(R.imb,0)}% (tavsiya ≤ 15%). L1 ${fmt(R.phaseI.L1)} A, L2 ${fmt(R.phaseI.L2)} A, L3 ${fmt(R.phaseI.L3)} A.`,"Faza balansi","Bir fazali guruhlarni kam yuklangan fazaga o'tkazing.");
 
  // ---- guruhlar ----
+ R.groups.forEach(r=>{const g=r.g;
+  if(g.pfr&&!r.three){r.issues.push("warn");add("warn",`QF${r.n}: faza nazorat relesi faqat 3 fazali jihoz uchun.`,"","O'chiring.",g.id,{pfr:false});}
+  if(r.three&&g.type==="power"&&!g.pfr&&g.nConn==="none"){r.issues.push("info");add("info",`QF${r.n}: 3 fazali dvigatel faza nazorat relesisiz. Bitta faza uzilsa dvigatel ikki fazada ishlab qiziydi va kuyadi.`,"Tavsiya","Faza nazorat relesi (РКФ) va kontaktor qo'ying.",g.id,{pfr:true});}
+ });
  R.groups.forEach(r=>{
   const g=r.g,gid=g.id,t=`QF${r.n}`;
   const A=(lvl,text,ref,fix,fx)=>{r.issues.push(lvl);add(lvl,text,ref,fix,gid,fx);};
@@ -551,6 +726,8 @@ function compute(){
   if((g.type==="socket"||g.type==="wet")&&In>16)A("warn",`${t}: oddiy rozetka 16 A ga mo'ljallangan, avtomat ${In} A.`,"","16 A avtomat.",{In:16});
   r.state=r.issues.includes("bad")?"bad":r.issues.includes("warn")?"warn":"ok";
  });
+ if(!enclOf())R.issues=[];
+ R.issues.sort((a,b)=>({bad:0,warn:1,info:2}[a.lvl])-({bad:0,warn:1,info:2}[b.lvl]));
  R.bad=R.issues.filter(x=>x.lvl==="bad").length;
  R.warn=R.issues.filter(x=>x.lvl==="warn").length;
  return R;
@@ -558,8 +735,24 @@ function compute(){
 
 /* ================= RENDER: forma ================= */
 const opt=(v,l,sel)=>`<option value="${v}"${String(sel)===String(v)?" selected":""}>${l}</option>`;
+function enclThumb(e){const r=Math.max(1,e.rows||3),md=Math.max(8,e.mods||12);const w=Math.min(64,22+md*1.6),h=Math.min(64,14+r*11);
+ let s=`<svg width="70" height="68" viewBox="0 0 70 68" aria-hidden="true"><rect x="${(70-w)/2}" y="${(68-h)/2}" width="${w}" height="${h}" rx="3" fill="${e.mat==="metall"?"var(--surface)":"var(--surface-2)"}" stroke="var(--ink)" stroke-width="1.5"/>`;
+ for(let i=0;i<r;i++){const y=(68-h)/2+8+i*((h-12)/r);s+=`<rect x="${(70-w)/2+5}" y="${y}" width="${w-10}" height="${Math.max(3,(h-12)/r-4)}" rx="1" fill="var(--rail)"/>`;}
+ return s+`</svg>`;}
+function gate(){
+ const has=!!enclOf();
+ $("#afterEncl").hidden=!has;
+ document.querySelectorAll("[data-empty]").forEach(e=>{e.hidden=has;e.innerHTML=`<svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><rect x="8" y="6" width="40" height="44" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><line x1="14" y1="20" x2="42" y2="20" stroke="currentColor" stroke-width="3"/><line x1="14" y1="32" x2="42" y2="32" stroke="currentColor" stroke-width="3"/></svg><strong style="color:var(--ink)">Avval shit turini tanlang</strong><span>1-bo'limda shit (korpus) turini va o'lchamini tanlang. Shundan keyin bu yerda hamma narsa ko'rinadi.</span><button class="btn pri" data-tab="kirish">Shit tanlashga o'tish</button>`;});
+ document.querySelectorAll("[data-need]").forEach(e=>{e.hidden=!has;});
+}
 function renderMain(){
  const m=S.main;
+ $("#encls").innerHTML=ENCL.map(e=>`<button type="button" class="encl" data-encl="${e.id}" aria-pressed="${m.encl===e.id}">${enclThumb(e.id==="custom"?Object.assign({},e,m.custom):e)}<b>${e.name}</b><span>${e.type}</span>${e.id!=="custom"?`<span class="mono">${e.rows} qator × ${e.mods} modul = ${e.rows*e.mods}</span><span class="mono">${e.dims} mm · ${e.ip}</span>`:`<span class="mono">qator, modul, o'lchamni kiriting</span>`}</button>`).join("");
+ $("#enclCustom").hidden=m.encl!=="custom";
+ $("#c-rows").value=m.custom.rows;$("#c-mods").value=m.custom.mods;$("#c-dims").value=m.custom.dims||"";$("#c-mat").value=m.custom.mat;
+ const E=enclOf();$("#enclHint").textContent=E?`Tanlandi: ${E.name}, ${E.rows} qator × ${E.mods} modul, ${E.dims} mm, ${E.mat}. Endi kirish qurilmalarini belgilang va 2-bo'limda guruhlarni qo'shing.`:"Ish shu yerdan boshlanadi: shit (korpus) turini tanlang. Shundan keyin DIN-reykalar paydo bo'ladi va qurilmalarni joylashtirasiz.";
+ $("#devlist").innerHTML=PDEV.map(d=>`<div class="dev"><input type="checkbox" id="pd-${d.k}" data-pd="${d.k}" ${m[d.k]?"checked":""}><div style="flex:1;min-width:0"><div style="display:flex;gap:6px;align-items:center"><label for="pd-${d.k}" class="t">${d.tag} · ${d.name}</label><button type="button" class="ibtn" data-info="${d.k==="hasMain"?"mcb":d.k}">ⓘ</button></div><div class="d">${d.d} <span class="mono">${d.k==="hasMain"?"":d.mods+" modul"}</span></div>${d.k==="ats"&&m.ats?`<div class="x"><label class="f">Generator quvvati, kVt<input id="m-genKW" type="number" min="1" step="1" value="${m.genKW}"></label></div>`:""}</div></div>`).join("");
+ $("#mainCardCfg").hidden=!m.hasMain;
  ["earth","zs","du","cMat","cCores","cLay","cLen","poles","ch","pen","body"].forEach(k=>{const el=$("#m-"+k);if(el)el.value=m[k];});
  $("#m-cS").innerHTML=SIZES.map(s=>opt(s,s+" mm²",m.cS)).join("");
  $("#m-In").innerHTML=BR.map(b=>opt(b,b+" A",m.In)).join("");
@@ -579,7 +772,7 @@ function groupCard(g,i){
    <label class="f">cosφ<input data-k="cos" type="number" step="0.01" min="0.3" max="1" value="${g.cos}" id="g${id}-cos"></label>
    <label class="f">Kc<input data-k="kc" type="number" step="0.05" min="0" max="1" value="${g.kc}" id="g${id}-kc"></label>
   </fieldset>
-  <fieldset><legend>Himoya apparati</legend>
+  <fieldset><legend>Himoya apparati <button type="button" class="ibtn" data-info="${g.kind==="RCBO"?"rcbo":g.kind==="MCB+RCD"?"rcd":"mcb"}">ⓘ</button></legend>
    <label class="f wide">Turi${sel(id,"kind",Object.entries(KINDS).map(([k,v])=>opt(k,v,g.kind)).join(""))}</label>
    <label class="f">Qutblar${sel(id,"poles",["1P","2P","3P","4P"].map(p=>opt(p,p,g.poles)).join(""))}</label>
    <label class="f">Xarakt.${sel(id,"ch",["B","C","D"].map(p=>opt(p,p,g.ch)).join(""))}</label>
@@ -587,14 +780,14 @@ function groupCard(g,i){
    ${rcd?`<label class="f">IΔn, mA${sel(id,"idn",IDN.map(b=>opt(b,b,g.idn)).join(""))}</label>`:""}
    ${g.kind==="MCB+RCD"?`<label class="f">UZO In, A${sel(id,"rcdIn",RCD_IN.map(b=>opt(b,b,g.rcdIn)).join(""))}</label>`:""}
   </fieldset>
-  <fieldset><legend>Kabel</legend>
+  <fieldset><legend>Kabel <button type="button" class="ibtn" data-info="cable">ⓘ</button></legend>
    <label class="f">Material${sel(id,"mat",opt("Cu","Mis",g.mat)+opt("Al","Alyuminiy",g.mat))}</label>
    <label class="f">Kesim${sel(id,"S",SIZES.map(s=>opt(s,s+" mm²",g.S)).join(""))}</label>
    <label class="f">Tomir${sel(id,"cores",[2,3,4,5].map(c=>opt(c,c,g.cores)).join(""))}</label>
    <label class="f">L, m<input data-k="len" type="number" step="1" min="1" value="${g.len}" id="g${id}-len"></label>
    <label class="f wide">Yotqizish${sel(id,"lay",opt("pipe","Truba / devor ichida",g.lay)+opt("air","Ochiq, havoda",g.lay))}</label>
   </fieldset>
-  <fieldset><legend>Ulanish</legend>
+  <fieldset><legend>Ulanish <button type="button" class="ibtn" data-info="colors">ⓘ</button></legend>
    <label class="f">Faza${three?sel(id,"ph",opt("L123","L1 L2 L3","L123"),0,true):sel(id,"ph",PH.map(p=>opt(p,p,g.ph)).join(""))}</label>
    ${!three&&g.poles==="1P"&&g.kind==="MCB"?`<label class="f">Avtomat uzadi${sel(id,"sw",opt("L","Faza simini",g.sw)+opt("N","Nol simini",g.sw))}</label>`:""}
    <label class="f">N sim${sel(id,"nConn",opt("Nbus","N shinaga",g.nConn)+opt("rcdOut","UZO chiqishiga",g.nConn)+opt("PEbus","PE shinaga",g.nConn)+opt("none","Ulanmagan",g.nConn))}</label>
@@ -604,10 +797,14 @@ function groupCard(g,i){
    <label class="f">PE rangi${sel(id,"cPE",colorOpts(g.cPE))}</label>
    <label class="f chk wide"><input type="checkbox" data-k="ferr" ${g.ferr?"checked":""} id="g${id}-ferr"> НШВИ uchliklar</label>
   </fieldset>
+  <fieldset><legend>Avtomatika <button type="button" class="ibtn" data-info="${g.ctrl==="timer"?"kt":g.ctrl==="photo"?"bl":"km"}">ⓘ</button></legend>
+   <label class="f wide">Boshqaruv${sel(id,"ctrl",Object.entries(CTRL).map(([k,v])=>opt(k,v,g.ctrl)).join(""))}</label>
+   ${three?`<label class="f chk wide"><input type="checkbox" data-k="pfr" ${g.pfr?"checked":""} id="g${id}-pfr"> Faza nazorat relesi (РКФ) <button type="button" class="ibtn" data-info="kf">ⓘ</button></label>`:""}
+  </fieldset>
   <div class="res" data-res="${id}"></div>
  </div>`;
 }
-function renderGroups(){$("#groups").innerHTML=S.groups.map(groupCard).join("")||`<div class="card muted">Guruh yo'q. "+ Guruh qo'shish" tugmasini bosing.</div>`;}
+function renderGroups(){$("#groups").innerHTML=S.groups.map(groupCard).join("")||`<div class="empty"><strong style="color:var(--ink)">Shit hali bo'sh</strong><span>"+ Guruh qo'shish" tugmasi bilan birinchi guruhni (masalan, yoritish) qo'shing yoki tayyor namunani yuklang.</span></div>`;}
 function updateGroupResults(R){
  R.groups.forEach(r=>{
   const el=document.querySelector(`[data-res="${r.g.id}"]`);if(!el)return;
@@ -626,7 +823,8 @@ function renderSummary(R){
  $("#summary").innerHTML=[
   ["Hisobiy quvvat",`${fmt(R.Pd,2)} <small>kVt</small>`],
   ["Kirish toki",`${fmt(R.Iin)} <small>A</small>`],
-  ["Kirish avtomati",`${S.main.ch}${S.main.In} <small>${S.main.poles}</small>`],
+  ["Kirish avtomati",S.main.hasMain?`${S.main.ch}${S.main.In} <small>${S.main.poles}</small>`:`<span style="color:var(--muted)">yo'q</span>`],
+  ["Shit",R.L?`${R.L.E.name} <small>${R.L.total}/${R.L.cap} modul</small>`:`<span style="color:var(--muted)">tanlanmagan</span>`],
   ["Kirish kabeli",`${S.main.cCores}×${S.main.cS} <small>${S.main.cMat}</small>`],
   ["Xatolar",`<span style="color:${R.bad?"var(--bad)":"var(--ok)"}">${R.bad}</span>`],
   ["Diqqat",`<span style="color:${R.warn?"var(--warn)":"var(--ok)"}">${R.warn}</span>`]
@@ -665,7 +863,9 @@ const FIELDS={
  rcdIn:{l:"UZO nominal toki",o:RCD_IN.map(b=>[b,b+" A"]),num:true},
  cores:{l:"Kabel tomirlari",o:[2,3,4,5].map(c=>[c,c+" tomir"]),num:true},
  ch:{l:"Xarakteristika",o:["B","C","D"].map(c=>[c,c])},
- mat:{l:"Material",o:[["Cu","Mis"],["Al","Alyuminiy"]]}
+ mat:{l:"Material",o:[["Cu","Mis"],["Al","Alyuminiy"]]},
+ ctrl:{l:"Avtomatika",o:Object.entries(CTRL)},
+ pfr:{l:"Faza nazorat relesi",o:[["1","Qo'yilgan"],["0","Yo'q"]],bool:true}
 };
 const MFIELDS={
  In:{l:"Kirish avtomati In",o:BR.map(b=>[b,b+" A"]),num:true},
@@ -674,7 +874,11 @@ const MFIELDS={
  cMat:{l:"Kirish kabeli materiali",o:[["Cu","Mis"],["Al","Alyuminiy"]]},
  cCores:{l:"Kirish kabeli tomirlari",o:[[4,"4 tomir"],[5,"5 tomir"]],num:true},
  pen:{l:"PEN ulanishi",o:[["ok","PEN → PE shina, PE → N peremichka"],["toN","PEN → N shina, N → PE peremichka"],["none","Peremichka yo'q"]]},
- body:{l:"Shit korpusi",o:[["1","PE shinaga ulangan"],["0","Ulanmagan"]]}
+ body:{l:"Shit korpusi",o:[["1","PE shinaga ulangan"],["0","Ulanmagan"]]},
+ hasMain:{l:"Kirish avtomati",o:[["1","Qo'yilgan"],["0","Yo'q"]],bool:true},
+ meter:{l:"Hisoblagich",o:[["1","Qo'yilgan"],["0","Yo'q"]],bool:true},
+ spd:{l:"УЗИП",o:[["1","Qo'yilgan"],["0","Yo'q"]],bool:true},
+ vrelay:{l:"Kuchlanish relesi",o:[["1","Qo'yilgan"],["0","Yo'q"]],bool:true}
 };
 const tgtObj=t=>t==null?S.main:S.groups.find(g=>g.id==t);
 function optLabel(F,v){const o=F.o.find(([k])=>String(k)===String(F.bool?(v?"1":"0"):v));return o?o[1]:String(v);}
@@ -745,7 +949,8 @@ function schematic(R){
  const m=S.main,step=104,x0=170,n=R.groups.length,W=x0+n*step+40,H=490;
  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Shit sxemasi">`;
  s+=`<rect x="6" y="30" width="${W-12}" height="${H-40}" rx="6" fill="none" stroke="${m.body==="1"?"var(--line)":"var(--bad)"}" stroke-dasharray="6 4"/>`;
- s+=`<text x="14" y="18" font-size="11" font-weight="600">Kirish: ${m.cCores}×${m.cS} ${m.cMat}, ${m.cLen} m · ${m.earth}</text>`;
+ const chain=[m.sw?"QS1":null,m.meter?"PI1":null,m.hasMain?"QF0":null,m.spd?"FV1":null,m.vrelay?"KV1":null,m.lamps?"HL1":null,m.ats?"АВР+G":null].filter(Boolean).join(" → ");
+ s+=`<text x="14" y="18" font-size="11" font-weight="600">Kirish: ${m.cCores}×${m.cS} ${m.cMat}, ${m.cLen} m · ${m.earth}${chain?" · "+chain:""}</text>`;
  const xs={L1:40,L2:52,L3:64};
  PH.forEach(p=>{s+=wire(xs[p],34,xs[p],Y[p],p);s+=wire(xs[p],Y[p],W-46,Y[p],p,4);});
  s+=wire(108,Y.N,W-46,Y.N,"N",4)+wire(86,Y.PE,W-46,Y.PE,"PE",4);
@@ -755,7 +960,8 @@ function schematic(R){
   else if(m.pen==="ok"){s+=`<line x1="108" y1="${Y.N}" x2="108" y2="${Y.PE}" stroke="var(--ink)" stroke-width="2.5"/>`+dot(108,Y.N,"N")+dot(108,Y.PE,"PE")+`<text x="114" y="${Y.PE+16}" font-size="8.5" class="lbl">PEN ajratish</text>`;}
   else s+=badMark(120,Y.N-14)+`<text x="132" y="${Y.N-10}" font-size="9" fill="var(--bad)">N shina ulanmagan</text>`;
  }else{s+=wire(98,34,98,Y.N,"N")+wire(120,34,120,Y.PE,"PE");}
- s+=`<rect x="30" y="62" width="46" height="46" rx="3" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/><text x="53" y="80" text-anchor="middle" font-size="10" font-weight="600">${m.ch}${m.In}</text><text x="53" y="93" text-anchor="middle" font-size="8.5" class="lbl">${m.poles} QF0</text>`;
+ if(m.hasMain)s+=`<rect x="30" y="62" width="46" height="46" rx="3" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/><text x="53" y="80" text-anchor="middle" font-size="10" font-weight="600">${m.ch}${m.In}</text><text x="53" y="93" text-anchor="middle" font-size="8.5" class="lbl">${m.poles} QF0</text>`;
+ else s+=`<rect x="30" y="62" width="46" height="46" rx="3" fill="var(--bad-soft)" stroke="var(--bad)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="53" y="82" text-anchor="middle" font-size="8.5" fill="var(--bad)">QF0</text><text x="53" y="94" text-anchor="middle" font-size="8.5" fill="var(--bad)">yo'q</text>`;
  ["L1","L2","L3","N","PE"].forEach(k=>{s+=`<text x="${W-40}" y="${Y[k]+4}" font-size="10" font-weight="600">${k}</text>`;});
  R.groups.forEach((r,i)=>{
   const g=r.g,cx=x0+i*step,three=r.three,rcd=hasRcd(g),F=g.ferr;
@@ -793,6 +999,8 @@ function schematic(R){
   s+=`<text x="${lx+6}" y="${Y.term+30}" font-size="9" class="lbl">${g.cores}×${g.S}</text>`;
   s+=loadIcon(lx,Y.load,g.type,three);
   nameLines(g.name).forEach((t,k)=>{s+=`<text x="${lx}" y="${Y.name+k*12}" text-anchor="middle" font-size="9.5">${esc(t)}</text>`;});
+  if(g.ctrl!=="none"||g.pfr){s+=`<rect x="${cx-14}" y="${Y.bB+10}" width="28" height="16" rx="2" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="${cx}" y="${Y.bB+22}" text-anchor="middle" font-size="9" font-weight="700" fill="var(--accent)">KM</text>`;
+   const ext=[g.ctrl==="timer"?"KT":null,g.ctrl==="photo"?"BL":null,g.pfr?"KF":null].filter(Boolean).join("+");if(ext)s+=`<text x="${cx+18}" y="${Y.bB+22}" font-size="8.5" class="lbl">${ext}</text>`;}
   if(r.state==="bad")s+=badMark(cx+44,Y.bT-12);
  });
  return s+`</svg>`;
@@ -830,15 +1038,17 @@ function devicePic(x,y,o){
  s+=`</g>`;
  return {svg:s,w};
 }
-const RY=74;          // apparatlar tepasi
-const UD0=RY+BH+38, UD1=UD0+34, BUSY=UD1+34, LD0=BUSY+32, LD1=LD0+34, PB=LD1+48, LOADY=PB+92;
+let RY=74,BUSY=0,LD0=0,LD1=0,PB=0,LOADY=0;
 function duct(x1,x2,y0,y1,label){
  let s=`<rect x="${x1}" y="${y0}" width="${x2-x1}" height="${y1-y0}" rx="2" fill="var(--duct)"/>`;
  for(let i=x1+4;i<x2-8;i+=12)s+=`<rect x="${i}" y="${y0}" width="4" height="8" fill="var(--duct-slot)"/><rect x="${i}" y="${y1-8}" width="4" height="8" fill="var(--duct-slot)"/>`;
  s+=`<rect x="${x1}" y="${y0+9}" width="${x2-x1}" height="${y1-y0-18}" fill="var(--duct-c)"/>`;
- if(label)s+=`<text x="${x1+8}" y="${(y0+y1)/2+3}" font-size="8" fill="var(--muted)">${label}</text>`;
+ if(label)s+=`<text x="${x1+30}" y="${(y0+y1)/2+3}" font-size="8" fill="var(--muted)">${label}</text>`;
  return s;
 }
+function vduct(x1,x2,y0,y1){let s=`<rect x="${x1}" y="${y0}" width="${x2-x1}" height="${y1-y0}" rx="2" fill="var(--duct)"/>`;
+ for(let i=y0+6;i<y1-8;i+=12)s+=`<rect x="${x1}" y="${i}" width="6" height="4" fill="var(--duct-slot)"/><rect x="${x2-6}" y="${i}" width="6" height="4" fill="var(--duct-slot)"/>`;
+ return s+`<rect x="${x1+7}" y="${y0}" width="${x2-x1-14}" height="${y1-y0}" fill="var(--duct-c)"/>`;}
 function core(x,y1,y2,col,w=3.5){
  if(col==="PE")return `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="var(--pe-g)" stroke-width="${w}"/><line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="var(--pe-y)" stroke-width="${w}" stroke-dasharray="5 5"/>`;
  return `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${col}" stroke-width="${w}"/>`;
@@ -848,142 +1058,221 @@ function corePath(d,col,w=3.5){
  return `<path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linejoin="round"/>`;
 }
 function screwS(cx,cy){return `<circle cx="${cx}" cy="${cy}" r="4.2" fill="#c7cacc" stroke="#7f8589" stroke-width=".8"/><line x1="${cx-2.6}" y1="${cy}" x2="${cx+2.6}" y2="${cy}" stroke="#6f7478" stroke-width="1.2"/>`;}
+// Umumiy modul korpusi (avtomatika va kirish qurilmalari)
+function moduleBody(x,y,n,poles,ferr){
+ const w=n*PW;let s="";
+ poles.forEach(p=>{if(p.top)s+=poleWire(p.x,y-26,y+10,p.top)+`<rect x="${p.x-3.5}" y="${y-10}" width="7" height="12" rx="1.5" fill="var(--accent)"/>`;
+  if(p.bot)s+=poleWire(p.x,y+BH-10,y+BH+46,p.bot)+(ferr!==false?`<rect x="${p.x-3.5}" y="${y+BH-2}" width="7" height="12" rx="1.5" fill="var(--accent)"/>`:"");
+  if(p.ctl)s+=`<line x1="${p.x}" y1="${y-14}" x2="${p.x}" y2="${y+8}" stroke="#7a8086" stroke-width="2"/><line x1="${p.x}" y1="${y+BH-8}" x2="${p.x}" y2="${y+BH+46}" stroke="#7a8086" stroke-width="2"/>`;});
+ s+=`<rect x="${x}" y="${y}" width="${w}" height="${BH}" rx="4" fill="var(--bk-body)" stroke="var(--bk-edge)" stroke-width="1.2"/>`;
+ for(let i=1;i<n;i++)s+=`<line x1="${x+i*PW}" y1="${y+3}" x2="${x+i*PW}" y2="${y+BH-3}" stroke="var(--bk-edge)" stroke-width="1"/>`;
+ poles.forEach(p=>{s+=`<rect x="${p.x-11}" y="${y+5}" width="22" height="24" rx="2" fill="var(--bk-face)"/>`+screw(p.x,y+17)+`<rect x="${p.x-11}" y="${y+BH-29}" width="22" height="24" rx="2" fill="var(--bk-face)"/>`+screw(p.x,y+BH-17);
+  if(p.lab)s+=`<text x="${p.x}" y="${y+40}" text-anchor="middle" font-size="7.5" fill="var(--bk-text)">${p.lab[0]}</text><text x="${p.x}" y="${y+BH-33}" text-anchor="middle" font-size="7.5" fill="var(--bk-text)">${p.lab[1]}</text>`;});
+ s+=`<rect class="face" x="${x+3}" y="${y+46}" width="${w-6}" height="${BH-92}" rx="3" fill="var(--bk-face)" stroke="var(--bk-edge)" stroke-width="1"/>`;
+ return s;
+}
+const L3C=["var(--l1)","var(--l2)","var(--l3)"];
+function poleSet(x,cols,labs){return cols.map((c,i)=>({x:x+i*PW+PW/2,top:c,bot:c,lab:labs?labs[i]:[i*2+1,i*2+2]}));}
+function genericPic(x,y,o){
+ const n=o.mods,w=n*PW,cx=x+w/2;let s="";
+ const T=(t,yy,fs=9,fw=700,fill="var(--bk-text)")=>`<text x="${cx}" y="${yy}" text-anchor="middle" font-size="${fs}" font-weight="${fw}" fill="${fill}">${t}</text>`;
+ if(o.t==="sw"){
+  s+=`<g class="bp" data-bp="sw" tabindex="0" role="button" aria-label="Rubilnikni yoqish yoki o'chirish">`+moduleBody(x,y,n,poleSet(x,L3C),true)+T("QS1 100A",y+58);
+  s+=`<rect x="${x+10}" y="${y+64}" width="${w-20}" height="50" rx="3" fill="var(--bk-dark)"/><g class="lev"><rect x="${x+14}" y="${y+70}" width="${w-28}" height="18" rx="3" fill="#d4322a" stroke="#5a0f0b"/></g>`;
+  s+=`<rect x="${x+PW/2-7}" y="${y+118}" width="14" height="7" rx="1" fill="var(--bk-off)" class="win-off"/><rect x="${x+PW/2-7}" y="${y+118}" width="14" height="7" rx="1" fill="var(--bk-on)" class="win-on"/></g>`;
+ }else if(o.t==="meter"){
+  const ps=[0,1,2].map(i=>({x:x+PW*(1+i*2)+PW/2,top:L3C[i],bot:L3C[i],lab:[`L${i+1}`,`L${i+1}'`]})).concat([{x:x+w-PW/2,top:"var(--n)",bot:"var(--n)",lab:["N","N"]}]);
+  s+=`<g data-dev="meter">`+moduleBody(x,y,n,ps,true)+T("PI1 · Hisoblagich 3×230/400 V",y+57,8.5);
+  s+=`<rect x="${x+12}" y="${y+63}" width="${w-24}" height="34" rx="3" fill="#a9bd93" stroke="#56653f"/><text class="lcd" x="${x+w-18}" y="${y+86}" text-anchor="end" font-size="16" font-weight="700" fill="#1f2a14">000000.0</text><text x="${x+18}" y="${y+76}" font-size="7" fill="#33421f">kVt·soat</text>`;
+  s+=`<text class="lcdp" x="${x+18}" y="${y+112}" font-size="9" fill="var(--bk-text)">0.00 kVt</text><circle class="mled" cx="${x+w-22}" cy="${y+109}" r="4.5" fill="#d4322a"/><text x="${x+w-30}" y="${y+112}" text-anchor="end" font-size="7" fill="var(--bk-text)">1000 imp/kVt·soat</text></g>`;
+ }else if(o.t==="spd"){
+  const cols=[...L3C,"var(--n)"];
+  s+=`<g data-dev="spd">`+moduleBody(x,y,n,cols.map((c,i)=>({x:x+i*PW+PW/2,top:c,bot:null,lab:[i<3?"L"+(i+1):"N","PE"]})),true)+T("FV1 УЗИП T2 40kA",y+57,8);
+  cols.forEach((c,i)=>{const px=x+i*PW+PW/2;s+=`<rect x="${px-12}" y="${y+64}" width="24" height="44" rx="3" fill="#e4e6e3" stroke="var(--bk-edge)"/><rect class="spdw" data-i="${i}" x="${px-6}" y="${y+92}" width="12" height="8" rx="1" fill="#2f9a48"/>`;});
+  s+=`<line x1="${x+PW/2}" y1="${y+BH-8}" x2="${x+PW/2}" y2="${y+BH+46}" stroke="var(--pe-g)" stroke-width="4"/><line x1="${x+PW/2}" y1="${y+BH-8}" x2="${x+PW/2}" y2="${y+BH+46}" stroke="var(--pe-y)" stroke-width="4" stroke-dasharray="5 5"/></g>`;
+ }else if(o.t==="kv"){
+  s+=`<g data-dev="kv">`+moduleBody(x,y,n,[{x:x+PW/2,top:"var(--l1)",bot:null,lab:["L1","L2"]},{x:x+PW*1.5,top:"var(--l3)",bot:"var(--n)",lab:["L3","N"]}],true)+T("KV1 РН",y+57,8.5);
+  s+=`<rect x="${x+8}" y="${y+63}" width="${w-16}" height="24" rx="2" fill="#132017"/><text class="lcd" x="${cx}" y="${y+81}" text-anchor="middle" font-size="14" font-weight="700" fill="#42f07a">230</text>`;
+  s+=`<circle class="kvok" cx="${x+18}" cy="${y+100}" r="4.5" fill="#2f9a48"/><circle class="kvbad" cx="${x+w-18}" cy="${y+100}" r="4.5" fill="#5a1e1a"/><text x="${cx}" y="${y+120}" text-anchor="middle" font-size="7" fill="var(--bk-text)">176–253 V</text></g>`;
+ }else if(o.t==="hl"){
+  s+=`<g data-dev="hl">`+moduleBody(x,y,n,[{x:cx,top:"var(--l2)",bot:"var(--n)",lab:["L","N"]}],true)+T("HL1",y+57,8.5);
+  ["#e33b2e","#f2c21b","#2fb34a"].forEach((c,i)=>{s+=`<circle cx="${cx}" cy="${y+70+i*20}" r="8.5" fill="#3a3f44"/><circle class="hl" data-p="L${i+1}" cx="${cx}" cy="${y+70+i*20}" r="7" fill="${c}" opacity=".15"/>`;});
+  s+=`</g>`;
+ }else if(o.t==="ats"){
+  s+=`<g data-dev="ats">`+moduleBody(x,y,n,[...L3C,"var(--n)"].map((c,i)=>({x:x+i*PW+PW/2,top:c,bot:c,lab:[i<3?"L"+(i+1):"N",""]})),true)+T("QA АВР 63A",y+57,8.5);
+  s+=`<rect x="${x+10}" y="${y+63}" width="${w-20}" height="30" rx="3" fill="var(--bk-dark)"/><text class="atsd" x="${cx}" y="${y+84}" text-anchor="middle" font-size="16" font-weight="700" fill="#ffd23a">I</text>`;
+  s+=`<circle class="atsg" cx="${x+20}" cy="${y+104}" r="4.5" fill="#2f9a48"/><text x="${x+28}" y="${y+107}" font-size="7" fill="var(--bk-text)">Tarmoq</text><circle class="atsgen" cx="${x+w-50}" cy="${y+104}" r="4.5" fill="#3a3f44"/><text x="${x+w-42}" y="${y+107}" font-size="7" fill="var(--bk-text)">Gen</text></g>`;
+ }else if(o.t==="km"){
+  const cols=o.three?L3C:[o.ph||"var(--l1)"];
+  s+=`<g class="bp km" data-bp="km:${o.gid}" tabindex="0" role="button" aria-label="Kontaktor KM${o.n}">`+moduleBody(x,y,n,cols.map((c,i)=>({x:x+i*PW+PW/2,top:null,bot:o.last?c:null,lab:[i*2+1,i*2+2]})),o.ferr)+T("KM"+o.n,y+57,8.5);
+  s+=`<rect x="${cx-12}" y="${y+64}" width="24" height="22" rx="2" fill="var(--bk-dark)"/><text class="kmw" x="${cx}" y="${y+80}" text-anchor="middle" font-size="12" font-weight="700" fill="#e9ecee">O</text>`;
+  s+=`<circle class="kmled" cx="${cx}" cy="${y+98}" r="4" fill="#3a3f44"/><text x="${cx}" y="${y+118}" text-anchor="middle" font-size="6.5" fill="var(--bk-text)">A1 A2</text></g>`;
+ }else if(o.t==="kt"){
+  s+=`<g data-dev="kt:${o.gid}">`+moduleBody(x,y,n,[{x:cx,ctl:true,lab:["A1","15"]}],true)+T("KT"+o.n,y+57,8.5);
+  s+=`<circle cx="${cx}" cy="${y+80}" r="11" fill="#d6d9db" stroke="#7a8086"/><line class="ktp" x1="${cx}" y1="${y+80}" x2="${cx}" y2="${y+71}" stroke="#d4322a" stroke-width="2.5"/><text class="ktd" x="${cx}" y="${y+104}" text-anchor="middle" font-size="9" font-weight="700" fill="var(--bk-text)">8s</text><circle class="ktled" cx="${cx}" cy="${y+116}" r="3.5" fill="#3a3f44"/></g>`;
+ }else if(o.t==="bl"){
+  s+=`<g data-dev="bl:${o.gid}">`+moduleBody(x,y,n,[{x:cx,ctl:true,lab:["L","15"]}],true)+T("BL"+o.n,y+57,8.5);
+  s+=`<g class="blsun"><circle cx="${cx}" cy="${y+80}" r="7" fill="#f2c21b"/>${[0,1,2,3,4,5,6,7].map(i=>{const a=i*Math.PI/4;return `<line x1="${cx+Math.cos(a)*9}" y1="${y+80+Math.sin(a)*9}" x2="${cx+Math.cos(a)*13}" y2="${y+80+Math.sin(a)*13}" stroke="#f2c21b" stroke-width="2"/>`;}).join("")}</g><path class="blmoon" d="M${cx+4} ${y+71} a9 9 0 1 0 0 18 a7 7 0 1 1 0 -18z" fill="#9db4d8" opacity="0"/><circle class="blled" cx="${cx}" cy="${y+108}" r="3.5" fill="#3a3f44"/></g>`;
+ }else if(o.t==="kf"){
+  s+=`<g data-dev="kf:${o.gid}">`+moduleBody(x,y,n,[{x:x+PW/2,ctl:true,lab:["L1","L2"]},{x:x+PW*1.5,ctl:true,lab:["L3","15"]}],true)+T("KF"+o.n+" РКФ",y+57,8);
+  ["L1","L2","L3"].forEach((p,i)=>{s+=`<circle class="kfl" data-p="${p}" cx="${x+14+i*22}" cy="${y+76}" r="4.5" fill="#2f9a48"/><text x="${x+14+i*22}" y="${y+92}" text-anchor="middle" font-size="7" fill="var(--bk-text)">${p}</text>`;});
+  s+=`<circle class="kfok" cx="${cx}" cy="${y+108}" r="4.5" fill="#ffd23a"/><text x="${cx}" y="${y+124}" text-anchor="middle" font-size="7" fill="var(--bk-text)">Rele</text></g>`;
+ }
+ return {svg:s,w};
+}
+// guruh apparatlari zanjiri
+function groupDevPics(g,r,x,y){
+ const three=g.phases==3,rcd=hasRcd(g),out=[];
+ const phCols=three?L3C:[wc(g.ph)];
+ const outCols=three?phCols:[cVar(g.cPh)];
+ const nSw=!three&&g.poles==="1P"&&g.kind==="MCB"&&g.sw==="N";
+ const dl=grpDevs(g);const hasKM=dl.some(d=>d.t==="km");
+ let svg="",cx=x;const placed=[];
+ dl.forEach((d,idx)=>{
+  const lastPower=!dl.slice(idx+1).some(z=>z.t==="rcd"||z.t==="km");
+  const gap=dl[idx+1]&&(dl[idx+1].t==="rcd"||dl[idx+1].t==="km")?16:6;
+  let p;
+  if(d.t==="rcbo"){const top=[...phCols,"var(--n)"],bot=[...outCols,g.nConn==="rcdOut"?cVar(g.cN):null];
+   p=devicePic(cx,y,{id:g.id+":m",kind:"rcd",label:`${g.ch}${g.In}`,top,bot,botHide:!lastPower,rcdLast:true,idn:g.idn,ferr:g.ferr,aria:`QF${r.n}`,poleLabels:top.map((_,i)=>i===top.length-1?["N","N"]:[i*2+1,i*2+2])});
+   if(!lastPower&&g.nConn==="rcdOut")p.svg+=poleWire(cx+(top.length-1)*PW+PW/2,y+BH-10,y+BH+46,cVar(g.cN)); }
+  else if(d.t==="mcb"){const nP=d.mods;let top,bot;
+   if(nSw){top=["var(--n)"];bot=[cVar(g.cN)];}
+   else{top=phCols.slice(0,Math.min(nP,phCols.length));while(top.length<nP)top.push(top.length===nP-1&&nP%2===0?"var(--n)":null);
+        bot=top.map((c,i)=>c==="var(--n)"?(g.kind==="MCB"?cVar(g.cN):"var(--n)"):(outCols[i]||c));}
+   p=devicePic(cx,y,{id:g.id+":m",kind:"mcb",label:`${g.ch}${g.In}`,top,bot,botHide:!lastPower,ferr:g.ferr,aria:`QF${r.n}`,poleLabels:top.map((c,i)=>c==="var(--n)"?["N","N"]:[i*2+1,i*2+2])});}
+  else if(d.t==="rcd"){const t2=[...phCols.map(()=>null),"var(--n)"],b2=[...outCols,g.nConn==="rcdOut"?cVar(g.cN):null];
+   p=devicePic(cx,y,{id:g.id+":r",kind:"rcd",label:`UZO ${g.rcdIn}A`,top:t2,bot:b2,botHide:!lastPower,rcdLast:true,idn:g.idn,ferr:g.ferr,aria:`UZO QF${r.n}`,poleLabels:t2.map((_,i)=>i===t2.length-1?["N","N"]:[i*2+1,i*2+2])});
+   if(!lastPower&&g.nConn==="rcdOut")p.svg+=poleWire(cx+(t2.length-1)*PW+PW/2,y+BH-10,y+BH+46,cVar(g.cN));}
+  else p=genericPic(cx,y,{t:d.t,mods:d.mods,gid:g.id,n:r.n,three,ph:outCols[0],last:true,ferr:g.ferr});
+  if(d.t==="km"){p=genericPic(cx,y,{t:"km",mods:d.mods,gid:g.id,n:r.n,three,ph:outCols[0],last:true,ferr:g.ferr});}
+  svg+=p.svg;placed.push({x:cx,w:p.w,t:d.t,phases:phCols.length});cx+=p.w+gap;
+ });
+ // quvvat zanjiri: oldingi apparat chiqishi -> keyingi apparat kirishi
+ for(let i=0;i+1<placed.length;i++){const a=placed[i],b=placed[i+1];if(!(b.t==="rcd"||b.t==="km"))continue;
+  for(let k=0;k<a.phases;k++){const ax=a.x+k*PW+PW/2,bx=b.x+k*PW+PW/2,gx=a.x+a.w+4+k*4;const col=outCols[k]||phCols[k];
+   svg+=poleWire(ax,y+BH-10,y+BH+8,col)+`<path d="M${ax} ${y+BH+6} V${y+BH+14+k*5} H${gx} V${y-34-k*4} H${bx} V${y+10}" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="round"/>`+(g.ferr?`<rect x="${bx-3.5}" y="${y-10}" width="7" height="12" rx="1.5" fill="var(--accent)"/><rect x="${ax-3.5}" y="${y+BH-2}" width="7" height="12" rx="1.5" fill="var(--accent)"/>`:"");}}
+ // boshqaruv simlari (KT/BL/KF -> KM g'altagi)
+ const km=placed.find(p=>p.t==="km");
+ placed.filter(p=>p.t==="kt"||p.t==="bl"||p.t==="kf").forEach(p=>{const fx=p.x+PW/2,kx=km.x+km.w/2;svg+=`<path d="M${fx} ${y-14} V${y-40} H${kx} V${y-4}" fill="none" stroke="#7a8086" stroke-width="1.6" stroke-dasharray="4 3"/>`;});
+ return {svg,w:cx-6-x,placed};
+}
 function renderRail(R){
- const m=S.main;
- // shinadagi ulanishlar (har bir guruhning N va PE simi qaysi shinaga tushgani)
+ const m=S.main,L=R.L;if(!L){$("#rail").innerHTML="";return;}
+ const E=L.E,X0=48,TOP=82,ROWSTEP=BH+156;
+ // shinadagi ulanishlar
  const peT=[],nT=[];
  R.groups.forEach(r=>{const g=r.g,rcd=hasRcd(g);
   if(g.nConn==="Nbus"||g.nConn==="PEbus")(g.nConn==="PEbus"?peT:nT).push({r,kind:"N",col:cVar(g.cN),wrong:g.nConn==="PEbus"||rcd});
   if(g.peConn!=="none")(g.peConn==="Nbus"?nT:peT).push({r,kind:"PE",col:cVar(g.cPE),wrong:g.peConn==="Nbus"});
  });
- const TS=16, PEX=24, peW=(peT.length+2)*TS, NX=PEX+peW+26, nW=(nT.length+2)*TS, zoneR=NX+nW;
- let x=60, body="", gcols=[];
- const mainTop=m.poles==="1P"?["var(--l1)"]:m.poles==="4P"?["var(--l1)","var(--l2)","var(--l3)","var(--n)"]:["var(--l1)","var(--l2)","var(--l3)"];
- const mpl=mainTop.map((_,i)=>i===3?["N","N"]:[i*2+1,i*2+2]);
- let d=devicePic(x,RY,{id:"main",kind:"mcb",label:`${m.ch}${m.In}`,top:mainTop,bot:mainTop,poleLabels:mpl,ferr:true,aria:"Kirish avtomati QF0"});
- body+=d.svg+`<text x="${x+d.w/2+24}" y="${RY-50}" text-anchor="start" font-size="9.5" font-weight="600" fill="var(--ink)">QF0 kirish</text>`;
- const mainX=x,mainW=d.w;x=Math.max(x+d.w+30,zoneR+30);
- const g0=x;
- R.groups.forEach(r=>{
-  const g=r.g,three=r.three,rcd=hasRcd(g),start=x;
-  const phCols=three?["var(--l1)","var(--l2)","var(--l3)"]:[wc(g.ph)];
-  const outCols=three?phCols:[cVar(g.cPh)];
-  const nSw=!three&&g.poles==="1P"&&g.kind==="MCB"&&g.sw==="N";
-  let devs=[];
-  if(g.kind==="RCBO"){
-   const top=[...phCols,"var(--n)"],bot=[...outCols,g.nConn==="rcdOut"?cVar(g.cN):null];
-   devs.push({id:g.id+":m",kind:"rcd",label:`${g.ch}${g.In}`,top,bot,rcdLast:true,idn:g.idn,poleLabels:top.map((_,i)=>i===top.length-1?["N","N"]:[i*2+1,i*2+2])});
+ let body="",rowX=Array(L.rows).fill(X0),rowGroups=Array(L.rows).fill(null).map(()=>[]);
+ POS={};const gpos={};let firstPanel=null;
+ L.items.forEach(it=>{
+  const y=TOP+it.row*ROWSTEP;let x=rowX[it.row];
+  if(it.kind==="p"){
+   const d=it.d;let p;
+   if(d.k==="hasMain"){const mt=m.poles==="1P"?["var(--l1)"]:m.poles==="4P"?[...L3C,"var(--n)"]:L3C;
+    p=devicePic(x,y,{id:"main",kind:"mcb",label:`${m.ch}${m.In}`,top:mt,bot:mt,poleLabels:mt.map((_,i)=>i===3?["N","N"]:[i*2+1,i*2+2]),ferr:true,aria:"Kirish avtomati QF0"});}
+   else p=genericPic(x,y,{t:d.k==="vrelay"?"kv":d.k==="lamps"?"hl":d.k,mods:d.mods});
+   body+=p.svg+`<g class="conn" data-infokey="${d.k==="hasMain"?"mcb":d.k}" tabindex="0" role="button" aria-label="${d.name} haqida"><rect x="${x}" y="${y-62}" width="${p.w}" height="16" fill="transparent"/><text class="qf" x="${x+p.w/2}" y="${y-50}" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--ink)" text-decoration="underline">${d.tag}</text></g>`;
+   POS[d.k==="hasMain"?"main":d.k]={x:x+p.w/2,y:y+BH/2};if(!firstPanel)firstPanel={x,y,w:p.w,k:d.k};
+   rowX[it.row]=x+p.w+20;
   }else{
-   let top,bot;
-   const nP=g.poles==="1P"?1:g.poles==="2P"?2:g.poles==="3P"?3:4;
-   if(nSw){top=["var(--n)"];bot=[cVar(g.cN)];}
-   else{top=phCols.slice(0,Math.min(nP,phCols.length));while(top.length<nP)top.push(top.length===nP-1&&nP%2===0?"var(--n)":null);
-        bot=top.map((c,i)=>c==="var(--n)"?(g.kind==="MCB"?cVar(g.cN):"var(--n)"):g.kind==="MCB+RCD"?c:(outCols[i]||c));}
-   devs.push({id:g.id+":m",kind:"mcb",label:`${g.ch}${g.In}`,top,bot,poleLabels:top.map((c,i)=>c==="var(--n)"?["N","N"]:[i*2+1,i*2+2])});
-   if(g.kind==="MCB+RCD"){
-    const t2=[...(three?phCols:[phCols[0]]),"var(--n)"],b2=[...outCols,g.nConn==="rcdOut"?cVar(g.cN):null];
-    devs[0].gapAfter=16;devs[0].botHide=true;
-    devs.push({id:g.id+":r",kind:"rcd",label:`UZO ${g.rcdIn}A`,fedByMcb:true,top:t2,bot:b2,rcdLast:true,idn:g.idn,poleLabels:t2.map((_,i)=>i===t2.length-1?["N","N"]:[i*2+1,i*2+2])});
-   }
+   const g=it.g,r=R.groups.find(z=>z.g.id===g.id);
+   const gp=groupDevPics(g,r,x,y);body+=gp.svg;
+   const cx=x+gp.w/2;
+   body+=`<g class="conn" data-conn="${g.id}" tabindex="0" role="button" aria-label="QF${r.n} ulanishlarini o'zgartirish"><rect x="${cx-18}" y="${y-62}" width="36" height="16" fill="transparent"/><text class="qf" x="${cx}" y="${y-50}" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--ink)" text-decoration="underline">QF${r.n}</text></g>`;
+   if(r.state==="bad")body+=badMark(cx+22,y-54);
+   gpos[g.id]={x:x+PW/2,y:y+BH/2,row:it.row};rowGroups[it.row].push({x0:x,x1:x+gp.w});
+   rowX[it.row]=x+gp.w+24;
   }
-  const dx=[];
-  devs.forEach(o=>{o.ferr=g.ferr;o.aria=`QF${r.n} ${g.name}`;
-   if(o.fedByMcb){o=Object.assign({},o,{top:o.top.map((c,i)=>i<o.top.length-1?null:c)});}
-   const p=devicePic(x,RY,o);body+=p.svg;dx.push({x,w:p.w,o});x+=p.w+(o.gapAfter||6);});
-  if(g.kind==="MCB+RCD"&&dx.length===2){
-   const a=dx[0],bb=dx[1];const n=bb.o.top.length-1;
-   for(let i=0;i<n;i++){const ax=a.x+i*PW+PW/2,bx=bb.x+i*PW+PW/2,gx=a.x+a.w+4+i*(n>1?4:0);
-    const col=a.o.bot[i]||"var(--l1)";
-    body+=poleWire(ax,RY+BH-10,RY+BH+8,col)+`<path d="M${ax} ${RY+BH+6} V${RY+BH+14+i*5} H${gx} V${RY-34-i*4} H${bx} V${RY+10}" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="round"/>`+(g.ferr?`<rect x="${bx-3.5}" y="${RY-10}" width="7" height="12" rx="1.5" fill="var(--accent)"/><rect x="${ax-3.5}" y="${RY+BH-2}" width="7" height="12" rx="1.5" fill="var(--accent)"/>`:"");}
-  }
-  const end=x-6,cx=(start+end)/2;
-  body+=`<g class="conn" data-conn="${g.id}" tabindex="0" role="button" aria-label="QF${r.n} ulanishlarini o'zgartirish"><rect x="${cx-18}" y="${RY-62}" width="36" height="16" fill="transparent"/><text class="qf" x="${cx}" y="${RY-50}" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--ink)" text-decoration="underline">QF${r.n}</text></g>`;
-  if(r.state==="bad")body+=badMark(cx+22,RY-54);
-  gcols.push({r,cx,start,end,dx,nSw});
-  x+=24;
  });
- const W=x+30,H=LOADY+62;
+ const rowsPix=Math.max(...rowX,X0+E.mods*PW+40);
+ const nG=R.groups.length;
+ const lastRowY=TOP+(L.rows-1)*ROWSTEP, lastDuct1=lastRowY+BH+38+34;
+ BUSY=lastDuct1+46;const MD0=BUSY+30,MD1=MD0+34;LD0=MD1+64;LD1=LD0+34;PB=LD1+48;LOADY=PB+92;
+ const TS=16,PEX=X0,peW=(peT.length+2)*TS,NX=PEX+peW+26,nW=(nT.length+2)*TS;
+ const step=46;let W=Math.max(rowsPix+20,NX+nW+40,X0+nG*step+60);
+ const genW=m.ats?150:0;const PW_=W;W+=genW;
+ const H=LOADY+64;
  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Yig'ilgan shit">`;
  s+=`<defs><pattern id="peh" width="16" height="12" patternUnits="userSpaceOnUse"><rect width="8" height="12" fill="var(--pe-y)"/></pattern></defs>`;
  // korpus
- s+=`<rect x="4" y="14" width="${W-8}" height="${PB-14}" rx="8" fill="none" stroke="${m.body==="1"?"var(--muted)":"var(--bad)"}" stroke-width="2"/>`;
- // DIN-reyka
- s+=`<rect x="10" y="${RY+BH/2-14}" width="${W-20}" height="28" fill="var(--rail)"/>`;
- for(let i=16;i<W-20;i+=26)s+=`<rect x="${i}" y="${RY+BH/2-3}" width="14" height="6" rx="3" fill="var(--rail-hole)"/>`;
- // taroq shina
- if(gcols.length)s+=`<rect x="${g0-6}" y="${RY-31}" width="${x-24-g0+12}" height="8" rx="2" fill="#5f666b"/><text x="${x-24+10}" y="${RY-24}" font-size="8" fill="var(--muted)">taroq shina</text>`;
- // kirish kabeli (yuqoridan, salnik orqali)
- const mc=mainX+mainW/2;
- s+=`<rect x="${mc-13}" y="0" width="26" height="12" fill="var(--sheath)"/><rect x="${mc-15}" y="8" width="30" height="12" rx="2" fill="#3d4247"/>`;
- mainTop.forEach((c,i)=>{const px=mainX+i*PW+PW/2;s+=`<path d="M${mc-6+i*4} 20 V${30+i*3} H${px} V${RY-24}" fill="none" stroke="${c}" stroke-width="3.5" stroke-linejoin="round"/>`;});
- const xin1=34,xin2=46; // PEN / PE / N kirish simlari, chap tomondan kanalga
- const peT0=PEX+TS*0.5, nT0=NX+TS*0.5;
- if(m.earth==="TN-C-S"){
-  const tgt=m.pen==="toN"?nT0:peT0;
-  const d1=`M${mc-10} 20 V${28} H${xin1} V${UD0+10}`;
+ const bodyBad=m.body!=="1"&&E.mat==="metall";
+ s+=`<rect x="4" y="14" width="${PW_-8}" height="${PB-14}" rx="8" fill="${E.mat==="metall"?"var(--surface)":"var(--surface-2)"}" fill-opacity=".35" stroke="${bodyBad?"var(--bad)":"var(--muted)"}" stroke-width="2"/>`;
+ s+=`<text x="${PW_-14}" y="${PB-6}" text-anchor="end" font-size="9" fill="var(--muted)">${E.name} · ${E.rows}×${E.mods} modul · ${E.dims} mm · ${E.mat} · band: ${L.total}/${L.cap}</text>`;
+ // qatorlar: reyka, kanal
+ for(let i=0;i<L.rows;i++){const y=TOP+i*ROWSTEP,over=i>=E.rows;
+  s+=`<rect x="${X0-6}" y="${y+BH/2-14}" width="${Math.max(E.mods*PW+12,rowX[i]-X0)}" height="28" fill="${over?"var(--bad-soft)":"var(--rail)"}"${over?' stroke="var(--bad)" stroke-dasharray="6 4"':""}/>`;
+  for(let k=X0;k<X0+Math.max(E.mods*PW,rowX[i]-X0-12);k+=26)s+=`<rect x="${k}" y="${y+BH/2-3}" width="14" height="6" rx="3" fill="var(--rail-hole)"/>`;
+  if(over)s+=`<text x="${X0}" y="${y-64}" font-size="10" font-weight="700" fill="var(--bad)">Shitga sig'madi (${i+1}-qator ortiqcha)</text>`;
+  if(rowGroups[i].length){const a=rowGroups[i][0].x0-6,b=rowGroups[i][rowGroups[i].length-1].x1+6;s+=`<rect x="${a}" y="${y-31}" width="${b-a}" height="8" rx="2" fill="#5f666b"/>`;}
+ }
+ // kirish kabeli
+ const gx=X0+10;
+ s+=`<rect x="${gx-13}" y="0" width="26" height="12" fill="var(--sheath)"/><rect x="${gx-15}" y="8" width="30" height="12" rx="2" fill="#3d4247"/>`;
+ if(firstPanel&&firstPanel.y===TOP){L3C.forEach((c,i)=>{const px=firstPanel.k==="meter"?firstPanel.x+PW*(1+2*i)+PW/2:firstPanel.x+i*PW+PW/2;s+=`<path d="M${gx-4+i*4} 20 V${34+i*4} H${px} V${TOP-24}" fill="none" stroke="${c}" stroke-width="3.5" stroke-linejoin="round"/>`;});}
+ else L3C.forEach((c,i)=>{s+=`<path d="M${gx-4+i*4} 20 V${34+i*4} H${24+i*3} V${TOP+BH+46}" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round"/>`;});
+ // PEN/N/PE: chap vertikal kanal orqali shinalarga
+ const peT0=PEX+TS*0.5,nT0=NX+TS*0.5;
+ if(m.earth==="TN-C-S"){const tgt=m.pen==="toN"?nT0:peT0;
+  const d1=`M${gx-10} 20 V28 H22 V${BUSY-18} H${tgt} V${BUSY}`;
   s+=`<path d="${d1}" fill="none" stroke="var(--pe-g)" stroke-width="4.5" stroke-linejoin="round"/><path d="${d1}" fill="none" stroke="var(--n)" stroke-width="4.5" stroke-dasharray="4 10" stroke-linejoin="round"/>`;
-  s+=`<path d="M${tgt} ${UD1-8} V${BUSY}" fill="none" stroke="var(--pe-g)" stroke-width="4.5"/><path d="M${tgt} ${UD1-8} V${BUSY}" fill="none" stroke="var(--n)" stroke-width="4.5" stroke-dasharray="4 10"/>`;
-  s+=`<text x="${xin1+6}" y="${RY-34}" font-size="9" fill="var(--muted)">PEN</text>`;
- }else{
-  s+=corePath(`M${mc-10} 20 V28 H${xin1} V${UD0+10}`,"PE",4)+corePath(`M${peT0} ${UD1-8} V${BUSY}`,"PE",4);
-  s+=corePath(`M${mc+10} 20 V24 H${xin2} V${UD0+10}`,"var(--n)",4)+corePath(`M${nT0} ${UD1-8} V${BUSY}`,"var(--n)",4);
+ }else{s+=corePath(`M${gx-10} 20 V28 H20 V${BUSY-14} H${peT0} V${BUSY}`,"PE",4)+corePath(`M${gx+10} 20 V24 H28 V${BUSY-22} H${nT0} V${BUSY}`,"var(--n)",4);}
+ // generator
+ if(m.ats&&POS.ats){const gxx=PW_+20,gyy=TOP+10;
+  s+=`<g data-dev="gen"><rect x="${gxx}" y="${gyy}" width="110" height="74" rx="6" fill="#e0a21b" stroke="#6b4c08" stroke-width="1.5"/><rect x="${gxx+8}" y="${gyy+8}" width="48" height="58" rx="3" fill="#3a3f44"/><g class="fan" style="transform-origin:${gxx+32}px ${gyy+37}px">${[0,1,2,3].map(i=>`<rect x="${gxx+30}" y="${gyy+17}" width="4" height="20" rx="2" fill="#9aa0a5" transform="rotate(${i*90} ${gxx+32} ${gyy+37})"/>`).join("")}</g>`;
+  s+=`<text x="${gxx+84}" y="${gyy+30}" text-anchor="middle" font-size="16" font-weight="700" fill="#2a1d00">G</text><text x="${gxx+84}" y="${gyy+48}" text-anchor="middle" font-size="9" fill="#2a1d00">${m.genKW} kVt</text><circle class="genled" cx="${gxx+84}" cy="${gyy+62}" r="4" fill="#3a3f44"/></g>`;
+  s+=`<path d="M${gxx} ${gyy+50} H${PW_-2}" stroke="var(--sheath)" stroke-width="8"/><text x="${gxx}" y="${gyy+96}" font-size="9" fill="var(--muted)">Generator → АВР (II kirish)</text>`;
  }
- // guruh simlari: apparat -> yuqori kanal -> (dasta) -> pastki kanal
- gcols.forEach(c=>{
-  const g=c.r.g,last=c.dx[c.dx.length-1];
-  const cores=[];
-  last.o.bot.forEach((col,i)=>{if(!col)return;cores.push({px:last.x+i*PW+PW/2,col});});
-  if(c.dx.length===1&&g.kind!=="MCB+RCD"){} // bitta apparat
-  if(c.nSw){cores.unshift({px:c.start-8,col:cVar(g.cPh)});s+=core(c.start-8,RY-26,UD0+10,cVar(g.cPh))+`<text x="${c.start-10}" y="${RY+BH+30}" text-anchor="end" font-size="8.5" fill="var(--bad)">faza avtomatsiz</text>`;}
-  cores.forEach(k=>{s+=core(k.px,UD1-8,LD0+10,k.col==="PE"?"PE":k.col);c.flows=(c.flows||"")+`<line class="flw off" data-flw="${g.id}" x1="${k.px}" y1="${UD1+2}" x2="${k.px}" y2="${LD0}"/>`;});
-  c.cores=cores;
- });
- // shinalar (izolyatorlarda)
- const bus=(x0,w,fill,pat,lbl)=>`<rect x="${x0-6}" y="${BUSY+2}" width="10" height="16" rx="2" fill="#6b7277"/><rect x="${x0+w-4}" y="${BUSY+2}" width="10" height="16" rx="2" fill="#6b7277"/><rect x="${x0}" y="${BUSY-7}" width="${w}" height="14" rx="2" fill="${fill}"/>${pat?`<rect x="${x0}" y="${BUSY-7}" width="${w}" height="14" rx="2" fill="url(#peh)"/>`:""}<text x="${x0}" y="${BUSY-22}" font-size="9.5" font-weight="700" fill="var(--ink)">${lbl}</text>`;
+ // guruh dastalari (o'rta kanaldan pastki kanalgacha)
+ const bund={};let bx=Math.max(X0+20,NX+nW+30);const bstep=Math.max(step,(PW_-bx-30)/Math.max(1,nG));
+ if(bx+nG*bstep>PW_-20)bx=X0+20;
+ R.groups.forEach((r,i)=>{const g=r.g;const cx=bx+i*bstep+bstep/2;const cores=[];
+  (r.three?L3C:[cVar(g.cPh)]).forEach(c=>cores.push(c));
+  if(g.nConn!=="none")cores.push(cVar(g.cN));if(g.peConn!=="none")cores.push(cVar(g.cPE));
+  const w0=(cores.length-1)*6;let fl="";
+  cores.forEach((c,k)=>{const px=cx-w0/2+k*6;s+=core(px,MD1-8,LD0+10,c==="PE"?"PE":c,3);if(k<(r.three?3:1))fl+=`<line class="flw off" data-flw="${g.id}" x1="${px}" y1="${MD1+2}" x2="${px}" y2="${LD0}"/>`;});
+  s+=fl+`<rect x="${cx-w0/2-5}" y="${MD1+12}" width="${w0+10}" height="4" rx="2" fill="var(--tie)"/><rect x="${cx-w0/2-5}" y="${LD0-14}" width="${w0+10}" height="4" rx="2" fill="var(--tie)"/>`;
+  bund[g.id]=cx;});
+ // shinalar
+ const bus=(x0,w,fill,pat,lbl)=>`<rect x="${x0-6}" y="${BUSY+2}" width="10" height="16" rx="2" fill="#6b7277"/><rect x="${x0+w-4}" y="${BUSY+2}" width="10" height="16" rx="2" fill="#6b7277"/><rect x="${x0}" y="${BUSY-7}" width="${w}" height="14" rx="2" fill="${fill}"/>${pat?`<rect x="${x0}" y="${BUSY-7}" width="${w}" height="14" rx="2" fill="url(#peh)"/>`:""}<text x="${x0}" y="${BUSY-24}" font-size="9.5" font-weight="700" fill="var(--ink)">${lbl}</text>`;
  s+=bus(PEX,peW,"var(--pe-g)",true,"PE shina")+bus(NX,nW,"var(--n)",false,"N shina");
- // peremichka
- if(m.earth==="TN-C-S"){
-  if(m.pen!=="none")s+=`<rect x="${PEX+peW-10}" y="${BUSY+9}" width="${NX-PEX-peW+20}" height="6" rx="2" fill="#9aa0a5"/>`+screwS(PEX+peW-6,BUSY+12)+screwS(NX+6,BUSY+12);
-  else s+=badMark((PEX+peW+NX)/2,BUSY+14);
-  if(m.pen==="toN")s+=badMark(nT0,BUSY-24);
- }
+ if(m.earth==="TN-C-S"){if(m.pen!=="none")s+=`<rect x="${PEX+peW-10}" y="${BUSY+9}" width="${NX-PEX-peW+20}" height="6" rx="2" fill="#9aa0a5"/>`+screwS(PEX+peW-6,BUSY+12)+screwS(NX+6,BUSY+12);else s+=badMark((PEX+peW+NX)/2,BUSY+14);if(m.pen==="toN")s+=badMark(nT0,BUSY-30);}
  if(m.body==="1")s+=corePath(`M${PEX} ${BUSY} H8`,"PE",3);
- // shina klemmalari va guruh simlari
  const drawTaps=(arr,x0)=>{arr.forEach((t,k)=>{const tx=x0+TS*(k+1.5);
-  s+=core(tx,BUSY,LD0+10,t.col==="PE"?"PE":t.col,3)+screwS(tx,BUSY);
-  s+=`<text x="${tx}" y="${BUSY-10}" text-anchor="middle" font-size="8" font-weight="600" fill="var(--ink)">${t.r.n}</text>`;
+  s+=core(tx,BUSY,MD0+10,t.col==="PE"?"PE":t.col,3)+screwS(tx,BUSY)+`<text x="${tx}" y="${BUSY-10}" text-anchor="middle" font-size="8" font-weight="600" fill="var(--ink)">${t.r.n}</text>`;
   if(t.wrong)s+=`<circle cx="${tx}" cy="${BUSY}" r="8" fill="none" stroke="var(--bad)" stroke-width="2"/>`;
   s+=`<g class="conn" data-conn="${t.r.g.id}"><circle cx="${tx}" cy="${BUSY-4}" r="9" fill="transparent"/></g>`;});};
  drawTaps(peT,PEX);drawTaps(nT,NX);
- // dasta xomutlari
- gcols.forEach(c=>{if(!c.cores.length)return;const xs=c.cores.map(k=>k.px);const a=Math.min(...xs)-5,b=Math.max(...xs)+5;
-  [UD1+8,LD0-8].forEach(yy=>{s+=`<rect x="${a}" y="${yy-2}" width="${b-a}" height="4" rx="2" fill="var(--tie)"/>`;});});
- // kanallar (simlar ustidan)
- s+=gcols.map(c=>c.flows||"").join("");
- mainTop.forEach((c,i)=>{const px=mainX+i*PW+PW/2;s+=`<line class="flw off" data-flw="main" x1="${px}" y1="${RY+BH+12}" x2="${px}" y2="${UD0+6}"/>`;});
- s+=duct(10,W-10,UD0,UD1,"kabel kanal")+duct(10,W-10,LD0,LD1,"kabel kanal");
+ // kanallar (simlar ustidan): har qator ostida, o'rta, pastki, yon tomonlar
+ for(let i=0;i<L.rows;i++){const y=TOP+i*ROWSTEP+BH+38;s+=duct(12,PW_-12,y,y+34,i===0?"kabel kanal":"");}
+ s+=duct(12,PW_-12,MD0,MD1,"")+duct(12,PW_-12,LD0,LD1,"kabel kanal");
+ s+=vduct(12,34,TOP+BH+38,LD1)+vduct(PW_-34,PW_-12,TOP+BH+38,LD1);
  s+=body;
- // pastki kanaldan chiquvchi kabellar, markirovka, salnik
- gcols.forEach(c=>{
-  const g=c.r.g,lx=c.cx;
+ // asosiy kirish oqimi
+ if(POS.main){const p=POS.main;s+=`<line class="flw off" data-flw="main" x1="${p.x}" y1="${TOP+BH+12}" x2="${p.x}" y2="${TOP+BH+44}"/>`;}
+ // kabellar
+ R.groups.forEach(r=>{const g=r.g,lx=bund[g.id];
   s+=`<g data-cable="${g.id}">`;
   s+=`<line class="cab" x1="${lx}" y1="${LD1-6}" x2="${lx}" y2="${PB}" stroke="var(--sheath)" stroke-width="12"/>`;
   s+=`<line class="cab" x1="${lx}" y1="${PB+8}" x2="${lx}" y2="${LOADY-20}" stroke="var(--sheath)" stroke-width="12" stroke-linecap="round"/>`;
   s+=`<line class="flw off" data-flw="${g.id}" x1="${lx}" y1="${PB+10}" x2="${lx}" y2="${LOADY-22}"/>`;
   s+=`<g class="flm" opacity="0"><path class="flame" d="M${lx-7} ${PB+70} q-3 -14 7 -24 q-1 10 6 14 q3 -6 1 -12 q8 8 2 22 z" fill="#ff7a1a"/><path class="flame" d="M${lx-3} ${PB+70} q-1 -8 4 -13 q0 6 4 8 q2 4 -1 5 z" fill="#ffd23a" style="animation-delay:.07s"/></g>`;
   s+=`<g class="smk" opacity="0"><circle class="smoke" cx="${lx-6}" cy="${PB+30}" r="5" fill="#8b8f93"/><circle class="smoke" cx="${lx+6}" cy="${PB+46}" r="6" fill="#8b8f93" style="animation-delay:.6s"/></g>`;
-  s+=`<text class="ctemp" x="${lx+11}" y="${PB+44}" font-size="9.5" font-weight="600" fill="var(--ink)">25°C</text></g>`;
-  s+=`<g class="conn" data-conn="${g.id}" tabindex="0" role="button" aria-label="QF${c.r.n} ulanishlarini o'zgartirish"><rect class="slv" x="${lx-15}" y="${LD1+7}" width="30" height="15" rx="2" fill="var(--sleeve)" stroke="#9aa0a5" stroke-width=".8"/><text x="${lx}" y="${LD1+18}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1d2125">QF${c.r.n}</text></g>`;
+  s+=`<text class="ctemp" x="${lx+9}" y="${PB+44}" font-size="9" font-weight="600" fill="var(--ink)">25°C</text></g>`;
+  s+=`<g class="conn" data-conn="${g.id}" tabindex="0" role="button" aria-label="QF${r.n} ulanishlarini o'zgartirish"><rect class="slv" x="${lx-15}" y="${LD1+7}" width="30" height="15" rx="2" fill="var(--sleeve)" stroke="#9aa0a5" stroke-width=".8"/><text x="${lx}" y="${LD1+18}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1d2125">QF${r.n}</text></g>`;
   s+=`<rect x="${lx-11}" y="${PB-5}" width="22" height="13" rx="2" fill="#3d4247"/><rect x="${lx-8}" y="${PB-9}" width="16" height="5" rx="1" fill="#555c61"/>`;
-  s+=`<text x="${lx+11}" y="${PB+24}" font-size="8.5" fill="var(--muted)">${g.cores}×${g.S} ${g.mat}</text>`;
-  s+=loadIcon(lx,LOADY,g.type,c.r.three);
-  nameLines(g.name,14).forEach((t,k)=>{s+=`<text x="${lx}" y="${LOADY+26+k*11}" text-anchor="middle" font-size="9" fill="var(--ink)">${esc(t)}</text>`;});
+  s+=`<text x="${lx+9}" y="${PB+24}" font-size="8" fill="var(--muted)">${g.cores}×${g.S}</text>`;
+  s+=loadIcon(lx,LOADY,g.type,r.three);
+  nameLines(g.name,11).forEach((t,k)=>{s+=`<text x="${lx}" y="${LOADY+26+k*11}" text-anchor="middle" font-size="8.5" fill="var(--ink)">${esc(t)}</text>`;});
   s+=`<g data-bolt="${g.id}" opacity="0"><path d="M${lx+16} ${LOADY-16} l-6 10 h5 l-4 9 l10-12 h-5 l4-7z" fill="var(--bad)"/></g>`;
+  POS[g.id]=Object.assign({},gpos[g.id]||{x:lx,y:LOADY},{lx,ly:PB+40,ld:LOADY});
  });
+ if(!R.groups.length)s+=`<text x="${X0}" y="${LD1+30}" font-size="11" fill="var(--muted)">Guruhlar yo'q: 2-bo'limda "+ Guruh qo'shish"</text>`;
  s+=`<g id="fxLayer"></g></svg>`;
  $("#rail").innerHTML=s;
- POS={main:{x:mc,y:RY+BH/2}};
- gcols.forEach(c=>{POS[c.r.g.id]={x:c.dx[0].x+c.dx[0].w/2,y:RY+BH/2,lx:c.cx,ly:PB+40,ld:LOADY};});
+ $("#enclInfo").textContent=`${E.name}: ${L.total}/${L.cap} modul band`;
  applyZoom();
 }
 function cableColor(T,burnt){if(burnt)return "#1b1b1b";if(T<60)return "var(--sheath)";if(T<70)return "#d8b632";if(T<90)return "#e5862a";return "#d33a25";}
@@ -1031,7 +1320,10 @@ function toast(msg,lvl){
 
 /* ================= SIMULYATSIYA ================= */
 let R=null;
-const sim={run:true,t:0,main:{on:true,H:0},g:{},nBreak:false,log:[]};
+const sim={run:true,t:0,main:{on:true,H:0},g:{},nBreak:false,log:[],flags:{},sw:true,grid:true,gen:false,ats:"I",atsT:0,genOver:0,vrTrip:false,vrT:0,day:true,kwh:0,phaseLoss:null,surgeT:0,spdUsed:false};
+function srcOn(){if(!S.main.ats)return sim.grid;return sim.ats==="I"?sim.grid:sim.ats==="II"?sim.gen:false;}
+function upOn(){return (!S.main.hasMain||sim.main.on)&&(!S.main.sw||sim.sw)&&srcOn()&&!(S.main.vrelay&&sim.vrTrip);}
+function ctrlOn(g,st){if(!g)return true;if(st.kfTrip)return false;if(g.ctrl==="btn")return st.km!==false;if(g.ctrl==="timer")return Math.floor(sim.t/8)%2===0;if(g.ctrl==="photo")return !sim.day;return true;}
 function simG(id){if(!sim.g[id]){const g=S.groups.find(x=>x.id==id);const kc=g?Math.min(1,Math.max(0,+g.kc||1)):1;sim.g[id]={load:Math.round(kc*100/5)*5,on:true,rcdOn:true,H:0,sc:false,body:false,burnt:false,T:25,Tt:25,I:0,stage:0,flags:{}};}return sim.g[id];}
 function logEv(t,lvl){sim.log.unshift({t:sim.t,m:t,lvl});sim.log=sim.log.slice(0,60);renderLog();if(lvl==='bad'||lvl==='ok')toast(t,lvl);if(lvl==='bad')beep('warn');}
 function renderLog(){$("#log").innerHTML=sim.log.length?sim.log.map(e=>`<div><span class="t">${fmt(e.t,1)} s</span><span style="color:${e.lvl==="bad"?"var(--bad)":e.lvl==="warn"?"var(--warn)":"var(--ink)"}">${e.m}</span></div>`).join(""):`<div class="muted">Hozircha hodisa yo'q. Ssenariyni tanlang yoki yuklamani oshiring.</div>`;}
@@ -1048,14 +1340,14 @@ function buildSim(){
  renderRail(R);renderLog();updateSim();
 }
 function tripCurve(m){return 10/(m*m-1);}
-function powered(g,st){return sim.main.on&&st.on&&st.rcdOn;}
+function powered(g,st){return upOn()&&st.on&&st.rcdOn&&ctrlOn(g,st)&&!st.dmg&&!(g&&sim.phaseLoss&&g.phases!=3&&g.ph===sim.phaseLoss);}
 function nVoltages(){
  const Y0={L1:0,L2:0,L3:0};
  const nBroken=sim.nBreak||(S.main.earth==="TN-C-S"&&S.main.pen==="none");
  R.groups.forEach(r=>{if(r.three)return;const st=simG(r.g.id);if(!powered(r.g,st)||st.sc)return;Y0[r.g.ph]+=r.P*1000*st.load/100/(U1*U1);});
  const ang={L1:0,L2:-2*Math.PI/3,L3:2*Math.PI/3};const sy=Y0.L1+Y0.L2+Y0.L3;
- if(!sim.main.on)return{L1:0,L2:0,L3:0,Vn:0,nBroken};
- if(!nBroken||sy===0)return{L1:220,L2:220,L3:220,Vn:0,nBroken};
+ if(!upOn())return{L1:0,L2:0,L3:0,Vn:0,nBroken};
+ if(!nBroken||sy===0){const o={L1:220,L2:220,L3:220,Vn:0,nBroken};if(sim.phaseLoss)o[sim.phaseLoss]=0;return o;}
  let re=0,im=0;PH.forEach(p=>{re+=U1*Math.cos(ang[p])*Y0[p];im+=U1*Math.sin(ang[p])*Y0[p];});re/=sy;im/=sy;
  const out={Vn:Math.hypot(re,im),nBroken};PH.forEach(p=>{out[p]=Math.hypot(U1*Math.cos(ang[p])-re,U1*Math.sin(ang[p])-im);});return out;
 }
@@ -1063,22 +1355,41 @@ function once(st,key,msg,lvl){if(!st.flags[key]){st.flags[key]=true;logEv(msg,lv
 function tripMain(why){sim.main.on=false;sim.main.H=0;fxTrip('main','trip');logEv(`QF0 kirish avtomati o'chdi: ${why}.`,"bad");}
 function tick(dt){
  sim.t+=dt;
+ const m=S.main;
+ if(m.ats){
+  if(!sim.grid){if(sim.ats==="I"){sim.ats="0";sim.atsT=0;logEv("АВР: tarmoqda kuchlanish yo'q. Generator ishga tushirilmoqda…","warn");}
+   sim.atsT+=dt;if(!sim.gen&&sim.ats!=="II"&&sim.atsT>1.5&&sim.genOver<6){sim.gen=true;logEv("Generator ishga tushdi, aylanishlar barqarorlashmoqda.","ok");}
+   if(sim.ats==="0"&&sim.gen&&sim.atsT>3){sim.ats="II";fxTrip("ats","rcd");logEv("АВР yuklamani generatorga o'tkazdi (II kirish). Shit yana ishlayapti.","ok");}}
+  else{if(sim.ats==="II"){sim.ats="0";sim.atsT=0;logEv("Tarmoq qaytdi. АВР tarmoqqa qaytmoqda…","warn");}
+   if(sim.ats==="0"){sim.atsT+=dt;if(sim.atsT>2){sim.ats="I";sim.gen=false;sim.genOver=0;logEv("АВР tarmoqqa qaytdi, generator to'xtadi.","ok");}}}
+  if(sim.ats==="II"&&sim.gen){const kw=sim._kw||0;if(kw>+m.genKW){sim.genOver+=dt;once(sim,"genov",`Generator o'ta yuklandi: ${fmt(kw,1)} kVt > ${m.genKW} kVt.`,"warn");if(sim.genOver>6){sim.gen=false;sim.ats="0";sim.atsT=0;logEv("Generator o'ta yuklanishdan to'xtadi. Muhim bo'lmagan guruhlarni o'chiring yoki kattaroq generator oling.","bad");}}else{sim.genOver=Math.max(0,sim.genOver-dt);sim.flags.genov=false;}}
+ }else if(!sim.grid)once(sim,"blk","Tarmoq o'chdi. АВР va generator yo'q: shit to'liq o'chdi.","bad");
+ if(sim.grid)sim.flags.blk=false;
+ const nB=sim.nBreak||(m.earth==="TN-C-S"&&m.pen==="none");
+ const abn=srcOn()&&(nB||!!sim.phaseLoss||sim.surgeT>0);
+ if(m.vrelay){if(abn&&!sim.vrTrip){sim.vrTrip=true;sim.vrT=0;fxTrip("vrelay","rcd");logEv(`KV1 kuchlanish relesi shitni o'chirdi: ${nB?"nol uzilgan, fazalarda kuchlanish og'di":sim.phaseLoss?sim.phaseLoss+" fazada kuchlanish yo'q":"kuchlanish sakradi"}. Jihozlar saqlandi.`,"ok");}
+  if(!abn&&sim.vrTrip){sim.vrT+=dt;if(sim.vrT>5){sim.vrTrip=false;logEv("KV1: kuchlanish me'yorga qaytdi, 5 s kutib shitni qayta yoqdi.","ok");}}}
+ if(sim.surgeT>0)sim.surgeT-=dt;
  const V=nVoltages();
  const danger=[];
  R.groups.forEach(r=>{
   const g=r.g,st=simG(g.id),t=`QF${r.n}`,rcd=hasRcd(g);
   const nSw=!r.three&&g.poles==="1P"&&g.kind==="MCB"&&g.sw==="N";
   const pw=powered(g,st);
+  if(r.three&&sim.phaseLoss&&pw&&g.nConn==="none"){if(g.pfr){st.kfTrip=true;fxTrip(g.id,"rcd");logEv(`${t}: KF faza nazorat relesi ${sim.phaseLoss} yo'qligini sezdi va kontaktorni o'chirdi. Dvigatel saqlandi.`,"ok");}
+   else{st.mT=(st.mT||0)+dt;once(st,"ph2",`${t}: ${sim.phaseLoss} faza yo'q, dvigatel ikki fazada ishlab qizimoqda (tok 1,7 baravar)!`,"bad");if(st.mT>10&&!st.dmg){st.dmg=true;fxTrip(g.id,"burn");logEv(`${t}: dvigatel cho'lg'ami kuydi. Faza nazorat relesi bo'lganda bu sodir bo'lmasdi.`,"bad");}}}
+  if(!sim.phaseLoss)st.kfTrip=false;
   // faza qolgan (avtomat N da)
-  const phaseLive=sim.main.on&&(nSw?true:pw);
-  if(nSw&&sim.main.on&&!pw){once(st,"nsw",`${t} o'chirilgan, lekin avtomat nolni uzgani uchun jihozda faza qoldi. Ta'mirlash xavfli!`,"bad");danger.push(`${t}: avtomat o'chiq, lekin jihozda faza bor`);}
+  const phaseLive=upOn()&&(nSw?true:pw);
+  if(nSw&&upOn()&&!pw){once(st,"nsw",`${t} o'chirilgan, lekin avtomat nolni uzgani uchun jihozda faza qoldi. Ta'mirlash xavfli!`,"bad");danger.push(`${t}: avtomat o'chiq, lekin jihozda faza bor`);}
   else st.flags.nsw=false;
   // tok
   let I=0,Ifault=0;
   if(pw){
    const k=r.three?1:(V[g.ph]/U1);
    I=st.sc?r.Ik:r.Ib*st.load/100*k;
-   if(V.nBroken&&!r.three&&V[g.ph]>253)once(st,"ov",`${t}: kuchlanish ${fmt(V[g.ph],0)} V. Jihoz kuyishi mumkin!`,"bad");
+   if(r.three&&sim.phaseLoss&&!st.sc)I*=g.nConn==="none"?1.73:0.67;
+   if(V.nBroken&&!r.three&&V[g.ph]>253){once(st,"ov",`${t}: kuchlanish ${fmt(V[g.ph],0)} V. Jihoz kuyishi mumkin!`,"bad");st.ovT=(st.ovT||0)+dt;if(st.ovT>4&&!st.dmg&&g.type!=="light"){st.dmg=true;fxTrip(g.id,"burn");logEv(`${t}: ${fmt(V[g.ph],0)} V dan jihoz kuydi. Kuchlanish relesi (РН) bo'lsa, oldindan o'chirgan bo'lardi.`,"bad");}}
   }
   // korpusga tok
   if(st.body&&phaseLive){
@@ -1099,7 +1410,7 @@ function tick(dt){
   // avtomat (faza uzadigan bo'lsa ko'radi)
   const Ib_seen=nSw?(st.body?0:I):I+Ifault; // N dagi avtomat korpus nosozligini ko'rmaydi
   if(nSw&&st.body&&g.peConn!=="none"&&!rcd){once(st,"nswbody",`${t}: korpus nosozligi toki faza → PE orqali ketyapti, nol simdagi avtomat uni ko'rmaydi va o'chmaydi!`,"bad");}
-  if(st.on&&sim.main.on&&(I>0||Ifault>0)){
+  if(st.on&&upOn()&&(I>0||Ifault>0)){
    const m=Ib_seen/g.In;
    if(m>=MAG_SIM[g.ch]){fxTrip(g.id,'sc');st.on=false;st.H=0;logEv(`${t} o'chdi: ${st.sc?"qisqa tutashuv":st.body?"korpusga tok o'tishi":"katta tok"}, ${fmt(Ib_seen,0)} A = ${fmt(m,1)}·In. Elektromagnit ajratgich darhol ishladi.`,"ok");if(st.body)st.body=false;}
    else if(m>1.13){st.H+=dt/tripCurve(m);
@@ -1107,7 +1418,7 @@ function tick(dt){
     if(st.H>=1){fxTrip(g.id,'trip');st.on=false;st.H=0;st.flags.bh=false;logEv(`${t} o'chdi: o'ta yuklanish ${fmt(m,2)}·In, issiqlik ajratgich (bimetall) ishladi.${st.sc?" QT toki kichik bo'lgani uchun o'chish kechikdi: kesimni oshiring yoki B xarakteristika oling.":""}`,st.sc?"bad":"warn");}}
    else{st.H=Math.max(0,st.H-dt/25);st.flags.bh=false;}
   }else st.H=Math.max(0,st.H-dt/25);
-  if(!st.on||!st.rcdOn||!sim.main.on){I=0;}
+  if(!st.on||!st.rcdOn||!upOn()){I=0;}
   st.I=I+Ifault;
   // kabel harorati
   const Iz=r.Iz||1;
@@ -1128,16 +1439,18 @@ function tick(dt){
  // kirish avtomati
  const phI={L1:0,L2:0,L3:0};
  R.groups.forEach(r=>{const st=simG(r.g.id);if(!st.I)return;if(r.three)PH.forEach(p=>phI[p]+=st.I);else phI[r.g.ph]+=st.I;});
- if(sim.main.on){
+ sim._kw=R.groups.reduce((acc,r)=>{const st=simG(r.g.id);return acc+(st.I&&!st.sc&&!st.body?st.I*(r.three?SQ3*U3:U1)*r.cos/1000:0);},0);
+ sim.kwh+=sim._kw*dt/60;
+ if(S.main.hasMain&&sim.main.on&&srcOn()&&(!S.main.sw||sim.sw)){
   const mI=Math.max(...PH.map(p=>phI[p]))/S.main.In;
   if(mI>=MAG_SIM[S.main.ch])tripMain("katta tok, elektromagnit ajratgich (selektivlik buzildi)");
   else if(mI>1.13){sim.main.H+=dt/tripCurve(mI);if(sim.main.H>=1)tripMain(`o'ta yuklanish ${fmt(mI,2)}·In`);}
   else sim.main.H=Math.max(0,sim.main.H-dt/25);
  }
- if(V.nBroken&&sim.main.on&&!sim._nw){const hi=PH.filter(p=>V[p]>253);if(hi.length){sim._nw=true;logEv(`Nol uzilgan: ${hi.map(p=>p+" "+fmt(V[p],0)+" V").join(", ")}. Shu fazadagi jihozlar kuyishi mumkin.`,"bad");}}
+ if(V.nBroken&&upOn()&&!sim._nw){const hi=PH.filter(p=>V[p]>253);if(hi.length){sim._nw=true;logEv(`Nol uzilgan: ${hi.map(p=>p+" "+fmt(V[p],0)+" V").join(", ")}. Shu fazadagi jihozlar kuyishi mumkin.`,"bad");}}
  if(!V.nBroken)sim._nw=false;
  // nol uzilganda PE→N ulangan jihozlar korpusi
- if(V.nBroken&&sim.main.on)R.groups.forEach(r=>{if(r.g.peConn==="Nbus"&&!r.three){const st=simG(r.g.id);if(powered(r.g,st)){danger.push(`QF${r.n}: PE N ga ulangan, nol uzildi, korpusda ${fmt(V.Vn,0)} V`);once(st,"nbrkPE",`QF${r.n}: nol uzildi, PE N shinaga ulangani uchun jihoz korpusida ${fmt(V.Vn,0)} V paydo bo'ldi!`,"bad");}}});
+ if(V.nBroken&&upOn())R.groups.forEach(r=>{if(r.g.peConn==="Nbus"&&!r.three){const st=simG(r.g.id);if(powered(r.g,st)){danger.push(`QF${r.n}: PE N ga ulangan, nol uzildi, korpusda ${fmt(V.Vn,0)} V`);once(st,"nbrkPE",`QF${r.n}: nol uzildi, PE N shinaga ulangani uchun jihoz korpusida ${fmt(V.Vn,0)} V paydo bo'ldi!`,"bad");}}});
  sim._V=V;sim._phI=phI;sim._danger=danger;
 }
 function updateSim(){
@@ -1159,7 +1472,10 @@ function updateSim(){
   const tb=row.querySelector("[data-tb]");tb.style.width=Math.min(100,(st.T-25)/(150-25)*100)+"%";tb.style.background=st.burnt?"#1b1b1b":st.T>90?"var(--bad)":st.T>70?"var(--warn)":"var(--ok)";
   let msg="",lvl="";
   if(st.burnt){msg="Kabel kuygan. Uni almashtirmaguncha yoqib bo'lmaydi (\"Tiklash\" tugmasi).";lvl="bad";}
-  else if(!sim.main.on)msg="Kirish avtomati o'chgan.";
+  else if(st.dmg){msg="Jihoz shikastlangan (kuygan). \"Tiklash\" bilan almashtiring.";lvl="bad";}
+  else if(!upOn())msg=!srcOn()?"Tarmoqda kuchlanish yo'q.":(S.main.vrelay&&sim.vrTrip)?"Kuchlanish relesi o'chirgan.":(S.main.sw&&!sim.sw)?"Rubilnik o'chirilgan.":"Kirish avtomati o'chgan.";
+  else if(st.kfTrip){msg="Faza nazorat relesi o'chirgan.";lvl="warn";}
+  else if(!ctrlOn(g,st))msg=g.ctrl==="timer"?"Taymer: tanaffus.":g.ctrl==="photo"?"Foto rele: kunduzi o'chiq.":"Kontaktor o'chiq (Pusk bosing).";
   else if(!st.rcdOn)msg="UZO o'chgan.",lvl="warn";
   else if(!st.on)msg="Avtomat o'chgan.",lvl="warn";
   else if(st.T>90){msg="Izolyatsiya erimoqda!";lvl="bad";}
@@ -1174,6 +1490,10 @@ function updateSim(){
  rail.querySelectorAll("[data-bp]").forEach(el=>{
   const id=el.dataset.bp;
   if(id==="main"){el.classList.toggle("off",!sim.main.on);el.querySelector(".heatv").setAttribute("opacity",Math.min(.85,sim.main.H));return;}
+  if(id==="sw"){el.classList.toggle("off",!sim.sw);return;}
+  if(id.startsWith("km:")){const gid2=+id.slice(3),st2=simG(gid2),g2=S.groups.find(x=>x.id==gid2);if(!g2)return;
+   const coil=upOn()&&st2.on&&st2.rcdOn&&ctrlOn(g2,st2)&&!st2.dmg;el.classList.toggle("off",!coil);
+   el.querySelector(".kmw").textContent=coil?"I":"O";el.querySelector(".kmled").setAttribute("fill",coil?"#ffd23a":"#3a3f44");return;}
   const [gid,part]=id.split(":");const st=simG(+gid);const g=S.groups.find(x=>x.id==gid);if(!g)return;
   const isR=part==="r";
   const on=isR?st.rcdOn:st.on;
@@ -1188,15 +1508,32 @@ function updateSim(){
   el.querySelector(".ctemp").setAttribute("fill",st.burnt||st.T>90?"var(--bad)":st.T>70?"var(--warn)":"var(--ink)");
  });
  rail.querySelectorAll("[data-bolt]").forEach(el=>{const st=simG(+el.dataset.bolt);const on=st.body||st.sc;el.setAttribute("opacity",on?1:0);el.classList.toggle("flick",on);});
- const mOn=sim.main.on&&mm>0.05;
+ const mOn=upOn()&&mm>0.05;
  rail.querySelectorAll("[data-flw]").forEach(el=>{const id=el.dataset.flw;
   if(id==="main"){el.classList.toggle("off",!mOn);if(mOn)el.style.animationDuration=Math.max(.25,1.4/Math.max(.2,mm/S.main.In))+"s";return;}
   const st=simG(+id),g=S.groups.find(x=>x.id==id);if(!g)return;const live=powered(g,st)&&st.I>0.05;
   el.classList.toggle("off",!live);if(live){const k=st.I/Math.max(1,g.In);el.style.animationDuration=Math.max(.15,1.2/Math.max(.15,k))+"s";}});
  rail.querySelectorAll("[data-cable]").forEach(el=>{const st=simG(+el.dataset.cable);const f=el.querySelector(".flm");if(f)f.setAttribute("opacity",(!st.burnt&&st.T>115)||(st.burnt&&st.I>0)?1:0);});
+ const dv=k=>rail.querySelector(`[data-dev="${k}"]`);
+ let e=dv("meter");if(e){e.querySelector(".lcd").textContent=sim.kwh.toFixed(1).padStart(8,"0");e.querySelector(".lcdp").textContent=fmt(sim._kw||0,2)+" kVt";const l=e.querySelector(".mled");const kw=sim._kw||0;l.classList.toggle("blink",kw>0.01);l.style.setProperty("--bl",Math.max(.08,1.4/Math.max(.1,kw))+"s");}
+ e=dv("kv");if(e){const vs=PH.map(p=>V[p]||0);const src=srcOn()&&(!S.main.sw||sim.sw);e.querySelector(".lcd").textContent=!src?"---":sim.vrTrip?"Err":String(Math.round(Math.max(...vs)||220));e.querySelector(".kvok").setAttribute("fill",src&&!sim.vrTrip?"#2f9a48":"#1d3a24");e.querySelector(".kvbad").setAttribute("fill",sim.vrTrip?"#ff3b2f":"#5a1e1a");}
+ e=dv("hl");if(e)e.querySelectorAll(".hl").forEach(h=>{const v=V[h.dataset.p]||0;h.setAttribute("opacity",v<5?.12:Math.min(1,.35+v/300));});
+ e=dv("spd");if(e)e.querySelectorAll(".spdw").forEach(w=>{w.setAttribute("fill",sim.spdUsed&&w.dataset.i==="0"?"#d4322a":"#2f9a48");});
+ e=dv("ats");if(e){e.querySelector(".atsd").textContent=sim.ats;e.querySelector(".atsg").setAttribute("fill",sim.grid?"#2f9a48":"#1d3a24");e.querySelector(".atsgen").setAttribute("fill",sim.gen?"#ffd23a":"#3a3f44");}
+ e=dv("gen");if(e){e.querySelector(".fan").classList.toggle("run",sim.gen);e.querySelector(".genled").setAttribute("fill",sim.gen?"#2f9a48":"#3a3f44");}
+ S.groups.forEach(g=>{const st=simG(g.id);
+  let k=dv("kt:"+g.id);if(k){const ph=sim.t%8,on=Math.floor(sim.t/8)%2===0;k.querySelector(".ktd").textContent=(on?"Yoq ":"Tan ")+Math.ceil(8-ph)+"s";k.querySelector(".ktled").setAttribute("fill",on?"#ffd23a":"#3a3f44");const a=ph/8*Math.PI*2,cx=+k.querySelector(".ktp").getAttribute("x1"),cy=+k.querySelector(".ktp").getAttribute("y1");k.querySelector(".ktp").setAttribute("x2",cx+Math.sin(a)*9);k.querySelector(".ktp").setAttribute("y2",cy-Math.cos(a)*9);}
+  k=dv("bl:"+g.id);if(k){k.querySelector(".blsun").setAttribute("opacity",sim.day?1:0);k.querySelector(".blmoon").setAttribute("opacity",sim.day?0:1);k.querySelector(".blled").setAttribute("fill",sim.day?"#3a3f44":"#ffd23a");}
+  k=dv("kf:"+g.id);if(k){k.querySelectorAll(".kfl").forEach(l=>{const ok=srcOn()&&sim.phaseLoss!==l.dataset.p;l.setAttribute("fill",ok?"#2f9a48":"#d4322a");});k.querySelector(".kfok").setAttribute("fill",st.kfTrip?"#3a3f44":"#ffd23a");}
+ });
+ $("#sim-grid").hidden=sim.grid;
  $("#sim-time").textContent=`Simulyatsiya vaqti: ${fmt(sim.t,1)} s`;
 }
 function toggleDev(id){
+ if(id==="sw"){sim.sw=!sim.sw;fxTrip("sw","trip");logEv(sim.sw?"QS1 rubilnik yoqildi.":"QS1 rubilnik o'chirildi: butun shit uzildi.");updateSim();return;}
+ if(id.startsWith("km:")){const gid=+id.slice(3),g=S.groups.find(x=>x.id==gid),st=simG(gid),r=R.groups.find(x=>x.g.id==gid);
+  if(g.ctrl!=="btn"){logEv(`KM${r.n} ${g.ctrl==="timer"?"vaqt relesi":g.ctrl==="photo"?"foto rele":"faza nazorat relesi"} tomonidan avtomatik boshqariladi.`,"warn");return;}
+  st.km=st.km===false;logEv(`KM${r.n}: ${st.km?"Pusk bosildi, kontaktor g'altagi tortdi":"Stop bosildi, kontaktor qo'yib yubordi"}.`);updateSim();return;}
  if(id==="main"){sim.main.on=!sim.main.on;sim.main.H=0;logEv(sim.main.on?"QF0 yoqildi.":"QF0 qo'lda o'chirildi.");updateSim();return;}
  const [gid,part]=id.split(":");const st=simG(+gid);const r=R.groups.find(x=>x.g.id==gid);
  if(part==="r"){st.rcdOn=!st.rcdOn;logEv(`QF${r.n} UZO ${st.rcdOn?"yoqildi":"qo'lda o'chirildi"}.`);}
@@ -1207,18 +1544,128 @@ function toggleDev(id){
 let last=performance.now();
 function loop(){const now=performance.now();const dt=Math.min(0.25,(now-last)/1000);last=now;if(sim.run&&R&&!$("#p-sim").hidden){tick(dt);updateSim();}}
 
+/* ================= MA'LUMOTNOMA ================= */
+const INFO={
+ encl:{t:"Shit (korpus)",code:"ЩРН, ЩРН-П, ЩМП",what:"DIN-reykali quti: ichiga avtomatlar, UZO, hisoblagich va boshqa modulli qurilmalar o'rnatiladi. Modul — 18 mm kenglik birligi.",why:"Qurilmalarni bir joyga yig'adi, tok o'tkazuvchi qismlarni yopadi, kabellarni tartibli kiritadi.",choose:"Modullar soni = barcha qurilmalar modullari yig'indisi + 20% zaxira. Uy uchun ichki joyda IP31–IP41, yerto'la, ko'cha va nam joylar uchun IP54 va undan yuqori. Avtomatika (kontaktor, rele) ko'p bo'lsa, montaj panelli ЩМП qulay.",note:"Metall korpus va eshik PE shinaga ulanishi shart. Plastik korpus ikki qavat izolyatsiyaga ega.",ref:"PUE 1.7, 7.1"},
+ mcb:{t:"Avtomatik o'chirgich",code:"QF",what:"Ichida ikki ajratgich bor: issiqlik (bimetall plastina) va elektromagnit (g'altak). Bimetall o'ta yuklanishda sekin qizib egiladi va o'chiradi. G'altak qisqa tutashuvda sekundning yuzdan bir ulushida o'chiradi.",why:"Avtomat jihozni emas, KABELNI himoya qiladi: kabel qizib yonib ketishidan oldin tokni uzadi.",choose:"Uch shart: I hisob ≤ In ≤ I ruxsat (kabel). Mis kabel uchun odatiy juftlar: 1,5 mm² → 10 A, 2,5 mm² → 16 A, 4 mm² → 25 A, 6 mm² → 32 A, 10 mm² → 40–50 A.\nXarakteristika: B (3–5·In) — uzun liniya va yoritish; C (5–10·In) — uy va rozetkalar; D (10–20·In) — dvigatel, payvandlash apparati, katta ishga tushish toki.",note:"Avtomatni \"o'chib qolmasin\" deb kattalashtirish eng xavfli xato: kabel qiziydi, avtomat esa o'chmaydi. Avtomat faza simini uzishi kerak, nolni emas.",ref:"PUE 3.1, 1.7.79"},
+ rcd:{t:"UZO (differensial tok qurilmasi)",code:"Q, Δ",what:"Fazadan ketgan va noldan qaytgan tokni solishtiradi. Farq (sizish) IΔn dan oshsa, 0,03 s ichida o'chiradi.",why:"Odamni tok urishidan va izolyatsiya eskirgan joyda yong'indan saqlaydi. O'ta yuklanish va qisqa tutashuvdan himoya qilmaydi, shuning uchun avtomat bilan birga qo'yiladi.",choose:"IΔn: 10 mA — vanna va bolalar xonasi, 30 mA — rozetka guruhlari, 100–300 mA — yong'inga qarshi (kirishda). Nominal toki undan keyingi avtomatdan bir pog'ona katta. Turi: AC — oddiy yuklama, A — kir yuvish mashinasi, induksion plita, invertorli jihozlar.",note:"Guruh N simi faqat shu UZO chiqishidan olinadi va boshqa guruh nollari bilan aralashmaydi, aks holda UZO o'z-o'zidan o'chadi. \"T\" test tugmasini oyda bir bosib tekshiring.",ref:"PUE 7.1.71–7.1.85"},
+ rcbo:{t:"Difavtomat",code:"QFD",what:"Avtomat va UZO bitta korpusda: o'ta yuklanish, qisqa tutashuv va sizish tokidan himoya qiladi.",why:"Har bir guruhni alohida himoyalaydi: bitta guruhda sizish bo'lsa, faqat o'sha o'chadi. Joyni tejaydi.",choose:"In — kabel bo'yicha (avtomat kabi), IΔn — 30 mA (rozetka), 10 mA (vanna). Xarakteristika odatda C, yoritish uchun B.",note:"Difavtomat orqali o'tgan N simi faqat uning N chiqishidan olinadi.",ref:"PUE 7.1.79"},
+ sw:{t:"Yuklama uzgich (rubilnik)",code:"QS",what:"Butun shitni qo'lda, ko'rinadigan tarzda uzadigan kalit.",why:"Ta'mir va xizmat ko'rsatishda shitni xavfsiz o'chirish uchun.",choose:"Nominal toki kirish avtomatidan kam bo'lmasin. Uy shiti uchun odatda 3P 63–100 A.",note:"Himoya qilmaydi: qisqa tutashuvda o'chmaydi. Shuning uchun undan keyin kirish avtomati bo'lishi kerak.",ref:"PUE 7.1.64"},
+ meter:{t:"Elektr hisoblagich",code:"PI, Wh",what:"Iste'mol qilingan energiyani kVt·soatda hisoblaydi. Qizil chiroq har impulsda miltillaydi (masalan, 1000 imp = 1 kVt·soat), qancha tez miltillasa, quvvat shuncha katta.",why:"Hisob-kitob uchun, energiya ta'minoti tashkiloti talab qiladi.",choose:"3 fazali to'g'ridan-to'g'ri ulanadigan 5(60) A yoki 10(100) A. Aniqlik klassi 1,0 yoki 0,5S. Ko'p tarifli bo'lsa, tungi tarifdan foydalanish mumkin.",note:"Ulanish sxemasi va oldiga qo'yiladigan apparat mahalliy energiya ta'minoti talablariga bog'liq; plombalanadi.",ref:"PUE 1.5"},
+ spd:{t:"Impuls kuchlanishdan himoya qurilmasi (УЗИП, ОПН)",code:"FV",what:"Chaqmoq yoki tarmoqdagi kommutatsiya natijasidagi minglab voltli, mikrosekundlik impulsni PE (yer)ga o'tkazib yuboradi.",why:"Televizor, kompyuter, qozon platasi kabi elektronikani kuyishdan saqlaydi. Kuchlanish relesi bunga ulgurmaydi.",choose:"T1 — havo liniyasi va chaqmoq qaytargich bo'lsa kirishda; T2 — asosiy shitda (eng ko'p ishlatiladi), 20–40 kA; T3 — sezgir jihoz yonida. Oldidan avtomat yoki saqlagich qo'yiladi.",note:"PE to'g'ri ulanmasa ishlamaydi. Kartrij oynachasi qizil bo'lsa, almashtiriladi.",ref:"PUE 7.1.22, IEC 61643"},
+ vrelay:{t:"Kuchlanish relesi",code:"KV, РН",what:"Fazadagi kuchlanishni doimiy o'lchaydi. Belgilangan chegaradan (masalan, 176–253 V) chiqsa, yuklamani uzadi, kuchlanish me'yorga qaytgach kechikish bilan qayta yoqadi.",why:"TN-C-S da nol uzilganda bir fazada kuchlanish 300–380 V gacha ko'tarilib, jihozlarni kuydiradi. РН ularni saqlaydi. Past kuchlanishda muzlatgich kompressorini ham saqlaydi.",choose:"Tok bo'yicha kirish avtomatidan kam bo'lmasin (40/50/63 A) yoki katta yuklamada kontaktor orqali ishlaydi. 3 fazali tarmoq uchun 3 fazali rele.",note:"Impulsdan himoya qilmaydi: u uchun УЗИП kerak. 3 fazali dvigatellar uchun faza nazorat relesi qulayroq.",ref:"Tavsiya"},
+ lamps:{t:"Faza indikator lampalari",code:"HL",what:"Har bir fazada kuchlanish borligini ko'rsatadi.",why:"Shit eshigini ochmasdan qaysi faza yo'qligini bilish mumkin.",choose:"Uch rangli (qizil, sariq, yashil) 1 modulli ЛС-47 kabi. Kirish avtomatidan keyin ulanadi.",note:"Lampa o'chiq bo'lsa ham kuchlanish yo'q deb ishonmang: ish oldidan indikator bilan tekshiring.",ref:"—"},
+ ats:{t:"Avtomatik zaxiraga o'tish (АВР)",code:"QA, АВР",what:"Asosiy tarmoq yo'qolsa, generatorni ishga tushiradi va yuklamani zaxira manbaga (II kirish) o'tkazadi. Tarmoq qaytgach, I kirishga qaytaradi.",why:"Nasos, qozon, sovutgich, server kabi to'xtab qolmasligi kerak bo'lgan jihozlar uchun.",choose:"Ikki manba hech qachon birga ulanmasligi uchun mexanik va elektr blokirovka bo'lishi shart. Generator quvvati zaxiraga ulangan yuklamadan katta bo'lsin. O'tish kechikishi generatorning barqarorlashishiga yetarli bo'lsin.",note:"Generatorni АВР siz uyning rozetkasiga ulash ta'mirchilar uchun halokatli: tok tarmoqqa qaytadi.",ref:"PUE 1.2.17–1.2.19"},
+ km:{t:"Kontaktor",code:"KM",what:"Elektromagnit kalit: g'altakka (A1–A2) kuchlanish berilsa, kuch kontaktlari yopiladi. Kichik signal bilan katta tokni yoqadi.",why:"Nasos, isitgich, ko'cha yoritishini tugma, taymer, foto rele yoki faza nazorat relesi orqali boshqarish uchun.",choose:"Kontakt toki yuklama tokidan katta: AC-1 (isitgich, yoritish) yoki AC-3 (dvigatel) toifasi bo'yicha. Modulli 1F 25 A, 3F 25–63 A.",note:"Kontaktor himoya qilmaydi: oldida avtomat bo'lishi shart.",ref:"PUE 5.3"},
+ kt:{t:"Vaqt relesi (taymer)",code:"KT",what:"Belgilangan vaqtda yoki siklda kontaktor g'altagini yoqadi va o'chiradi.",why:"Ventilyatsiya, sug'orish, suv isitgichni tungi tarifda yoqish, reklama yoritishi.",choose:"Rejim: sutkalik, haftalik yoki sikl (yoqish/tanaffus). Kontakt toki kichik, shuning uchun yuklama kontaktor orqali ulanadi.",note:"Simulyatsiyada sikl: 8 s yoqiq, 8 s tanaffus.",ref:"—"},
+ bl:{t:"Foto rele",code:"BL",what:"Yorug'lik datchigi qorong'i tushganda yoritishni yoqadi, tong otganda o'chiradi.",why:"Hovli, ko'cha va reklama yoritishini avtomatlashtirish.",choose:"Datchik shimol tomonga, chiroq nuri tushmaydigan joyga o'rnatiladi. Sezgirlik regulyatori bor. Katta yuklama kontaktor orqali.",note:"Simulyatsiyada \"Kunduz/Tun\" tugmasi bilan sinab ko'ring.",ref:"—"},
+ kf:{t:"Faza nazorat relesi",code:"KF, РКФ",what:"Uchala faza borligini, ketma-ketligini va nosimmetriyasini kuzatadi. Buzilsa kontaktorni uzadi.",why:"3 fazali dvigatel bitta fazasiz qolsa, ikki fazada ishlab, tok 1,7 baravar oshadi va cho'lg'am kuyadi. Faza ketma-ketligi noto'g'ri bo'lsa, nasos teskari aylanadi.",choose:"Nasos, kompressor, lift, ventilyator uchun shart. Kontaktor g'altagi zanjiriga ulanadi.",note:"Avtomat bunday holatda o'z vaqtida o'chmasligi mumkin, chunki tok unchalik katta emas.",ref:"PUE 5.3.50"},
+ pen:{t:"PEN ajratish (TN-C-S)",code:"PEN → PE + N",what:"Kirishdagi umumiy PEN o'tkazgich shitda ikkiga bo'linadi: himoya PE va ishchi N.",why:"Shundan keyin jihozlar korpusi alohida PE orqali yerga ulanadi va UZO ishlay oladi.",choose:"PEN avval PE shinaga (u korpusga ulangan) ulanadi, undan peremichka orqali N shinaga. Ajratish nuqtasidan keyin N va PE hech qayerda qayta birlashtirilmaydi.",note:"PEN o'tkazgichga avtomat, uzgich yoki saqlagich qo'yish man etiladi. Nol uzilsa, kuchlanish relesi jihozlarni saqlaydi.",ref:"PUE 1.7.135, 1.7.145"},
+ cable:{t:"Kabel kesimini tanlash",code:"mm²",what:"Kabel kesimi uch narsaga qarab tanlanadi: uzoq vaqt o'tadigan tokka, kuchlanish yo'qolishiga va qisqa tutashuvda avtomat o'chishiga.",why:"Kichik kesim qiziydi, izolyatsiya eriydi va yong'in chiqadi.",choose:"Mis, yashirin yotqizish, 3 tomir: 1,5 mm² → 19 A, 2,5 → 27 A, 4 → 38 A, 6 → 46 A, 10 → 70 A. Kuchlanish yo'qolishi ≤ 5% (uzun liniyada kesimni oshiring). Avtomat In kabel ruxsat tokidan oshmasin.",note:"Turar joyda guruh tarmoqlari mis bo'ladi (alyuminiy faqat 16 mm² dan).",ref:"PUE 1.3.4–1.3.7, 7.1.34"},
+ colors:{t:"Sim ranglari",code:"L / N / PE",what:"Faza: jigarrang, qora, kulrang. Nol (N): ko'k. Himoya (PE): sariq-yashil.",why:"Har qanday elektrik qaysi sim nima ekanini bir qarashda biladi va xato ulamaydi.",choose:"L1 jigarrang, L2 qora, L3 kulrang. Ko'k simni faza sifatida ishlatmang, sariq-yashilni faqat PE uchun ishlating.",note:"Rangni adashtirish keyingi ta'mirchini o'limga olib kelishi mumkin.",ref:"PUE 1.1.29–1.1.30"},
+ ferr:{t:"НШВИ uchliklari",code:"НШВИ, НШВИ(2)",what:"Ko'p tolali sim uchiga press-qisqich bilan siqiladigan izolyatsiyali vtulka.",why:"Tolalar vint ostida ezilib sochilmaydi, kontakt bo'shamaydi va qizimaydi.",choose:"Vtulka kesimi sim kesimiga mos (1,5 / 2,5 / 4 / 6 mm²). Bir klemmaga ikki sim — НШВИ(2).",note:"Uchliksiz ko'p tolali sim vaqt o'tib bo'shashib, klemmani kuydiradi.",ref:"PUE 2.1.21"},
+ duct:{t:"Kabel kanal, taroq shina, markirovka",code:"montaj",what:"Kabel kanal simlarni yashiradi va tartibda ushlaydi. Taroq shina avtomatlarni fazadan bir xilda ta'minlaydi. Markirovka har kabel qaysi guruhga tegishli ekanini ko'rsatadi.",why:"Tartibli shit tez ta'mirlanadi, xato kamayadi, qizish joylari tez topiladi.",choose:"Kanal to'ldirilishi ≤ 70%. Har kabel uchida guruh raqami (QF3) yozilgan yorliq. Shit eshigiga bir chiziqli sxema yopishtiriladi.",note:"Klemmalarni 1–2 haftadan keyin qayta torting.",ref:"Montaj madaniyati"}
+};
+function infoHTML(k){const d=INFO[k];if(!d)return "";return `<dl><dt>Nima</dt><dd>${esc(d.what)}</dd><dt>Nima uchun kerak</dt><dd>${esc(d.why)}</dd><dt>Qanday tanlanadi</dt><dd style="white-space:pre-line">${esc(d.choose)}</dd><dt>Diqqat</dt><dd>${esc(d.note)}</dd><dt>Manba</dt><dd class="muted">${esc(d.ref)}</dd></dl>`;}
+function openInfo(k){const d=INFO[k];if(!d)return;$("#imTitle").innerHTML=`${esc(d.t)} <span class="code" style="font-family:var(--f-mono);font-size:.9rem;color:var(--muted)">${esc(d.code)}</span>`;$("#imBody").innerHTML=infoHTML(k);$("#infoModal").hidden=false;$("#imClose").focus();}
+function renderInfo(){const q=($("#infoQ").value||"").toLowerCase().trim();
+ $("#infoList").innerHTML=Object.entries(INFO).filter(([k,d])=>!q||(d.t+" "+d.code+" "+d.what+" "+d.why+" "+d.choose).toLowerCase().includes(q)).map(([k,d])=>`<div class="icard" id="info-${k}"><h3>${esc(d.t)} <span class="code">${esc(d.code)}</span></h3>${infoHTML(k)}</div>`).join("")||`<div class="empty">Topilmadi. Boshqa so'z bilan qidiring yoki 7-bo'limda savol bering.</div>`;}
+
+/* ================= SAVOL-JAVOB ================= */
+let SAMPLE=null,chatTurns=[],chatCtl=null;
+const CHIPS=["15 kVt uchun qanday kabel?","Konditsioner 2.5 kVt, 30 metr","Avtomat nimaga qarab tanlanadi?","UZO va difavtomat farqi","B, C, D xarakteristika farqi","Nol uzilsa nima bo'ladi?","Kontaktor nima uchun kerak?","3 fazali nasosni qanday himoyalash kerak?"];
+function parseQ(q){const t=q.toLowerCase().replace(/,/g,".");const o={};
+ let m=t.match(/(\d+(?:\.\d+)?)\s*(kw|kvt|kv\b|квт|кв\b|kilovat)/);if(m)o.P=+m[1];
+ else{m=t.match(/(\d+(?:\.\d+)?)\s*(w|vt|vatt|вт)\b/);if(m)o.P=+m[1]/1000;}
+ m=t.match(/(\d+(?:\.\d+)?)\s*(a|amper|ампер)\b/);if(m)o.I=+m[1];
+ m=t.match(/(\d+(?:\.\d+)?)\s*(m|metr|метр)(?![a-zм²])/);if(m)o.L=+m[1];
+ if(/(3|uch|три)\s*-?\s*(faza|fazali|ф)|380/.test(t))o.ph=3;else if(/(1|bir)\s*-?\s*(faza|fazali)|220/.test(t))o.ph=1;
+ if(/alyumin|алюмин|\bal\b/.test(t))o.mat="Al";
+ o.motor=/dvigatel|nasos|motor|kompressor|насос|двигат/.test(t);
+ o.light=/chiroq|yoritish|lampa|свет/.test(t);
+ return o;}
+function calcLine(P,ph,L,mat,cos){
+ const I=ph===3?P*1000/(SQ3*U3*cos):P*1000/(U1*cos);
+ const In=stdUp(BR,Math.max(I,6));const rho=RHO[mat];
+ let pick=null;
+ for(const sz of SIZES){if(mat==="Al"&&sz<2.5)continue;const z=izOf(mat,"pipe",ph===3,sz);if(!z||z<In)continue;
+  const du=L?(ph===3?SQ3*L*I*rho*cos/(sz*U3)*100:2*L*I*rho*cos/(sz*U1)*100):0;if(du<=4){pick={S:sz,Iz:z,du};break;}}
+ return {I,In,pick};}
+function localAnswer(q){
+ const o=parseQ(q);const notes=[];
+ if(o.P||o.I){
+  const mat=o.mat||"Cu",cos=o.motor?0.85:o.light?0.95:0.95;
+  const rows=[];const phs=o.ph?[o.ph]:(o.P&&o.P>7?[3,1]:[1,3]);
+  phs.forEach(ph=>{let P=o.P;if(!P&&o.I)P=(ph===3?SQ3*U3:U1)*o.I*cos/1000;const c=calcLine(P,ph,o.L,mat,cos);rows.push({ph,P,...c});});
+  const r0=rows[0];const rz=calcLine(r0.P*1.25,r0.ph,o.L,mat,cos);const plain=calcLine(r0.P,r0.ph,0,mat,cos);
+  let h=`<b>Hisob${o.L?` (${o.L} m liniya)`:""}:</b><table><tr><th>Tarmoq</th><th>Tok</th><th>Avtomat</th><th>Kabel (${mat==="Cu"?"mis":"alyuminiy"})</th>${o.L?"<th>ΔU</th>":""}</tr>`;
+  rows.forEach(r=>{h+=`<tr><td>${r.ph===3?"3 faza, 380 V":"1 faza, 220 V"}</td><td>${fmt(r.I,1)} A</td><td>${o.motor?"D yoki C":"C"}${r.In}</td><td>${r.pick?`${r.ph===3?(o.motor?"4":"5"):"3"}×${r.pick.S} mm² (ruxsat ${r.pick.Iz} A)`:"juda katta, alohida loyiha"}</td>${o.L?`<td>${r.pick?fmt(r.pick.du,1)+"%":"—"}</td>`:""}</tr>`;});
+  h+=`</table><b>Amaliy tavsiya (25% zaxira bilan, ${r0.ph===3?"3 faza":"1 faza"}):</b> avtomat ${o.motor?"D":"C"}${rz.In}, kabel ${rz.pick?`${r0.ph===3?(o.motor?"4":"5"):"3"}×${rz.pick.S} mm² ${mat==="Cu"?"mis":"alyuminiy"}`:"—"}. Jihozlar keyinchalik qo'shilsa ham kabel yetadi.<br>`;
+  const best=rows[0];
+  if(!o.ph&&o.P>7)notes.push(`${fmt(o.P,1)} kVt bir fazaga katta (${fmt(rows[1].I,0)} A). Uch fazali ulanish tavsiya etiladi: tok fazalarga taqsimlanadi.`);
+  if(o.motor)notes.push("Dvigatel uchun ishga tushish toki 5–7 baravar katta: D yoki C xarakteristika, kontaktor va faza nazorat relesi (3 fazali bo'lsa) qo'ying.");
+  if(!o.motor&&!o.light)notes.push("Rozetka yoki nam joyda bo'lsa, 30 mA UZO yoki difavtomat qo'ying.");
+  if(o.L&&best.pick&&plain.pick&&best.pick.S>plain.pick.S)notes.push("Liniya uzun: kuchlanish yo'qolishi sababli kesim tok bo'yicha kerakligidan kattaroq tanlandi.");
+  notes.push("Hisob PUE-7 jadvallari bo'yicha (mis, yashirin yotqizish, +25 °C). Ochiq yotqizishda yoki issiq joyda qiymatlar o'zgaradi.");
+  return {html:h+"<br>"+notes.map(n=>"• "+esc(n)).join("<br>"),calc:rows};
+ }
+ // mavzular
+ const T=q.toLowerCase();
+ const topics=[
+  [/avtomat.*(tanla|qanday|nimaga)|tanla.*avtomat|номинал/,"mcb"],[/xarakteristika|\bb\b.*\bc\b|\bc\b.*\bd\b|b,? c|харак/,"mcb"],
+  [/difavtomat|диф/,"rcbo"],[/uzo|узо|sizish|утечк/,"rcd"],[/kontaktor|контактор|pusk/,"km"],[/taymer|vaqt rele|реле времени/,"kt"],[/foto|фото|qorong/,"bl"],
+  [/faza nazorat|ркф|nasos|dvigatel|kompressor|faza uzil/,"kf"],[/nol uzil|nol uzilsa|kuchlanish rele|рн\b|кuchlanish sakra|300 v|380 v/,"vrelay"],
+  [/узип|опн|chaqmoq|impuls|sakrash/,"spd"],[/avr|авр|generator|zaxira/,"ats"],[/hisoblagich|счетчик|schyotchik/,"meter"],[/rubilnik|uzgich|рубильник/,"sw"],
+  [/pen|tn-c-s|yerga ulash|zazeml|заземл|pe shina|n shina/,"pen"],[/kabel|kesim|sechen|сечени|sim tanla/,"cable"],[/rang|colour|цвет/,"colors"],
+  [/nshvi|ншви|uchlik|наконеч/,"ferr"],[/shit.*tanla|korpus|щрн|щмп|modul/,"encl"],[/kanal|markirovka|taroq/,"duct"]];
+ for(const [re,k] of topics)if(re.test(T)){const d=INFO[k];return {html:`<b>${esc(d.t)}</b> <span class="muted">(${esc(d.code)})</span><br>${esc(d.what)}<br><br><b>Nima uchun:</b> ${esc(d.why)}<br><br><b>Qanday tanlanadi:</b> ${esc(d.choose).replace(/\n/g,"<br>")}<br><br><b>Diqqat:</b> ${esc(d.note)}`,topic:k};}
+ if(/selektiv/.test(T))return {html:"<b>Selektivlik</b> — nosozlikda faqat eng yaqin avtomat o'chishi, yuqoridagisi (kirish) yoniq qolishi. Buning uchun kirish avtomati guruh avtomatlaridan kamida bir-ikki pog'ona katta bo'ladi (masalan, guruhlar 16–25 A, kirish 40 A). UZO lar uchun kirishda S turidagi (kechikuvchi) 100–300 mA UZO qo'yiladi."};
+ if(/balans|nosimmetr|fazalarga taqsim/.test(T))return {html:"<b>Fazalar balansi</b>: bir fazali guruhlarni L1, L2, L3 ga shunday taqsimlangki, har bir fazadagi hisobiy tok iloji boricha teng bo'lsin (farq ≤ 15%). Katta iste'molchilardan boshlab eng kam yuklangan fazaga qo'shib boring. Bu dastur 3-bo'limda nosimmetriyani hisoblab ko'rsatadi."};
+ return null;}
+function addMsg(role,html,src){const d=document.createElement("div");d.className="msg "+role;d.innerHTML=html+(src?`<span class="src">${src}</span>`:"");$("#chatLog").appendChild(d);d.scrollIntoView({behavior:"smooth",block:"end"});return d;}
+function panelSummary(){if(!R||!enclOf())return "Foydalanuvchi hali shit tanlamagan.";return `Foydalanuvchining joriy shiti: ${enclOf().name}, hisobiy quvvat ${fmt(R.Pd,1)} kVt, kirish toki ${fmt(R.Iin,1)} A, ${R.groups.length} guruh, ${R.bad} xato.`;}
+async function ask(q){
+ q=q.trim();if(!q)return;$("#chatIn").value="";
+ addMsg("u",esc(q));
+ const loc=localAnswer(q);
+ if(SAMPLE){
+  const bubble=addMsg("a",'<span class="typing">Javob tayyorlanmoqda</span>');
+  const rules="Sen elektr montaj bo'yicha tajribali muhandissan va o'zbek tilida (lotin yozuvida) javob berasan. Savollar amaliy: kabel kesimi, avtomat, UZO, kontaktor, shit yig'ish va hokazo. PUE-7 (Elektr qurilmalarini o'rnatish qoidalari) asosida aniq raqamlar bilan qisqa, kitobiy emas, oddiy tilda javob ber: avval natija (masalan, qaysi kabel va avtomat), keyin 2–4 ta muhim izoh. Markdown sarlavhalarsiz, oddiy matn va qisqa ro'yxatlar. Xavfli ishlarda ehtiyot choralari va loyihani muhandis tekshirishi kerakligini bir jumlada eslat. "+panelSummary()+(loc&&loc.calc?" Dasturning lokal hisobi (mis, yashirin yotqizish): "+loc.calc.map(r=>`${r.ph} faza: ${fmt(r.I,1)} A, avtomat ${r.In} A, kabel ${r.pick?r.pick.S+" mm²":"—"}`).join("; ")+". Shu raqamlarga tayan.":"");
+  chatTurns.push({role:"user",content:q});
+  const turns=[{role:"user",content:rules},{role:"assistant",content:"Tushunarli. Savolingizni kutaman."},...chatTurns.slice(-8)];
+  chatCtl=new AbortController();$("#chatStop").hidden=false;$("#chatSend").disabled=true;
+  try{const {text}=await SAMPLE(turns,{cache:false,signal:chatCtl.signal,modelTier:"default",onText:({text})=>{bubble.innerHTML=esc(text)+'<span class="src">AI (Claude)</span>';}});
+   chatTurns.push({role:"assistant",content:text});bubble.innerHTML=esc(text)+'<span class="src">AI (Claude) · PUE-7 asosida, loyihani muhandis tekshirsin</span>';}
+  catch(e){chatTurns.pop();
+   if(e&&e.code==="cancelled"){bubble.innerHTML=esc(e.text||"To'xtatildi.")+'<span class="src">To\'xtatildi</span>';}
+   else{if(e&&["not_granted","sampling_disabled","not_declared","capability_disabled"].includes(e.code)){SAMPLE=null;setChatMode();}
+    bubble.innerHTML=loc?loc.html+'<span class="src">Lokal hisob (AI hozir javob bera olmadi)</span>':"AI hozir javob bera olmadi. Savolni raqam bilan yozing (masalan, \"7 kVt 25 metr\") yoki keyinroq urinib ko'ring.";}}
+  finally{$("#chatStop").hidden=true;$("#chatSend").disabled=false;}
+  return;}
+ if(loc)addMsg("a",loc.html,"Lokal hisob yordamchisi · PUE-7 jadvallari");
+ else addMsg("a",`Bu savolga internetsiz rejimda tayyor javob topilmadi. Raqam bilan so'rang ("12 kVt 3 faza 40 metr", "32 A ga qanday kabel") yoki mavzuni yozing: avtomat, UZO, difavtomat, kontaktor, kabel, PEN, УЗИП, АВР, nol uzilishi.`,"Lokal yordamchi");
+}
+function setChatMode(){const p=$("#chatMode");if(SAMPLE){p.textContent="AI (Claude) + hisob";p.className="pill ok";$("#chatNote").textContent="Savolingizni oddiy so'z bilan yozing. Raqamli savollarda dastur avval o'zi hisoblaydi, AI esa tushuntirib beradi. Birinchi savolda Claude'dan foydalanishga ruxsat so'raladi.";}else{p.textContent=IS_APP?"Internetsiz hisob yordamchisi":"Hisob yordamchisi";p.className="pill warn";}}
+function initChat(){
+ $("#chips").innerHTML=CHIPS.map(c=>`<button type="button" class="chip" data-chip="${esc(c)}">${esc(c)}</button>`).join("");
+ addMsg("a","Salom! Elektr shiti, kabel, avtomat, UZO va avtomatika bo'yicha savol bering. Masalan: <b>15 kVt uchun qanday kabel?</b>","Yordamchi");
+ setChatMode();
+ (async()=>{try{if(window.claude&&typeof window.claude.use==="function"){const smp=await window.claude.use("sample");if(smp){SAMPLE=smp;setChatMode();}}}catch(e){}})();
+}
+
 /* ================= YANGILASH ================= */
 function refresh(){
+ gate();
  R=compute();
  renderSummary(R);updateGroupResults(R);renderChecks(R);
  $("#schem").innerHTML=schematic(R);
  buildSim();save();
 }
-function resetSim(){sim.main={on:true,H:0};sim.g={};sim.t=0;sim.log=[];sim.nBreak=false;$("#sim-nbreak").checked=false;}
+function resetSim(){Object.assign(sim,{main:{on:true,H:0},g:{},t:0,log:[],nBreak:false,flags:{},sw:true,grid:true,gen:false,ats:"I",atsT:0,genOver:0,vrTrip:false,vrT:0,kwh:0,phaseLoss:null,surgeT:0,spdUsed:false});$("#sim-nbreak").checked=false;}
 
 /* ================= HODISALAR ================= */
 const NUMK=["P","cos","kc","len","phases","In","idn","rcdIn","S","cores"];
-const STRUCT=["kind","poles","phases","type","nConn"];
+const STRUCT=["kind","poles","phases","type","nConn","ctrl"];
 document.addEventListener("change",e=>{
  const t=e.target;const gEl=t.closest(".g");
  if(gEl&&t.dataset.k&&STRUCT.includes(t.dataset.k)){renderGroups();refresh();}
@@ -1238,20 +1685,30 @@ document.addEventListener("input",e=>{
   return;
  }
  if(t.id&&t.id.startsWith("m-")){
-  const k=t.id.slice(2);S.main[k]=["zs","du","cLen","cS","cCores","In"].includes(k)?(+t.value||0):t.value;
+  const k=t.id.slice(2);S.main[k]=["zs","du","cLen","cS","cCores","In","genKW"].includes(k)?(+t.value||0):t.value;
   if(k==="cLen"&&S.main.cLen<1)S.main.cLen=1;
   if(k==="earth")$("#m-pen").disabled=S.main.earth!=="TN-C-S";
   refresh();return;
  }
+ if(t.dataset.pd){S.main[t.dataset.pd]=t.checked;resetSim();renderMain();refresh();return;}
+ if(t.id&&t.id.startsWith("c-")){const k={rows:"rows",mods:"mods",dims:"dims",mat:"mat"}[t.id.slice(2)];S.main.custom[k]=(k==="rows"||k==="mods")?+t.value:t.value;renderMain();refresh();return;}
+ if(t.id==="infoQ"){renderInfo();return;}
  if(t.dataset.load){const st=simG(+t.dataset.load);st.load=+t.value;t.closest("label").querySelector("[data-lv]").textContent=t.value+"%";return;}
  if(t.id==="sim-nbreak"){sim.nBreak=t.checked;logEv(t.checked?"Kirishda N sim uzildi.":"N sim tiklandi.",t.checked?"warn":"");}
 });
-document.addEventListener("keydown",e=>{const cn=e.target.closest&&e.target.closest("[data-conn]");if(cn&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openConn(+cn.dataset.conn);return;}const bp=e.target.closest&&e.target.closest("[data-bp]");if(bp&&(e.key==="Enter"||e.key===" ")){e.preventDefault();toggleDev(bp.dataset.bp);}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#infoModal").hidden){$("#infoModal").hidden=true;return;}const ik=e.target.closest&&e.target.closest("[data-infokey]");if(ik&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openInfo(ik.dataset.infokey);return;}const cn=e.target.closest&&e.target.closest("[data-conn]");if(cn&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openConn(+cn.dataset.conn);return;}const bp=e.target.closest&&e.target.closest("[data-bp]");if(bp&&(e.key==="Enter"||e.key===" ")){e.preventDefault();toggleDev(bp.dataset.bp);}});
 document.addEventListener("click",e=>{
+ const ik=e.target.closest("[data-infokey]");if(ik){openInfo(ik.dataset.infokey);return;}
  const cn=e.target.closest("[data-conn]");if(cn){openConn(+cn.dataset.conn);return;}
+ if(e.target.id==="infoModal"){$("#infoModal").hidden=true;return;}
  const bp=e.target.closest("[data-bp]");if(bp){toggleDev(bp.dataset.bp);return;}
  const b=e.target.closest("button");if(!b)return;
- if(b.dataset.tab){showTab(b.dataset.tab);return;}
+ if(b.dataset.tab){showTab(b.dataset.tab);window.scrollTo({top:0,behavior:"smooth"});return;}
+ if(b.dataset.info){e.preventDefault();openInfo(b.dataset.info);return;}
+ if(b.id==="imClose"){$("#infoModal").hidden=true;return;}
+ if(b.dataset.encl){S.main.encl=b.dataset.encl;resetSim();renderMain();refresh();return;}
+ if(b.dataset.chip){ask(b.dataset.chip);return;}
+ if(b.id==="chatStop"){if(chatCtl)chatCtl.abort();return;}
  if(b.dataset.apply!==undefined){const x=R.issues[+b.dataset.apply];if(!x)return;const box=b.closest(".fxbox");const res=applyFix(x.gid,collect(box));showResult($("#fixResult"),res);$("#fixResult").scrollIntoView({behavior:"smooth",block:"nearest"});return;}
  if(b.dataset.cok){const gid=+b.dataset.cok;const vals=collect($("#connEd"));const res=applyFix(gid,vals);openConn(gid);showResult($("#ceRes"),res);return;}
  if(b.dataset.cclose){$("#connEd").hidden=true;return;}
@@ -1274,6 +1731,12 @@ document.addEventListener("click",e=>{
   }
   if(b.dataset.scn==="sc"){const r=pick(x=>x.Ik<KMAG[x.g.ch]*x.g.In)||pick(x=>/oshxona/i.test(x.g.name))||R.groups[0];if(!r)return;simG(r.g.id).sc=true;logEv(`Ssenariy: QF${r.n} liniya oxirida qisqa tutashuv, I QT ≈ ${fmt(r.Ik,0)} A.`,"warn");}
   if(b.dataset.scn==="body"){const r=pick(x=>x.g.peConn!=="PEbus")||pick(x=>!hasRcd(x.g)&&x.g.type!=="light")||R.groups[0];if(!r)return;simG(r.g.id).body=true;logEv(`Ssenariy: QF${r.n} (${r.g.name}) ichida faza sim korpusga tegdi.`,"warn");}
+  if(b.dataset.scn==="surge"){sim.surgeT=1.2;
+   if(S.main.spd&&!(S.main.earth==="TN-C-S"&&S.main.pen==="none")){sim.spdUsed=true;setTimeout(()=>fxTrip("spd","sc"),60);logEv("Ssenariy: chaqmoq tufayli tarmoqda 4 kV impuls. FV1 УЗИП impulsni PE ga o'tkazdi, jihozlar saqlandi. L1 kartrijining oynachasi qizil bo'ldi: uni almashtirish kerak.","ok");}
+   else{logEv(`Ssenariy: tarmoqda 4 kV impuls. ${S.main.spd?"УЗИП bor, lekin PE ulanmagan: impuls yerga keta olmadi.":"УЗИП yo'q."}${S.main.vrelay?" Kuchlanish relesi impulsga ulgurmaydi (mikrosekundlar).":""}`,"bad");
+    R.groups.forEach(r=>{if(r.g.type==="light")return;const st=simG(r.g.id);if(powered(r.g,st)){st.dmg=true;setTimeout(()=>fxTrip(r.g.id,"burn"),100);logEv(`QF${r.n} ${r.g.name}: elektronika impulsdan kuydi.`,"bad");}});}}
+  if(b.dataset.scn==="phase"){sim.phaseLoss="L2";logEv("Ssenariy: kirishda L2 faza uzildi (masalan, ustundagi sim). L2 dagi bir fazali guruhlar o'chdi, 3 fazali dvigatellar xavf ostida.","warn");}
+  if(b.dataset.scn==="grid"){sim.grid=false;logEv("Ssenariy: tarmoq o'chdi (avariya yoki rejali uzilish).","warn");}
   if(b.dataset.scn==="n"){sim.nBreak=true;$("#sim-nbreak").checked=true;R.groups.forEach(r=>{if(!r.three&&r.g.ph==="L1")simG(r.g.id).load=15;});logEv("Ssenariy: kirishda N sim uzildi, L1 fazada yuklama kam.","warn");}
   sim.run=true;$("#sim-play").textContent="Pauza";
   $("#rail").scrollIntoView({behavior:"smooth",block:"start"});
@@ -1282,17 +1745,21 @@ document.addEventListener("click",e=>{
  if(b.dataset.z){const z=b.dataset.z,el=$("#rail"),svg=$("#rail svg");
   if(z==="+")ZOOM=Math.min(2,ZOOM*1.2);else if(z==="-")ZOOM=Math.max(.2,ZOOM/1.2);else if(z==="1")ZOOM=1;else if(svg)ZOOM=Math.max(.2,(el.clientWidth-26)/(+svg.getAttribute("width")));
   applyZoom();return;}
+ if(b.id==="sim-grid"){sim.grid=true;logEv("Tarmoq qaytdi.","ok");updateSim();return;}
+ if(b.id==="sim-day"){sim.day=!sim.day;b.textContent=sim.day?"Kunduz":"Tun";b.setAttribute("aria-pressed",sim.day?"true":"false");logEv(sim.day?"Kunduz bo'ldi: foto rele yoritishni o'chiradi.":"Qorong'i tushdi: foto rele yoritishni yoqadi.");updateSim();return;}
  if(b.id==="sim-play"){sim.run=!sim.run;b.textContent=sim.run?"Pauza":"Davom etish";return;}
  if(b.id==="sim-reset"){resetSim();buildSim();return;}
 });
-const TABS=["kirish","yigish","tekshir","sxema","sim"];
+document.addEventListener("submit",e=>{if(e.target.id==="chatForm"){e.preventDefault();ask($("#chatIn").value);}});
+const TABS=["kirish","yigish","tekshir","sxema","sim","info","chat"];
 function showTab(id){
- if(!TABS.includes(id))id="yigish";
+ if(!TABS.includes(id))id=enclOf()?"yigish":"kirish";
+ $("#toasts").innerHTML="";
  TABS.forEach(t=>{$("#p-"+t).hidden=t!==id;$(`#tabs [data-tab=${t}]`).setAttribute("aria-selected",t===id?"true":"false");});
  if(id==="sim"){last=performance.now();updateSim();}
  try{history.replaceState(null,"","#"+id);}catch(e){}
 }
-renderMain();renderGroups();refresh();
+renderMain();renderGroups();refresh();renderInfo();initChat();
 (function(){const b=$("#sim-sound");const upd=()=>{b.textContent="Ovoz: "+(SOUND?"yoqiq":"o'chiq");b.setAttribute("aria-pressed",SOUND?"true":"false");};upd();
  b.addEventListener("click",()=>{SOUND=!SOUND;upd();if(SOUND)beep("click");});
  if(IS_APP){const sp=$("#splash");sp.hidden=false;setTimeout(()=>{sp.classList.add("out");setTimeout(()=>{sp.hidden=true;},500);},1500);}})();

@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
         s.setDisplayZoomControls(false);
         s.setUseWideViewPort(true);
         s.setLoadWithOverviewMode(true);
-        s.setUserAgentString(s.getUserAgentString() + " ShitLabApp/4.0");
+        s.setUserAgentString(s.getUserAgentString() + " ShitLabApp/4.1");
 
         web.addJavascriptInterface(new Bridge(), "ShitLabNative");
         web.setWebViewClient(new WebViewClient());
@@ -118,6 +118,26 @@ public class MainActivity extends Activity {
                 }
             });
         }
+
+        @JavascriptInterface
+        public void openUrl(final String url) {
+            runOnUiThread(() -> {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Brauzer topilmadi", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void copyText(final String text) {
+            runOnUiThread(() -> {
+                android.content.ClipboardManager cm = (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                if (cm != null) cm.setPrimaryClip(android.content.ClipData.newPlainText("ShitLab", text));
+            });
+        }
+
 
         @JavascriptInterface
         public void share(final String title, final String text) {

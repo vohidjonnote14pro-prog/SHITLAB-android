@@ -7,6 +7,13 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CancellationSignal;
+import android.os.ParcelFileDescriptor;
+import android.print.PageRange;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintDocumentInfo;
+import android.print.PrintManager;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -45,7 +52,7 @@ public class MainActivity extends Activity {
         s.setDisplayZoomControls(false);
         s.setUseWideViewPort(true);
         s.setLoadWithOverviewMode(true);
-        s.setUserAgentString(s.getUserAgentString() + " ShitLabApp/4.2");
+        s.setUserAgentString(s.getUserAgentString() + " ShitLabApp/4.3");
 
         web.addJavascriptInterface(new Bridge(), "ShitLabNative");
         web.setWebViewClient(new WebViewClient());
@@ -115,6 +122,35 @@ public class MainActivity extends Activity {
                     }
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "Saqlab bo'lmadi: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void printPdf(final String name, final String b64) {
+            runOnUiThread(() -> {
+                try {
+                    final byte[] bytes = Base64.decode(b64, Base64.DEFAULT);
+                    PrintManager pm = (PrintManager) getSystemService(PRINT_SERVICE);
+                    pm.print(name, new PrintDocumentAdapter() {
+                        @Override
+                        public void onLayout(PrintAttributes o, PrintAttributes n, CancellationSignal c, LayoutResultCallback cb, Bundle e) {
+                            if (c.isCanceled()) { cb.onLayoutCancelled(); return; }
+                            cb.onLayoutFinished(new PrintDocumentInfo.Builder(name)
+                                .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT).build(), true);
+                        }
+                        @Override
+                        public void onWrite(PageRange[] pages, ParcelFileDescriptor d, CancellationSignal c, WriteResultCallback cb) {
+                            try (FileOutputStream os = new FileOutputStream(d.getFileDescriptor())) {
+                                os.write(bytes);
+                                cb.onWriteFinished(new PageRange[]{PageRange.ALL_PAGES});
+                            } catch (Exception ex) {
+                                cb.onWriteFailed(ex.getMessage());
+                            }
+                        }
+                    }, new PrintAttributes.Builder().setMediaSize(PrintAttributes.MediaSize.ISO_A4).build());
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Chop etib bo'lmadi: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
         }

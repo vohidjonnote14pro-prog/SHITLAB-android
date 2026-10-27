@@ -1,0 +1,1294 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>ShitLab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: instrument-panel header with a nameplate summary strip, tabbed work areas below, one column on phones */
+:root{
+  --bg:#eceff1; --surface:#ffffff; --surface-2:#f5f7f8; --ink:#1a2025; --muted:#5b6670; --line:#cdd4d9;
+  --accent:#b8640a; --accent-ink:#ffffff; --accent-soft:#f6e6d3;
+  --ok:#2c7a47; --ok-soft:#dcefe2; --warn:#a46a10; --warn-soft:#f6ead2; --bad:#bb3326; --bad-soft:#f7dcd8;
+  --l1:#8a5a2b; --l2:#1e1e1e; --l3:#8c939a; --n:#1f6fd1; --pe-g:#2e8b3e; --pe-y:#e0c01a; --halo:#ffffff; --sheath:#9aa3aa;
+  --bk-body:#f3f3f0; --bk-edge:#c9cbc8; --bk-face:#e6e7e3; --bk-dark:#2a2e32; --bk-lever:#33383d; --bk-text:#1d2125; --bk-on:#d4322a; --bk-off:#2f9a48; --bk-hot:#f08a1c; --rail:#b9bec2; --rail-hole:#8d949a; --panel:#dfe3e6; --duct:#c9cdd0; --duct-c:#e4e6e8; --duct-slot:#8f969b; --tie:#1e2124; --sleeve:#fbfbf8;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",Roboto,Arial,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#13171a; --surface:#1c2226; --surface-2:#232a2f; --ink:#e5eaed; --muted:#93a0aa; --line:#323b42;
+  --accent:#ec9c32; --accent-ink:#1a1206; --accent-soft:#3a2a14;
+  --ok:#5cc17f; --ok-soft:#173222; --warn:#e2b04c; --warn-soft:#3a2e14; --bad:#f06b5b; --bad-soft:#3d1c18;
+  --l1:#b07a45; --l2:#0a0a0a; --l3:#9aa2a9; --n:#4b93ee; --pe-g:#3fa451; --pe-y:#e6c933; --halo:#8b969e; --sheath:#5d676e; --panel:#2b3237; --rail:#8f979d; --rail-hole:#5b6369; --duct:#59626a; --duct-c:#6b747b; --duct-slot:#353c42;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13171a; --surface:#1c2226; --surface-2:#232a2f; --ink:#e5eaed; --muted:#93a0aa; --line:#323b42;
+  --accent:#ec9c32; --accent-ink:#1a1206; --accent-soft:#3a2a14;
+  --ok:#5cc17f; --ok-soft:#173222; --warn:#e2b04c; --warn-soft:#3a2e14; --bad:#f06b5b; --bad-soft:#3d1c18;
+  --l1:#b07a45; --l2:#0a0a0a; --l3:#9aa2a9; --n:#4b93ee; --pe-g:#3fa451; --pe-y:#e6c933; --halo:#8b969e; --sheath:#5d676e; --panel:#2b3237; --rail:#8f979d; --rail-hole:#5b6369; --duct:#59626a; --duct-c:#6b747b; --duct-slot:#353c42;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 48px;display:flex;flex-direction:column;gap:18px}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;letter-spacing:.01em;text-wrap:balance;margin:0}
+h1{font-size:2.3rem;line-height:1}
+h2{font-size:1.45rem}
+h3{font-size:1.1rem}
+.mono,.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+
+header.top{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between}
+.brand{display:flex;gap:12px;align-items:center}
+.brand svg{flex:none}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:.92rem}
+.plate{display:inline-flex;gap:8px;align-items:center;font-family:var(--f-mono);font-size:.8rem;border:1.5px solid var(--ink);padding:4px 10px;border-radius:3px;letter-spacing:.04em}
+
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border:1px solid var(--line);background:var(--surface);border-radius:6px;overflow:hidden}
+.summary>div{padding:10px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+.summary .k{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.summary .v{font-family:var(--f-mono);font-size:1.15rem;font-weight:600;font-variant-numeric:tabular-nums}
+.summary .v small{font-size:.75rem;color:var(--muted);font-weight:400}
+
+nav.tabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:2px solid var(--line)}
+@media (max-width:560px){nav.tabs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-bottom:0;gap:6px}nav.tabs button{white-space:normal;border:1px solid var(--line);border-radius:4px;margin:0;background:var(--surface);text-align:left}nav.tabs button[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}}
+nav.tabs button{font-family:var(--f-display);font-size:1.08rem;font-weight:600;letter-spacing:.02em;background:none;border:0;color:var(--muted);padding:8px 12px 9px;margin-bottom:-2px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+nav.tabs button .cnt{font-family:var(--f-mono);font-size:.72rem;background:var(--bad);color:#fff;border-radius:9px;padding:1px 6px;margin-left:4px;vertical-align:2px}
+section.panel{display:flex;flex-direction:column;gap:16px}
+
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:end;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px}
+.settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 14px}
+label.f{display:flex;flex-direction:column;gap:3px;font-size:.78rem;color:var(--muted);min-width:0}
+label.f.chk{flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-size:.88rem}
+input,select{font:inherit;font-size:.95rem;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:6px 8px;width:100%;min-width:0}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent)}
+input[type=range]{padding:0;accent-color:var(--accent);background:none;border:0}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.btn{font:inherit;font-weight:600;font-size:.9rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 12px;border-radius:4px;cursor:pointer}
+.btn:hover{border-color:var(--ink)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.danger{color:var(--bad)}
+.btn.sm{padding:4px 9px;font-size:.82rem}
+
+.groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.g{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px;display:flex;flex-direction:column;gap:10px;border-top:4px solid var(--sheath)}
+.g[data-ph="L1"]{border-top-color:var(--l1)}.g[data-ph="L2"]{border-top-color:var(--l2)}.g[data-ph="L3"]{border-top-color:var(--l3)}.g[data-ph="3F"]{border-top-color:var(--accent)}
+.g .head{display:flex;gap:8px;align-items:center}
+.g .head .tag{font-family:var(--f-mono);font-size:.8rem;font-weight:600;color:var(--muted);flex:none}
+.g .head input{font-weight:600}
+.g .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.g .res{font-family:var(--f-mono);font-size:.82rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 12px;border-top:1px dashed var(--line);padding-top:8px}
+.g .res b{color:var(--ink);font-weight:600}
+@media (max-width:420px){.g .grid{grid-template-columns:repeat(2,minmax(0,1fr))}.groups{grid-template-columns:1fr}}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);background:var(--surface-2);font-weight:600}
+td.num,th.num{text-align:right}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:10px;font-family:var(--f-body)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}.pill.warn{background:var(--warn-soft);color:var(--warn)}.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.ph{display:inline-flex;align-items:center;gap:5px;font-family:var(--f-mono);font-weight:600}
+.ph i{width:10px;height:10px;border-radius:50%;display:inline-block;box-shadow:0 0 0 1px var(--halo)}
+
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.phasebars{display:flex;flex-direction:column;gap:10px}
+.pb{display:grid;grid-template-columns:34px 1fr 120px;gap:10px;align-items:center}
+.pb .track{height:16px;background:var(--surface-2);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.pb .fill{height:100%}
+.pb .val{font-family:var(--f-mono);font-size:.85rem;text-align:right}
+.formula{font-family:var(--f-mono);font-size:.84rem;background:var(--surface-2);border-left:3px solid var(--accent);padding:8px 10px;border-radius:0 4px 4px 0;overflow-x:auto;white-space:nowrap}
+dl.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
+dl.kv dt{color:var(--muted);font-size:.88rem}
+dl.kv dd{margin:0;font-family:var(--f-mono);font-size:.9rem}
+
+.schem{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px}
+.schem svg{display:block}
+.schem text{fill:var(--ink);font-family:var(--f-mono)}
+.schem .lbl{fill:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.84rem;color:var(--muted)}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.sw{width:22px;height:5px;border-radius:2px;display:inline-block}
+.brk rect.body{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+.brk.tripped rect.body{fill:var(--bad-soft);stroke:var(--bad)}
+.brk .lever{stroke:var(--ink);stroke-width:2}
+.brk.tripped .lever{stroke:var(--bad)}
+.flow{stroke:var(--accent);stroke-width:2;stroke-dasharray:4 8;fill:none;animation:flow .7s linear infinite}
+.flow.off{display:none}
+@keyframes flow{to{stroke-dashoffset:-12}}
+@media (prefers-reduced-motion:reduce){.flow{animation:none}}
+
+.rail{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+.rail svg{display:block}
+.bp{cursor:pointer}
+.bp .lev{transition:transform .18s cubic-bezier(.5,1.6,.5,1);transform-box:fill-box}
+.bp.off .lev{transform:translateY(19px)}
+.bp .win-on{transition:opacity .15s}.bp.off .win-on{opacity:0}
+.bp .win-off{opacity:0;transition:opacity .15s}.bp.off .win-off{opacity:1}
+.bp .heat{opacity:0;transition:opacity .2s}
+.bp.hot .heat{opacity:1;animation:heat 0.6s ease-in-out infinite alternate}
+@keyframes heat{from{opacity:.35}to{opacity:.9}}
+.bp:hover .face{stroke:var(--accent);stroke-width:2}
+.bp:focus-visible{outline:none}.bp:focus-visible .face{stroke:var(--accent);stroke-width:3}
+.rail text{font-family:var(--f-mono)}
+@media (prefers-reduced-motion:reduce){.bp .lev{transition:none}.bp.hot .heat{animation:none}}
+.simctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.meters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.meter{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px;border-left:5px solid var(--l1)}
+.meter:nth-child(2){border-left-color:var(--l2)}.meter:nth-child(3){border-left-color:var(--l3)}
+.meter .v{font-family:var(--f-mono);font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums}
+.meter.hi .v,.meter.lo .v{color:var(--bad)}
+.simrows{display:flex;flex-direction:column;gap:8px}
+.sr{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px;display:grid;grid-template-columns:minmax(150px,1.3fr) minmax(140px,1.4fr) minmax(170px,1.3fr) auto;gap:10px 16px;align-items:center}
+.sr.tripped{border-color:var(--bad)}
+.sr .nm{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.sr .meta{font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
+.sr .gauge{display:flex;flex-direction:column;gap:4px;font-family:var(--f-mono);font-size:.8rem}
+.minibar{height:7px;background:var(--surface-2);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.minibar>div{height:100%;background:var(--ok)}
+.sr .acts{display:flex;gap:6px}
+@media (max-width:760px){.sr{grid-template-columns:1fr 1fr}.sr .acts{grid-column:1/-1}}
+@media (max-width:420px){.sr{grid-template-columns:1fr}.meters{grid-template-columns:1fr}}
+.log{font-family:var(--f-mono);font-size:.8rem;max-height:220px;overflow:auto;display:flex;flex-direction:column;gap:3px}
+.log div{padding:3px 0;border-bottom:1px dotted var(--line)}
+.log .t{color:var(--muted);margin-right:8px}
+
+.issues{display:flex;flex-direction:column;gap:8px}
+.issue{display:grid;grid-template-columns:auto 1fr;gap:10px;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--warn);border-radius:4px;padding:9px 12px}
+.issue.bad{border-left-color:var(--bad)}.issue.ok{border-left-color:var(--ok)}.issue.info{border-left-color:var(--n)}
+.issue p{margin:0}
+.issue .src{color:var(--muted);font-size:.82rem}
+.checklist{display:flex;flex-direction:column;gap:2px}
+.checklist label{display:flex;gap:10px;align-items:flex-start;padding:7px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+.checklist input{flex:none;margin-top:2px}
+.note{font-size:.84rem;color:var(--muted);max-width:75ch}
+.switch{display:inline-flex;align-items:center;gap:8px;font-weight:600;cursor:pointer}
+
+/* v2 qo'shimchalari */
+[hidden]{display:none!important}
+section.panel:not([hidden]){animation:tabin .28s ease-out}
+@keyframes tabin{from{opacity:0;transform:translateY(8px)}}
+.flw{stroke:#ffe14d;stroke-width:1.8;stroke-dasharray:3 9;fill:none;stroke-linecap:round;animation:flw 1s linear infinite}
+.flw.off{display:none}
+@keyframes flw{to{stroke-dashoffset:-24}}
+.spark line{stroke:#ffd23a;stroke-width:2.6;stroke-linecap:round;animation:spk .65s ease-out forwards}
+.spark circle{fill:#fff6c2;transform-box:fill-box;transform-origin:center;animation:fls .5s ease-out forwards}
+.spark.blue line{stroke:#7fb4ff}.spark.blue circle{fill:#cfe2ff}
+@keyframes spk{from{opacity:1;stroke-dashoffset:var(--L)}60%{opacity:1;stroke-dashoffset:0}to{opacity:0;stroke-dashoffset:0}}
+@keyframes fls{from{transform:scale(.2);opacity:1}to{transform:scale(2.4);opacity:0}}
+.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translate(-5px,2px)}40%{transform:translate(5px,-2px)}60%{transform:translate(-3px,1px)}80%{transform:translate(2px,-1px)}}
+.flame{transform-box:fill-box;transform-origin:50% 100%;animation:flame .18s ease-in-out infinite alternate}
+@keyframes flame{from{transform:scale(1,.85)}to{transform:scale(.9,1.15)}}
+.flick{animation:flick .12s steps(2) infinite}
+@keyframes flick{50%{opacity:.2}}
+#toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:8px;z-index:60;width:min(520px,calc(100% - 32px));pointer-events:none}
+.toast{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-left:5px solid var(--bad);border-radius:6px;padding:10px 12px;font-size:.9rem;font-weight:600;box-shadow:0 6px 24px rgba(0,0,0,.25);animation:tin .3s ease-out}
+.toast.ok{border-left-color:var(--ok)}.toast.warn{border-left-color:var(--warn)}
+.toast.out{animation:tout .35s ease-in forwards}
+@keyframes tin{from{transform:translateY(20px);opacity:0}}
+@keyframes tout{to{transform:translateY(20px);opacity:0}}
+#splash{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .45s}
+#splash.out{opacity:0;pointer-events:none}
+#splash .bolt{stroke:var(--accent);stroke-width:5;fill:none;stroke-linejoin:round;stroke-dasharray:260;stroke-dashoffset:260;animation:draw .9s .1s ease-out forwards}
+#splash .boltf{fill:var(--accent);opacity:0;animation:boltf .3s .9s forwards}
+#splash h1{font-size:2.6rem;opacity:0;animation:boltf .4s .6s forwards}
+#splash .bar{width:160px;height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+#splash .bar i{display:block;height:100%;width:0;background:var(--accent);animation:barw 1.2s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}@keyframes boltf{to{opacity:1}}@keyframes barw{to{width:100%}}
+@media (prefers-reduced-motion:reduce){.flw,.spark line,.spark circle,.flame,.flick,.shake,section.panel:not([hidden]){animation:none}}
+.fxbox{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:end;margin-top:8px;padding:8px 10px;background:var(--surface-2);border:1px dashed var(--line);border-radius:5px}
+.fxbox label.f{min-width:150px;flex:1 1 150px}
+.fxbox .cur{color:var(--muted);font-size:.72rem}
+.result{border-radius:6px;padding:10px 12px;font-weight:600;border:1.5px solid var(--ok);background:var(--ok-soft);color:var(--ok)}
+.result.warn{border-color:var(--warn);background:var(--warn-soft);color:var(--warn)}
+.result ul{margin:6px 0 0;padding-left:18px;font-weight:400;color:var(--ink)}
+.conn{cursor:pointer}
+.conn:hover .slv,.conn:focus-visible .slv{stroke:var(--accent);stroke-width:2.5}
+.conn:hover text.qf{fill:var(--accent)}
+#connEd .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 14px;margin:10px 0}
+.g{gap:8px}
+.g fieldset{border:0;border-top:1px dashed var(--line);margin:0;padding:8px 0 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.g legend{font-size:.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:700;padding:0 6px 0 0}
+.g .wide{grid-column:span 2}
+.g .errs{display:flex;flex-wrap:wrap;gap:4px}
+.g.has-bad{box-shadow:0 0 0 1.5px var(--bad)}
+.cdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+@media (max-width:520px){.g fieldset{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.groups{grid-template-columns:repeat(auto-fill,minmax(400px,1fr))}
+@media (max-width:460px){.groups{grid-template-columns:1fr}}
+.issue .fix{color:var(--ok);font-size:.84rem;margin-top:2px}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters .btn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.sr{grid-template-columns:minmax(150px,1.2fr) minmax(150px,1.3fr) minmax(130px,1fr) minmax(130px,1fr) auto}
+.sr .gauge b{font-weight:600;color:var(--ink)}
+.sr .stline{font-size:.8rem;grid-column:1/-1;margin-top:-2px}
+.sr .stline.bad{color:var(--bad);font-weight:600}.sr .stline.warn{color:var(--warn);font-weight:600}
+@media (max-width:860px){.sr{grid-template-columns:1fr 1fr}.sr .acts{grid-column:1/-1}}
+@media (max-width:420px){.sr{grid-template-columns:1fr}}
+.burn{animation:burn .35s steps(2) infinite}
+@keyframes burn{50%{opacity:.55}}
+.smoke{animation:smoke 1.6s ease-out infinite}
+@keyframes smoke{from{transform:translateY(0);opacity:.7}to{transform:translateY(-26px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.burn,.smoke{animation:none}}
+.alert{border:1.5px solid var(--bad);background:var(--bad-soft);color:var(--bad);border-radius:6px;padding:10px 12px;font-weight:600}
+.alert[hidden]{display:none}
+</style>
+</head>
+<body>
+<div id="splash" hidden><svg width="90" height="110" viewBox="0 0 90 110" aria-hidden="true"><path class="boltf" d="M52 4 L14 62 H42 L34 106 L76 42 H48 Z"/><path class="bolt" d="M52 4 L14 62 H42 L34 106 L76 42 H48 Z"/></svg><h1>ShitLab</h1><div class="bar"><i></i></div></div>
+<div id="toasts" aria-live="polite"></div>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><rect x="2" y="2" width="40" height="40" rx="4" fill="none" stroke="var(--ink)" stroke-width="2.5"/><line x1="9" y1="12" x2="35" y2="12" stroke="var(--l1)" stroke-width="3"/><line x1="9" y1="18" x2="35" y2="18" stroke="var(--l2)" stroke-width="3"/><line x1="9" y1="24" x2="35" y2="24" stroke="var(--l3)" stroke-width="3"/><line x1="9" y1="30" x2="35" y2="30" stroke="var(--n)" stroke-width="3"/><line x1="9" y1="36" x2="35" y2="36" stroke="var(--pe-g)" stroke-width="3"/><line x1="9" y1="36" x2="35" y2="36" stroke="var(--pe-y)" stroke-width="3" stroke-dasharray="4 4"/></svg>
+      <div>
+        <h1>ShitLab</h1>
+        <p>Shitni o'zingiz yig'asiz, dastur PUE bo'yicha tekshiradi va ishlatib ko'rsatadi</p>
+      </div>
+    </div>
+    <span class="plate" id="plate">3~ 380/220 V · 50 Hz</span>
+  </header>
+
+  <div class="summary" id="summary"></div>
+
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-tab="kirish">1. Kirish</button>
+    <button role="tab" data-tab="yigish">2. Guruhlarni yig'ish</button>
+    <button role="tab" data-tab="tekshir">3. PUE tekshiruvi</button>
+    <button role="tab" data-tab="sxema">4. Sxema</button>
+    <button role="tab" data-tab="sim">5. Simulyatsiya</button>
+  </nav>
+
+  <!-- 1. KIRISH -->
+  <section class="panel" id="p-kirish">
+    <div class="card">
+      <h3 style="margin-bottom:10px">Tarmoq</h3>
+      <div class="settings">
+        <label class="f">Yerga ulash tizimi<select id="m-earth"><option value="TN-C-S">TN-C-S (4 simli kirish, PEN)</option><option value="TN-S">TN-S (5 simli kirish, N va PE alohida)</option></select></label>
+        <label class="f">Tarmoq qarshiligi Zs, Ω<input id="m-zs" type="number" min="0.01" step="0.01"></label>
+        <label class="f">Ruxsat ΔU (jami), %<input id="m-du" type="number" min="1" step="0.5"></label>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:10px">Kirish kabeli</h3>
+      <div class="settings">
+        <label class="f">Material<select id="m-cMat"><option value="Cu">Mis (Cu)</option><option value="Al">Alyuminiy (Al)</option></select></label>
+        <label class="f">Kesim, mm²<select id="m-cS"></select></label>
+        <label class="f">Tomirlar soni<select id="m-cCores"><option value="4">4 tomir</option><option value="5">5 tomir</option></select></label>
+        <label class="f">Yotqizish<select id="m-cLay"><option value="air">Ochiq, havoda</option><option value="pipe">Truba / devor ichida</option></select></label>
+        <label class="f">Uzunlik, m<input id="m-cLen" type="number" min="1" step="1"></label>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:10px">Kirish avtomati va shinalar</h3>
+      <div class="settings">
+        <label class="f">Qutblar<select id="m-poles"><option value="3P">3P</option><option value="4P">4P</option><option value="1P">1P</option></select></label>
+        <label class="f">Xarakteristika<select id="m-ch"><option>B</option><option>C</option><option>D</option></select></label>
+        <label class="f">Nominal tok In<select id="m-In"></select></label>
+        <label class="f">PEN ulanishi (TN-C-S)<select id="m-pen"><option value="ok">PEN → PE shina, PE → N peremichka</option><option value="toN">PEN → N shina, N → PE peremichka</option><option value="none">Peremichka yo'q (N shina ulanmagan)</option></select></label>
+        <label class="f">Shit korpusi<select id="m-body"><option value="1">PE shinaga ulangan</option><option value="0">Ulanmagan</option></select></label>
+      </div>
+    </div>
+    <p class="note">Barcha qiymatlarni o'zingiz tanlaysiz. Dastur "Avto" tanlamaydi, faqat tekshiradi va 3-bo'limda to'g'ri qiymatni tavsiya qiladi.</p>
+  </section>
+
+  <!-- 2. YIG'ISH -->
+  <section class="panel" id="p-yigish" hidden>
+    <div class="bar" style="justify-content:space-between">
+      <h2>Guruhlar</h2>
+      <div class="bar">
+        <button class="btn" id="btn-reset-ex">Namunani tiklash</button>
+        <button class="btn" id="btn-clear">Hammasini tozalash</button>
+        <button class="btn pri" id="btn-add">+ Guruh qo'shish</button>
+      </div>
+    </div>
+    <p class="note">Namunaviy shitda ataylab bir nechta xato qoldirilgan. Ularni 3-bo'limda toping, shu yerda tuzating va 5-bo'limda nima bo'lishini ko'ring.</p>
+    <div class="groups" id="groups"></div>
+  </section>
+
+  <!-- 3. TEKSHIRUV -->
+  <section class="panel" id="p-tekshir" hidden>
+    <div class="bar" style="justify-content:space-between">
+      <h2>PUE bo'yicha tekshiruv</h2>
+      <div class="filters" id="filters">
+        <button class="btn sm" data-flt="all" aria-pressed="true">Hammasi</button>
+        <button class="btn sm" data-flt="bad" aria-pressed="false">Xatolar</button>
+        <button class="btn sm" data-flt="warn" aria-pressed="false">Diqqat</button>
+      </div>
+    </div>
+    <div class="result" id="fixResult" hidden aria-live="polite"></div>
+    <div class="issues" id="issues"></div>
+    <h2>Hisob jadvali</h2>
+    <div class="tbl"><table id="calcTable"></table></div>
+    <div class="two">
+      <div class="card">
+        <h3 style="margin-bottom:10px">Fazalar bo'yicha yuklama</h3>
+        <div class="phasebars" id="phasebars"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:8px">Formulalar</h3>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="formula">1F: I = P / (220 · cosφ);  3F: I = P / (√3 · 380 · cosφ)</div>
+          <div class="formula">I<sub>hisob</sub> ≤ I<sub>n</sub> ≤ I<sub>ruxsat</sub> (PUE 1.3, 3.1)</div>
+          <div class="formula">I<sub>QT</sub> = 220 / (Z<sub>s</sub> + Z<sub>kirish</sub> + 2ρL/S) ≥ k·I<sub>n</sub>; k: B=5, C=10, D=20</div>
+        </div>
+      </div>
+    </div>
+    <p class="note">Ruxsat etilgan toklar PUE-7 1.3.4–1.3.7 jadvallari bo'yicha, +25 °C uchun olingan. Bu o'quv va dastlabki hisob vositasi: haqiqiy obyekt loyihasini litsenziyali muhandis tekshirishi shart.</p>
+  </section>
+
+  <!-- 4. SXEMA -->
+  <section class="panel" id="p-sxema" hidden>
+    <div class="schem" id="schem"></div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--l1)"></i>L1 jigarrang</span>
+      <span><i class="sw" style="background:var(--l2);box-shadow:0 0 0 1px var(--halo)"></i>L2 qora</span>
+      <span><i class="sw" style="background:var(--l3)"></i>L3 kulrang</span>
+      <span><i class="sw" style="background:var(--n)"></i>N ko'k</span>
+      <span><i class="sw" style="background:repeating-linear-gradient(90deg,var(--pe-g) 0 5px,var(--pe-y) 5px 10px)"></i>PE sariq-yashil</span>
+      <span><svg width="10" height="14"><rect x="2" y="1" width="6" height="12" fill="var(--accent)"/></svg>НШВИ uchlik</span>
+      <span><svg width="16" height="16"><circle cx="8" cy="8" r="7" fill="var(--bad)"/><text x="8" y="12" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">!</text></svg>Xato bor</span>
+    </div>
+    <p class="note">Sxema siz kiritgan ulanishlar bo'yicha chiziladi: sim siz tanlagan rangda, siz tanlagan shinaga boradi. Noto'g'ri ulanish qizil bilan belgilanadi.</p>
+  </section>
+
+  <!-- 5. SIMULYATSIYA -->
+  <section class="panel" id="p-sim" hidden>
+    <div class="card">
+      <h3 style="margin-bottom:8px">Tayyor ssenariylar</h3>
+      <div class="simctl">
+        <button class="btn pri" data-scn="over">Ortiqcha yuklama</button>
+        <button class="btn pri" data-scn="sc">Qisqa tutashuv</button>
+        <button class="btn pri" data-scn="body">Korpusga tok o'tishi</button>
+        <button class="btn pri" data-scn="n">Nol uzilishi</button>
+      </div>
+    </div>
+    <div class="alert" id="danger" hidden></div>
+    <div class="rail" id="rail" aria-label="Yig'ilgan shitning virtual ko'rinishi"></div>
+    <p class="note" style="margin-top:-8px">Simlar apparatlardan yuqori kabel kanaliga kiradi, xomut bilan bog'langan dasta bo'lib pastki kanalga tushadi va markirovkali kabel salnik orqali chiqadi. N va PE shinadagi klemma ustidagi raqam o'sha klemmaga ulangan guruh (QF) raqamini bildiradi, noto'g'ri ulanish qizil halqa bilan belgilanadi. Kabel markirovkasini (oq yorliq QF…), guruh nomini yoki shinadagi klemmani bossangiz, o'sha guruh simlarini qayerga ulashni o'zgartiradigan oyna ochiladi. Avtomat dastagini bosib yoqing yoki o'chiring. Avtomat korpusidagi to'q sariq rang uning issiqlik ajratgichi qizishini ko'rsatadi. Kabel rangi harorati bilan o'zgaradi: kulrang me'yorda, sariq 60 °C dan, to'q sariq 70 °C dan (ruxsat chegarasi), qizil 90 °C dan (izolyatsiya eriydi), qora rang esa kabel kuyganini bildiradi.</p>
+    <div class="card" id="connEd" hidden></div>
+    <div class="simctl">
+      <button class="btn" id="sim-play">Pauza</button>
+      <button class="btn" id="sim-reset">Hammasini tiklash</button>
+      <button class="btn" id="sim-sound" aria-pressed="false">Ovoz: o'chiq</button>
+      <label class="switch"><input type="checkbox" id="sim-nbreak"> Kirishda nol (N) uzildi</label>
+      <span class="muted small" id="sim-time"></span>
+    </div>
+    <div class="meters" id="meters"></div>
+    <div class="card" id="mainCard" style="display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center"></div>
+    <div class="simrows" id="simrows"></div>
+    <div class="card">
+      <h3 style="margin-bottom:6px">Hodisalar va ogohlantirishlar</h3>
+      <div class="log" id="log"></div>
+    </div>
+    <p class="note">Vaqt tezlashtirilgan: haqiqatda daqiqalar va soatlar davom etadigan qizish bu yerda soniyalarda ko'rsatiladi. Kabel harorati I²/I<sub>ruxsat</sub>² ga mutanosib o'sadi: I<sub>ruxsat</sub> da +70 °C, PVX izolyatsiya uchun chegara.</p>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+const U1=220,U3=380,SQ3=Math.sqrt(3);
+const RHO={Cu:0.0175,Al:0.028};
+const SIZES=[1.5,2.5,4,6,10,16,25,35,50,70,95,120];
+const BR=[6,10,16,20,25,32,40,50,63,80,100,125,160,200,250];
+const RCD_IN=[16,25,40,63,80,100];
+const IDN=[10,30,100,300];
+const IZ={
+ Cu:{air1:[19,27,38,50,70,90,115,140,175,215,260,300],air3:[19,25,35,42,55,75,95,120,145,180,220,260],
+     pipe1:[19,27,38,46,70,85,115,140,175,215,260,300],pipe3:[17,25,35,42,60,80,100,125,170,210,255,290]},
+ Al:{air1:[null,21,29,38,55,70,90,105,135,165,200,230],air3:[null,19,27,32,42,60,75,90,110,140,170,200],
+     pipe1:[null,20,28,36,50,60,85,100,140,175,215,245],pipe3:[null,19,28,32,47,60,80,95,130,165,200,220]}
+};
+const TYPES={light:"Yoritish",socket:"Rozetka",wet:"Vanna / nam xona rozetkasi",power:"Kuch jihozi"};
+const KINDS={MCB:"Avtomat",RCBO:"Difavtomat","MCB+RCD":"Avtomat + UZO"};
+const COLORS={bn:"Jigarrang",bk:"Qora",gy:"Kulrang",bu:"Ko'k",gnye:"Sariq-yashil"};
+const PH=["L1","L2","L3"];
+const PHC={L1:"bn",L2:"bk",L3:"gy"};
+const KMAG={B:5,C:10,D:20}, MAG_SIM={B:4,C:7.5,D:15};
+
+const G=(o)=>Object.assign({name:"Yangi guruh",type:"socket",P:1,phases:1,cos:0.95,kc:0.8,len:15,
+ kind:"MCB",poles:"1P",ch:"C",In:16,idn:30,rcdIn:25,mat:"Cu",S:2.5,cores:3,lay:"pipe",
+ ph:"L1",sw:"L",nConn:"Nbus",peConn:"PEbus",cPh:"bn",cN:"bu",cPE:"gnye",ferr:true},o);
+const EXAMPLE={
+ main:{earth:"TN-C-S",zs:0.15,du:5,cMat:"Cu",cS:10,cCores:4,cLay:"air",cLen:15,poles:"3P",ch:"C",In:40,pen:"ok",body:"1"},
+ groups:[
+  G({name:"Yoritish 1-qavat",type:"light",P:0.6,cos:0.95,kc:0.9,len:22,ch:"B",In:10,S:1.5,ph:"L3",cPh:"gy"}),
+  G({name:"Yoritish 2-qavat",type:"light",P:0.45,cos:0.95,kc:0.9,len:28,ch:"B",In:10,S:1.5,ph:"L2",cPh:"bk"}),
+  G({name:"Rozetkalar zal",P:2.0,kc:0.6,len:20,kind:"RCBO",poles:"2P",In:16,ph:"L3",cPh:"gy",nConn:"rcdOut"}),
+  G({name:"Rozetkalar yotoqxona",P:1.5,kc:0.6,len:26,In:25,S:1.5,ph:"L2",cPh:"bk"}),
+  G({name:"Oshxona rozetkalari",P:3.0,kc:0.7,len:14,kind:"RCBO",poles:"2P",In:16,ph:"L1",cPh:"bn",nConn:"rcdOut"}),
+  G({name:"Kir yuvish mashinasi",type:"wet",P:2.2,cos:0.9,kc:0.8,len:12,kind:"MCB+RCD",In:16,rcdIn:25,ph:"L3",cPh:"gy",nConn:"Nbus"}),
+  G({name:"Konditsioner",type:"power",P:2.5,cos:0.85,kc:0.8,len:18,In:16,ph:"L2",cPh:"bu",ferr:false}),
+  G({name:"Suv isitgich",type:"power",P:2.0,cos:1,kc:0.7,len:10,kind:"RCBO",poles:"2P",In:16,ph:"L1",cPh:"bn",nConn:"rcdOut"}),
+  G({name:"Elektr plita",type:"power",P:7.0,phases:3,cos:1,kc:0.65,len:12,kind:"MCB+RCD",poles:"3P",In:16,rcdIn:25,cores:5,ph:"L123",nConn:"rcdOut"}),
+  G({name:"Nasos",type:"power",P:1.5,phases:3,cos:0.8,kc:1,len:30,poles:"3P",In:6,S:1.5,cores:4,ph:"L123",nConn:"none",lay:"air"})
+ ]};
+
+const KEY="shitlab-v2";
+let S;
+function load(){try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(o&&o.groups&&o.main)return o;}}catch(e){}return JSON.parse(JSON.stringify(EXAMPLE));}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+S=load();
+let uid=1;S.groups.forEach(g=>{g.id=uid++;});
+
+const $=s=>document.querySelector(s);
+const fmt=(v,d=1)=>(v==null||!isFinite(v))?"—":Number(v).toFixed(d);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const stdUp=(arr,v)=>{for(const x of arr)if(x>=v-1e-9)return x;return null;};
+const sIdx=s=>SIZES.indexOf(Number(s));
+const hasRcd=g=>g.kind!=="MCB";
+const izOf=(mat,lay,three,S_)=>{const a=IZ[mat][lay+(three?"3":"1")];return a?a[sIdx(S_)]:null;};
+const cVar=c=>c==="bn"?"var(--l1)":c==="bk"?"var(--l2)":c==="gy"?"var(--l3)":c==="bu"?"var(--n)":"PE";
+
+/* ================= HISOB VA TEKSHIRUV ================= */
+function compute(){
+ const m=S.main, R={groups:[],phaseKw:{L1:0,L2:0,L3:0},phaseI:{L1:0,L2:0,L3:0},issues:[]};
+ const add=(lvl,text,ref,fix,gid,fx)=>R.issues.push({lvl,text,ref,fix,gid:gid??null,fx:fx||null});
+ // kirish
+ const rhoIn=RHO[m.cMat];
+ R.zIn=+m.zs+2*rhoIn*m.cLen/m.cS;
+ S.groups.forEach((g,i)=>{
+  const three=g.phases==3,rho=RHO[g.mat];
+  const P=+g.P||0,cos=Math.min(1,Math.max(0.3,+g.cos||1)),kc=Math.min(1,Math.max(0,+g.kc||0));
+  const Ib=three?P*1000/(SQ3*U3*cos):P*1000/(U1*cos);
+  const Iz=izOf(g.mat,g.lay,three,g.S);
+  const len=+g.len||0;
+  const du=three?SQ3*len*Ib*rho*cos/(g.S*U3)*100:2*len*Ib*rho*cos/(g.S*U1)*100;
+  const Ik=U1/(R.zIn+2*rho*len/g.S);
+  const minS=g.mat==="Al"?2.5:(g.type==="socket"||g.type==="wet"?2.5:1.5);
+  const minIn=g.type==="light"?6:g.type==="power"?6:10;
+  const recIn=stdUp(BR,Math.max(Ib,minIn));
+  let recS=null;
+  for(const s of SIZES){if(s<minS)continue;const z=izOf(g.mat,g.lay,three,s);if(z&&z>=recIn){recS=s;break;}}
+  const r={g,i,n:i+1,three,P,cos,kc,Pd:P*kc,Ib,Iz,du,Ik,recIn,recS,minS,issues:[]};
+  R.groups.push(r);
+  if(three){PH.forEach(p=>{R.phaseKw[p]+=r.Pd/3;R.phaseI[p]+=r.Pd*1000/(SQ3*U3*cos);});}
+  else{const p=PH.includes(g.ph)?g.ph:"L1";R.phaseKw[p]+=r.Pd;R.phaseI[p]+=r.Pd*1000/(U1*cos);}
+ });
+ R.Pinst=R.groups.reduce((a,r)=>a+r.P,0);R.Pd=R.groups.reduce((a,r)=>a+r.Pd,0);
+ R.Iin=Math.max(...PH.map(p=>R.phaseI[p]));
+ const Imax=R.Iin,Imin=Math.min(...PH.map(p=>R.phaseI[p]));R.imb=Imax>0?(Imax-Imin)/Imax*100:0;
+ R.izIn=izOf(m.cMat,m.cLay,true,m.cS);
+ R.duIn=SQ3*m.cLen*R.Iin*rhoIn*0.95/(m.cS*U3)*100;
+ R.maxGroupIn=Math.max(0,...S.groups.map(g=>+g.In||0));
+ R.recMain=stdUp(BR,Math.max(R.Iin,(BR.find(b=>b>R.maxGroupIn)||R.maxGroupIn)));
+
+ R.inSize=SIZES.find(s_=>{const z=izOf(m.cMat,m.cLay,true,s_);return z&&z>=m.In;})||m.cS;
+ // ---- kirish tekshiruvi ----
+ if(m.poles==="1P")add("bad","Uch fazali kirishga 1 qutbli avtomat qo'yilgan: L2 va L3 himoyasiz qoladi.","PUE 3.1",`3P C${R.recMain} qo'ying.`,null,{poles:"3P"});
+ if(+m.In<R.Iin)add("bad",`Kirish avtomati ${m.ch}${m.In} hisobiy tokdan kichik (${fmt(R.Iin)} A). Oddiy yuklamada o'chib qoladi.`,"PUE 3.1",`Kamida ${m.ch}${R.recMain}.`,null,{In:R.recMain});
+ if(+m.In<=R.maxGroupIn)add("warn",`Selektivlik yo'q: kirish avtomati (${m.In} A) eng katta guruh avtomatidan (${R.maxGroupIn} A) katta emas. Guruhdagi nosozlikda butun shit o'chadi.`,"PUE 3.1",`Kirishni kamida ${BR.find(b=>b>R.maxGroupIn)} A qiling.`,null,{In:BR.find(b=>b>R.maxGroupIn)||m.In});
+ if(!R.izIn)add("bad",`Kirish kabeli: ${m.cMat} ${m.cS} mm² jadvalda yo'q.`,"PUE 1.3","",null,{cS:R.inSize});
+ else if(R.izIn<+m.In)add("bad",`Kirish kabeli ${m.cCores}×${m.cS} ${m.cMat} (I ruxsat ${R.izIn} A) kirish avtomatidan (${m.In} A) kuchsiz. Kabel avtomatdan oldin qiziydi.`,"PUE 1.3, 3.1",`Kesimni oshiring: ${(SIZES.find(s=>{const z=izOf(m.cMat,m.cLay,true,s);return z&&z>=m.In;}))||"—"} mm².`,null,{cS:R.inSize});
+ if(m.cMat==="Al"&&+m.cS<16)add("bad","Alyuminiy kirish kabeli 16 mm² dan kichik bo'lmasligi kerak.","PUE 7.1.34","Mis kabel yoki Al ≥ 16 mm².",null,{cMat:"Cu"});
+ if(m.earth==="TN-S"&&+m.cCores<5)add("bad","TN-S tizimida kirish kabeli 5 tomirli bo'lishi kerak (L1, L2, L3, N, PE).","PUE 1.7","5 tomirli kabel.",null,{cCores:5});
+ if(m.earth==="TN-C-S"){
+  if(m.pen==="none")add("bad","PEN ajratilmagan: N shina hech narsaga ulanmagan. Bir fazali jihozlar ishlamaydi yoki kuchlanish og'adi.","PUE 1.7.135","PEN → PE shina, PE → N peremichka.",null,{pen:"ok"});
+  if(m.pen==="toN")add("bad","PEN avval N shinaga ulangan. PEN o'tkazgich birinchi navbatda PE shinaga ulanishi, N shina undan peremichka orqali olinishi kerak.","PUE 1.7.135","PEN → PE shina, PE → N peremichka.",null,{pen:"ok"});
+ }
+ if(m.body!=="1")add("bad","Shit korpusi PE shinaga ulanmagan. Ichkarida izolyatsiya buzilsa, korpusda kuchlanish paydo bo'ladi.","PUE 1.7","Korpus va eshikni PE ga ulang.",null,{body:"1"});
+ if(R.duIn>2.5)add("warn",`Kirish kabelida kuchlanish yo'qolishi ${fmt(R.duIn,2)}% (katta).`,"PUE / GOST 32144","Kesimni oshiring.",null,{cS:SIZES[Math.min(SIZES.length-1,sIdx(m.cS)+1)]});
+ if(R.imb>15)add("warn",`Fazalar nosimmetriyasi ${fmt(R.imb,0)}% (tavsiya ≤ 15%). L1 ${fmt(R.phaseI.L1)} A, L2 ${fmt(R.phaseI.L2)} A, L3 ${fmt(R.phaseI.L3)} A.`,"Faza balansi","Bir fazali guruhlarni kam yuklangan fazaga o'tkazing.");
+
+ // ---- guruhlar ----
+ R.groups.forEach(r=>{
+  const g=r.g,gid=g.id,t=`QF${r.n}`;
+  const A=(lvl,text,ref,fix,fx)=>{r.issues.push(lvl);add(lvl,text,ref,fix,gid,fx);};
+  const In=+g.In,rcd=hasRcd(g);
+  // qutblar
+  if(r.three&&!["3P","4P"].includes(g.poles))A("bad",`${t}: 3 fazali jihozga ${g.poles} avtomat qo'yilgan. Barcha fazalar birga uzilishi kerak.`,"PUE 3.1","3P yoki 4P.",{poles:"3P"});
+  if(!r.three&&["3P","4P"].includes(g.poles))A("warn",`${t}: bir fazali jihozga ${g.poles} avtomat. Ortiqcha qutblar keraksiz.`,"","1P yoki 2P (1P+N).",{poles:g.kind==="MCB"?"1P":"2P"});
+  if(!r.three&&g.poles==="1P"&&g.kind==="MCB"&&g.sw==="N")A("bad",`${t}: avtomat nol (N) simiga qo'yilgan. O'chirilganda ham jihozda faza qoladi, korpusga tok o'tsa avtomat bu tokni ko'rmaydi.`,"PUE 1.7, 3.1","Avtomat faza simini uzishi kerak; N to'g'ridan-to'g'ri N shinaga.",{sw:"L"});
+  // tok
+  if(In<r.Ib)A("bad",`${t}: avtomat ${g.ch}${In} yuklama tokidan kichik (${fmt(r.Ib)} A). Ishlash paytida qizib o'chib qoladi.`,"PUE 3.1",`Kamida ${g.ch}${r.recIn}.`,{In:r.recIn});
+  if(!r.Iz)A("bad",`${t}: ${g.mat} ${g.S} mm² bu yotqizish usuli uchun jadvalda yo'q.`,"PUE 1.3",`${r.recS||"—"} mm².`,{mat:"Cu",S:r.recS||g.S});
+  else if(r.Iz<In)A("bad",`${t}: kabel ${g.S} mm² (I ruxsat ${r.Iz} A) avtomatdan (${In} A) kuchsiz. Ortiqcha yuklamada avtomat o'chishidan oldin kabel qizib, izolyatsiya eriydi.`,"PUE 1.3, 3.1",`Kabelni ${(SIZES.find(s=>{const z=izOf(g.mat,g.lay,r.three,s);return z&&z>=In&&s>=r.minS;}))||"—"} mm² ga oshiring yoki avtomatni ${BR.filter(b=>b<=r.Iz&&b>=r.Ib).pop()||"kichikroq"} A qiling.`,{S:(SIZES.find(s=>{const z=izOf(g.mat,g.lay,r.three,s);return z&&z>=In&&s>=r.minS;})||g.S),In:In});
+  if(+g.S<r.minS)A("bad",`${t}: kesim ${g.S} mm² minimal ${r.minS} mm² dan kichik (rozetka tarmog'i).`,"PUE 7.1.34–7.1.35",`${r.minS} mm².`,{S:r.minS});
+  if(g.mat==="Al"&&+g.S<16)A("bad",`${t}: turar joy guruh tarmoqlari mis bo'lishi kerak (alyuminiy faqat 16 mm² dan).`,"PUE 7.1.34","Mis sim.",{mat:"Cu"});
+  if(r.du+R.duIn>+m.du)A("warn",`${t}: kuchlanish yo'qolishi ${fmt(r.du+R.duIn,2)}% > ${m.du}%.`,"GOST 32144",`Kesimni oshiring yoki liniyani qisqartiring.`,{S:SIZES[Math.min(SIZES.length-1,sIdx(g.S)+1)]});
+  if(r.Ik<KMAG[g.ch]*In)A("bad",`${t}: qisqa tutashuv toki ${fmt(r.Ik,0)} A < ${KMAG[g.ch]}·In = ${KMAG[g.ch]*In} A. Liniya oxirida QT bo'lsa avtomat darhol o'chmaydi.`,"PUE 1.7.79",`Kesimni oshiring, B xarakteristika yoki kichikroq In tanlang.`,(r.Ik>=5*In&&g.ch!=="B"?{ch:"B"}:{S:SIZES[Math.min(SIZES.length-1,sIdx(g.S)+1)]}));
+  // tomirlar
+  if(!r.three&&+g.cores<3)A("bad",`${t}: ${g.cores} tomirli kabel. PE tomir yo'q, jihoz korpusi yerga ulanmaydi.`,"PUE 7.1.36","3 tomirli kabel (L, N, PE).",{cores:3});
+  if(r.three){const needN=g.type!=="power"||g.nConn!=="none";if(+g.cores<(needN?5:4))A("bad",`${t}: 3 fazali liniya ${g.cores} tomirli. ${needN?"L1, L2, L3, N, PE uchun 5 tomir kerak.":"L1, L2, L3, PE uchun kamida 4 tomir kerak."}`,"PUE 7.1.36",`${needN?5:4} tomirli kabel.`,{cores:needN?5:4});}
+  // UZO
+  if((g.type==="socket"||g.type==="wet")&&!rcd)A("bad",`${t}: rozetka guruhida UZO yoki difavtomat yo'q.`,"PUE 7.1.79","30 mA UZO yoki difavtomat.",{kind:"RCBO",poles:r.three?"4P":"2P",idn:30,nConn:"rcdOut"});
+  if(rcd&&(g.type==="socket"||g.type==="wet")&&+g.idn>30)A("bad",`${t}: UZO ${g.idn} mA. Odamni himoya qilish uchun 30 mA dan oshmasligi kerak.`,"PUE 7.1.83",g.type==="wet"?"10 yoki 30 mA.":"30 mA.",{idn:30});
+  if(g.kind==="MCB+RCD"&&+g.rcdIn<In)A("warn",`${t}: UZO nominal toki ${g.rcdIn} A avtomatdan (${In} A) kichik. UZO o'ta yuklanishdan himoyalanmagan.`,"",`UZO ≥ ${stdUp(RCD_IN,In)} A.`,{rcdIn:stdUp(RCD_IN,In)||g.rcdIn});
+  // N
+  if(rcd){
+   if(g.nConn==="Nbus")A("bad",`${t}: N sim UZO chiqishidan emas, umumiy N shinadan olingan. UZO faza tokini ko'radi, N tokini ko'rmaydi: yuklama ulanishi bilan o'chadi.`,"PUE 7.1.83","N simni UZO ning N chiqish klemmasiga ulang.",{nConn:"rcdOut"});
+   if(g.nConn==="PEbus")A("bad",`${t}: N sim PE shinaga ulangan. Ish toki PE orqali qaytadi, UZO darhol o'chadi.`,"PUE 1.7.135","N ni UZO chiqishiga ulang.",{nConn:"rcdOut"});
+  }else{
+   if(g.nConn==="rcdOut")A("bad",`${t}: N "UZO chiqishidan" deb ko'rsatilgan, lekin bu guruhda UZO yo'q.`,"","N shinaga ulang yoki UZO qo'ying.",{nConn:"Nbus"});
+   if(g.nConn==="PEbus")A("bad",`${t}: N sim PE shinaga ulangan. Ish toki himoya o'tkazgichi orqali oqadi, PE uzilsa korpusda kuchlanish bo'ladi.`,"PUE 1.7.135","N ni N shinaga ulang.",{nConn:"Nbus"});
+  }
+  if(g.nConn==="none"&&!(r.three&&g.type==="power"))A("bad",`${t}: N sim ulanmagan. Bir fazali jihoz ishlamaydi.`,"","N ni ulang.",{nConn:rcd?"rcdOut":"Nbus"});
+  // PE
+  if(g.peConn==="none")A("bad",`${t}: PE ulanmagan. Jihoz korpusiga tok o'tsa avtomat o'chmaydi, odamga tok uradi.`,"PUE 1.7.76","PE simni PE shinaga ulang.",{peConn:"PEbus"});
+  if(g.peConn==="Nbus")A("bad",`${t}: PE sim N shinaga ulangan. PEN ajratish nuqtasidan keyin N va PE birlashtirilmaydi: nol uzilsa jihoz korpusiga faza chiqadi.`,"PUE 1.7.135","PE ni PE shinaga ulang.",{peConn:"PEbus"});
+  // ranglar
+  if(!r.three){
+   if(g.cPh==="bu")A("bad",`${t}: ko'k sim faza sifatida ishlatilgan. Ko'k rang faqat N uchun.`,"PUE 1.1.29","Faza: jigarrang, qora yoki kulrang.",{cPh:PHC[g.ph]||"bn"});
+   if(g.cPh==="gnye")A("bad",`${t}: sariq-yashil sim faza sifatida ishlatilgan. Bu rang faqat PE uchun, juda xavfli.`,"PUE 1.1.29","Faza: jigarrang, qora yoki kulrang.",{cPh:PHC[g.ph]||"bn"});
+  }
+  if(g.nConn!=="none"&&g.cN!=="bu")A("bad",`${t}: N sim ${COLORS[g.cN].toLowerCase()} rangda. N faqat ko'k bo'lishi kerak.`,"PUE 1.1.29","N uchun ko'k sim.",{cN:"bu"});
+  if(g.cPE!=="gnye")A("bad",`${t}: PE sim ${COLORS[g.cPE].toLowerCase()} rangda. PE faqat sariq-yashil bo'lishi kerak.`,"PUE 1.1.29","PE uchun sariq-yashil sim.",{cPE:"gnye"});
+  if(!g.ferr)A("warn",`${t}: sim uchlariga НШВИ uchlik qo'yilmagan. Ko'p tolali sim vint ostida ezilib, kontakt bo'shashadi va klemma qiziydi.`,"PUE 2.1.21","Izolyatsiyali НШВИ vtulka siqing.",{ferr:true});
+  if((g.type==="socket"||g.type==="wet")&&In>16)A("warn",`${t}: oddiy rozetka 16 A ga mo'ljallangan, avtomat ${In} A.`,"","16 A avtomat.",{In:16});
+  r.state=r.issues.includes("bad")?"bad":r.issues.includes("warn")?"warn":"ok";
+ });
+ R.bad=R.issues.filter(x=>x.lvl==="bad").length;
+ R.warn=R.issues.filter(x=>x.lvl==="warn").length;
+ return R;
+}
+
+/* ================= RENDER: forma ================= */
+const opt=(v,l,sel)=>`<option value="${v}"${String(sel)===String(v)?" selected":""}>${l}</option>`;
+function renderMain(){
+ const m=S.main;
+ ["earth","zs","du","cMat","cCores","cLay","cLen","poles","ch","pen","body"].forEach(k=>{const el=$("#m-"+k);if(el)el.value=m[k];});
+ $("#m-cS").innerHTML=SIZES.map(s=>opt(s,s+" mm²",m.cS)).join("");
+ $("#m-In").innerHTML=BR.map(b=>opt(b,b+" A",m.In)).join("");
+ $("#m-pen").disabled=m.earth!=="TN-C-S";
+}
+function sel(id,k,opts,val,dis){return `<select data-k="${k}" id="g${id}-${k}"${dis?" disabled":""}>${opts}</select>`;}
+function groupCard(g,i){
+ const id=g.id,three=g.phases==3,rcd=hasRcd(g);
+ const colorOpts=v=>Object.entries(COLORS).map(([k,l])=>opt(k,l,v)).join("");
+ return `
+ <div class="g" data-id="${id}">
+  <div class="head"><span class="tag">QF${i+1}</span><input data-k="name" value="${esc(g.name)}" aria-label="Guruh nomi" id="g${id}-name"><button class="btn sm danger" data-del="${id}" aria-label="Guruhni o'chirish">✕</button></div>
+  <fieldset><legend>Yuklama</legend>
+   <label class="f wide">Turi${sel(id,"type",Object.entries(TYPES).map(([k,v])=>opt(k,v,g.type)).join(""))}</label>
+   <label class="f">P, kVt<input data-k="P" type="number" step="0.1" min="0" value="${g.P}" id="g${id}-P"></label>
+   <label class="f">Faza soni${sel(id,"phases",opt(1,"1 faza",g.phases)+opt(3,"3 faza",g.phases))}</label>
+   <label class="f">cosφ<input data-k="cos" type="number" step="0.01" min="0.3" max="1" value="${g.cos}" id="g${id}-cos"></label>
+   <label class="f">Kc<input data-k="kc" type="number" step="0.05" min="0" max="1" value="${g.kc}" id="g${id}-kc"></label>
+  </fieldset>
+  <fieldset><legend>Himoya apparati</legend>
+   <label class="f wide">Turi${sel(id,"kind",Object.entries(KINDS).map(([k,v])=>opt(k,v,g.kind)).join(""))}</label>
+   <label class="f">Qutblar${sel(id,"poles",["1P","2P","3P","4P"].map(p=>opt(p,p,g.poles)).join(""))}</label>
+   <label class="f">Xarakt.${sel(id,"ch",["B","C","D"].map(p=>opt(p,p,g.ch)).join(""))}</label>
+   <label class="f">In, A${sel(id,"In",BR.map(b=>opt(b,b,g.In)).join(""))}</label>
+   ${rcd?`<label class="f">IΔn, mA${sel(id,"idn",IDN.map(b=>opt(b,b,g.idn)).join(""))}</label>`:""}
+   ${g.kind==="MCB+RCD"?`<label class="f">UZO In, A${sel(id,"rcdIn",RCD_IN.map(b=>opt(b,b,g.rcdIn)).join(""))}</label>`:""}
+  </fieldset>
+  <fieldset><legend>Kabel</legend>
+   <label class="f">Material${sel(id,"mat",opt("Cu","Mis",g.mat)+opt("Al","Alyuminiy",g.mat))}</label>
+   <label class="f">Kesim${sel(id,"S",SIZES.map(s=>opt(s,s+" mm²",g.S)).join(""))}</label>
+   <label class="f">Tomir${sel(id,"cores",[2,3,4,5].map(c=>opt(c,c,g.cores)).join(""))}</label>
+   <label class="f">L, m<input data-k="len" type="number" step="1" min="1" value="${g.len}" id="g${id}-len"></label>
+   <label class="f wide">Yotqizish${sel(id,"lay",opt("pipe","Truba / devor ichida",g.lay)+opt("air","Ochiq, havoda",g.lay))}</label>
+  </fieldset>
+  <fieldset><legend>Ulanish</legend>
+   <label class="f">Faza${three?sel(id,"ph",opt("L123","L1 L2 L3","L123"),0,true):sel(id,"ph",PH.map(p=>opt(p,p,g.ph)).join(""))}</label>
+   ${!three&&g.poles==="1P"&&g.kind==="MCB"?`<label class="f">Avtomat uzadi${sel(id,"sw",opt("L","Faza simini",g.sw)+opt("N","Nol simini",g.sw))}</label>`:""}
+   <label class="f">N sim${sel(id,"nConn",opt("Nbus","N shinaga",g.nConn)+opt("rcdOut","UZO chiqishiga",g.nConn)+opt("PEbus","PE shinaga",g.nConn)+opt("none","Ulanmagan",g.nConn))}</label>
+   <label class="f">PE sim${sel(id,"peConn",opt("PEbus","PE shinaga",g.peConn)+opt("Nbus","N shinaga",g.peConn)+opt("none","Ulanmagan",g.peConn))}</label>
+   ${three?"":`<label class="f">Faza rangi${sel(id,"cPh",colorOpts(g.cPh))}</label>`}
+   <label class="f">N rangi${sel(id,"cN",colorOpts(g.cN))}</label>
+   <label class="f">PE rangi${sel(id,"cPE",colorOpts(g.cPE))}</label>
+   <label class="f chk wide"><input type="checkbox" data-k="ferr" ${g.ferr?"checked":""} id="g${id}-ferr"> НШВИ uchliklar</label>
+  </fieldset>
+  <div class="res" data-res="${id}"></div>
+ </div>`;
+}
+function renderGroups(){$("#groups").innerHTML=S.groups.map(groupCard).join("")||`<div class="card muted">Guruh yo'q. "+ Guruh qo'shish" tugmasini bosing.</div>`;}
+function updateGroupResults(R){
+ R.groups.forEach(r=>{
+  const el=document.querySelector(`[data-res="${r.g.id}"]`);if(!el)return;
+  const nb=r.issues.filter(x=>x==="bad").length,nw=r.issues.filter(x=>x==="warn").length;
+  el.innerHTML=`<span>I = <b>${fmt(r.Ib)} A</b></span><span>I ruxsat <b>${r.Iz??"—"} A</b></span><span>ΔU <b>${fmt(r.du+R.duIn,2)}%</b></span><span>QT <b>${fmt(r.Ik,0)} A</b></span><span class="pill ${r.state}">${nb?nb+" XATO":nw?nw+" DIQQAT":"TO'G'RI"}</span>`;
+  const card=el.closest(".g");card.dataset.ph=r.three?"3F":r.g.ph;card.classList.toggle("has-bad",nb>0);
+  card.querySelector(".tag").textContent=`QF${r.n} · ${r.three?"3F":r.g.ph}`;
+ });
+}
+
+/* ================= RENDER: xulosa, tekshiruv ================= */
+const phColor=p=>p==="L1"?"var(--l1)":p==="L2"?"var(--l2)":p==="L3"?"var(--l3)":"var(--accent)";
+let flt="all";
+function renderSummary(R){
+ $("#plate").textContent=`3~ 380/220 V · 50 Hz · ${S.main.earth}`;
+ $("#summary").innerHTML=[
+  ["Hisobiy quvvat",`${fmt(R.Pd,2)} <small>kVt</small>`],
+  ["Kirish toki",`${fmt(R.Iin)} <small>A</small>`],
+  ["Kirish avtomati",`${S.main.ch}${S.main.In} <small>${S.main.poles}</small>`],
+  ["Kirish kabeli",`${S.main.cCores}×${S.main.cS} <small>${S.main.cMat}</small>`],
+  ["Xatolar",`<span style="color:${R.bad?"var(--bad)":"var(--ok)"}">${R.bad}</span>`],
+  ["Diqqat",`<span style="color:${R.warn?"var(--warn)":"var(--ok)"}">${R.warn}</span>`]
+ ].map(([k,v])=>`<div><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
+ $("#tabs [data-tab=tekshir]").innerHTML="3. PUE tekshiruvi"+(R.bad?`<span class="cnt">${R.bad}</span>`:"");
+}
+function renderChecks(R){
+ const lab={bad:"XATO",warn:"DIQQAT",ok:"TO'G'RI",info:"MA'LUMOT"};
+ const list=R.issues.filter(x=>flt==="all"||x.lvl===flt);
+ let html=list.map(x=>{const idx=R.issues.indexOf(x);return `<div class="issue ${x.lvl}"><span class="pill ${x.lvl}">${lab[x.lvl]}</span><div style="min-width:0"><p>${x.text}</p>${x.fix?`<p class="fix">To'g'risi: ${x.fix}</p>`:""}${x.ref?`<p class="src">${x.ref}</p>`:""}${x.fx?`<div class="fxbox" data-fx="${idx}">${Object.entries(x.fx).map(([k,v])=>fieldCtl(x.gid,k,v,"fx"+idx)).join("")}<button class="btn sm pri" data-apply="${idx}">Tasdiqlash</button><span class="cur" style="flex-basis:100%">✓ belgisi tavsiya etilgan qiymat. Boshqasini tanlasangiz ham, tasdiqlagach qayta tekshiriladi.</span></div>`:""}</div></div>`;}).join("");
+ if(!R.issues.length)html=`<div class="issue ok"><span class="pill ok">TO'G'RI</span><div><p>Shit to'g'ri yig'ilgan: tekshirilgan qoidalar bo'yicha xato topilmadi.</p></div></div>`;
+ else if(!list.length)html=`<div class="issue ok"><span class="pill ok">—</span><div><p>Bu turdagi topilma yo'q.</p></div></div>`;
+ $("#issues").innerHTML=html;
+ const mx=Math.max(1,...PH.map(p=>R.phaseI[p]));
+ $("#phasebars").innerHTML=PH.map(p=>`<div class="pb"><span class="ph"><i style="background:${phColor(p)}"></i>${p}</span><div class="track"><div class="fill" style="width:${R.phaseI[p]/mx*100}%;background:${phColor(p)}"></div></div><span class="val">${fmt(R.phaseKw[p],2)} kVt · ${fmt(R.phaseI[p])} A</span></div>`).join("")+`<p class="note">Nosimmetriya ${fmt(R.imb,0)}% (tavsiya ≤ 15%).</p>`;
+ $("#calcTable").innerHTML=`<thead><tr><th>№</th><th>Guruh</th><th>Faza</th><th class="num">I hisob, A</th><th>Siz qo'ygan</th><th>Tavsiya</th><th class="num">I ruxsat, A</th><th class="num">ΔU, %</th><th class="num">I QT, A</th><th>Holat</th></tr></thead><tbody>`+
+ R.groups.map(r=>`<tr><td class="mono">QF${r.n}</td><td>${esc(r.g.name)}</td><td class="mono">${r.three?"3F":r.g.ph}</td><td class="num mono">${fmt(r.Ib)}</td><td class="mono">${r.g.ch}${r.g.In} · ${r.g.cores}×${r.g.S}${hasRcd(r.g)?" · "+r.g.idn+"mA":""}</td><td class="mono">${r.g.ch}${r.recIn} · ${r.three?(r.g.type==="power"&&r.g.nConn==="none"?4:5):3}×${r.recS??"—"}</td><td class="num mono">${r.Iz??"—"}</td><td class="num mono">${fmt(r.du+R.duIn,2)}</td><td class="num mono">${fmt(r.Ik,0)}</td><td><span class="pill ${r.state}">${r.state==="ok"?"TO'G'RI":r.state==="warn"?"DIQQAT":"XATO"}</span></td></tr>`).join("")+`</tbody>`;
+}
+
+/* ================= TUZATISH ================= */
+const yn=[["1","Qo'yilgan"],["0","Qo'yilmagan"]];
+const FIELDS={
+ nConn:{l:"N sim ulanadi",o:[["Nbus","N shinaga"],["rcdOut","UZO N chiqishiga"],["PEbus","PE shinaga"],["none","Ulanmagan"]]},
+ peConn:{l:"PE sim ulanadi",o:[["PEbus","PE shinaga"],["Nbus","N shinaga"],["none","Ulanmagan"]]},
+ ph:{l:"Faza (taroq shinadan)",o:PH.map(p=>[p,p])},
+ sw:{l:"Avtomat uzadigan sim",o:[["L","Faza simi"],["N","Nol simi"]]},
+ cPh:{l:"Faza sim rangi",o:Object.entries(COLORS)},
+ cN:{l:"N sim rangi",o:Object.entries(COLORS)},
+ cPE:{l:"PE sim rangi",o:Object.entries(COLORS)},
+ ferr:{l:"НШВИ uchliklar",o:yn,bool:true},
+ In:{l:"Avtomat In",o:BR.map(b=>[b,b+" A"]),num:true},
+ S:{l:"Kabel kesimi",o:SIZES.map(x=>[x,x+" mm²"]),num:true},
+ kind:{l:"Himoya apparati",o:Object.entries(KINDS)},
+ poles:{l:"Qutblar",o:["1P","2P","3P","4P"].map(p=>[p,p])},
+ idn:{l:"UZO IΔn",o:IDN.map(b=>[b,b+" mA"]),num:true},
+ rcdIn:{l:"UZO nominal toki",o:RCD_IN.map(b=>[b,b+" A"]),num:true},
+ cores:{l:"Kabel tomirlari",o:[2,3,4,5].map(c=>[c,c+" tomir"]),num:true},
+ ch:{l:"Xarakteristika",o:["B","C","D"].map(c=>[c,c])},
+ mat:{l:"Material",o:[["Cu","Mis"],["Al","Alyuminiy"]]}
+};
+const MFIELDS={
+ In:{l:"Kirish avtomati In",o:BR.map(b=>[b,b+" A"]),num:true},
+ poles:{l:"Kirish avtomati qutblari",o:["3P","4P","1P"].map(p=>[p,p])},
+ cS:{l:"Kirish kabeli kesimi",o:SIZES.map(x=>[x,x+" mm²"]),num:true},
+ cMat:{l:"Kirish kabeli materiali",o:[["Cu","Mis"],["Al","Alyuminiy"]]},
+ cCores:{l:"Kirish kabeli tomirlari",o:[[4,"4 tomir"],[5,"5 tomir"]],num:true},
+ pen:{l:"PEN ulanishi",o:[["ok","PEN → PE shina, PE → N peremichka"],["toN","PEN → N shina, N → PE peremichka"],["none","Peremichka yo'q"]]},
+ body:{l:"Shit korpusi",o:[["1","PE shinaga ulangan"],["0","Ulanmagan"]]}
+};
+const tgtObj=t=>t==null?S.main:S.groups.find(g=>g.id==t);
+function optLabel(F,v){const o=F.o.find(([k])=>String(k)===String(F.bool?(v?"1":"0"):v));return o?o[1]:String(v);}
+function fieldCtl(target,k,v,pfx,mark=true){
+ const F=(target==null?MFIELDS:FIELDS)[k];if(!F)return "";
+ const obj=tgtObj(target),cur=obj?obj[k]:undefined;
+ const sv=F.bool?(v?"1":"0"):v;
+ return `<label class="f">${F.l} <span class="cur">hozir: ${esc(optLabel(F,cur))}</span><select data-fk="${k}" id="${pfx}-${k}">${F.o.map(([val,l])=>opt(val,(mark&&String(val)===String(sv)?"✓ ":"")+l,sv)).join("")}</select></label>`;
+}
+function applyFix(target,vals){
+ const obj=tgtObj(target);if(!obj)return;
+ const DEF=target==null?MFIELDS:FIELDS;
+ Object.entries(vals).forEach(([k,raw])=>{const F=DEF[k];if(!F)return;obj[k]=F.bool?raw==="1":F.num?+raw:raw;});
+ if(target!=null){
+  if(obj.kind!=="MCB"&&obj.poles==="1P")obj.poles="2P";
+  if(obj.kind==="RCBO"&&obj.poles==="3P")obj.poles="4P";
+  const ld=sim.g[target]?sim.g[target].load:null;delete sim.g[target];if(ld!=null)simG(target).load=ld;
+ }
+ renderMain();renderGroups();refresh();
+ return resultFor(target);
+}
+function tgtName(target){if(target==null)return "Kirish qismi";const r=R.groups.find(x=>x.g.id==target);return r?`QF${r.n} (${r.g.name})`:"Guruh";}
+function resultFor(target){
+ const rem=R.issues.filter(i=>(target==null?i.gid==null:i.gid==target)&&i.lvl!=="ok");
+ const name=tgtName(target);
+ const total=R.bad||R.warn?`Butun shit bo'yicha: ${R.bad} ta xato, ${R.warn} ta diqqat qoldi.`:"Butun shit PUE talablariga mos: xato qolmadi!";
+ let html,ok=!rem.length;
+ if(ok)html=`✓ ${esc(name)}: tuzatildi va qayta tekshirildi, xato topilmadi. ${total}`;
+ else html=`${esc(name)} qayta tekshirildi: yana ${rem.length} ta topilma bor. ${total}<ul>${rem.map(i=>`<li>${i.text}</li>`).join("")}</ul>`;
+ logEv(ok?`Tekshiruv: ${name} to'g'ri ulandi.`:`Tekshiruv: ${name} da hali ${rem.length} ta topilma bor.`,ok?"ok":"warn");
+ return {ok,html};
+}
+function showResult(el,res){el.hidden=false;el.className="result"+(res.ok?"":" warn");el.innerHTML=res.html;}
+function openConn(gid){
+ const g=S.groups.find(x=>x.id==gid);if(!g)return;const r=R.groups.find(x=>x.g.id==gid);
+ const three=g.phases==3;
+ const keys=[...(three?[]:["ph"]),...(!three&&g.poles==="1P"&&g.kind==="MCB"?["sw"]:[]),"nConn","peConn",...(three?[]:["cPh"]),"cN","cPE","ferr"];
+ const ed=$("#connEd");ed.hidden=false;
+ ed.innerHTML=`<div class="bar" style="justify-content:space-between"><h3>QF${r.n} · ${esc(g.name)}: simlar qayerga ulanadi</h3><button class="btn sm" data-cclose="1">Yopish</button></div>
+ <div class="grid">${keys.map(k=>fieldCtl(gid,k,g[k],"ce",false)).join("")}</div>
+ <div class="bar"><button class="btn pri" data-cok="${gid}">Tasdiqlash va tekshirish</button><span class="muted small">${r.issues.length?`Hozir bu guruhda ${r.issues.length} ta topilma bor.`:"Hozir bu guruh to'g'ri."}</span></div>
+ <div class="result" id="ceRes" hidden style="margin-top:10px"></div>`;
+ ed.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function collect(box){const v={};box.querySelectorAll("[data-fk]").forEach(el=>{v[el.dataset.fk]=el.value;});return v;}
+
+/* ================= SXEMA ================= */
+const Y={L1:140,L2:160,L3:180,N:200,PE:220,bT:262,bB:312,term:360,load:420,name:452};
+const wc=k=>k==="L1"?"var(--l1)":k==="L2"?"var(--l2)":k==="L3"?"var(--l3)":k==="N"?"var(--n)":"var(--pe-g)";
+function wireC(x1,y1,x2,y2,col,w=2.5){
+ if(col==="PE")return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--pe-g)" stroke-width="${w}"/><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--pe-y)" stroke-width="${w}" stroke-dasharray="5 5"/>`;
+ const halo=col==="var(--l2)"?`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--halo)" stroke-width="${w+2}"/>`:"";
+ return halo+`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="${w}"/>`;
+}
+const wire=(x1,y1,x2,y2,k,w)=>wireC(x1,y1,x2,y2,k==="PE"?"PE":wc(k),w);
+function dot(x,y,k){return `<circle cx="${x}" cy="${y}" r="3.6" fill="${k==="PE"?"var(--pe-g)":wc(k)}"/>`;}
+function ferr(x,y,on){return on?`<rect x="${x-3}" y="${y}" width="6" height="10" rx="1" fill="var(--accent)"/>`:"";}
+function badMark(x,y){return `<circle cx="${x}" cy="${y}" r="7" fill="var(--bad)"/><text x="${x}" y="${y+4}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">!</text>`;}
+function loadIcon(cx,y,type,three){
+ if(type==="light")return `<circle cx="${cx}" cy="${y}" r="11" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/><line x1="${cx-7.8}" y1="${y-7.8}" x2="${cx+7.8}" y2="${y+7.8}" stroke="var(--ink)" stroke-width="1.5"/><line x1="${cx+7.8}" y1="${y-7.8}" x2="${cx-7.8}" y2="${y+7.8}" stroke="var(--ink)" stroke-width="1.5"/>`;
+ if(type==="socket"||type==="wet")return `<path d="M${cx-11} ${y-4} A11 11 0 0 0 ${cx+11} ${y-4}" fill="none" stroke="var(--ink)" stroke-width="1.6"/><line x1="${cx-13}" y1="${y-4}" x2="${cx+13}" y2="${y-4}" stroke="var(--ink)" stroke-width="1.6"/><line x1="${cx}" y1="${y-4}" x2="${cx}" y2="${y-14}" stroke="var(--ink)" stroke-width="1.6"/>`;
+ return `<rect x="${cx-13}" y="${y-11}" width="26" height="22" rx="2" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/><text x="${cx}" y="${y+4}" text-anchor="middle" font-size="10" font-weight="600">${three?"3~":"~"}</text>`;
+}
+function nameLines(s,w=12){const ws=String(s).split(/\s+/);const out=[];let cur="";ws.forEach(x=>{if((cur+" "+x).trim().length>w&&cur){out.push(cur);cur=x;}else cur=(cur+" "+x).trim();});if(cur)out.push(cur);return out.slice(0,3);}
+function busY(conn){return conn==="PEbus"?Y.PE:conn==="Nbus"?Y.N:null;}
+
+function schematic(R){
+ const m=S.main,step=104,x0=170,n=R.groups.length,W=x0+n*step+40,H=490;
+ let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Shit sxemasi">`;
+ s+=`<rect x="6" y="30" width="${W-12}" height="${H-40}" rx="6" fill="none" stroke="${m.body==="1"?"var(--line)":"var(--bad)"}" stroke-dasharray="6 4"/>`;
+ s+=`<text x="14" y="18" font-size="11" font-weight="600">Kirish: ${m.cCores}×${m.cS} ${m.cMat}, ${m.cLen} m · ${m.earth}</text>`;
+ const xs={L1:40,L2:52,L3:64};
+ PH.forEach(p=>{s+=wire(xs[p],34,xs[p],Y[p],p);s+=wire(xs[p],Y[p],W-46,Y[p],p,4);});
+ s+=wire(108,Y.N,W-46,Y.N,"N",4)+wire(86,Y.PE,W-46,Y.PE,"PE",4);
+ if(m.earth==="TN-C-S"){
+  s+=`<line x1="86" y1="34" x2="86" y2="${m.pen==="toN"?Y.N:Y.PE}" stroke="var(--pe-g)" stroke-width="3"/><line x1="86" y1="34" x2="86" y2="${m.pen==="toN"?Y.N:Y.PE}" stroke="var(--n)" stroke-width="3" stroke-dasharray="3 9"/><text x="92" y="52" font-size="9" class="lbl">PEN</text>`;
+  if(m.pen==="toN"){s+=`<line x1="86" y1="${Y.N}" x2="108" y2="${Y.N}" stroke="var(--n)" stroke-width="3"/><line x1="96" y1="${Y.N}" x2="96" y2="${Y.PE}" stroke="var(--bad)" stroke-width="2.5"/>`+badMark(120,Y.N-14);}
+  else if(m.pen==="ok"){s+=`<line x1="108" y1="${Y.N}" x2="108" y2="${Y.PE}" stroke="var(--ink)" stroke-width="2.5"/>`+dot(108,Y.N,"N")+dot(108,Y.PE,"PE")+`<text x="114" y="${Y.PE+16}" font-size="8.5" class="lbl">PEN ajratish</text>`;}
+  else s+=badMark(120,Y.N-14)+`<text x="132" y="${Y.N-10}" font-size="9" fill="var(--bad)">N shina ulanmagan</text>`;
+ }else{s+=wire(98,34,98,Y.N,"N")+wire(120,34,120,Y.PE,"PE");}
+ s+=`<rect x="30" y="62" width="46" height="46" rx="3" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/><text x="53" y="80" text-anchor="middle" font-size="10" font-weight="600">${m.ch}${m.In}</text><text x="53" y="93" text-anchor="middle" font-size="8.5" class="lbl">${m.poles} QF0</text>`;
+ ["L1","L2","L3","N","PE"].forEach(k=>{s+=`<text x="${W-40}" y="${Y[k]+4}" font-size="10" font-weight="600">${k}</text>`;});
+ R.groups.forEach((r,i)=>{
+  const g=r.g,cx=x0+i*step,three=r.three,rcd=hasRcd(g),F=g.ferr;
+  s+=`<text x="${cx+12}" y="${Y.bT-8}" text-anchor="middle" font-size="9.5" font-weight="600">QF${r.n}</text>`;
+  const outPh=three?null:cVar(g.cPh);
+  const nx=cx+22,pe=cx+40;
+  if(three){
+   const px={L1:cx-10,L2:cx,L3:cx+10};
+   PH.forEach(p=>{s+=wire(px[p],Y[p],px[p],Y.bT,p)+dot(px[p],Y[p],p)+wire(px[p],Y.bB,px[p],Y.term,p)+ferr(px[p],Y.bB+3,F)+ferr(px[p],Y.term-16,F);});
+  }else if(g.poles==="1P"&&g.kind==="MCB"&&g.sw==="N"){
+   // avtomat N da: faza to'g'ridan-to'g'ri
+   s+=wireC(cx-8,Y[g.ph],cx-8,Y.term,outPh)+dot(cx-8,Y[g.ph],g.ph)+ferr(cx-8,Y.term-16,F);
+   s+=wire(cx+6,Y.N,cx+6,Y.bT,"N")+dot(cx+6,Y.N,"N")+wireC(cx+6,Y.bB,cx+6,Y.term,cVar(g.cN));
+   s+=`<line x1="${cx-14}" y1="${Y.bT+18}" x2="${cx-2}" y2="${Y.bT+18}" stroke="var(--bad)" stroke-width="2"/>`;
+  }else{
+   s+=wire(cx,Y[g.ph],cx,Y.bT,g.ph)+dot(cx,Y[g.ph],g.ph)+wireC(cx,Y.bB,cx,Y.term,outPh)+ferr(cx,Y.bB+3,F)+ferr(cx,Y.term-16,F);
+  }
+  // N
+  if(g.nConn!=="none"&&!(g.poles==="1P"&&g.kind==="MCB"&&g.sw==="N"&&!three)){
+   const ncol=cVar(g.cN);
+   if(rcd&&g.nConn==="rcdOut"){s+=wire(nx,Y.N,nx,Y.bT,"N")+dot(nx,Y.N,"N")+wireC(nx,Y.bB,nx,Y.term,ncol)+ferr(nx,Y.bB+3,F);}
+   else{const by=busY(g.nConn);s+=wireC(nx,by,nx,Y.term,ncol)+dot(nx,by,g.nConn==="PEbus"?"PE":"N");}
+   s+=ferr(nx,Y.term-16,F);
+  }
+  // PE
+  if(g.peConn!=="none"){const by=busY(g.peConn);s+=wireC(pe,by,pe,Y.term,cVar(g.cPE))+dot(pe,by,g.peConn==="PEbus"?"PE":"N")+ferr(pe,Y.term-16,F);}
+  // apparat
+  const bw=three?(rcd?56:34):(rcd||g.poles==="2P"?44:26);
+  s+=`<rect x="${cx-17}" y="${Y.bT}" width="${bw}" height="${Y.bB-Y.bT}" rx="3" fill="var(--surface)" stroke="${r.state==="bad"?"var(--bad)":"var(--ink)"}" stroke-width="1.5"/>`;
+  s+=`<text x="${cx-17+bw/2}" y="${Y.bT+15}" text-anchor="middle" font-size="10" font-weight="600">${g.ch}${g.In}</text>`;
+  s+=`<text x="${cx-17+bw/2}" y="${Y.bT+27}" text-anchor="middle" font-size="8.5" class="lbl">${rcd?"Δ"+g.idn+"mA":g.poles}</text>`;
+  const lx=cx+12;
+  s+=`<rect x="${cx-20}" y="${Y.term-6}" width="68" height="12" rx="2" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1"/>`;
+  s+=`<line x1="${lx}" y1="${Y.term+6}" x2="${lx}" y2="${Y.load-16}" stroke="var(--sheath)" stroke-width="5" stroke-linecap="round"/>`;
+  s+=`<text x="${lx+6}" y="${Y.term+30}" font-size="9" class="lbl">${g.cores}×${g.S}</text>`;
+  s+=loadIcon(lx,Y.load,g.type,three);
+  nameLines(g.name).forEach((t,k)=>{s+=`<text x="${lx}" y="${Y.name+k*12}" text-anchor="middle" font-size="9.5">${esc(t)}</text>`;});
+  if(r.state==="bad")s+=badMark(cx+44,Y.bT-12);
+ });
+ return s+`</svg>`;
+}
+
+/* ================= VIRTUAL SHIT (rasm) ================= */
+const PW=36,BH=176;
+function screw(cx,cy){return `<circle cx="${cx}" cy="${cy}" r="7" fill="#c7cacc" stroke="#8e9396" stroke-width="1"/><circle cx="${cx}" cy="${cy}" r="5" fill="#dfe2e3"/><line x1="${cx-4}" y1="${cy-1.5}" x2="${cx+4}" y2="${cy+1.5}" stroke="#7b8084" stroke-width="1.8"/>`;}
+function poleWire(x,y1,y2,col){
+ if(col==="PE")return `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="var(--pe-g)" stroke-width="5"/><line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="var(--pe-y)" stroke-width="5" stroke-dasharray="6 6"/>`;
+ return `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${col}" stroke-width="5" stroke-linecap="round"/>`;
+}
+// o: {id,kind:"mcb"|"rcd",label,top:[col..],bot:[col..],rcdLast,ferr,poleLabels}
+function devicePic(x,y,o){
+ const n=o.top.length,w=n*PW;
+ let s=`<g class="bp" data-bp="${o.id}" tabindex="0" role="button" aria-label="${esc(o.aria)}">`;
+ o.top.forEach((c,i)=>{const cx=x+i*PW+PW/2;if(c)s+=poleWire(cx,y-26,y+10,c);});
+ o.bot.forEach((c,i)=>{const cx=x+i*PW+PW/2;if(c&&!o.botHide)s+=poleWire(cx,y+BH-10,y+BH+46,c)+(o.ferr?`<rect x="${cx-3.5}" y="${y+BH-2}" width="7" height="12" rx="1.5" fill="var(--accent)"/>`:`<line x1="${cx-3}" y1="${y+BH-4}" x2="${cx+3}" y2="${y+BH+2}" stroke="#b87333" stroke-width="1.2"/><line x1="${cx+3}" y1="${y+BH-4}" x2="${cx-3}" y2="${y+BH+2}" stroke="#b87333" stroke-width="1.2"/>`);});
+ o.top.forEach((c,i)=>{const cx=x+i*PW+PW/2;if(c)s+=`<rect x="${cx-3.5}" y="${y-10}" width="7" height="12" rx="1.5" fill="var(--accent)"/>`;});
+ s+=`<rect x="${x}" y="${y}" width="${w}" height="${BH}" rx="4" fill="var(--bk-body)" stroke="var(--bk-edge)" stroke-width="1.2"/>`;
+ for(let i=1;i<n;i++)s+=`<line x1="${x+i*PW}" y1="${y+3}" x2="${x+i*PW}" y2="${y+BH-3}" stroke="var(--bk-edge)" stroke-width="1"/>`;
+ o.top.forEach((c,i)=>{const cx=x+i*PW+PW/2;const pl=o.poleLabels[i];
+  s+=`<rect x="${cx-11}" y="${y+5}" width="22" height="24" rx="2" fill="var(--bk-face)"/>`+screw(cx,y+17)+`<rect x="${cx-11}" y="${y+BH-29}" width="22" height="24" rx="2" fill="var(--bk-face)"/>`+screw(cx,y+BH-17);
+  s+=`<text x="${cx}" y="${y+40}" text-anchor="middle" font-size="7.5" fill="var(--bk-text)">${pl[0]}</text><text x="${cx}" y="${y+BH-33}" text-anchor="middle" font-size="7.5" fill="var(--bk-text)">${pl[1]}</text>`;});
+ s+=`<rect class="face" x="${x+3}" y="${y+46}" width="${w-6}" height="${BH-92}" rx="3" fill="var(--bk-face)" stroke="var(--bk-edge)" stroke-width="1"/>`;
+ s+=`<rect class="heatv" x="${x+3}" y="${y+46}" width="${w-6}" height="${BH-92}" rx="3" fill="var(--bk-hot)" opacity="0"/>`;
+ s+=`<text x="${x+w/2}" y="${y+58}" text-anchor="middle" font-size="${o.label.length>6?8.5:10}" font-weight="700" fill="var(--bk-text)">${o.label}</text>`;
+ const lev=o.rcdLast?n-1:n;
+ const lx=x+PW/2-8, lw=Math.max(1,lev)*PW-PW+16;
+ s+=`<rect x="${lx-2}" y="${y+63}" width="${lw+4}" height="50" rx="3" fill="var(--bk-dark)"/>`;
+ s+=`<text x="${lx+lw/2}" y="${y+70.5}" text-anchor="middle" font-size="6.5" font-weight="700" fill="#e9ecee">I</text><text x="${lx+lw/2}" y="${y+110.5}" text-anchor="middle" font-size="6.5" font-weight="700" fill="#e9ecee">O</text>`;
+ s+=`<g class="lev"><rect x="${lx}" y="${y+73}" width="${lw}" height="14" rx="2.5" fill="${o.kind==="rcd"?"#2d5fa8":"#4a5056"}" stroke="#101215" stroke-width="1"/><line x1="${lx+3}" y1="${y+76.5}" x2="${lx+lw-3}" y2="${y+76.5}" stroke="#ffffff" stroke-opacity=".4" stroke-width="1.5"/></g>`;
+ s+=`<rect x="${x+PW/2-7}" y="${y+118}" width="14" height="7" rx="1" fill="var(--bk-off)" class="win-off"/><rect x="${x+PW/2-7}" y="${y+118}" width="14" height="7" rx="1" fill="var(--bk-on)" class="win-on"/>`;
+ if(o.rcdLast){const rx=x+(n-1)*PW+PW/2;s+=`<text x="${rx}" y="${y+76}" text-anchor="middle" font-size="7" fill="var(--bk-text)">${o.idn}mA</text><circle cx="${rx}" cy="${y+96}" r="7" fill="#e9b31c" stroke="#9a7406"/><text x="${rx}" y="${y+99}" text-anchor="middle" font-size="8" font-weight="700" fill="#3a2b00">T</text>`;}
+ s+=`</g>`;
+ return {svg:s,w};
+}
+const RY=74;          // apparatlar tepasi
+const UD0=RY+BH+38, UD1=UD0+34, BUSY=UD1+34, LD0=BUSY+32, LD1=LD0+34, PB=LD1+48, LOADY=PB+92;
+function duct(x1,x2,y0,y1,label){
+ let s=`<rect x="${x1}" y="${y0}" width="${x2-x1}" height="${y1-y0}" rx="2" fill="var(--duct)"/>`;
+ for(let i=x1+4;i<x2-8;i+=12)s+=`<rect x="${i}" y="${y0}" width="4" height="8" fill="var(--duct-slot)"/><rect x="${i}" y="${y1-8}" width="4" height="8" fill="var(--duct-slot)"/>`;
+ s+=`<rect x="${x1}" y="${y0+9}" width="${x2-x1}" height="${y1-y0-18}" fill="var(--duct-c)"/>`;
+ if(label)s+=`<text x="${x1+8}" y="${(y0+y1)/2+3}" font-size="8" fill="var(--muted)">${label}</text>`;
+ return s;
+}
+function core(x,y1,y2,col,w=3.5){
+ if(col==="PE")return `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="var(--pe-g)" stroke-width="${w}"/><line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="var(--pe-y)" stroke-width="${w}" stroke-dasharray="5 5"/>`;
+ return `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${col}" stroke-width="${w}"/>`;
+}
+function corePath(d,col,w=3.5){
+ if(col==="PE")return `<path d="${d}" fill="none" stroke="var(--pe-g)" stroke-width="${w}" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="var(--pe-y)" stroke-width="${w}" stroke-dasharray="5 5" stroke-linejoin="round"/>`;
+ return `<path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linejoin="round"/>`;
+}
+function screwS(cx,cy){return `<circle cx="${cx}" cy="${cy}" r="4.2" fill="#c7cacc" stroke="#7f8589" stroke-width=".8"/><line x1="${cx-2.6}" y1="${cy}" x2="${cx+2.6}" y2="${cy}" stroke="#6f7478" stroke-width="1.2"/>`;}
+function renderRail(R){
+ const m=S.main;
+ // shinadagi ulanishlar (har bir guruhning N va PE simi qaysi shinaga tushgani)
+ const peT=[],nT=[];
+ R.groups.forEach(r=>{const g=r.g,rcd=hasRcd(g);
+  if(g.nConn==="Nbus"||g.nConn==="PEbus")(g.nConn==="PEbus"?peT:nT).push({r,kind:"N",col:cVar(g.cN),wrong:g.nConn==="PEbus"||rcd});
+  if(g.peConn!=="none")(g.peConn==="Nbus"?nT:peT).push({r,kind:"PE",col:cVar(g.cPE),wrong:g.peConn==="Nbus"});
+ });
+ const TS=16, PEX=24, peW=(peT.length+2)*TS, NX=PEX+peW+26, nW=(nT.length+2)*TS, zoneR=NX+nW;
+ let x=60, body="", gcols=[];
+ const mainTop=m.poles==="1P"?["var(--l1)"]:m.poles==="4P"?["var(--l1)","var(--l2)","var(--l3)","var(--n)"]:["var(--l1)","var(--l2)","var(--l3)"];
+ const mpl=mainTop.map((_,i)=>i===3?["N","N"]:[i*2+1,i*2+2]);
+ let d=devicePic(x,RY,{id:"main",kind:"mcb",label:`${m.ch}${m.In}`,top:mainTop,bot:mainTop,poleLabels:mpl,ferr:true,aria:"Kirish avtomati QF0"});
+ body+=d.svg+`<text x="${x+d.w/2+24}" y="${RY-50}" text-anchor="start" font-size="9.5" font-weight="600" fill="var(--ink)">QF0 kirish</text>`;
+ const mainX=x,mainW=d.w;x=Math.max(x+d.w+30,zoneR+30);
+ const g0=x;
+ R.groups.forEach(r=>{
+  const g=r.g,three=r.three,rcd=hasRcd(g),start=x;
+  const phCols=three?["var(--l1)","var(--l2)","var(--l3)"]:[wc(g.ph)];
+  const outCols=three?phCols:[cVar(g.cPh)];
+  const nSw=!three&&g.poles==="1P"&&g.kind==="MCB"&&g.sw==="N";
+  let devs=[];
+  if(g.kind==="RCBO"){
+   const top=[...phCols,"var(--n)"],bot=[...outCols,g.nConn==="rcdOut"?cVar(g.cN):null];
+   devs.push({id:g.id+":m",kind:"rcd",label:`${g.ch}${g.In}`,top,bot,rcdLast:true,idn:g.idn,poleLabels:top.map((_,i)=>i===top.length-1?["N","N"]:[i*2+1,i*2+2])});
+  }else{
+   let top,bot;
+   const nP=g.poles==="1P"?1:g.poles==="2P"?2:g.poles==="3P"?3:4;
+   if(nSw){top=["var(--n)"];bot=[cVar(g.cN)];}
+   else{top=phCols.slice(0,Math.min(nP,phCols.length));while(top.length<nP)top.push(top.length===nP-1&&nP%2===0?"var(--n)":null);
+        bot=top.map((c,i)=>c==="var(--n)"?(g.kind==="MCB"?cVar(g.cN):"var(--n)"):g.kind==="MCB+RCD"?c:(outCols[i]||c));}
+   devs.push({id:g.id+":m",kind:"mcb",label:`${g.ch}${g.In}`,top,bot,poleLabels:top.map((c,i)=>c==="var(--n)"?["N","N"]:[i*2+1,i*2+2])});
+   if(g.kind==="MCB+RCD"){
+    const t2=[...(three?phCols:[phCols[0]]),"var(--n)"],b2=[...outCols,g.nConn==="rcdOut"?cVar(g.cN):null];
+    devs[0].gapAfter=16;devs[0].botHide=true;
+    devs.push({id:g.id+":r",kind:"rcd",label:`UZO ${g.rcdIn}A`,fedByMcb:true,top:t2,bot:b2,rcdLast:true,idn:g.idn,poleLabels:t2.map((_,i)=>i===t2.length-1?["N","N"]:[i*2+1,i*2+2])});
+   }
+  }
+  const dx=[];
+  devs.forEach(o=>{o.ferr=g.ferr;o.aria=`QF${r.n} ${g.name}`;
+   if(o.fedByMcb){o=Object.assign({},o,{top:o.top.map((c,i)=>i<o.top.length-1?null:c)});}
+   const p=devicePic(x,RY,o);body+=p.svg;dx.push({x,w:p.w,o});x+=p.w+(o.gapAfter||6);});
+  if(g.kind==="MCB+RCD"&&dx.length===2){
+   const a=dx[0],bb=dx[1];const n=bb.o.top.length-1;
+   for(let i=0;i<n;i++){const ax=a.x+i*PW+PW/2,bx=bb.x+i*PW+PW/2,gx=a.x+a.w+4+i*(n>1?4:0);
+    const col=a.o.bot[i]||"var(--l1)";
+    body+=poleWire(ax,RY+BH-10,RY+BH+8,col)+`<path d="M${ax} ${RY+BH+6} V${RY+BH+14+i*5} H${gx} V${RY-34-i*4} H${bx} V${RY+10}" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="round"/>`+(g.ferr?`<rect x="${bx-3.5}" y="${RY-10}" width="7" height="12" rx="1.5" fill="var(--accent)"/><rect x="${ax-3.5}" y="${RY+BH-2}" width="7" height="12" rx="1.5" fill="var(--accent)"/>`:"");}
+  }
+  const end=x-6,cx=(start+end)/2;
+  body+=`<g class="conn" data-conn="${g.id}" tabindex="0" role="button" aria-label="QF${r.n} ulanishlarini o'zgartirish"><rect x="${cx-18}" y="${RY-62}" width="36" height="16" fill="transparent"/><text class="qf" x="${cx}" y="${RY-50}" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--ink)" text-decoration="underline">QF${r.n}</text></g>`;
+  if(r.state==="bad")body+=badMark(cx+22,RY-54);
+  gcols.push({r,cx,start,end,dx,nSw});
+  x+=24;
+ });
+ const W=x+30,H=LOADY+62;
+ let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Yig'ilgan shit">`;
+ s+=`<defs><pattern id="peh" width="16" height="12" patternUnits="userSpaceOnUse"><rect width="8" height="12" fill="var(--pe-y)"/></pattern></defs>`;
+ // korpus
+ s+=`<rect x="4" y="14" width="${W-8}" height="${PB-14}" rx="8" fill="none" stroke="${m.body==="1"?"var(--muted)":"var(--bad)"}" stroke-width="2"/>`;
+ // DIN-reyka
+ s+=`<rect x="10" y="${RY+BH/2-14}" width="${W-20}" height="28" fill="var(--rail)"/>`;
+ for(let i=16;i<W-20;i+=26)s+=`<rect x="${i}" y="${RY+BH/2-3}" width="14" height="6" rx="3" fill="var(--rail-hole)"/>`;
+ // taroq shina
+ if(gcols.length)s+=`<rect x="${g0-6}" y="${RY-31}" width="${x-24-g0+12}" height="8" rx="2" fill="#5f666b"/><text x="${x-24+10}" y="${RY-24}" font-size="8" fill="var(--muted)">taroq shina</text>`;
+ // kirish kabeli (yuqoridan, salnik orqali)
+ const mc=mainX+mainW/2;
+ s+=`<rect x="${mc-13}" y="0" width="26" height="12" fill="var(--sheath)"/><rect x="${mc-15}" y="8" width="30" height="12" rx="2" fill="#3d4247"/>`;
+ mainTop.forEach((c,i)=>{const px=mainX+i*PW+PW/2;s+=`<path d="M${mc-6+i*4} 20 V${30+i*3} H${px} V${RY-24}" fill="none" stroke="${c}" stroke-width="3.5" stroke-linejoin="round"/>`;});
+ const xin1=34,xin2=46; // PEN / PE / N kirish simlari, chap tomondan kanalga
+ const peT0=PEX+TS*0.5, nT0=NX+TS*0.5;
+ if(m.earth==="TN-C-S"){
+  const tgt=m.pen==="toN"?nT0:peT0;
+  const d1=`M${mc-10} 20 V${28} H${xin1} V${UD0+10}`;
+  s+=`<path d="${d1}" fill="none" stroke="var(--pe-g)" stroke-width="4.5" stroke-linejoin="round"/><path d="${d1}" fill="none" stroke="var(--n)" stroke-width="4.5" stroke-dasharray="4 10" stroke-linejoin="round"/>`;
+  s+=`<path d="M${tgt} ${UD1-8} V${BUSY}" fill="none" stroke="var(--pe-g)" stroke-width="4.5"/><path d="M${tgt} ${UD1-8} V${BUSY}" fill="none" stroke="var(--n)" stroke-width="4.5" stroke-dasharray="4 10"/>`;
+  s+=`<text x="${xin1+6}" y="${RY-34}" font-size="9" fill="var(--muted)">PEN</text>`;
+ }else{
+  s+=corePath(`M${mc-10} 20 V28 H${xin1} V${UD0+10}`,"PE",4)+corePath(`M${peT0} ${UD1-8} V${BUSY}`,"PE",4);
+  s+=corePath(`M${mc+10} 20 V24 H${xin2} V${UD0+10}`,"var(--n)",4)+corePath(`M${nT0} ${UD1-8} V${BUSY}`,"var(--n)",4);
+ }
+ // guruh simlari: apparat -> yuqori kanal -> (dasta) -> pastki kanal
+ gcols.forEach(c=>{
+  const g=c.r.g,last=c.dx[c.dx.length-1];
+  const cores=[];
+  last.o.bot.forEach((col,i)=>{if(!col)return;cores.push({px:last.x+i*PW+PW/2,col});});
+  if(c.dx.length===1&&g.kind!=="MCB+RCD"){} // bitta apparat
+  if(c.nSw){cores.unshift({px:c.start-8,col:cVar(g.cPh)});s+=core(c.start-8,RY-26,UD0+10,cVar(g.cPh))+`<text x="${c.start-10}" y="${RY+BH+30}" text-anchor="end" font-size="8.5" fill="var(--bad)">faza avtomatsiz</text>`;}
+  cores.forEach(k=>{s+=core(k.px,UD1-8,LD0+10,k.col==="PE"?"PE":k.col);c.flows=(c.flows||"")+`<line class="flw off" data-flw="${g.id}" x1="${k.px}" y1="${UD1+2}" x2="${k.px}" y2="${LD0}"/>`;});
+  c.cores=cores;
+ });
+ // shinalar (izolyatorlarda)
+ const bus=(x0,w,fill,pat,lbl)=>`<rect x="${x0-6}" y="${BUSY+2}" width="10" height="16" rx="2" fill="#6b7277"/><rect x="${x0+w-4}" y="${BUSY+2}" width="10" height="16" rx="2" fill="#6b7277"/><rect x="${x0}" y="${BUSY-7}" width="${w}" height="14" rx="2" fill="${fill}"/>${pat?`<rect x="${x0}" y="${BUSY-7}" width="${w}" height="14" rx="2" fill="url(#peh)"/>`:""}<text x="${x0}" y="${BUSY-22}" font-size="9.5" font-weight="700" fill="var(--ink)">${lbl}</text>`;
+ s+=bus(PEX,peW,"var(--pe-g)",true,"PE shina")+bus(NX,nW,"var(--n)",false,"N shina");
+ // peremichka
+ if(m.earth==="TN-C-S"){
+  if(m.pen!=="none")s+=`<rect x="${PEX+peW-10}" y="${BUSY+9}" width="${NX-PEX-peW+20}" height="6" rx="2" fill="#9aa0a5"/>`+screwS(PEX+peW-6,BUSY+12)+screwS(NX+6,BUSY+12);
+  else s+=badMark((PEX+peW+NX)/2,BUSY+14);
+  if(m.pen==="toN")s+=badMark(nT0,BUSY-24);
+ }
+ if(m.body==="1")s+=corePath(`M${PEX} ${BUSY} H8`,"PE",3);
+ // shina klemmalari va guruh simlari
+ const drawTaps=(arr,x0)=>{arr.forEach((t,k)=>{const tx=x0+TS*(k+1.5);
+  s+=core(tx,BUSY,LD0+10,t.col==="PE"?"PE":t.col,3)+screwS(tx,BUSY);
+  s+=`<text x="${tx}" y="${BUSY-10}" text-anchor="middle" font-size="8" font-weight="600" fill="var(--ink)">${t.r.n}</text>`;
+  if(t.wrong)s+=`<circle cx="${tx}" cy="${BUSY}" r="8" fill="none" stroke="var(--bad)" stroke-width="2"/>`;
+  s+=`<g class="conn" data-conn="${t.r.g.id}"><circle cx="${tx}" cy="${BUSY-4}" r="9" fill="transparent"/></g>`;});};
+ drawTaps(peT,PEX);drawTaps(nT,NX);
+ // dasta xomutlari
+ gcols.forEach(c=>{if(!c.cores.length)return;const xs=c.cores.map(k=>k.px);const a=Math.min(...xs)-5,b=Math.max(...xs)+5;
+  [UD1+8,LD0-8].forEach(yy=>{s+=`<rect x="${a}" y="${yy-2}" width="${b-a}" height="4" rx="2" fill="var(--tie)"/>`;});});
+ // kanallar (simlar ustidan)
+ s+=gcols.map(c=>c.flows||"").join("");
+ mainTop.forEach((c,i)=>{const px=mainX+i*PW+PW/2;s+=`<line class="flw off" data-flw="main" x1="${px}" y1="${RY+BH+12}" x2="${px}" y2="${UD0+6}"/>`;});
+ s+=duct(10,W-10,UD0,UD1,"kabel kanal")+duct(10,W-10,LD0,LD1,"kabel kanal");
+ s+=body;
+ // pastki kanaldan chiquvchi kabellar, markirovka, salnik
+ gcols.forEach(c=>{
+  const g=c.r.g,lx=c.cx;
+  s+=`<g data-cable="${g.id}">`;
+  s+=`<line class="cab" x1="${lx}" y1="${LD1-6}" x2="${lx}" y2="${PB}" stroke="var(--sheath)" stroke-width="12"/>`;
+  s+=`<line class="cab" x1="${lx}" y1="${PB+8}" x2="${lx}" y2="${LOADY-20}" stroke="var(--sheath)" stroke-width="12" stroke-linecap="round"/>`;
+  s+=`<line class="flw off" data-flw="${g.id}" x1="${lx}" y1="${PB+10}" x2="${lx}" y2="${LOADY-22}"/>`;
+  s+=`<g class="flm" opacity="0"><path class="flame" d="M${lx-7} ${PB+70} q-3 -14 7 -24 q-1 10 6 14 q3 -6 1 -12 q8 8 2 22 z" fill="#ff7a1a"/><path class="flame" d="M${lx-3} ${PB+70} q-1 -8 4 -13 q0 6 4 8 q2 4 -1 5 z" fill="#ffd23a" style="animation-delay:.07s"/></g>`;
+  s+=`<g class="smk" opacity="0"><circle class="smoke" cx="${lx-6}" cy="${PB+30}" r="5" fill="#8b8f93"/><circle class="smoke" cx="${lx+6}" cy="${PB+46}" r="6" fill="#8b8f93" style="animation-delay:.6s"/></g>`;
+  s+=`<text class="ctemp" x="${lx+11}" y="${PB+44}" font-size="9.5" font-weight="600" fill="var(--ink)">25°C</text></g>`;
+  s+=`<g class="conn" data-conn="${g.id}" tabindex="0" role="button" aria-label="QF${c.r.n} ulanishlarini o'zgartirish"><rect class="slv" x="${lx-15}" y="${LD1+7}" width="30" height="15" rx="2" fill="var(--sleeve)" stroke="#9aa0a5" stroke-width=".8"/><text x="${lx}" y="${LD1+18}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1d2125">QF${c.r.n}</text></g>`;
+  s+=`<rect x="${lx-11}" y="${PB-5}" width="22" height="13" rx="2" fill="#3d4247"/><rect x="${lx-8}" y="${PB-9}" width="16" height="5" rx="1" fill="#555c61"/>`;
+  s+=`<text x="${lx+11}" y="${PB+24}" font-size="8.5" fill="var(--muted)">${g.cores}×${g.S} ${g.mat}</text>`;
+  s+=loadIcon(lx,LOADY,g.type,c.r.three);
+  nameLines(g.name,14).forEach((t,k)=>{s+=`<text x="${lx}" y="${LOADY+26+k*11}" text-anchor="middle" font-size="9" fill="var(--ink)">${esc(t)}</text>`;});
+  s+=`<g data-bolt="${g.id}" opacity="0"><path d="M${lx+16} ${LOADY-16} l-6 10 h5 l-4 9 l10-12 h-5 l4-7z" fill="var(--bad)"/></g>`;
+ });
+ s+=`<g id="fxLayer"></g></svg>`;
+ $("#rail").innerHTML=s;
+ POS={main:{x:mc,y:RY+BH/2}};
+ gcols.forEach(c=>{POS[c.r.g.id]={x:c.dx[0].x+c.dx[0].w/2,y:RY+BH/2,lx:c.cx,ly:PB+40,ld:LOADY};});
+}
+function cableColor(T,burnt){if(burnt)return "#1b1b1b";if(T<60)return "var(--sheath)";if(T<70)return "#d8b632";if(T<90)return "#e5862a";return "#d33a25";}
+
+/* ================= EFFEKTLAR ================= */
+let POS={};
+const IS_APP=/ShitLabApp/.test(navigator.userAgent)||location.protocol==="file:";
+let SOUND=IS_APP;
+let actx=null;
+function beep(type){
+ if(!SOUND)return;
+ try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const t=actx.currentTime;
+  const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);
+  if(type==="sc"){o.type="sawtooth";o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(40,t+.25);g.gain.setValueAtTime(.25,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.start(t);o.stop(t+.3);}
+  else if(type==="warn"){o.type="triangle";o.frequency.setValueAtTime(880,t);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.start(t);o.stop(t+.2);}
+  else{o.type="square";o.frequency.setValueAtTime(220,t);g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+.07);o.start(t);o.stop(t+.08);}
+ }catch(e){}
+}
+function vib(p){try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}}
+function spark(x,y,blue){
+ const L=document.getElementById("fxLayer");if(!L)return;
+ const ns="http://www.w3.org/2000/svg",g=document.createElementNS(ns,"g");g.setAttribute("class","spark"+(blue?" blue":""));
+ let h=`<circle cx="${x}" cy="${y}" r="10"/>`;
+ for(let i=0;i<12;i++){const a=i/12*Math.PI*2+Math.random()*.3,r1=6,r2=18+Math.random()*16;const len=r2-r1;
+  h+=`<line x1="${x+Math.cos(a)*r1}" y1="${y+Math.sin(a)*r1}" x2="${x+Math.cos(a)*r2}" y2="${y+Math.sin(a)*r2}" style="--L:${len};stroke-dasharray:${len}"/>`;}
+ g.innerHTML=h;L.appendChild(g);setTimeout(()=>g.remove(),800);
+}
+function shake(){const el=$("#rail");el.classList.remove("shake");void el.offsetWidth;el.classList.add("shake");}
+function fxTrip(id,kind){
+ const p=POS[id];if(!p)return;
+ if(kind==="sc"){spark(p.x,p.y+40);if(p.lx)spark(p.lx,p.ld-6);shake();beep("sc");vib([120,60,160]);}
+ else if(kind==="rcd"){spark(p.x+18,p.y,true);beep("click");vib(60);}
+ else if(kind==="burn"){if(p.lx){spark(p.lx,p.ly);spark(p.lx,p.ly+30);}shake();beep("sc");vib([200,80,200]);}
+ else{spark(p.x,p.y+60);beep("click");vib(70);}
+}
+function toast(msg,lvl){
+ if($("#p-sim").hidden)return;
+ const box=$("#toasts");const d=document.createElement("div");d.className="toast "+(lvl||"");d.textContent=msg;box.appendChild(d);
+ while(box.children.length>3)box.firstChild.remove();
+ setTimeout(()=>{d.classList.add("out");setTimeout(()=>d.remove(),400);},3600);
+}
+
+/* ================= SIMULYATSIYA ================= */
+let R=null;
+const sim={run:true,t:0,main:{on:true,H:0},g:{},nBreak:false,log:[]};
+function simG(id){if(!sim.g[id]){const g=S.groups.find(x=>x.id==id);const kc=g?Math.min(1,Math.max(0,+g.kc||1)):1;sim.g[id]={load:Math.round(kc*100/5)*5,on:true,rcdOn:true,H:0,sc:false,body:false,burnt:false,T:25,Tt:25,I:0,stage:0,flags:{}};}return sim.g[id];}
+function logEv(t,lvl){sim.log.unshift({t:sim.t,m:t,lvl});sim.log=sim.log.slice(0,60);renderLog();if(lvl==='bad'||lvl==='ok')toast(t,lvl);if(lvl==='bad')beep('warn');}
+function renderLog(){$("#log").innerHTML=sim.log.length?sim.log.map(e=>`<div><span class="t">${fmt(e.t,1)} s</span><span style="color:${e.lvl==="bad"?"var(--bad)":e.lvl==="warn"?"var(--warn)":"var(--ink)"}">${e.m}</span></div>`).join(""):`<div class="muted">Hozircha hodisa yo'q. Ssenariyni tanlang yoki yuklamani oshiring.</div>`;}
+function buildSim(){
+ $("#simrows").innerHTML=R.groups.map(r=>{const st=simG(r.g.id);return `
+ <div class="sr" data-sr="${r.g.id}">
+  <div><div class="nm">QF${r.n} · ${esc(r.g.name)}</div><div class="meta">${r.three?"3F":r.g.ph} · ${r.g.ch}${r.g.In}${hasRcd(r.g)?" Δ"+r.g.idn+"mA":""} · ${r.g.cores}×${r.g.S} · Iz ${r.Iz??"—"} A</div></div>
+  <label class="f">Yuklama: <span data-lv>${st.load}%</span> <span class="muted" data-lp></span><input type="range" min="0" max="400" step="5" value="${st.load}" data-load="${r.g.id}" id="ld${r.g.id}"></label>
+  <div class="gauge"><div>Avtomat: <b data-i>0 A</b> · <span data-m></span></div><div class="minibar" title="Issiqlik ajratgich"><div data-h style="width:0"></div></div></div>
+  <div class="gauge"><div>Kabel: <b data-t>25°C</b></div><div class="minibar" title="Kabel harorati"><div data-tb style="width:0"></div></div></div>
+  <div class="acts"><button class="btn sm" data-sc="${r.g.id}">QT</button><button class="btn sm" data-body="${r.g.id}">Korpusga tok</button><button class="btn sm" data-fix="${r.g.id}">Tiklash</button></div>
+  <div class="stline" data-stl></div>
+ </div>`;}).join("");
+ renderRail(R);renderLog();updateSim();
+}
+function tripCurve(m){return 10/(m*m-1);}
+function powered(g,st){return sim.main.on&&st.on&&st.rcdOn;}
+function nVoltages(){
+ const Y0={L1:0,L2:0,L3:0};
+ const nBroken=sim.nBreak||(S.main.earth==="TN-C-S"&&S.main.pen==="none");
+ R.groups.forEach(r=>{if(r.three)return;const st=simG(r.g.id);if(!powered(r.g,st)||st.sc)return;Y0[r.g.ph]+=r.P*1000*st.load/100/(U1*U1);});
+ const ang={L1:0,L2:-2*Math.PI/3,L3:2*Math.PI/3};const sy=Y0.L1+Y0.L2+Y0.L3;
+ if(!sim.main.on)return{L1:0,L2:0,L3:0,Vn:0,nBroken};
+ if(!nBroken||sy===0)return{L1:220,L2:220,L3:220,Vn:0,nBroken};
+ let re=0,im=0;PH.forEach(p=>{re+=U1*Math.cos(ang[p])*Y0[p];im+=U1*Math.sin(ang[p])*Y0[p];});re/=sy;im/=sy;
+ const out={Vn:Math.hypot(re,im),nBroken};PH.forEach(p=>{out[p]=Math.hypot(U1*Math.cos(ang[p])-re,U1*Math.sin(ang[p])-im);});return out;
+}
+function once(st,key,msg,lvl){if(!st.flags[key]){st.flags[key]=true;logEv(msg,lvl);}}
+function tripMain(why){sim.main.on=false;sim.main.H=0;fxTrip('main','trip');logEv(`QF0 kirish avtomati o'chdi: ${why}.`,"bad");}
+function tick(dt){
+ sim.t+=dt;
+ const V=nVoltages();
+ const danger=[];
+ R.groups.forEach(r=>{
+  const g=r.g,st=simG(g.id),t=`QF${r.n}`,rcd=hasRcd(g);
+  const nSw=!r.three&&g.poles==="1P"&&g.kind==="MCB"&&g.sw==="N";
+  const pw=powered(g,st);
+  // faza qolgan (avtomat N da)
+  const phaseLive=sim.main.on&&(nSw?true:pw);
+  if(nSw&&sim.main.on&&!pw){once(st,"nsw",`${t} o'chirilgan, lekin avtomat nolni uzgani uchun jihozda faza qoldi. Ta'mirlash xavfli!`,"bad");danger.push(`${t}: avtomat o'chiq, lekin jihozda faza bor`);}
+  else st.flags.nsw=false;
+  // tok
+  let I=0,Ifault=0;
+  if(pw){
+   const k=r.three?1:(V[g.ph]/U1);
+   I=st.sc?r.Ik:r.Ib*st.load/100*k;
+   if(V.nBroken&&!r.three&&V[g.ph]>253)once(st,"ov",`${t}: kuchlanish ${fmt(V[g.ph],0)} V. Jihoz kuyishi mumkin!`,"bad");
+  }
+  // korpusga tok
+  if(st.body&&phaseLive){
+   if(g.peConn==="none"){danger.push(`${t}: jihoz korpusida 220 V`);once(st,"bodyNoPE",`${t}: jihoz korpusiga faza tegdi, PE ulanmagan. Korpusda 220 V, hech qanday himoya ishlamadi. Tegilsa odamga tok uradi!`,"bad");
+    if(rcd&&!st.flags.touch){st.flags.touch=true;}
+   }else{
+    Ifault=U1/(R.zIn+2*RHO[g.mat]*g.len/g.S);
+    if(rcd){st.body=false;fxTrip(g.id,'rcd');if(g.kind==="RCBO")st.on=false;else st.rcdOn=false;logEv(`${t}: korpusga tok o'tdi, sizish toki PE orqali ketdi. UZO ${g.idn} mA darhol o'chirdi. Himoya to'g'ri ishladi.`,"ok");Ifault=0;}
+    else{if(g.peConn==="Nbus")once(st,"peN",`${t}: PE N shinaga ulangan. Hozir avtomat o'chiradi, lekin nol uzilsa korpusga faza chiqadi.`,"warn");
+     danger.push(`${t}: korpusda ~${fmt(Math.min(220,Ifault*0.25),0)} V, avtomat o'chguncha xavfli`);}
+   }
+  }
+  // UZO noto'g'ri ulanishi
+  if(pw&&rcd&&I>0.05&&g.nConn!=="rcdOut"&&!st.sc){
+   fxTrip(g.id,'rcd');if(g.kind==="RCBO")st.on=false;else st.rcdOn=false;
+   logEv(`${t}: UZO yuklama ulanishi bilan o'chdi. Sababi: N sim ${g.nConn==="PEbus"?"PE shinaga":"umumiy N shinaga"} ulangan, UZO ichidan qaytmayapti (${fmt(I,1)} A sizish deb ko'rindi).`,"bad");I=0;
+  }
+  // avtomat (faza uzadigan bo'lsa ko'radi)
+  const Ib_seen=nSw?(st.body?0:I):I+Ifault; // N dagi avtomat korpus nosozligini ko'rmaydi
+  if(nSw&&st.body&&g.peConn!=="none"&&!rcd){once(st,"nswbody",`${t}: korpus nosozligi toki faza → PE orqali ketyapti, nol simdagi avtomat uni ko'rmaydi va o'chmaydi!`,"bad");}
+  if(st.on&&sim.main.on&&(I>0||Ifault>0)){
+   const m=Ib_seen/g.In;
+   if(m>=MAG_SIM[g.ch]){fxTrip(g.id,'sc');st.on=false;st.H=0;logEv(`${t} o'chdi: ${st.sc?"qisqa tutashuv":st.body?"korpusga tok o'tishi":"katta tok"}, ${fmt(Ib_seen,0)} A = ${fmt(m,1)}·In. Elektromagnit ajratgich darhol ishladi.`,"ok");if(st.body)st.body=false;}
+   else if(m>1.13){st.H+=dt/tripCurve(m);
+    if(st.H>0.35)once(st,"bh",`${t}: avtomat ${fmt(m,2)}·In tokda sekin qizimoqda, issiqlik ajratgichi ishlashga yaqin.`,"warn");
+    if(st.H>=1){fxTrip(g.id,'trip');st.on=false;st.H=0;st.flags.bh=false;logEv(`${t} o'chdi: o'ta yuklanish ${fmt(m,2)}·In, issiqlik ajratgich (bimetall) ishladi.${st.sc?" QT toki kichik bo'lgani uchun o'chish kechikdi: kesimni oshiring yoki B xarakteristika oling.":""}`,st.sc?"bad":"warn");}}
+   else{st.H=Math.max(0,st.H-dt/25);st.flags.bh=false;}
+  }else st.H=Math.max(0,st.H-dt/25);
+  if(!st.on||!st.rcdOn||!sim.main.on){I=0;}
+  st.I=I+Ifault;
+  // kabel harorati
+  const Iz=r.Iz||1;
+  const ss=25+45*Math.pow(st.I/Iz,2);
+  const tau=st.I>Iz*3?2:7;
+  st.T+= (Math.min(ss,600)-st.T)*Math.min(1,dt/tau);
+  st.Tt=st.T+(g.ferr?0:30*Math.pow(st.I/Math.max(1,g.In),2));
+  if(!st.burnt){
+   if(st.T>60&&st.T<=70)once(st,"t60",`${t}: kabel ${fmt(st.T,0)}°C, qizishni boshladi.`,"warn");
+   if(st.T>70)once(st,"t70",`${t}: kabel ${fmt(st.T,0)}°C, ruxsat etilgan 70°C dan oshdi. Kabel avtomatga mos emas!`,"bad");
+   if(st.T>90)once(st,"t90",`${t}: kabel izolyatsiyasi yumshab erimoqda (${fmt(st.T,0)}°C). Hid va tutun chiqadi!`,"bad");
+   if(st.T>150){fxTrip(g.id,'burn');st.burnt=true;st.sc=true;logEv(`${t}: izolyatsiya kuydi, tomirlar bir-biriga tegdi: QISQA TUTASHUV.`,"bad");}
+   if(st.T<55){st.flags.t60=false;st.flags.t70=false;st.flags.t90=false;}
+  }
+  if(!g.ferr&&st.Tt>70)once(st,"term",`${t}: НШВИ yo'q, klemma ${fmt(st.Tt,0)}°C gacha qizidi. Kontakt bo'shashib kuyishi mumkin.`,"warn");
+  if(st.Tt<55)st.flags.term=false;
+ });
+ // kirish avtomati
+ const phI={L1:0,L2:0,L3:0};
+ R.groups.forEach(r=>{const st=simG(r.g.id);if(!st.I)return;if(r.three)PH.forEach(p=>phI[p]+=st.I);else phI[r.g.ph]+=st.I;});
+ if(sim.main.on){
+  const mI=Math.max(...PH.map(p=>phI[p]))/S.main.In;
+  if(mI>=MAG_SIM[S.main.ch])tripMain("katta tok, elektromagnit ajratgich (selektivlik buzildi)");
+  else if(mI>1.13){sim.main.H+=dt/tripCurve(mI);if(sim.main.H>=1)tripMain(`o'ta yuklanish ${fmt(mI,2)}·In`);}
+  else sim.main.H=Math.max(0,sim.main.H-dt/25);
+ }
+ if(V.nBroken&&sim.main.on&&!sim._nw){const hi=PH.filter(p=>V[p]>253);if(hi.length){sim._nw=true;logEv(`Nol uzilgan: ${hi.map(p=>p+" "+fmt(V[p],0)+" V").join(", ")}. Shu fazadagi jihozlar kuyishi mumkin.`,"bad");}}
+ if(!V.nBroken)sim._nw=false;
+ // nol uzilganda PE→N ulangan jihozlar korpusi
+ if(V.nBroken&&sim.main.on)R.groups.forEach(r=>{if(r.g.peConn==="Nbus"&&!r.three){const st=simG(r.g.id);if(powered(r.g,st)){danger.push(`QF${r.n}: PE N ga ulangan, nol uzildi, korpusda ${fmt(V.Vn,0)} V`);once(st,"nbrkPE",`QF${r.n}: nol uzildi, PE N shinaga ulangani uchun jihoz korpusida ${fmt(V.Vn,0)} V paydo bo'ldi!`,"bad");}}});
+ sim._V=V;sim._phI=phI;sim._danger=danger;
+}
+function updateSim(){
+ const V=sim._V||{L1:220,L2:220,L3:220};
+ $("#meters").innerHTML=PH.map(p=>{const v=V[p];const cls=v>253?"hi":v<187&&v>0?"lo":"";return `<div class="meter ${cls}"><div class="small muted">${p}–N kuchlanish</div><div class="v">${fmt(v,0)} V</div><div class="small muted">${v>253?"Yuqori, xavfli":v<187&&v>0?"Past":v===0?"Kuchlanish yo'q":"Me'yorda"} · ${fmt((sim._phI||{})[p]||0,1)} A</div></div>`;}).join("");
+ const mm=Math.max(...PH.map(p=>(sim._phI||{})[p]||0));
+ $("#mainCard").innerHTML=`<strong>QF0 kirish ${S.main.ch}${S.main.In}</strong><span class="pill ${sim.main.on?"ok":"bad"}">${sim.main.on?"YONIQ":"O'CHGAN"}</span><span class="mono small">${fmt(mm,1)} A · ${fmt(mm/S.main.In,2)}·In</span><div class="minibar" style="width:160px"><div style="width:${Math.min(100,sim.main.H*100)}%;background:${sim.main.H>0.6?"var(--bad)":"var(--warn)"}"></div></div>`;
+ const dg=sim._danger||[];
+ const al=$("#danger");al.hidden=!dg.length;if(dg.length)al.textContent="XAVF: "+dg.join(" · ");
+ R.groups.forEach(r=>{
+  const g=r.g,st=simG(g.id),row=document.querySelector(`[data-sr="${g.id}"]`);if(!row)return;
+  const pw=powered(g,st);
+  row.classList.toggle("tripped",!pw);
+  row.querySelector("[data-i]").textContent=`${fmt(st.I,st.I>100?0:1)} A`;
+  row.querySelector("[data-m]").textContent=`${fmt(st.I/g.In,2)}·In`;
+  row.querySelector("[data-lp]").textContent=`(${fmt(r.P*st.load/100,2)} kVt)`;
+  const h=row.querySelector("[data-h]");h.style.width=Math.min(100,st.H*100)+"%";h.style.background=st.H>0.6?"var(--bad)":st.H>0?"var(--warn)":"var(--ok)";
+  row.querySelector("[data-t]").textContent=`${fmt(st.T,0)}°C${!g.ferr?` · klemma ${fmt(st.Tt,0)}°C`:""}`;
+  const tb=row.querySelector("[data-tb]");tb.style.width=Math.min(100,(st.T-25)/(150-25)*100)+"%";tb.style.background=st.burnt?"#1b1b1b":st.T>90?"var(--bad)":st.T>70?"var(--warn)":"var(--ok)";
+  let msg="",lvl="";
+  if(st.burnt){msg="Kabel kuygan. Uni almashtirmaguncha yoqib bo'lmaydi (\"Tiklash\" tugmasi).";lvl="bad";}
+  else if(!sim.main.on)msg="Kirish avtomati o'chgan.";
+  else if(!st.rcdOn)msg="UZO o'chgan.",lvl="warn";
+  else if(!st.on)msg="Avtomat o'chgan.",lvl="warn";
+  else if(st.T>90){msg="Izolyatsiya erimoqda!";lvl="bad";}
+  else if(st.T>70){msg="Kabel ruxsat haroratidan qizigan!";lvl="bad";}
+  else if(st.H>0.3){msg="Avtomat sekin qizimoqda.";lvl="warn";}
+  else if(st.sc)msg="Qisqa tutashuv!",lvl="bad";
+  else msg="Me'yorda ishlayapti.";
+  const sl=row.querySelector("[data-stl]");sl.textContent=msg;sl.className="stline "+lvl;
+ });
+ // virtual shit
+ const rail=$("#rail");
+ rail.querySelectorAll("[data-bp]").forEach(el=>{
+  const id=el.dataset.bp;
+  if(id==="main"){el.classList.toggle("off",!sim.main.on);el.querySelector(".heatv").setAttribute("opacity",Math.min(.85,sim.main.H));return;}
+  const [gid,part]=id.split(":");const st=simG(+gid);const g=S.groups.find(x=>x.id==gid);if(!g)return;
+  const isR=part==="r";
+  const on=isR?st.rcdOn:st.on;
+  el.classList.toggle("off",!on);
+  el.querySelector(".heatv").setAttribute("opacity",isR?0:Math.min(.85,st.H*0.9));
+ });
+ rail.querySelectorAll("[data-cable]").forEach(el=>{
+  const st=simG(+el.dataset.cable);el.querySelectorAll(".cab").forEach(ln=>{
+  ln.setAttribute("stroke",cableColor(st.T,st.burnt));ln.classList.toggle("burn",!st.burnt&&st.T>90);});
+  el.querySelector(".smk").setAttribute("opacity",(st.T>90||st.burnt)?1:0);
+  el.querySelector(".ctemp").textContent=st.burnt?"KUYDI":`${fmt(st.T,0)}°C`;
+  el.querySelector(".ctemp").setAttribute("fill",st.burnt||st.T>90?"var(--bad)":st.T>70?"var(--warn)":"var(--ink)");
+ });
+ rail.querySelectorAll("[data-bolt]").forEach(el=>{const st=simG(+el.dataset.bolt);const on=st.body||st.sc;el.setAttribute("opacity",on?1:0);el.classList.toggle("flick",on);});
+ const mOn=sim.main.on&&mm>0.05;
+ rail.querySelectorAll("[data-flw]").forEach(el=>{const id=el.dataset.flw;
+  if(id==="main"){el.classList.toggle("off",!mOn);if(mOn)el.style.animationDuration=Math.max(.25,1.4/Math.max(.2,mm/S.main.In))+"s";return;}
+  const st=simG(+id),g=S.groups.find(x=>x.id==id);if(!g)return;const live=powered(g,st)&&st.I>0.05;
+  el.classList.toggle("off",!live);if(live){const k=st.I/Math.max(1,g.In);el.style.animationDuration=Math.max(.15,1.2/Math.max(.15,k))+"s";}});
+ rail.querySelectorAll("[data-cable]").forEach(el=>{const st=simG(+el.dataset.cable);const f=el.querySelector(".flm");if(f)f.setAttribute("opacity",(!st.burnt&&st.T>115)||(st.burnt&&st.I>0)?1:0);});
+ $("#sim-time").textContent=`Simulyatsiya vaqti: ${fmt(sim.t,1)} s`;
+}
+function toggleDev(id){
+ if(id==="main"){sim.main.on=!sim.main.on;sim.main.H=0;logEv(sim.main.on?"QF0 yoqildi.":"QF0 qo'lda o'chirildi.");updateSim();return;}
+ const [gid,part]=id.split(":");const st=simG(+gid);const r=R.groups.find(x=>x.g.id==gid);
+ if(part==="r"){st.rcdOn=!st.rcdOn;logEv(`QF${r.n} UZO ${st.rcdOn?"yoqildi":"qo'lda o'chirildi"}.`);}
+ else{if(!st.on&&st.burnt){logEv(`QF${r.n}: kabel kuygan, yoqish bilan yana qisqa tutashuv bo'ladi.`,"bad");}
+  st.on=!st.on;st.H=0;if(st.on&&!st.burnt)st.sc=false;logEv(`QF${r.n} ${st.on?"yoqildi":"qo'lda o'chirildi"}.`);}
+ updateSim();
+}
+let last=performance.now();
+function loop(){const now=performance.now();const dt=Math.min(0.25,(now-last)/1000);last=now;if(sim.run&&R&&!$("#p-sim").hidden){tick(dt);updateSim();}}
+
+/* ================= YANGILASH ================= */
+function refresh(){
+ R=compute();
+ renderSummary(R);updateGroupResults(R);renderChecks(R);
+ $("#schem").innerHTML=schematic(R);
+ buildSim();save();
+}
+function resetSim(){sim.main={on:true,H:0};sim.g={};sim.t=0;sim.log=[];sim.nBreak=false;$("#sim-nbreak").checked=false;}
+
+/* ================= HODISALAR ================= */
+const NUMK=["P","cos","kc","len","phases","In","idn","rcdIn","S","cores"];
+const STRUCT=["kind","poles","phases","type","nConn"];
+document.addEventListener("change",e=>{
+ const t=e.target;const gEl=t.closest(".g");
+ if(gEl&&t.dataset.k&&STRUCT.includes(t.dataset.k)){renderGroups();refresh();}
+});
+document.addEventListener("input",e=>{
+ const t=e.target;
+ const gEl=t.closest(".g");
+ if(gEl&&t.dataset.k){
+  const g=S.groups.find(x=>x.id==gEl.dataset.id);if(!g)return;
+  const k=t.dataset.k;
+  if(t.type==="checkbox")g[k]=t.checked;
+  else if(NUMK.includes(k))g[k]=t.value===""?0:+t.value;
+  else g[k]=t.value;
+  if(k==="phases"){if(g.phases==3){g.ph="L123";if(!["3P","4P"].includes(g.poles))g.poles=g.kind==="RCBO"?"4P":"3P";if(g.cores<4)g.cores=5;}else{g.ph="L1";if(["3P","4P"].includes(g.poles))g.poles=g.kind==="MCB"?"1P":"2P";if(g.cores>3)g.cores=3;}}
+  if(k==="kind"){if(g.kind!=="MCB"&&g.poles==="1P")g.poles="2P";if(g.kind==="RCBO"&&g.poles==="3P")g.poles="4P";}
+  if(!STRUCT.includes(k))refresh();
+  return;
+ }
+ if(t.id&&t.id.startsWith("m-")){
+  const k=t.id.slice(2);S.main[k]=["zs","du","cLen","cS","cCores","In"].includes(k)?(+t.value||0):t.value;
+  if(k==="cLen"&&S.main.cLen<1)S.main.cLen=1;
+  if(k==="earth")$("#m-pen").disabled=S.main.earth!=="TN-C-S";
+  refresh();return;
+ }
+ if(t.dataset.load){const st=simG(+t.dataset.load);st.load=+t.value;t.closest("label").querySelector("[data-lv]").textContent=t.value+"%";return;}
+ if(t.id==="sim-nbreak"){sim.nBreak=t.checked;logEv(t.checked?"Kirishda N sim uzildi.":"N sim tiklandi.",t.checked?"warn":"");}
+});
+document.addEventListener("keydown",e=>{const cn=e.target.closest&&e.target.closest("[data-conn]");if(cn&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openConn(+cn.dataset.conn);return;}const bp=e.target.closest&&e.target.closest("[data-bp]");if(bp&&(e.key==="Enter"||e.key===" ")){e.preventDefault();toggleDev(bp.dataset.bp);}});
+document.addEventListener("click",e=>{
+ const cn=e.target.closest("[data-conn]");if(cn){openConn(+cn.dataset.conn);return;}
+ const bp=e.target.closest("[data-bp]");if(bp){toggleDev(bp.dataset.bp);return;}
+ const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.tab){showTab(b.dataset.tab);return;}
+ if(b.dataset.apply!==undefined){const x=R.issues[+b.dataset.apply];if(!x)return;const box=b.closest(".fxbox");const res=applyFix(x.gid,collect(box));showResult($("#fixResult"),res);$("#fixResult").scrollIntoView({behavior:"smooth",block:"nearest"});return;}
+ if(b.dataset.cok){const gid=+b.dataset.cok;const vals=collect($("#connEd"));const res=applyFix(gid,vals);openConn(gid);showResult($("#ceRes"),res);return;}
+ if(b.dataset.cclose){$("#connEd").hidden=true;return;}
+ if(b.dataset.flt){flt=b.dataset.flt;document.querySelectorAll("[data-flt]").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));renderChecks(R);return;}
+ if(b.dataset.del){S.groups=S.groups.filter(g=>g.id!=b.dataset.del);renderGroups();refresh();return;}
+ if(b.id==="btn-add"){S.groups.push(G({id:uid++}));renderGroups();refresh();const l=document.querySelector(".g:last-child input");if(l){l.focus();l.select();}return;}
+ if(b.id==="btn-reset-ex"){S=JSON.parse(JSON.stringify(EXAMPLE));S.groups.forEach(g=>{g.id=uid++;});resetSim();renderMain();renderGroups();refresh();return;}
+ if(b.id==="btn-clear"){S.groups=[];resetSim();renderGroups();refresh();return;}
+ if(b.dataset.sc){const st=simG(+b.dataset.sc);if(!powered(null,st))return;st.sc=true;const r=R.groups.find(x=>x.g.id==b.dataset.sc);logEv(`QF${r.n}: liniya oxirida qisqa tutashuv, I QT ≈ ${fmt(r.Ik,0)} A.`,"warn");return;}
+ if(b.dataset.body){const st=simG(+b.dataset.body);st.body=true;st.flags.bodyNoPE=false;const r=R.groups.find(x=>x.g.id==b.dataset.body);logEv(`QF${r.n}: jihoz ichida faza sim korpusga tegdi.`,"warn");return;}
+ if(b.dataset.fix){const id=+b.dataset.fix;const ld=simG(id).load;delete sim.g[id];simG(id).load=ld;const r=R.groups.find(x=>x.g.id==id);logEv(`QF${r.n}: nosozlik bartaraf etildi${"" }, kabel almashtirildi, avtomat yoqildi.`);updateSim();return;}
+ if(b.dataset.scn){
+  resetSim();buildSim();
+  const pick=f=>R.groups.find(f);
+  if(b.dataset.scn==="over"){
+   const r=pick(x=>x.Iz&&x.Iz<x.g.In)||pick(x=>x.g.type==="socket")||R.groups[0];if(!r)return;
+   const st=simG(r.g.id);const target=r.Iz&&r.Iz<r.g.In?Math.min(r.g.In*0.97,r.Iz*1.45):r.g.In*1.6;
+   const L=Math.min(400,Math.ceil(target/r.Ib*100/5)*5);st.load=L;const el=document.getElementById("ld"+r.g.id);if(el){el.value=L;el.closest("label").querySelector("[data-lv]").textContent=L+"%";}
+   logEv(`Ssenariy: QF${r.n} ga ko'p jihoz ulandi, tok ≈ ${fmt(r.Ib*L/100,0)} A (avtomat ${r.g.In} A, kabel ${r.Iz} A).${r.Iz<r.g.In?" Avtomat kabelga mos emas: kuzating.":""}`,"warn");
+  }
+  if(b.dataset.scn==="sc"){const r=pick(x=>x.Ik<KMAG[x.g.ch]*x.g.In)||pick(x=>/oshxona/i.test(x.g.name))||R.groups[0];if(!r)return;simG(r.g.id).sc=true;logEv(`Ssenariy: QF${r.n} liniya oxirida qisqa tutashuv, I QT ≈ ${fmt(r.Ik,0)} A.`,"warn");}
+  if(b.dataset.scn==="body"){const r=pick(x=>x.g.peConn!=="PEbus")||pick(x=>!hasRcd(x.g)&&x.g.type!=="light")||R.groups[0];if(!r)return;simG(r.g.id).body=true;logEv(`Ssenariy: QF${r.n} (${r.g.name}) ichida faza sim korpusga tegdi.`,"warn");}
+  if(b.dataset.scn==="n"){sim.nBreak=true;$("#sim-nbreak").checked=true;R.groups.forEach(r=>{if(!r.three&&r.g.ph==="L1")simG(r.g.id).load=15;});logEv("Ssenariy: kirishda N sim uzildi, L1 fazada yuklama kam.","warn");}
+  sim.run=true;$("#sim-play").textContent="Pauza";
+  $("#rail").scrollIntoView({behavior:"smooth",block:"start"});
+  return;}
+ if(b.id==="sim-play"){sim.run=!sim.run;b.textContent=sim.run?"Pauza":"Davom etish";return;}
+ if(b.id==="sim-reset"){resetSim();buildSim();return;}
+});
+const TABS=["kirish","yigish","tekshir","sxema","sim"];
+function showTab(id){
+ if(!TABS.includes(id))id="yigish";
+ TABS.forEach(t=>{$("#p-"+t).hidden=t!==id;$(`#tabs [data-tab=${t}]`).setAttribute("aria-selected",t===id?"true":"false");});
+ if(id==="sim"){last=performance.now();updateSim();}
+ try{history.replaceState(null,"","#"+id);}catch(e){}
+}
+renderMain();renderGroups();refresh();
+(function(){const b=$("#sim-sound");const upd=()=>{b.textContent="Ovoz: "+(SOUND?"yoqiq":"o'chiq");b.setAttribute("aria-pressed",SOUND?"true":"false");};upd();
+ b.addEventListener("click",()=>{SOUND=!SOUND;upd();if(SOUND)beep("click");});
+ if(IS_APP){const sp=$("#splash");sp.hidden=false;setTimeout(()=>{sp.classList.add("out");setTimeout(()=>{sp.hidden=true;},500);},1500);}})();
+showTab((location.hash||"").slice(1));
+setInterval(loop,100);
+})();
+</script>
+
+</body>
+</html>

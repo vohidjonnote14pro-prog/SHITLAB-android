@@ -32,6 +32,7 @@ import java.io.OutputStream;
 public class MainActivity extends Activity {
     private WebView web;
     private ValueCallback<Uri[]> fileCb;
+    private Uri camUri;
     private static final int PICK = 41;
 
     @Override
@@ -52,7 +53,7 @@ public class MainActivity extends Activity {
         s.setDisplayZoomControls(false);
         s.setUseWideViewPort(true);
         s.setLoadWithOverviewMode(true);
-        s.setUserAgentString(s.getUserAgentString() + " ShitLabApp/4.3");
+        s.setUserAgentString(s.getUserAgentString() + " ShitLabApp/4.4");
 
         web.addJavascriptInterface(new Bridge(), "ShitLabNative");
         web.setWebViewClient(new WebViewClient());
@@ -61,10 +62,26 @@ public class MainActivity extends Activity {
             public boolean onShowFileChooser(WebView v, ValueCallback<Uri[]> cb, FileChooserParams p) {
                 if (fileCb != null) fileCb.onReceiveValue(null);
                 fileCb = cb;
+                camUri = null;
                 try {
-                    startActivityForResult(p.createIntent(), PICK);
+                    boolean img = false;
+                    for (String t : p.getAcceptTypes()) if (t != null && t.startsWith("image")) img = true;
+                    if (img && p.isCaptureEnabled()) {
+                        File f = new File(CamProvider.dir(MainActivity.this), "cam_" + System.currentTimeMillis() + ".jpg");
+                        camUri = Uri.parse("content://" + CamProvider.AUTH + "/" + f.getName());
+                        Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        cam.putExtra(MediaStore.EXTRA_OUTPUT, camUri);
+                        cam.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        startActivityForResult(cam, PICK);
+                        return true;
+                    }
+                    Intent pick = p.createIntent();
+                    if (p.getMode() == FileChooserParams.MODE_OPEN_MULTIPLE) pick.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    startActivityForResult(pick, PICK);
                 } catch (Exception e) {
                     fileCb = null;
+                    camUri = null;
+                    Toast.makeText(MainActivity.this, "Kamera yoki galereya ochilmadi", Toast.LENGTH_LONG).show();
                     return false;
                 }
                 return true;
@@ -82,8 +99,21 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int req, int res, Intent data) {
         if (req == PICK && fileCb != null) {
-            fileCb.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(res, data));
+            Uri[] out = null;
+            if (res == RESULT_OK) {
+                if (camUri != null) {
+                    out = new Uri[]{camUri};
+                } else if (data != null && data.getClipData() != null) {
+                    int n = data.getClipData().getItemCount();
+                    out = new Uri[n];
+                    for (int i = 0; i < n; i++) out[i] = data.getClipData().getItemAt(i).getUri();
+                } else if (data != null && data.getData() != null) {
+                    out = new Uri[]{data.getData()};
+                }
+            }
+            fileCb.onReceiveValue(out);
             fileCb = null;
+            camUri = null;
             return;
         }
         super.onActivityResult(req, res, data);

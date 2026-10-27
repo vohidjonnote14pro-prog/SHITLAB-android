@@ -1,10 +1,3 @@
-<!doctype html>
-<html lang="uz">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>ShitLab</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -235,6 +228,98 @@ dl.kv dd{margin:0;font-family:var(--f-mono);font-size:.9rem}
 .cab3d{position:absolute;width:10px;height:150px;border-radius:5px;background:#8c939a;box-shadow:inset -2px 0 0 rgba(0,0,0,.25)}
 @media (max-width:560px){.scene3d{min-height:520px}}
 @media (prefers-reduced-motion:reduce){.door3d{transition:none}}
+.hdr-r{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end}
+.prjbtn{display:inline-flex;gap:6px;align-items:center;max-width:280px}
+.prjbtn b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pnew{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.plist{display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow:auto}
+.pcard{border:1px solid var(--line);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:6px;background:var(--surface-2)}
+.pcard.act{border-color:var(--accent)}
+.ptop{display:flex;gap:8px;align-items:center}
+.pname{font-weight:700}
+.pmeta{font-size:.78rem;color:var(--muted)}
+.pacts{display:flex;flex-wrap:wrap;gap:6px}
+.exambar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--accent);color:var(--accent-ink);padding:8px 12px;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.exambar .eb-t{font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.exambar .btn{background:var(--surface);color:var(--ink);border-color:transparent}
+body.exam-hide .badm,body.exam-hide #p-tekshir [data-need],body.exam-hide .g .res .pill,body.exam-hide #tabs [data-tab=tekshir] .cnt{display:none!important}
+body.exam-hide #p-tekshir::after{content:"Imtihon vaqtida tekshiruv bo'limi yopiq. Xatolarni o'zingiz toping.";display:block;padding:24px;text-align:center;color:var(--muted);border:1.5px dashed var(--line);border-radius:8px}
+.etasks{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.etask,.ecur{display:flex;flex-direction:column;gap:8px}
+.etask p,.ecur p{margin:0;font-size:.9rem;color:var(--muted)}
+.eh{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.score{font-family:var(--f-mono);font-size:2rem;font-weight:700}.score.ok{color:var(--ok)}.score.warn{color:var(--warn)}.score.bad{color:var(--bad)}
+.edet{margin:6px 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:3px;font-size:.88rem}
+.edet li.ok{color:var(--ok)}.edet li.bad{color:var(--bad)}
+.quiz{display:flex;flex-direction:column;gap:10px}
+.qq{font-size:1.05rem;font-weight:600;margin:0}
+.qopts{display:flex;flex-direction:column;gap:8px}
+.qopt{font:inherit;text-align:left;padding:11px 12px;border:1.5px solid var(--line);border-radius:6px;background:var(--surface-2);color:var(--ink);cursor:pointer}
+.qopt:hover:not(:disabled){border-color:var(--accent)}
+.qopt.right{border-color:var(--ok);background:var(--ok-soft)}.qopt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.bnav,.sheet{display:none}
+.gtog{display:none}
+@media (max-width:640px){
+ .wrap{gap:12px;padding-block:10px 96px}
+ header.top{flex-wrap:nowrap;align-items:center;gap:10px}
+ .brand{gap:8px;min-width:0}.brand svg{width:30px;height:30px}
+ .brand p,#plate{display:none}
+ h1{font-size:1.5rem}h2{font-size:1.2rem}h3{font-size:1.02rem}
+ .hdr-r{flex:1;min-width:0;justify-content:flex-end}
+ .prjbtn{max-width:100%;padding:6px 9px;font-size:.84rem}.prjbtn .muted{display:none}
+ nav.tabs{display:none!important}
+ .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--surface);border-top:1px solid var(--line);padding:4px max(6px,env(safe-area-inset-right,0px)) calc(4px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px));box-shadow:0 -4px 16px rgba(0,0,0,.08)}
+ .bnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:0;color:var(--muted);font:inherit;font-size:.68rem;font-weight:600;padding:5px 2px;border-radius:8px;position:relative;min-width:0}
+ .bnav button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+ .bnav button[aria-current="true"]{color:var(--accent);background:var(--accent-soft)}
+ .bcnt{position:absolute;top:2px;right:calc(50% - 20px);background:var(--bad);color:#fff;font-style:normal;font-size:.62rem;border-radius:8px;padding:0 5px;font-family:var(--f-mono)}
+ .sheet{display:block;position:fixed;inset:0;z-index:45;background:rgba(10,14,18,.45)}
+ .sheet[hidden]{display:none!important}
+ .sheetcard{position:absolute;left:0;right:0;bottom:0;background:var(--surface);border-radius:14px 14px 0 0;padding:14px max(16px,env(safe-area-inset-right,0px)) calc(78px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:tin .22s ease-out}
+ .sheetgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ .sheetgrid button{font:inherit;font-size:.8rem;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 4px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--ink)}
+ .sheetgrid button[aria-current="true"]{border-color:var(--accent);color:var(--accent)}
+ .summary{display:flex;overflow-x:auto;scrollbar-width:none;border-radius:8px}
+ .summary>div{flex:0 0 auto;padding:6px 12px;border-bottom:0}
+ .summary .k{font-size:.6rem}.summary .v{font-size:.98rem}
+ .note,.modepanel .hint,.etask p{display:none}
+ body.notes .note,body.notes .modepanel .hint,body.notes .etask p{display:block}
+ .card{padding:10px}
+ .simctl,.seg,.chips,.filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+ .simctl>*,.seg>*,.chips>*{flex:0 0 auto}
+ .modebar{gap:8px}.zoombar{width:100%}
+ .gtog{display:inline-flex}
+ .g:not(.open)>fieldset{display:none}
+ .g .head input{font-size:.95rem}
+ .sr{padding:8px 10px;gap:6px 10px}
+ .meters{gap:6px}.meter{padding:6px 8px}.meter .v{font-size:1.15rem}.meter .small{font-size:.68rem}
+ .toast{font-size:.82rem;padding:8px 10px}
+ #toasts{bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+ .exambar{top:0}
+ .issue{padding:8px 10px;grid-template-columns:1fr}
+ .tbl table{font-size:.8rem}
+ .infogrid,.groups,.etasks{grid-template-columns:1fr}
+ .modalcard{margin-top:2vh;padding:12px}
+ .lcdwrap{margin-top:-104px}.meter-dev{width:200px;padding:8px 10px}.lcd2 .mval{font-size:1.5rem}
+}
+.docgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.doc{display:flex;flex-direction:column;gap:8px}
+.dh{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.dthumb{background:var(--surface-2);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.dsum{display:flex;flex-direction:column;gap:2px}.dsum b{font-family:var(--f-mono);font-size:1.3rem}
+.prices{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-top:8px}
+@media (max-width:640px){.docgrid{grid-template-columns:1fr}}
+.labctl{display:flex;flex-direction:column;gap:8px}
+.labset{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.labsvg{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px}
+.lablog{display:flex;flex-direction:column;gap:4px;font-size:.86rem;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.lablog .ok{color:var(--ok)}.lablog .bad{color:var(--bad)}.lablog .warn{color:var(--warn)}
+.pssw,.rzk,.sb,.qfbox{cursor:pointer}
+.chip.pusk{border-color:var(--ok);color:var(--ok);font-weight:700}.chip.stop{border-color:var(--bad);color:var(--bad);font-weight:700}
+.rzcalc{display:flex;flex-direction:column;gap:4px;font-size:.86rem}
+.rzrow{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding:3px 0}
+.rzrow b{font-family:var(--f-mono);white-space:nowrap}.badt{color:var(--bad)}
+.langbtn{min-width:44px;padding:6px 10px;font-weight:700}
 .lcdwrap{position:sticky;bottom:10px;margin-top:-120px;margin-left:auto;width:max-content;max-width:100%;z-index:5;pointer-events:none;display:flex;justify-content:flex-end}
 .meter-dev{width:250px;border-radius:14px;padding:10px 12px;background:#e0a21b;border:2px solid #6b4c08;box-shadow:0 8px 24px rgba(0,0,0,.3);color:#1d1d1d}
 .meter-dev.clamp{background:#f2c21b}.meter-dev.megger{background:#c9332a;color:#fff}.meter-dev.ind{background:#2d5fa8;color:#fff}
@@ -356,8 +441,7 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
 .alert{border:1.5px solid var(--bad);background:var(--bad-soft);color:var(--bad);border-radius:6px;padding:10px 12px;font-weight:600}
 .alert[hidden]{display:none}
 </style>
-</head>
-<body>
+
 <div id="splash" hidden><svg width="90" height="110" viewBox="0 0 90 110" aria-hidden="true"><path class="boltf" d="M52 4 L14 62 H42 L34 106 L76 42 H48 Z"/><path class="bolt" d="M52 4 L14 62 H42 L34 106 L76 42 H48 Z"/></svg><h1>ShitLab</h1><div class="bar"><i></i></div></div>
 <div id="toasts" aria-live="polite"></div>
 <div class="wrap">
@@ -369,9 +453,22 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
         <p>Shit turini tanlang, qurilmalarni o'zingiz yig'ing: dastur PUE bo'yicha tekshiradi, ishlatib ko'rsatadi va savollarga javob beradi</p>
       </div>
     </div>
-    <span class="plate" id="plate">3~ 380/220 V · 50 Hz</span>
+    <div class="hdr-r"><button class="btn prjbtn" id="prjBtn" aria-haspopup="dialog"><span class="muted small">Loyiha</span> <b id="prjName">—</b> ▾</button><button class="btn langbtn" id="langBtn" aria-label="Til / Язык">RU</button><span class="plate" id="plate">3~ 380/220 V · 50 Hz</span></div>
   </header>
 
+  <div class="exambar" id="examBar" hidden></div>
+  <nav class="bnav" id="bnav" aria-label="Bo'limlar">
+    <button data-tab="kirish"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><line x1="7" y1="9" x2="17" y2="9" stroke="currentColor" stroke-width="2"/><line x1="7" y1="14" x2="17" y2="14" stroke="currentColor" stroke-width="2"/></svg><span>Shit</span></button>
+    <button data-tab="yigish"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="3" y="6" width="5" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="10" y="6" width="5" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="M19 9v6M16 12h6" stroke="currentColor" stroke-width="2"/></svg><span>Guruhlar</span></button>
+    <button data-tab="tekshir"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.5 12l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Tekshiruv</span><i class="bcnt" id="bcnt" hidden></i></button>
+    <button data-tab="sim"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M13 2L5 13h6l-1 9 8-11h-6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Simulyatsiya</span></button>
+    <button data-more="1" id="bmore"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></svg><span>Yana</span></button>
+  </nav>
+  <div class="sheet" id="moreSheet" hidden><div class="sheetcard">
+    <div class="sheetgrid" id="moreGrid"></div>
+    <label class="f chk" style="margin-top:6px"><input type="checkbox" id="notesTog"> Tushuntirish matnlarini ko'rsatish</label>
+    <div class="seg" style="margin-top:8px"><button class="mbtn" data-lang="uz" style="flex:1">O'zbekcha</button><button class="mbtn" data-lang="ru" style="flex:1">Русский</button></div>
+  </div></div>
   <div class="summary" id="summary"></div>
 
   <nav class="tabs" role="tablist" id="tabs">
@@ -382,6 +479,9 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
     <button role="tab" data-tab="sim">5. Simulyatsiya</button>
     <button role="tab" data-tab="info">6. Ma'lumotnoma</button>
     <button role="tab" data-tab="chat">7. Savol-javob</button>
+    <button role="tab" data-tab="oquv">8. O'quv</button>
+    <button role="tab" data-tab="docs">9. Hujjatlar</button>
+    <button role="tab" data-tab="lab">10. Murakkab sxemalar</button>
   </nav>
 
   <!-- 1. SHIT -->
@@ -566,6 +666,25 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
     <div class="infogrid" id="infoList"></div>
   </section>
 
+  <!-- 10. MURAKKAB SXEMALAR -->
+  <section class="panel" id="p-lab" hidden>
+    <h2>Murakkab sxemalar</h2>
+    <div class="seg" role="tablist"><button class="mbtn" data-lab="ps" aria-pressed="true">Podstansiya</button><button class="mbtn" data-lab="rz" aria-pressed="false">Rele</button><button class="mbtn" data-lab="mt" aria-pressed="false">Dvigatel</button></div>
+    <div id="labBox" style="display:flex;flex-direction:column;gap:12px"></div>
+  </section>
+
+  <!-- 9. HUJJATLAR -->
+  <section class="panel" id="p-docs" hidden>
+    <div class="empty" data-empty></div>
+    <div data-need style="display:flex;flex-direction:column;gap:12px"><h2>Hujjatlar</h2><div id="docsBox" style="display:flex;flex-direction:column;gap:12px"></div></div>
+  </section>
+
+  <!-- 8. O'QUV -->
+  <section class="panel" id="p-oquv" hidden>
+    <h2>O'quv va imtihon</h2>
+    <div id="examBox" style="display:flex;flex-direction:column;gap:12px"></div>
+  </section>
+
   <!-- 7. SAVOL-JAVOB -->
   <section class="panel" id="p-chat" hidden>
     <div class="bar" style="justify-content:space-between">
@@ -583,6 +702,18 @@ section.panel:not([hidden]){animation:tabin .28s ease-out}
   </section>
 </div>
 
+<div class="modal" id="prjModal" hidden role="dialog" aria-modal="true" aria-labelledby="pmTitle">
+  <div class="modalcard" style="max-width:760px">
+    <div class="bar" style="justify-content:space-between;align-items:center"><h2 id="pmTitle">Loyihalar</h2><button class="btn sm" id="pmClose">Yopish</button></div>
+    <div class="pnew"><span class="muted small">Yangi loyiha:</span><button class="btn sm pri" data-pnew="blank">Bo'sh</button><button class="btn sm" data-pnew="home">Uy namunasi</button><button class="btn sm" data-pnew="shop">Do'kon namunasi</button><button class="btn sm" data-pnew="work">Sex namunasi</button></div>
+    <div class="plist" id="prjList"></div>
+    <details class="card"><summary style="cursor:pointer;font-weight:600">Boshqa odam yuborgan loyihani qo'shish</summary>
+      <p class="note" style="margin:6px 0">Ulashish kodini (SHL… bilan boshlanadi) shu yerga qo'ying yoki .json faylni tanlang.</p>
+      <textarea id="pImpCode" rows="3" style="width:100%;font:inherit;font-family:var(--f-mono);font-size:.8rem;background:var(--surface-2);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:6px" placeholder="SHL2:..."></textarea>
+      <div class="bar" style="margin-top:6px"><button class="btn sm pri" id="pImpBtn">Koddan qo'shish</button><label class="btn sm" style="display:inline-flex;align-items:center;gap:6px">Fayldan<input type="file" id="pImpFile" accept=".json,application/json" style="display:none"></label></div>
+    </details>
+  </div>
+</div>
 <div class="modal" id="infoModal" hidden role="dialog" aria-modal="true" aria-labelledby="imTitle">
   <div class="modalcard">
     <div class="bar" style="justify-content:space-between;align-items:center"><h2 id="imTitle"></h2><button class="btn sm" id="imClose">Yopish</button></div>
@@ -655,11 +786,21 @@ const EXAMPLE={
   G({name:"Nasos",type:"power",P:1.5,phases:3,cos:0.8,kc:1,len:30,poles:"3P",In:6,S:1.5,cores:4,ph:"L123",nConn:"none",lay:"air",ctrl:"btn",pfr:true})
  ]};
 
-const KEY="shitlab-v3";
-let S;
-function load(){try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(o&&o.groups&&o.main){o.main=Object.assign(JSON.parse(JSON.stringify(BLANK.main)),o.main);o.groups=o.groups.map(g=>G(g));return o;}}}catch(e){}return JSON.parse(JSON.stringify(BLANK));}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const KEY="shitlab-v3",PKEY="shitlab-projects-v1";
+let S,PRJ;
+function normS(o){o=o&&o.main&&o.groups?o:JSON.parse(JSON.stringify(BLANK));o.main=Object.assign(JSON.parse(JSON.stringify(BLANK.main)),o.main);o.groups=o.groups.map(g=>G(g));return o;}
+const pid=()=>"p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function loadProjects(){
+ try{const r=localStorage.getItem(PKEY);if(r){const o=JSON.parse(r);if(o&&Array.isArray(o.list)&&o.list.length)return o;}}catch(e){}
+ let old=null;try{const r=localStorage.getItem(KEY);if(r)old=JSON.parse(r);}catch(e){}
+ const id=pid();return {active:id,list:[{id,name:"Mening shitim",updated:Date.now(),data:normS(old)}]};
+}
+function persistProjects(){try{localStorage.setItem(PKEY,JSON.stringify(PRJ));}catch(e){}}
+function curProject(){return PRJ.list.find(p=>p.id===PRJ.active)||PRJ.list[0];}
+function load(){PRJ=loadProjects();const p=curProject();PRJ.active=p.id;return normS(JSON.parse(JSON.stringify(p.data)));}
+function save(){const p=curProject();if(!p)return;p.data=S;p.updated=Date.now();persistProjects();const b=$("#prjName");if(b)b.textContent=p.name;}
 S=load();
+
 function enclOf(){const m=S.main;if(!m.encl)return null;const e=ENCL.find(x=>x.id===m.encl);if(!e)return null;if(e.id==="custom")return Object.assign({},e,{rows:+m.custom.rows||1,mods:+m.custom.mods||12,dims:m.custom.dims||"—",mat:m.custom.mat});return e;}
 // modullar
 function grpDevs(g){
@@ -685,7 +826,7 @@ function layout(){
  const total=items.reduce((a,x)=>a+x.mods,0);
  return {E,items,rows:Math.max(E.rows,row+1),over:row+1>E.rows,total,cap:E.rows*E.mods,rowsUsed};
 }
-let uid=1;S.groups.forEach(g=>{g.id=uid++;});
+let uid=1+Math.max(0,...S.groups.map(g=>+g.id||0));S.groups.forEach(g=>{if(!g.id)g.id=uid++;});
 
 const $=s=>document.querySelector(s);
 const fmt=(v,d=1)=>(v==null||!isFinite(v))?"—":Number(v).toFixed(d);
@@ -843,12 +984,13 @@ function renderMain(){
  $("#m-pen").disabled=m.earth!=="TN-C-S";
 }
 function sel(id,k,opts,val,dis){return `<select data-k="${k}" id="g${id}-${k}"${dis?" disabled":""}>${opts}</select>`;}
+const GOPEN=new Set();
 function groupCard(g,i){
  const id=g.id,three=g.phases==3,rcd=hasRcd(g);
  const colorOpts=v=>Object.entries(COLORS).map(([k,l])=>opt(k,l,v)).join("");
  return `
- <div class="g" data-id="${id}">
-  <div class="head"><span class="tag">QF${i+1}</span><input data-k="name" value="${esc(g.name)}" aria-label="Guruh nomi" id="g${id}-name"><button class="btn sm danger" data-del="${id}" aria-label="Guruhni o'chirish">✕</button></div>
+ <div class="g${GOPEN.has(id)?" open":""}" data-id="${id}">
+  <div class="head"><span class="tag">QF${i+1}</span><input data-k="name" value="${esc(g.name)}" aria-label="Guruh nomi" id="g${id}-name"><button class="btn sm gtog" data-gtog="${id}" aria-label="Guruhni ochish yoki yopish">${GOPEN.has(id)?"▴":"▾"}</button><button class="btn sm danger" data-del="${id}" aria-label="Guruhni o'chirish">✕</button></div>
   <fieldset><legend>Yuklama</legend>
    <label class="f wide">Turi${sel(id,"type",Object.entries(TYPES).map(([k,v])=>opt(k,v,g.type)).join(""))}</label>
    <label class="f">P, kVt<input data-k="P" type="number" step="0.1" min="0" value="${g.P}" id="g${id}-P"></label>
@@ -914,6 +1056,7 @@ function renderSummary(R){
   ["Diqqat",`<span style="color:${R.warn?"var(--warn)":"var(--ok)"}">${R.warn}</span>`]
  ].map(([k,v])=>`<div><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
  $("#tabs [data-tab=tekshir]").innerHTML="3. PUE tekshiruvi"+(R.bad?`<span class="cnt">${R.bad}</span>`:"");
+ const bc=$("#bcnt");if(bc){bc.hidden=!R.bad||document.body.classList.contains("exam-hide");bc.textContent=R.bad;}
 }
 function renderChecks(R){
  const lab={bad:"XATO",warn:"DIQQAT",ok:"TO'G'RI",info:"MA'LUMOT"};
@@ -1020,7 +1163,7 @@ function wireC(x1,y1,x2,y2,col,w=2.5){
 const wire=(x1,y1,x2,y2,k,w)=>wireC(x1,y1,x2,y2,k==="PE"?"PE":wc(k),w);
 function dot(x,y,k){return `<circle cx="${x}" cy="${y}" r="3.6" fill="${k==="PE"?"var(--pe-g)":wc(k)}"/>`;}
 function ferr(x,y,on){return on?`<rect x="${x-3}" y="${y}" width="6" height="10" rx="1" fill="var(--accent)"/>`:"";}
-function badMark(x,y){return `<circle cx="${x}" cy="${y}" r="7" fill="var(--bad)"/><text x="${x}" y="${y+4}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">!</text>`;}
+function badMark(x,y){return `<g class="badm"><circle cx="${x}" cy="${y}" r="7" fill="var(--bad)"/><text x="${x}" y="${y+4}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">!</text></g>`;}
 function loadIcon(cx,y,type,three){
  if(type==="light")return `<circle cx="${cx}" cy="${y}" r="11" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/><line x1="${cx-7.8}" y1="${y-7.8}" x2="${cx+7.8}" y2="${y+7.8}" stroke="var(--ink)" stroke-width="1.5"/><line x1="${cx+7.8}" y1="${y-7.8}" x2="${cx-7.8}" y2="${y+7.8}" stroke="var(--ink)" stroke-width="1.5"/>`;
  if(type==="socket"||type==="wet")return `<path d="M${cx-11} ${y-4} A11 11 0 0 0 ${cx+11} ${y-4}" fill="none" stroke="var(--ink)" stroke-width="1.6"/><line x1="${cx-13}" y1="${y-4}" x2="${cx+13}" y2="${y-4}" stroke="var(--ink)" stroke-width="1.6"/><line x1="${cx}" y1="${y-4}" x2="${cx}" y2="${y-14}" stroke="var(--ink)" stroke-width="1.6"/>`;
@@ -1418,8 +1561,8 @@ function fxTrip(id,kind){
 function toast(msg,lvl){
  if($("#p-sim").hidden)return;
  const box=$("#toasts");const d=document.createElement("div");d.className="toast "+(lvl||"");d.textContent=msg;box.appendChild(d);
- while(box.children.length>3)box.firstChild.remove();
- setTimeout(()=>{d.classList.add("out");setTimeout(()=>d.remove(),400);},3600);
+ const mob=window.innerWidth<640;while(box.children.length>(mob?1:3))box.firstChild.remove();
+ setTimeout(()=>{d.classList.add("out");setTimeout(()=>d.remove(),400);},mob?2600:3600);
 }
 
 /* ================= REJIMLAR ================= */
@@ -2056,7 +2199,7 @@ function toggleDev(id){
  updateSim();
 }
 let last=performance.now();
-function loop(){const now=performance.now();const dt=Math.min(0.25,(now-last)/1000);last=now;if(sim.run&&R&&!$("#p-sim").hidden){tick(dt);updateSim();}}
+function loop(){const now=performance.now();const dt=Math.min(0.25,(now-last)/1000);last=now;labTick(dt);if(sim.run&&R&&!$("#p-sim").hidden){tick(dt);updateSim();}}
 
 /* ================= MA'LUMOTNOMA ================= */
 const INFO={
@@ -2144,7 +2287,7 @@ async function ask(q){
  const loc=localAnswer(q);
  if(SAMPLE){
   const bubble=addMsg("a",'<span class="typing">Javob tayyorlanmoqda</span>');
-  const rules="Sen elektr montaj bo'yicha tajribali muhandissan va o'zbek tilida (lotin yozuvida) javob berasan. Savollar amaliy: kabel kesimi, avtomat, UZO, kontaktor, shit yig'ish va hokazo. PUE-7 (Elektr qurilmalarini o'rnatish qoidalari) asosida aniq raqamlar bilan qisqa, kitobiy emas, oddiy tilda javob ber: avval natija (masalan, qaysi kabel va avtomat), keyin 2–4 ta muhim izoh. Markdown sarlavhalarsiz, oddiy matn va qisqa ro'yxatlar. Xavfli ishlarda ehtiyot choralari va loyihani muhandis tekshirishi kerakligini bir jumlada eslat. "+panelSummary()+(loc&&loc.calc?" Dasturning lokal hisobi (mis, yashirin yotqizish): "+loc.calc.map(r=>`${r.ph} faza: ${fmt(r.I,1)} A, avtomat ${r.In} A, kabel ${r.pick?r.pick.S+" mm²":"—"}`).join("; ")+". Shu raqamlarga tayan.":"");
+  const rules="Sen elektr montaj bo'yicha tajribali muhandissan va "+(LANG==="ru"?"faqat rus tilida":"o'zbek tilida (lotin yozuvida)")+" javob berasan. Savollar amaliy: kabel kesimi, avtomat, UZO, kontaktor, shit yig'ish va hokazo. PUE-7 (Elektr qurilmalarini o'rnatish qoidalari) asosida aniq raqamlar bilan qisqa, kitobiy emas, oddiy tilda javob ber: avval natija (masalan, qaysi kabel va avtomat), keyin 2–4 ta muhim izoh. Markdown sarlavhalarsiz, oddiy matn va qisqa ro'yxatlar. Xavfli ishlarda ehtiyot choralari va loyihani muhandis tekshirishi kerakligini bir jumlada eslat. "+panelSummary()+(loc&&loc.calc?" Dasturning lokal hisobi (mis, yashirin yotqizish): "+loc.calc.map(r=>`${r.ph} faza: ${fmt(r.I,1)} A, avtomat ${r.In} A, kabel ${r.pick?r.pick.S+" mm²":"—"}`).join("; ")+". Shu raqamlarga tayan.":"");
   chatTurns.push({role:"user",content:q});
   const turns=[{role:"user",content:rules},{role:"assistant",content:"Tushunarli. Savolingizni kutaman."},...chatTurns.slice(-8)];
   chatCtl=new AbortController();$("#chatStop").hidden=false;$("#chatSend").disabled=true;
@@ -2166,6 +2309,622 @@ function initChat(){
  setChatMode();
  (async()=>{try{if(window.claude&&typeof window.claude.use==="function"){const smp=await window.claude.use("sample");if(smp){SAMPLE=smp;setChatMode();}}}catch(e){}})();
 }
+
+/* ================= LOYIHALAR ================= */
+function tplShop(){return {main:Object.assign(JSON.parse(JSON.stringify(BLANK.main)),{encl:"M54",cS:16,hasMain:true,In:50,meter:true,spd:true,vrelay:true,lamps:true}),groups:[
+ G({name:"Savdo zali yoritishi",type:"light",P:1.2,kc:1,ch:"B",In:10,S:1.5,ph:"L1",cPh:"bn",len:25}),
+ G({name:"Vitrina yoritishi",type:"light",P:0.6,kc:1,ch:"B",In:10,S:1.5,ph:"L2",cPh:"bk",len:18}),
+ G({name:"Savdo zali rozetkalari",P:2,kc:0.5,kind:"RCBO",poles:"2P",In:16,ph:"L3",cPh:"gy",nConn:"rcdOut",len:22}),
+ G({name:"Kassa va kompyuterlar",P:1.2,kc:0.9,kind:"RCBO",poles:"2P",In:16,ph:"L1",cPh:"bn",nConn:"rcdOut",len:12}),
+ G({name:"Sovutgich vitrinalar",type:"power",P:3,cos:0.85,kc:0.8,kind:"RCBO",poles:"2P",In:20,S:2.5,ph:"L2",cPh:"bk",nConn:"rcdOut",len:15}),
+ G({name:"Konditsioner 1",type:"power",P:3.5,cos:0.85,kc:0.8,In:20,S:2.5,ph:"L3",cPh:"gy",len:20}),
+ G({name:"Konditsioner 2",type:"power",P:2.5,cos:0.85,kc:0.8,In:16,S:2.5,ph:"L1",cPh:"bn",len:14}),
+ G({name:"Peshtaxta reklamasi",type:"light",P:0.3,kc:1,ch:"B",In:10,S:1.5,ph:"L2",cPh:"bk",ctrl:"photo",len:10}),
+ G({name:"Issiq havo pardasi",type:"power",P:6,phases:3,cos:1,kc:0.7,poles:"3P",In:16,cores:5,ph:"L123",nConn:"Nbus",len:10})]};}
+function tplWorkshop(){return {main:Object.assign(JSON.parse(JSON.stringify(BLANK.main)),{encl:"MP3",cS:35,cLay:"air",hasMain:true,In:100,sw:true,meter:true,spd:true,vrelay:true,lamps:true}),groups:[
+ G({name:"Sex yoritishi 1",type:"light",P:1.5,kc:1,ch:"B",In:10,S:1.5,ph:"L1",cPh:"bn",len:30,lay:"air"}),
+ G({name:"Sex yoritishi 2",type:"light",P:1.5,kc:1,ch:"B",In:10,S:1.5,ph:"L2",cPh:"bk",len:35,lay:"air"}),
+ G({name:"Tokarlik stanogi",type:"power",P:5.5,phases:3,cos:0.85,kc:0.7,poles:"3P",ch:"D",In:16,S:2.5,cores:4,ph:"L123",nConn:"none",ctrl:"btn",pfr:true,len:20,lay:"air"}),
+ G({name:"Kompressor",type:"power",P:4,phases:3,cos:0.85,kc:0.6,poles:"3P",ch:"D",In:16,S:2.5,cores:4,ph:"L123",nConn:"none",ctrl:"btn",pfr:true,len:15,lay:"air"}),
+ G({name:"Ventilyatsiya",type:"power",P:1.1,phases:3,cos:0.8,kc:1,poles:"3P",ch:"C",In:6,S:1.5,cores:4,ph:"L123",nConn:"none",ctrl:"timer",len:25,lay:"air"}),
+ G({name:"Payvandlash rozetkasi",type:"power",P:10,phases:3,cos:0.9,kc:0.4,poles:"3P",ch:"D",In:32,S:6,cores:5,ph:"L123",nConn:"Nbus",len:20,lay:"air"}),
+ G({name:"Sex rozetkalari",P:2.5,kc:0.5,kind:"RCBO",poles:"2P",In:16,ph:"L3",cPh:"gy",nConn:"rcdOut",len:25}),
+ G({name:"Maishiy xona",P:2,kc:0.6,kind:"RCBO",poles:"2P",In:16,ph:"L1",cPh:"bn",nConn:"rcdOut",len:15}),
+ G({name:"Hovli yoritishi",type:"light",P:0.6,kc:1,ch:"B",In:10,S:1.5,ph:"L2",cPh:"bk",ctrl:"photo",len:40,lay:"air"})]};}
+const NEWP={blank:{n:"Bo'sh loyiha",f:()=>JSON.parse(JSON.stringify(BLANK))},home:{n:"Uy (namuna, xatolar bilan)",f:()=>JSON.parse(JSON.stringify(EXAMPLE))},shop:{n:"Do'kon (namuna)",f:tplShop},shop2:null,work:{n:"Sex / ustaxona (namuna)",f:tplWorkshop}};
+delete NEWP.shop2;
+function balancePhases(o){const kw={L1:0,L2:0,L3:0};o.groups.filter(g=>g.phases==3).forEach(g=>{PH.forEach(p=>kw[p]+=g.P*g.kc/3);});
+ o.groups.filter(g=>g.phases!=3).sort((a,b)=>b.P*b.kc-a.P*a.kc).forEach(g=>{let best="L1";PH.forEach(p=>{if(kw[p]<kw[best])best=p;});g.ph=best;g.cPh=PHC[best];kw[best]+=g.P*g.kc;});return o;}
+function fixIds(o){let k=1;o.groups.forEach(g=>{g.id=k++;});o.order=null;return o;}
+function switchProject(id){const p=PRJ.list.find(x=>x.id===id);if(!p)return;PRJ.active=id;S=normS(JSON.parse(JSON.stringify(p.data)));uid=1+Math.max(0,...S.groups.map(g=>+g.id||0));persistProjects();resetSim();renderMain();renderGroups();refresh();showTab(enclOf()?"yigish":"kirish");$("#prjName").textContent=p.name;}
+function newProject(kind,name){const d=fixIds(normS(NEWP[kind].f()));if(LANG==="ru")d.groups.forEach(g=>{g.name=trS(g.name);});if(kind==="shop"||kind==="work")balancePhases(d);const id=pid();PRJ.list.unshift({id,name:name||NEWP[kind].n.replace(/ \(.*\)/,""),updated:Date.now(),data:d});switchProject(id);}
+function dupProject(id){const p=PRJ.list.find(x=>x.id===id);if(!p)return;const n={id:pid(),name:p.name+" (nusxa)",updated:Date.now(),data:JSON.parse(JSON.stringify(p.data))};PRJ.list.splice(PRJ.list.indexOf(p)+1,0,n);persistProjects();renderProjects();toast2("Nusxa olindi: "+n.name);}
+function toast2(m,l){const box=$("#toasts");const d=document.createElement("div");d.className="toast "+(l||"ok");d.textContent=m;box.appendChild(d);setTimeout(()=>{d.classList.add("out");setTimeout(()=>d.remove(),400);},3000);}
+const b64e=u8=>{let s="";for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");};
+const b64d=t=>{t=t.replace(/-/g,"+").replace(/_/g,"/");while(t.length%4)t+="=";const s=atob(t);const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u;};
+async function encodeProject(p){const json=JSON.stringify({v:1,name:p.name,data:p.data});const raw=new TextEncoder().encode(json);
+ if(typeof CompressionStream!=="undefined"){try{const cs=new Blob([raw]).stream().pipeThrough(new CompressionStream("deflate-raw"));const buf=new Uint8Array(await new Response(cs).arrayBuffer());return "SHL2:"+b64e(buf);}catch(e){}}
+ return "SHL1:"+b64e(raw);}
+async function decodeProject(code){code=String(code||"").trim();const m=code.match(/SHL([12]):([A-Za-z0-9_\-]+)/);if(!m)throw new Error("Kod topilmadi");let u=b64d(m[2]);
+ if(m[1]==="2"){const ds=new Blob([u]).stream().pipeThrough(new DecompressionStream("deflate-raw"));u=new Uint8Array(await new Response(ds).arrayBuffer());}
+ const o=JSON.parse(new TextDecoder().decode(u));if(!o||!o.data||!o.data.groups)throw new Error("Loyiha ma'lumoti noto'g'ri");return o;}
+async function saveFile(name,data,mime){
+ try{if(window.ShitLabNative&&window.ShitLabNative.saveFile){const u8=typeof data==="string"?new TextEncoder().encode(data):data instanceof Uint8Array?data:new Uint8Array(await data.arrayBuffer());let b=b64e(u8).replace(/-/g,"+").replace(/_/g,"/");while(b.length%4)b+="=";window.ShitLabNative.saveFile(name,b,mime||"application/octet-stream");return "native";}}catch(e){}
+ try{if(window.claude&&typeof window.claude.use==="function"){const dl=await window.claude.use("downloads");if(dl){await dl.save({filename:name,data:data instanceof Blob?data:(typeof data==="string"?data:new Blob([data]))});return "saved";}}}catch(e){if(e&&e.code==="declined")return "declined";}
+ try{const blob=data instanceof Blob?data:new Blob([data],{type:mime||"application/octet-stream"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);return "link";}catch(e){return "fail";}
+}
+async function shareText(title,text){title=trS(title);text=String(text).split("\n").map(trS).join("\n");
+ try{if(window.ShitLabNative&&window.ShitLabNative.share){window.ShitLabNative.share(title,text);return true;}}catch(e){}
+ try{await navigator.clipboard.writeText(text);toast2("Kod nusxalandi. Uni Telegram yoki boshqa joyga yuboring.");return true;}catch(e){return false;}
+}
+let prjConfirm=null;
+function renderProjects(){
+ const fmtD=t=>{const d=new Date(t);return d.toLocaleDateString("uz-UZ")+" "+d.toTimeString().slice(0,5);};
+ $("#prjList").innerHTML=PRJ.list.map(p=>{const E=p.data.main&&p.data.main.encl?(ENCL.find(e=>e.id===p.data.main.encl)||{}).name:"shit tanlanmagan";const act=p.id===PRJ.active;
+  return `<div class="pcard${act?" act":""}"><div class="ptop"><input class="pname" data-pren="${p.id}" value="${esc(p.name)}" aria-label="Loyiha nomi" id="pn-${p.id}">${act?`<span class="pill ok">ochiq</span>`:""}</div>
+  <div class="pmeta mono">${esc(E||"")} · ${p.data.groups.length} guruh · ${fmtD(p.updated)}</div>
+  <div class="pacts">${act?"":`<button class="btn sm pri" data-popen="${p.id}">Ochish</button>`}<button class="btn sm" data-pdup="${p.id}">Nusxa</button><button class="btn sm" data-pshare="${p.id}">Ulashish</button><button class="btn sm" data-pfile="${p.id}">Faylga</button>${PRJ.list.length>1?(prjConfirm===p.id?`<button class="btn sm danger" data-pdelok="${p.id}">Ha, o'chirilsin</button><button class="btn sm" data-pdelno="1">Bekor</button>`:`<button class="btn sm danger" data-pdel="${p.id}">O'chirish</button>`):""}</div></div>`;}).join("");
+}
+function openProjects(){renderProjects();$("#prjModal").hidden=false;}
+async function importCode(code){try{const o=await decodeProject(code);const d=fixIds(normS(o.data));const id=pid();PRJ.list.unshift({id,name:(o.name||"Import")+"",updated:Date.now(),data:d});switchProject(id);$("#prjModal").hidden=true;toast2("Loyiha qo'shildi: "+o.name);}catch(e){toast2("Kodni o'qib bo'lmadi: "+e.message,"bad");}}
+
+/* ================= O'QUV VA IMTIHON ================= */
+const EKEY="shitlab-exam-v1";
+let EX={name:"",active:null,history:[]};
+try{const r=localStorage.getItem(EKEY);if(r)EX=Object.assign(EX,JSON.parse(r));}catch(e){}
+const saveEX=()=>{try{localStorage.setItem(EKEY,JSON.stringify(EX));}catch(e){}};
+const QBANK=[
+ ["Avtomatik o'chirgich birinchi navbatda nimani himoya qiladi?",["Jihozni","Kabelni","Odamni","Hisoblagichni"],1],
+ ["Mis 2,5 mm² kabel (yashirin) uchun odatiy avtomat qaysi?",["C32","C25","C16","C40"],2],
+ ["Rozetka guruhida UZO ning sizish toki qancha bo'lishi kerak?",["10 yoki 30 mA","100 mA","300 mA","UZO shart emas"],0],
+ ["N (nol) sim qaysi rangda bo'ladi?",["Jigarrang","Qora","Ko'k","Sariq-yashil"],2],
+ ["PE sim qaysi rangda bo'ladi?",["Ko'k","Sariq-yashil","Kulrang","Qizil"],1],
+ ["TN-C-S da PEN o'tkazgich avval qayerga ulanadi?",["N shinaga","PE shinaga","Avtomatga","UZO ga"],1],
+ ["Avtomat qaysi simni uzishi kerak?",["Nolni","Fazani","PE ni","Ikkalasini ham, farqi yo'q"],1],
+ ["UZO o'ta yuklanishdan himoya qiladimi?",["Ha","Yo'q, avtomat bilan birga qo'yiladi","Faqat 3 fazada","Faqat 10 mA li"],1],
+ ["C xarakteristikali avtomat qaysi tokda darhol (elektromagnit) o'chadi?",["1,13–1,45·In","3–5·In","5–10·In","10–20·In"],2],
+ ["Dvigatel uchun qaysi xarakteristika qulay?",["B","C yoki D","Faqat B","Xarakteristika muhim emas"],1],
+ ["Selektivlik nima?",["Barcha avtomatlarning birga o'chishi","Nosozlikka eng yaqin avtomatning o'chishi","UZO ning tez ishlashi","Fazalar balansi"],1],
+ ["Nol uzilsa (TN-C-S) jihozlarni nima saqlaydi?",["УЗИП","Kuchlanish relesi (РН)","Hisoblagich","Rubilnik"],1],
+ ["Chaqmoq impulsidan nima himoya qiladi?",["Kuchlanish relesi","УЗИП (ОПН)","UZO","Kontaktor"],1],
+ ["Faza nazorat relesi qaysi jihoz uchun shart?",["Chiroq","3 fazali dvigatel","Rozetka","Suv isitgich"],1],
+ ["Ko'p tolali sim uchiga nima qo'yiladi?",["Izolenta","НШВИ uchlik","Hech narsa","Lehim"],1],
+ ["Kuchlanish yo'qolishi odatda necha foizdan oshmasligi kerak?",["1%","5%","15%","25%"],1],
+ ["Fazalar nosimmetriyasi tavsiya bo'yicha qancha?",["≤ 15%","≤ 50%","Ahamiyatsiz","Aynan 0%"],0],
+ ["Kontaktor o'zi qisqa tutashuvdan himoya qiladimi?",["Ha","Yo'q, oldida avtomat bo'lishi kerak","Faqat AC-3 bo'lsa","Faqat 3 fazada"],1],
+ ["Turar joy guruh tarmoqlarida qaysi sim ishlatiladi?",["Alyuminiy 2,5 mm²","Mis","Po'lat","Farqi yo'q"],1],
+ ["Megommetr bilan qachon o'lchanadi?",["Kuchlanish ostida","Liniya o'chirilganda","Yuklama ulanganda","Faqat tunda"],1],
+ ["Izolyatsiya qarshiligining me'yori (500 V da)?",["≥ 0,5 MΩ","≥ 0,005 MΩ","≥ 500 Ω","Me'yor yo'q"],0],
+ ["Yulduz-uchburchak puskda yulduzda ishga tushish toki taxminan necha marta kamayadi?",["2 marta","3 marta","10 marta","Kamaymaydi"],1],
+ ["Reversiv puskda KM1 va KM2 o'rtasida nima bo'lishi shart?",["Blokirovka (o'zaro to'siq)","UZO","Taymer","Hech narsa"],0],
+ ["АВР ning asosiy vazifasi?",["Hisob yuritish","Asosiy manba yo'qolsa zaxiraga o'tkazish","Kuchlanishni oshirish","Fazalarni almashtirish"],1],
+ ["Shitda qancha zaxira joy qoldirish tavsiya etiladi?",["0%","~20%","100%","50%"],1]
+];
+const ETASKS=[
+ {id:"build12",kind:"build",t:"3 xonali uy, 12 kVt",d:"Uch fazali kirish 380 V. Iste'molchilar: yoritish (2 guruh) 1,2 kVt; zal va yotoqxona rozetkalari 3,5 kVt; oshxona rozetkalari 3 kVt; kir yuvish mashinasi (vanna) 2,2 kVt; suv isitgich 2 kVt; konditsioner 2,5 kVt. Shitni tanlang, kirish qurilmalarini va guruhlarni yig'ing.",kw:[10,16],need:{light:2,socket:2,wet:1,power:2}},
+ {id:"buildShop",kind:"build",t:"Do'kon, 15 kVt",d:"Uch fazali kirish. Savdo zali va vitrina yoritishi (2 guruh, 1,8 kVt), rozetkalar (2 guruh, 4 kVt), sovutgich vitrinalar 3 kVt, 2 ta konditsioner 6 kVt, peshtaxta reklamasi foto rele bilan. Hisoblagich va УЗИП bo'lsin.",kw:[12,20],need:{light:2,socket:2,power:3},photo:true,spd:true},
+ {id:"find5",kind:"find",t:"Shitda 5 ta xato bor, toping",d:"Tayyor do'kon shitiga 5 ta xato yashirilgan. Tekshiruv bo'limi yopiq. Guruhlar, sxema, simulyatsiya va o'lchov asboblari yordamida xatolarni toping va tuzating.",n:5},
+ {id:"find8",kind:"find",t:"Murakkab: 8 ta xato",d:"Sex shitiga 8 ta xato yashirilgan. Vaqtga e'tibor bering.",n:8},
+ {id:"quiz",kind:"quiz",t:"Nazariy test (10 savol)",d:"PUE va shit yig'ish bo'yicha 10 ta savol. Har bir to'g'ri javob 10 ball."}
+];
+const FAULTS=[
+ {k:"cable",t:"Kabel avtomatdan kuchsiz",ok:g=>g.type!=="light"&&g.phases!=3,ap:g=>{g.S=1.5;g.In=Math.max(+g.In,20);},key:"S"},
+ {k:"rcd",t:"Rozetkada UZO yo'q",ok:g=>g.type==="socket",ap:g=>{g.kind="MCB";g.poles="1P";g.nConn="Nbus";},key:"kind"},
+ {k:"nrcd",t:"UZO li guruh N simi umumiy shinada",ok:g=>g.kind!=="MCB",ap:g=>{g.nConn="Nbus";},key:"nConn"},
+ {k:"blue",t:"Ko'k sim faza sifatida",ok:g=>g.phases!=3,ap:g=>{g.cPh="bu";},key:"cPh"},
+ {k:"pe",t:"PE ulanmagan",ok:g=>true,ap:g=>{g.peConn="none";},key:"peConn"},
+ {k:"swN",t:"Avtomat nolni uzadi",ok:g=>g.phases!=3&&g.kind==="MCB",ap:g=>{g.sw="N";g.poles="1P";},key:"sw"},
+ {k:"peN",t:"PE N shinaga ulangan",ok:g=>true,ap:g=>{g.peConn="Nbus";},key:"peConn"},
+ {k:"small",t:"Avtomat yuklamaga kichik",ok:g=>g.P>=2&&g.phases!=3,ap:g=>{g.In=6;},key:"In"},
+ {k:"ferr",t:"НШВИ yo'q",ok:g=>true,ap:g=>{g.ferr=false;},key:"ferr"},
+ {k:"gnye",t:"Sariq-yashil sim faza sifatida",ok:g=>g.phases!=3,ap:g=>{g.cPh="gnye";},key:"cPh"}
+];
+function gradeOf(sc){return sc>=90?"5 (a'lo)":sc>=75?"4 (yaxshi)":sc>=60?"3 (qoniqarli)":"2 (qoniqarsiz)";}
+function startTask(id){
+ const T=ETASKS.find(x=>x.id===id);if(!T)return;
+ const a={task:id,start:Date.now(),kind:T.kind};
+ if(T.kind==="build"){newProject("blank","Imtihon: "+T.t);a.pid=PRJ.active;}
+ if(T.kind==="find"){newProject(T.n>5?"work":"shop","Imtihon: "+T.t);a.pid=PRJ.active;
+  const gs=S.groups.slice();const used=new Set();const inj=[];let guard=0;
+  const kinds=FAULTS.slice().sort(()=>Math.random()-.5);let fi=0;
+  while(inj.length<T.n&&guard++<400){const f=fi<kinds.length*3?kinds[fi++%kinds.length]:FAULTS[Math.floor(Math.random()*FAULTS.length)];const g=gs[Math.floor(Math.random()*gs.length)];if(fi<=kinds.length&&inj.some(x=>x.k===f.k))continue;
+   const key=g.id+":"+f.key;if(used.has(key)||!f.ok(g))continue;if(inj.some(x=>x.gid===g.id))continue;used.add(key);f.ap(g);inj.push({gid:g.id,k:f.k,t:f.t,key:f.key});}
+  if(T.n>=8&&!inj.some(x=>x.k==="main")){S.main.pen="none";inj.push({gid:null,k:"pen",t:"PEN ajratilmagan (peremichka yo'q)",key:"pen"});}
+  a.inj=inj;a.base=compute().bad;renderGroups();refresh();}
+ if(T.kind==="quiz"){const qs=QBANK.map((q,i)=>i).sort(()=>Math.random()-.5).slice(0,10);a.q=qs;a.i=0;a.ans=[];}
+ EX.active=a;saveEX();examChrome();renderExam();
+ if(T.kind!=="quiz")toast2("Imtihon boshlandi: "+T.t);
+}
+function findResult(a){
+ const R2=compute();let fixed=0;const det=[];
+ a.inj.forEach(x=>{const still=x.gid==null?S.main.pen==="none":R2.issues.some(i=>i.gid==x.gid&&i.lvl!=="info"&&i.fx&&Object.keys(i.fx).some(k=>k===x.key||(x.key==="S"&&(k==="S"||k==="In"))||(x.key==="kind"&&k==="kind")||(x.key==="sw"&&k==="sw")||(x.key==="ferr"&&k==="ferr")));
+  const n=x.gid==null?"Kirish":`QF${qfN(x.gid)}`;det.push([!still,`${n}: ${x.t}`]);if(!still)fixed++;});
+ const extra=Math.max(0,R2.bad-(a.inj.length-fixed));
+ const sc=Math.max(0,Math.round(fixed/a.inj.length*100-extra*5));
+ return {sc,det:det.concat(extra?[[false,`Yangi xatolar paydo bo'ldi: ${extra} ta (har biri −5)`]]:[])};
+}
+function buildResult(a){
+ const T=ETASKS.find(x=>x.id===a.task);const R2=compute();const m=S.main;const det=[];let sc=0;
+ const add=(ok,pts,txt)=>{det.push([ok,txt+` (${ok?pts:0}/${pts})`]);if(ok)sc+=pts;};
+ const L=R2.L;add(!!L&&!L.over,10,"Shit tanlangan va qurilmalar sig'adi");
+ add(m.hasMain&&+m.In>=R2.Iin&&+m.In>R2.maxGroupIn,10,"Kirish avtomati to'g'ri va selektiv");
+ add(!!m.meter,5,"Hisoblagich bor");
+ const kw=R2.Pinst;const cnt=t=>S.groups.filter(g=>g.type===t).length;
+ const needOk=Object.entries(T.need).every(([t,n])=>cnt(t)>=n);
+ add(kw>=T.kw[0]&&kw<=T.kw[1]&&needOk,15,`Barcha iste'molchilar guruhlarda (${fmt(kw,1)} kVt)`);
+ const sock=S.groups.filter(g=>g.type==="socket"||g.type==="wet");
+ add(sock.length>0&&sock.every(g=>hasRcd(g)&&+g.idn<=30),15,"Rozetka va vanna guruhlarida 30 mA UZO");
+ const cb=R2.issues.filter(i=>i.gid!=null&&i.lvl==="bad"&&i.fx&&Object.keys(i.fx).some(k=>["S","In","mat","cores","poles","ch"].includes(k)));
+ const has=S.groups.length>=3;
+ add(has&&!cb.length,20,"Kabel, avtomat va tomirlar mos");
+ const cn=R2.issues.filter(i=>i.gid!=null&&i.lvl==="bad"&&i.fx&&Object.keys(i.fx).some(k=>["nConn","peConn","cPh","cN","cPE","sw"].includes(k)));
+ add(has&&!cn.length,15,"N, PE va sim ranglari to'g'ri");
+ add(has&&R2.imb<=15,10,`Fazalar balansi ${fmt(R2.imb,0)}%`);
+ if(T.photo)det.push([S.groups.some(g=>g.ctrl==="photo"),"Foto releli guruh (qo'shimcha talab)"]);
+ if(T.spd)det.push([!!m.spd,"УЗИП (qo'shimcha talab)"]);
+ return {sc,det};
+}
+function finishExam(){
+ const a=EX.active;if(!a)return;const T=ETASKS.find(x=>x.id===a.task);
+ let r;if(a.kind==="build")r=buildResult(a);else if(a.kind==="find")r=findResult(a);else{const ok=a.ans.filter((v,i)=>v===QBANK[a.q[i]][2]).length;r={sc:ok*10,det:a.q.map((qi,i)=>[a.ans[i]===QBANK[qi][2],QBANK[qi][0]+" → "+QBANK[qi][1][QBANK[qi][2]]])};}
+ const sec=Math.round((Date.now()-a.start)/1000);
+ const rec={name:EX.name||"O'quvchi",task:T.t,sc:r.sc,grade:gradeOf(r.sc),sec,date:Date.now(),det:r.det};
+ EX.history.unshift(rec);EX.history=EX.history.slice(0,50);EX.active=null;EX.last=rec;saveEX();examChrome();renderExam();
+ showTab("oquv");if(r.sc>=75){const p=$("#examRes");if(p){const b=p.getBoundingClientRect();}beep("click");}
+}
+function fmtSec(s){return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");}
+function examChrome(){
+ const a=EX.active,bar=$("#examBar");document.body.classList.toggle("exam-hide",!!(a&&a.kind==="find"));
+ if(!a||a.kind==="quiz"){bar.hidden=true;return;}
+ const T=ETASKS.find(x=>x.id===a.task);bar.hidden=false;
+ bar.innerHTML=`<span class="eb-t">${esc(T.t)}</span><span class="mono" id="ebTime">0:00</span><button class="btn sm" data-tab="oquv">Vazifa</button><button class="btn sm pri" data-exfin="1">Tekshirish</button>`;
+}
+function renderExam(){
+ const box=$("#examBox");if(!box)return;const a=EX.active;
+ let h=`<div class="card"><label class="f">O'quvchi ismi<input id="exName" value="${esc(EX.name||"")}" placeholder="Ism Familiya"></label></div>`;
+ if(a&&a.kind==="quiz"){const qi=a.q[a.i],q=QBANK[qi];
+  h+=`<div class="card quiz"><div class="bar" style="justify-content:space-between"><b>Savol ${a.i+1}/10</b><button class="btn sm" data-excancel="1">Bekor qilish</button></div><p class="qq">${esc(q[0])}</p><div class="qopts">${q[1].map((o,k)=>`<button class="qopt${a.pick!=null?(k===q[2]?" right":k===a.pick?" wrong":""):""}" data-qopt="${k}" ${a.pick!=null?"disabled":""}>${esc(o)}</button>`).join("")}</div>${a.pick!=null?`<button class="btn pri" data-qnext="1">${a.i<9?"Keyingi savol":"Natijani ko'rish"}</button>`:""}</div>`;}
+ else if(a){const T=ETASKS.find(x=>x.id===a.task);
+  h+=`<div class="card ecur"><div class="eh"><b>${esc(T.t)}</b><span class="pill warn">davom etmoqda</span></div><p>${esc(T.d)}</p><div class="bar"><button class="btn pri" data-exfin="1">Tekshirish va baholash</button><button class="btn" data-excancel="1">Bekor qilish</button></div></div>`;}
+ else h+=`<div class="etasks">${ETASKS.map(T=>`<div class="card etask"><div class="eh"><b>${esc(T.t)}</b><span class="pill ${T.kind==="quiz"?"ok":T.kind==="find"?"bad":"warn"}">${T.kind==="build"?"Yig'ish":T.kind==="find"?"Xato topish":"Test"}</span></div><p>${esc(T.d)}</p><button class="btn pri" data-exstart="${T.id}">Boshlash</button></div>`).join("")}</div>`;
+ if(EX.last&&!a){const r=EX.last;h+=`<div class="card" id="examRes"><div class="eh"><b>Natija: ${esc(r.task)}</b><span class="score ${r.sc>=75?"ok":r.sc>=60?"warn":"bad"}">${r.sc}</span></div><p><b>Baho: ${r.grade}</b> · vaqt ${fmtSec(r.sec)} · ${esc(r.name)}</p><ul class="edet">${r.det.map(([ok,t])=>`<li class="${ok?"ok":"bad"}">${ok?"✓":"✗"} ${esc(t)}</li>`).join("")}</ul><div class="bar"><button class="btn sm" data-exshare="0">Ustozga yuborish</button><button class="btn sm" data-exhide="1">Yopish</button></div></div>`;}
+ if(EX.history.length)h+=`<details class="card"><summary style="cursor:pointer;font-weight:700">Natijalar tarixi (${EX.history.length})</summary><div class="tbl" style="margin-top:8px"><table><thead><tr><th>Sana</th><th>O'quvchi</th><th>Vazifa</th><th class="num">Ball</th><th>Baho</th></tr></thead><tbody>${EX.history.map((r,i)=>`<tr><td class="mono">${new Date(r.date).toLocaleDateString("uz-UZ")}</td><td>${esc(r.name)}</td><td>${esc(r.task)}</td><td class="num mono">${r.sc}</td><td>${r.grade}</td></tr>`).join("")}</tbody></table></div><div class="bar" style="margin-top:8px"><button class="btn sm" data-exshare="all">Hammasini ulashish</button>${EX.clearAsk?`<button class="btn sm danger" data-exclearok="1">Ha, tozalansin</button><button class="btn sm" data-exclearno="1">Bekor</button>`:`<button class="btn sm danger" data-exclear="1">Tarixni tozalash</button>`}</div></details>`;
+ box.innerHTML=h;
+}
+function examText(list){return list.map(r=>`ShitLab natija\nO'quvchi: ${r.name}\nVazifa: ${r.task}\nBall: ${r.sc}/100, baho ${r.grade}\nVaqt: ${fmtSec(r.sec)}, sana ${new Date(r.date).toLocaleString("uz-UZ")}\n${r.det.map(([ok,t])=>(ok?"✓ ":"✗ ")+t).join("\n")}`).join("\n\n");}
+setInterval(()=>{const a=EX.active;const el=$("#ebTime");if(a&&el)el.textContent=fmtSec(Math.round((Date.now()-a.start)/1000));},1000);
+
+/* ================= HUJJATLAR ================= */
+const PRICE0={mcb1:45000,mcb1b:70000,mcb2:110000,mcb3:150000,mcb3b:230000,mcb3c:650000,mcb4:260000,rcbo2:260000,rcbo4:650000,rcd2:230000,rcd4:420000,
+ km1:180000,km3:320000,kt:220000,bl:120000,kf:350000,kv:550000,spd:600000,hl:60000,sw:280000,meter:1200000,ats:2500000,
+ enclP12:120000,enclP24:220000,enclP36:300000,enclM24:350000,enclM36:450000,enclM54:650000,enclMP2:900000,enclMP3:1400000,enclcustom:600000,
+ bus:45000,din:25000,duct:15000,ferr:35000,comb:60000,mark:25000,cableCu:1500,cableAl:600};
+const PNAME={mcb1:"Avtomat 1P (6–32 A)",mcb1b:"Avtomat 1P (40–63 A)",mcb2:"Avtomat 2P",mcb3:"Avtomat 3P (≤ 32 A)",mcb3b:"Avtomat 3P (40–63 A)",mcb3c:"Avtomat 3P (80–125 A)",mcb4:"Avtomat 4P",rcbo2:"Difavtomat 2P",rcbo4:"Difavtomat 4P",rcd2:"UZO 2P",rcd4:"UZO 4P",km1:"Kontaktor modulli 1F 25 A",km3:"Kontaktor modulli 3F",kt:"Vaqt relesi",bl:"Foto rele",kf:"Faza nazorat relesi РКФ",kv:"Kuchlanish relesi 3F",spd:"УЗИП T2 4P 40 kA",hl:"Faza indikator lampasi",sw:"Yuklama uzgich 3P 100 A",meter:"Hisoblagich 3F 10(100) A",ats:"АВР 4P 63 A",bus:"N/PE shina (12 klemma)",din:"DIN-reyka, 1 m",duct:"Kabel kanal 40×40, 1 m",ferr:"НШВИ uchlik, 100 dona",comb:"Taroq shina 3F, 1 m",mark:"Markirovka to'plami",cableCu:"Mis kabel, so'm / (tomir·mm²·m)",cableAl:"Alyuminiy kabel, so'm / (tomir·mm²·m)"};
+const price=k=>{const v=S.prices&&S.prices[k];return v!=null?+v:(k.startsWith("encl")?PRICE0[k]||PRICE0.enclcustom:PRICE0[k]||0);};
+function specItems(){
+ const m=S.main,E=enclOf(),it=[];const add=(code,name,par,qty,unit,key)=>{if(qty<=0)return;const ex=it.find(x=>x.name===name&&x.par===par);if(ex){ex.qty+=qty;if(code)ex.code=ex.code?ex.code+", "+code:code;}else it.push({code,name,par,qty,unit:unit||"dona",key});};
+ if(E)add("",`Shit korpusi ${E.name}`,`${E.dims} mm, ${E.rows}×${E.mods} modul, ${E.mat}${E.ip?", "+E.ip:""}`,1,"dona","encl"+E.id);
+ if(m.sw)add("QS1","Yuklama uzgich","3P 100 A",1,"dona","sw");
+ if(m.meter)add("PI1","Elektr hisoblagich","3×230/400 V, 10(100) A",1,"dona","meter");
+ if(m.hasMain)add("QF0","Avtomatik o'chirgich",`${m.poles} ${m.ch}${m.In}`,1,"dona",m.poles==="4P"?"mcb4":m.poles==="1P"?(m.In>32?"mcb1b":"mcb1"):(m.In<=32?"mcb3":m.In<=63?"mcb3b":"mcb3c"));
+ if(m.spd)add("FV1","Impuls kuchlanishdan himoya (УЗИП)","T2, 4P, 40 kA",1,"dona","spd");
+ if(m.vrelay)add("KV1","Kuchlanish relesi","3F, 176–253 V",1,"dona","kv");
+ if(m.lamps)add("HL1","Faza indikator lampasi","3 rangli",1,"dona","hl");
+ if(m.ats)add("QA1","Avtomatik zaxiraga o'tish (АВР)","4P 63 A",1,"dona","ats");
+ R.groups.forEach(r=>{const g=r.g,n=r.n,three=r.three;
+  if(g.kind==="RCBO")add("QF"+n,"Difavtomat",`${three?"4P":"2P"} ${g.ch}${g.In} ${g.idn} mA`,1,"dona",three?"rcbo4":"rcbo2");
+  else{add("QF"+n,"Avtomatik o'chirgich",`${g.poles} ${g.ch}${g.In}`,1,"dona",g.poles==="1P"?(g.In>32?"mcb1b":"mcb1"):g.poles==="2P"?"mcb2":g.poles==="4P"?"mcb4":(g.In<=32?"mcb3":g.In<=63?"mcb3b":"mcb3c"));
+   if(g.kind==="MCB+RCD")add("Q"+n,"UZO",`${three?"4P":"2P"} ${g.rcdIn} A ${g.idn} mA`,1,"dona",three?"rcd4":"rcd2");}
+  if(g.ctrl!=="none"||g.pfr)add("KM"+n,"Kontaktor",three?"3P 25 A, AC-3":"2P 25 A",1,"dona",three?"km3":"km1");
+  if(g.ctrl==="timer")add("KT"+n,"Vaqt relesi","sutkalik/sikl",1,"dona","kt");
+  if(g.ctrl==="photo")add("BL"+n,"Foto rele","datchikli",1,"dona","bl");
+  if(g.pfr)add("KF"+n,"Faza nazorat relesi","РКФ, 3F",1,"dona","kf");});
+ R.groups.forEach(r=>{const g=r.g;add("",`Kabel ${g.mat==="Cu"?"ВВГнг":"АВВГ"} ${g.cores}×${g.S}`,`${g.mat==="Cu"?"mis":"alyuminiy"}, ${g.cores}×${g.S} mm²`,Math.ceil(g.len*1.1),"m","cable:"+g.mat+":"+g.cores+":"+g.S);});
+ if(E){add("","Kirish kabeli",`${m.cMat==="Cu"?"ВВГнг":"АВВГ"} ${m.cCores}×${m.cS}`,Math.ceil(m.cLen*1.1),"m","cable:"+m.cMat+":"+m.cCores+":"+m.cS);
+  add("XN, XPE","N va PE shinalar","12 klemmali",2,"dona","bus");
+  add("","DIN-reyka","35 mm",Math.ceil(E.rows*E.mods*0.018+0.2),"m","din");
+  add("","Kabel kanal","40×40",Math.ceil((E.rows+2)*E.mods*0.018+0.6),"m","duct");
+  add("","Taroq shina","3F",Math.max(1,Math.ceil(R.L.total*0.018)),"m","comb");
+  add("","НШВИ uchliklar","1,5–6 mm², 100 dona",Math.max(1,Math.ceil(R.groups.length*6/100)),"to'plam","ferr");
+  add("","Markirovka","kabel va guruh yorliqlari",1,"to'plam","mark");}
+ it.forEach(x=>{if(x.key&&x.key.startsWith("cable:")){const [,mat,c,sz]=x.key.split(":");x.price=Math.round((price(mat==="Al"?"cableAl":"cableCu")*(+c)*(+sz)+2500)/100)*100;}else x.price=price(x.key);});
+ return it;
+}
+/* --- kanvas va PDF --- */
+const PRINTC={"--ink":"#1a2025","--muted":"#5b6670","--line":"#cdd4d9","--surface":"#ffffff","--surface-2":"#f5f7f8","--l1":"#8a5a2b","--l2":"#1e1e1e","--l3":"#8c939a","--n":"#1f6fd1","--pe-g":"#2e8b3e","--pe-y":"#e0c01a","--halo":"#ffffff","--accent":"#b8640a","--bad":"#bb3326","--bad-soft":"#f7dcd8","--sheath":"#9aa3aa","--ok":"#2c7a47","--warn":"#a46a10"};
+function printSVG(svg){let t=svg.replace(/var\((--[a-z0-9-]+)\)/g,(m,k)=>PRINTC[k]||"#333");t=t.replace(/class="lbl"/g,'fill="#5b6670"').replace('<svg ','<svg font-family="Arial, sans-serif" ');t=t.replace(/<text(?![^>]*fill=)/g,'<text fill="#1a2025"');return t;}
+function svgToImg(svgStr){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>res(img);img.onerror=rej;img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svgStr);});}
+const PW_PX=1754,PH_PX=1240,MM=PW_PX/297;
+function pageFrame(ctx,info,sheet,total,title){
+ ctx.fillStyle="#fff";ctx.fillRect(0,0,PW_PX,PH_PX);ctx.strokeStyle="#000";ctx.lineWidth=3;
+ ctx.strokeRect(20*MM,5*MM,PW_PX-25*MM,PH_PX-10*MM);
+ const sw=185*MM,sh=40*MM,sx=PW_PX-5*MM-sw,sy=PH_PX-5*MM-sh;ctx.lineWidth=2.4;ctx.strokeRect(sx,sy,sw,sh);
+ ctx.lineWidth=1.2;[sh/3,sh*2/3].forEach(y=>{ctx.beginPath();ctx.moveTo(sx,sy+y);ctx.lineTo(sx+sw*0.45,sy+y);ctx.stroke();});
+ ctx.beginPath();ctx.moveTo(sx+sw*0.45,sy);ctx.lineTo(sx+sw*0.45,sy+sh);ctx.moveTo(sx+sw*0.8,sy);ctx.lineTo(sx+sw*0.8,sy+sh);ctx.moveTo(sx+sw*0.8,sy+sh/2);ctx.lineTo(sx+sw,sy+sh/2);ctx.stroke();
+ ctx.fillStyle="#000";ctx.font=`${4*MM}px Arial`;ctx.textBaseline="middle";
+ ctx.fillText("Loyihachi: "+(info.author||"—"),sx+3*MM,sy+sh/6);ctx.fillText("Sana: "+(info.date||""),sx+3*MM,sy+sh/2);ctx.fillText("ShitLab · PUE-7",sx+3*MM,sy+sh*5/6);
+ ctx.font=`bold ${5*MM}px Arial`;wrapText(ctx,info.title||"Elektr shiti",sx+sw*0.47,sy+sh*0.3,sw*0.31,6*MM);
+ ctx.font=`${4.2*MM}px Arial`;wrapText(ctx,title,sx+sw*0.47,sy+sh*0.72,sw*0.31,5*MM);
+ ctx.font=`${4*MM}px Arial`;ctx.fillText(`Varaq ${sheet}`,sx+sw*0.82,sy+sh/4);ctx.fillText(`Varaqlar ${total}`,sx+sw*0.82,sy+sh*3/4);
+ if(info.addr){ctx.font=`${3.6*MM}px Arial`;ctx.fillText(info.addr,22*MM,PH_PX-9*MM);}
+ return {x:23*MM,y:8*MM,w:PW_PX-31*MM,h:PH_PX-sh-18*MM};
+}
+function wrapText(ctx,t,x,y,w,lh){t=trS(t);const words=String(t).split(/\s+/);let line="",yy=y;for(const wd of words){const tt=line?line+" "+wd:wd;if(ctx.measureText(tt).width>w&&line){ctx.fillText(line,x,yy);line=wd;yy+=lh;}else line=tt;}ctx.fillText(line,x,yy);}
+function drawTable(ctx,area,cols,rows,fs){
+ fs=Math.min(fs,area.h/((rows.length+2.2)*1.9));
+ const total=cols.reduce((a,c)=>a+c.w,0);const sc=area.w/total;let y=area.y;const rh=fs*1.9;
+ ctx.font=`bold ${fs}px Arial`;ctx.textBaseline="middle";ctx.lineWidth=1.2;ctx.strokeStyle="#000";
+ const row=(cells,bold)=>{let x=area.x;ctx.font=`${bold?"bold ":""}${fs}px Arial`;cells.forEach((c,i)=>{const cw=cols[i].w*sc;ctx.strokeRect(x,y,cw,rh);ctx.fillStyle="#000";let t=trS(String(c));while(ctx.measureText(t).width>cw-8&&t.length>2)t=t.slice(0,-2)+"…";ctx.textAlign=cols[i].r?"right":"left";ctx.fillText(t,cols[i].r?x+cw-5:x+5,y+rh/2);ctx.textAlign="left";x+=cw;});y+=rh;};
+ row(cols.map(c=>c.t),true);rows.forEach(r=>{if(y+rh>area.y+area.h)return;row(r,false);});return y;}
+async function buildPDFPages(kind){
+ const info=docInfo();const pages=[];const total=kind==="door"?1:3;
+ const mk=()=>{const c=document.createElement("canvas");c.width=PW_PX;c.height=PH_PX;return c;};
+ if(kind!=="door"){
+  // 1: bir chiziqli sxema
+  const c=mk(),ctx=c.getContext("2d");const a=pageFrame(ctx,info,1,total,"Bir chiziqli sxema");
+  const svg=printSVG(schematic(R));const wm=svg.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/);const img=await svgToImg(svg);
+  const vw=+wm[1],vh=+wm[2];const k=Math.min(a.w/vw,(a.h-10*MM)/vh);ctx.drawImage(img,a.x+(a.w-vw*k)/2,a.y+8*MM,vw*k,vh*k);
+  ctx.fillStyle="#000";ctx.font=`bold ${6*MM}px Arial`;ctx.textBaseline="top";ctx.fillText("Bir chiziqli sxema",a.x,a.y);ctx.font=`${3.6*MM}px Arial`;
+  ctx.fillText(`Hisobiy quvvat ${fmt(R.Pd,2)} kVt · kirish toki ${fmt(R.Iin,1)} A · ${S.main.earth} · ${enclOf()?enclOf().name:""}`,a.x+70*MM,a.y+1.5*MM);
+  pages.push(c);
+  // 2: spetsifikatsiya
+  const c2=mk(),x2=c2.getContext("2d");const a2=pageFrame(x2,info,2,total,"Spetsifikatsiya");x2.fillStyle="#000";x2.font=`bold ${6*MM}px Arial`;x2.textBaseline="top";x2.fillText("Qurilmalar spetsifikatsiyasi",a2.x,a2.y);
+  const it=specItems();drawTable(x2,{x:a2.x,y:a2.y+10*MM,w:a2.w,h:a2.h-10*MM},[{t:"№",w:6,r:1},{t:"Belgisi",w:16},{t:"Nomi",w:40},{t:"Turi, parametri",w:46},{t:"Soni",w:9,r:1},{t:"Birlik",w:9}],it.map((x,i)=>[i+1,x.code,x.name,x.par,x.qty,x.unit]),3.4*MM);
+  pages.push(c2);
+ }
+ // 3: guruhlar jadvali (eshik uchun)
+ const c3=mk(),x3=c3.getContext("2d");const a3=kind==="door"?{x:12*MM,y:12*MM,w:PW_PX-24*MM,h:PH_PX-24*MM}:pageFrame(x3,info,3,total,"Guruhlar jadvali");
+ if(kind==="door"){x3.fillStyle="#fff";x3.fillRect(0,0,PW_PX,PH_PX);x3.lineWidth=4;x3.strokeRect(8*MM,8*MM,PW_PX-16*MM,PH_PX-16*MM);}
+ x3.fillStyle="#000";x3.textBaseline="top";x3.font=`bold ${8*MM}px Arial`;x3.fillText(`${info.title||"Elektr shiti"} — guruhlar`,a3.x,a3.y);
+ x3.font=`${4*MM}px Arial`;x3.fillText(`${enclOf()?enclOf().name:""} · kirish ${S.main.hasMain?S.main.ch+S.main.In+" A":"—"} · ${S.main.earth}`,a3.x,a3.y+11*MM);
+ const fs=kind==="door"?5*MM:4*MM;
+ drawTable(x3,{x:a3.x,y:a3.y+19*MM,w:a3.w,h:a3.h-19*MM},[{t:"QF",w:7},{t:"Guruh nomi",w:38},{t:"Himoya",w:22},{t:"UZO",w:12},{t:"Kabel",w:16},{t:"Faza",w:9},{t:"P, kVt",w:10,r:1}],R.groups.map(r=>[`QF${r.n}`,r.g.name,`${r.g.ch}${r.g.In} ${r.g.poles}${r.g.ctrl!=="none"||r.g.pfr?" + KM":""}`,hasRcd(r.g)?r.g.idn+" mA":"—",`${r.g.cores}×${r.g.S} ${r.g.mat}`,r.three?"L1L2L3":r.g.ph,fmt(r.P,1)]),fs);
+ if(kind==="door"){x3.font=`${3.6*MM}px Arial`;x3.textBaseline="bottom";x3.fillText("Ish oldidan guruhni o'chiring va kuchlanish yo'qligini tekshiring.  ShitLab",a3.x,PH_PX-11*MM);}
+ pages.push(c3);
+ return pages;
+}
+function pdfFromCanvases(cs){
+ const enc=new TextEncoder();const parts=[];let len=0;const offs=[];
+ const push=x=>{const u=typeof x==="string"?enc.encode(x):x;parts.push(u);len+=u.length;};
+ const objs=[];const n=cs.length;const W=842,H=595;
+ push("%PDF-1.4\n%\xE2\xE3\xCF\xD3\n");
+ const imgs=cs.map(c=>{const d=c.toDataURL("image/jpeg",0.9).split(",")[1];const s=atob(d);const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return {u,w:c.width,h:c.height};});
+ // 1 catalog, 2 pages, then per page: page, content, image
+ const kids=[];for(let i=0;i<n;i++)kids.push(`${3+i*3} 0 R`);
+ const obj=(id,body)=>{offs[id]=len;push(`${id} 0 obj\n`);if(typeof body==="string")push(body);else body.forEach(push);push("\nendobj\n");};
+ obj(1,"<< /Type /Catalog /Pages 2 0 R >>");
+ obj(2,`<< /Type /Pages /Kids [${kids.join(" ")}] /Count ${n} >>`);
+ imgs.forEach((im,i)=>{const p=3+i*3,c=p+1,x=p+2;const cont=`q ${W} 0 0 ${H} 0 0 cm /Im${i} Do Q`;
+  obj(p,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /XObject << /Im${i} ${x} 0 R >> >> /Contents ${c} 0 R >>`);
+  obj(c,`<< /Length ${cont.length} >>\nstream\n${cont}\nendstream`);
+  obj(x,[`<< /Type /XObject /Subtype /Image /Width ${im.w} /Height ${im.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${im.u.length} >>\nstream\n`,im.u,"\nendstream"]);});
+ const total=3+n*3;const xref=len;let x=`xref\n0 ${total}\n0000000000 65535 f \n`;for(let i=1;i<total;i++)x+=String(offs[i]).padStart(10,"0")+" 00000 n \n";
+ push(x+`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+ const out=new Uint8Array(len);let o=0;parts.forEach(p=>{out.set(p,o);o+=p.length;});return out;
+}
+/* --- XLSX (minimal) --- */
+const CRCT=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
+const crc32=u=>{let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CRCT[(c^u[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;};
+function zipStore(files){const enc=new TextEncoder();const chunks=[],cen=[];let off=0;
+ files.forEach(f=>{const name=enc.encode(f.name),data=typeof f.data==="string"?enc.encode(f.data):f.data;const crc=crc32(data);
+  const h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);h.setUint32(14,crc,true);h.setUint32(18,data.length,true);h.setUint32(22,data.length,true);h.setUint16(26,name.length,true);
+  chunks.push(new Uint8Array(h.buffer),name,data);
+  const c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint32(16,crc,true);c.setUint32(20,data.length,true);c.setUint32(24,data.length,true);c.setUint16(28,name.length,true);c.setUint32(42,off,true);
+  cen.push(new Uint8Array(c.buffer),name);off+=30+name.length+data.length;});
+ const cs=cen.reduce((a,u)=>a+u.length,0);const e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+ const all=[...chunks,...cen,new Uint8Array(e.buffer)];const out=new Uint8Array(all.reduce((a,u)=>a+u.length,0));let o=0;all.forEach(u=>{out.set(u,o);o+=u.length;});return out;}
+const xesc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+function xlsxSmeta(){
+ const it=specItems();const lab=+(S.labor??25);const info=docInfo();
+ const col=i=>String.fromCharCode(65+i);let r=0;const rows=[];
+ const cell=(c,v,st)=>typeof v==="number"?`<c r="${c}"${st?` s="${st}"`:""}><v>${v}</v></c>`:(v&&v.f)?`<c r="${c}"${st?` s="${st}"`:""}><f>${xesc(v.f)}</f><v>${v.v||0}</v></c>`:`<c r="${c}" t="inlineStr"${st?` s="${st}"`:""}><is><t>${xesc(trS(v))}</t></is></c>`;
+ const addRow=(vals,st)=>{r++;rows.push(`<row r="${r}">${vals.map((v,i)=>v==null?"":cell(col(i)+r,v,typeof st==="function"?st(i):st)).join("")}</row>`);};
+ addRow([`Smeta: ${info.title||"Elektr shiti"}`],1);addRow([`${info.addr||""}  Sana: ${info.date}  Loyihachi: ${info.author||"—"}`]);addRow([]);
+ addRow(["№","Belgisi","Nomi","Turi, parametri","Birlik","Soni","Narx, so'm","Summa, so'm"],1);const first=r+1;
+ let sum=0;it.forEach((x,i)=>{const s=x.qty*x.price;sum+=s;addRow([i+1,x.code,x.name,x.par,x.unit,x.qty,x.price,{f:`F${r+1}*G${r+1}`,v:s}],i2=>i2>=6?2:0);});
+ const last=r;addRow([null,null,"Materiallar jami",null,null,null,null,{f:`SUM(H${first}:H${last})`,v:sum}],i=>i===7?3:1);const mrow=r;
+ addRow([null,null,`Montaj ishlari, ${lab}%`,null,null,null,null,{f:`H${mrow}*${lab}/100`,v:sum*lab/100}],i=>i===7?2:0);
+ addRow([null,null,"JAMI",null,null,null,null,{f:`H${mrow}+H${mrow+1}`,v:sum*(1+lab/100)}],i=>i===7?3:1);
+ addRow([]);addRow(["Narxlar taxminiy. Ularni ShitLab → Hujjatlar → Narxlar bo'limida o'zgartirish mumkin."]);
+ const sheet=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><cols><col min="1" max="1" width="5" customWidth="1"/><col min="2" max="2" width="12" customWidth="1"/><col min="3" max="3" width="34" customWidth="1"/><col min="4" max="4" width="34" customWidth="1"/><col min="5" max="6" width="8" customWidth="1"/><col min="7" max="8" width="15" customWidth="1"/></cols><sheetData>${rows.join("")}</sheetData></worksheet>`;
+ const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="4"><xf/><xf fontId="1" applyFont="1"/><xf numFmtId="3" applyNumberFormat="1"/><xf numFmtId="3" fontId="1" applyNumberFormat="1" applyFont="1"/></cellXfs></styleSheet>`;
+ return zipStore([
+  {name:"[Content_Types].xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`},
+  {name:"_rels/.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`},
+  {name:"xl/workbook.xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Smeta" sheetId="1" r:id="rId1"/></sheets></workbook>`},
+  {name:"xl/_rels/workbook.xml.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`},
+  {name:"xl/styles.xml",data:styles},{name:"xl/worksheets/sheet1.xml",data:sheet}]);
+}
+function docInfo(){const d=S.doc||{};return {title:d.title||curProject().name,addr:d.addr||"",author:d.author||EX.name||"",date:new Date().toLocaleDateString("uz-UZ")};}
+const fnBase=()=>(docInfo().title||"shit").replace(/[^\w\-]+/g,"_").slice(0,40);
+function renderDocs(){
+ const box=$("#docsBox");if(!box)return;if(!enclOf()||!R){box.innerHTML="";return;}
+ const d=S.doc||{};const it=specItems();const sum=it.reduce((a,x)=>a+x.qty*x.price,0);const lab=+(S.labor??25);
+ const money=v=>Math.round(v).toLocaleString("ru-RU").replace(/,/g," ")+" so'm";
+ box.innerHTML=`<div class="card"><h3>Hujjat ma'lumotlari</h3><div class="settings" style="margin-top:8px"><label class="f">Obyekt nomi<input id="d-title" value="${esc(d.title||"")}" placeholder="${esc(curProject().name)}"></label><label class="f">Manzil<input id="d-addr" value="${esc(d.addr||"")}" placeholder="Shahar, ko'cha"></label><label class="f">Loyihachi<input id="d-author" value="${esc(d.author||"")}" placeholder="Ism Familiya"></label></div></div>
+ <div class="docgrid">
+  <div class="card doc"><div class="dh"><b>Bir chiziqli sxema</b><span class="mono muted">PDF · 3 varaq</span></div><div class="dthumb">${schematic(R).replace('<svg ','<svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:120px" ')}</div><span class="muted small">Sxema, spetsifikatsiya va guruhlar jadvali, shtamp bilan</span><button class="btn pri" data-doc="pdf">PDF yaratish</button></div>
+  <div class="card doc"><div class="dh"><b>Smeta</b><span class="mono muted">Excel</span></div><div class="dsum"><span>${it.length} pozitsiya</span><b>${money(sum*(1+lab/100))}</b><span class="muted small">materiallar ${money(sum)} + montaj ${lab}%</span></div><label class="f">Montaj ishlari, %<input id="d-labor" type="number" min="0" max="200" step="5" value="${lab}"></label><button class="btn pri" data-doc="xlsx">Excel yaratish</button></div>
+  <div class="card doc"><div class="dh"><b>Eshik uchun jadval</b><span class="mono muted">PDF · A4</span></div><div class="tbl" style="max-height:130px"><table><thead><tr><th>QF</th><th>Guruh</th><th>Himoya</th></tr></thead><tbody>${R.groups.map(r=>`<tr><td class="mono">QF${r.n}</td><td>${esc(r.g.name)}</td><td class="mono">${r.g.ch}${r.g.In}${hasRcd(r.g)?" Δ"+r.g.idn:""}</td></tr>`).join("")}</tbody></table></div><button class="btn pri" data-doc="door">Jadvalni PDF qilish</button></div>
+ </div>
+ <details class="card"><summary style="cursor:pointer;font-weight:700">Narxlar (taxminiy, o'zgartirish mumkin)</summary><div class="prices">${Object.keys(PRICE0).filter(k=>!k.startsWith("encl")||k==="encl"+(S.main.encl||"")).map(k=>`<label class="f">${esc(PNAME[k]||("Korpus "+(enclOf()?enclOf().name:"")))}<input type="number" min="0" step="1000" data-price="${k}" value="${price(k)}"></label>`).join("")}</div><button class="btn sm" data-doc="preset" style="margin-top:8px">Narxlarni asl holiga qaytarish</button></details>
+ <div class="result" id="docRes" hidden></div>`;
+}
+async function makeDoc(kind){
+ const out=$("#docRes");out.hidden=false;out.className="result";out.textContent="Tayyorlanmoqda…";
+ try{let r;
+  if(kind==="pdf"||kind==="door"){const pages=await buildPDFPages(kind);const pdf=pdfFromCanvases(pages);r=await saveFile(fnBase()+(kind==="door"?"_guruhlar":"_sxema")+".pdf",new Blob([pdf],{type:"application/pdf"}),"application/pdf");}
+  if(kind==="xlsx"){const x=xlsxSmeta();r=await saveFile(fnBase()+"_smeta.xlsx",new Blob([x],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}),"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");}
+  out.textContent=r==="declined"?"Saqlash bekor qilindi.":r==="fail"?"Faylni saqlab bo'lmadi.":"Tayyor: fayl saqlandi.";if(r==="fail"||r==="declined")out.className="result warn";
+ }catch(e){out.className="result warn";out.textContent="Xato: "+(e&&e.message||e);}
+}
+
+/* ================= MURAKKAB SXEMALAR ================= */
+let LAB="ps";
+const LIVE="#e0552b",DEAD="#9aa3aa";
+/* ---- A. Podstansiya 10/0,4 kV + АВР ---- */
+const PS={kva:400,p1:180,p2:140,cos:0.9,in1:true,in2:true,q1:true,q2:true,qf1:true,qf2:true,qf3:false,avr:true,back:true,t1:0,t2:0,log:[],ovT:0};
+const KVA=[100,160,250,400,630,1000],QF04=[250,400,630,800,1000,1250,1600,2000,2500],FUSE=[8,10,16,20,31.5,40,50,80,100];
+function psCalc(){const S_=PS.kva,uk=S_>=1000?5.5:4.5;const I1=S_/(SQ3*10),I2=S_/(SQ3*0.4);
+ return {uk,I1,I2,Ik:I2/(uk/100)/1000,qf:QF04.find(x=>x>=I2*1.05)||2500,fu:FUSE.find(x=>x>=I1*2)||100,qf3:QF04.find(x=>x>=I2*0.7)||2500};}
+function psLive(){const h1=PS.in1&&PS.q1,h2=PS.in2&&PS.q2;let b1=h1&&PS.qf1,b2=h2&&PS.qf2;if(PS.qf3){const any=b1||b2;b1=b2=any;}return {h1,h2,b1,b2};}
+function psLog(t,l){PS.log.unshift({t,l});PS.log=PS.log.slice(0,8);}
+function psTick(dt){
+ const L=psLive();
+ if(PS.avr){
+  // I seksiya kuchlanishsiz, II bor -> QF1 ochiladi, QF3 yopiladi
+  if(!PS.qf3&&!L.b1&&L.b2){PS.t1+=dt;if(PS.t1>1.5){if(PS.qf1){PS.qf1=false;}PS.qf3=true;PS.t1=0;psLog("АВР: I seksiyada kuchlanish yo'q → QF1 o'chdi, QF3 (seksiya) yoqildi. I seksiya T2 dan ta'minlanmoqda.","ok");beep("click");}}
+  else if(!PS.qf3&&!L.b2&&L.b1){PS.t1+=dt;if(PS.t1>1.5){if(PS.qf2){PS.qf2=false;}PS.qf3=true;PS.t1=0;psLog("АВР: II seksiyada kuchlanish yo'q → QF2 o'chdi, QF3 yoqildi. II seksiya T1 dan ta'minlanmoqda.","ok");beep("click");}}
+  else PS.t1=0;
+  // qaytish
+  if(PS.back&&PS.qf3){const r1=PS.in1&&PS.q1&&!PS.qf1,r2=PS.in2&&PS.q2&&!PS.qf2;
+   if(r1||r2){PS.t2+=dt;if(PS.t2>2.5){PS.qf3=false;if(r1)PS.qf1=true;if(r2)PS.qf2=true;PS.t2=0;psLog("АВР: asosiy kirish tiklandi → QF3 o'chdi, kirish avtomati qayta yoqildi (normal sxema).","ok");}}else PS.t2=0;}
+ }
+ const c=psCalc();const one=PS.qf3&&(L.h1!==L.h2);
+ const kz=(PS.p1+PS.p2)/(PS.kva*PS.cos);
+ if(one&&kz>1.4){PS.ovT+=dt;if(PS.ovT>4&&!PS.ovW){PS.ovW=true;psLog(`Bitta transformator ikkala seksiyani ta'minlayapti: yuklanish ${fmt(kz*100,0)}% (> 140%). Avariya rejimida ham ruxsat etilmaydi — ikkinchi darajali iste'molchilarni o'chiring.`,"bad");}}else{PS.ovT=0;PS.ovW=false;}
+}
+function psSVG(){
+ const L=psLive(),c=psCalc(),col=v=>v?LIVE:DEAD;
+ const brk=(x,y,on,id,lbl)=>`<g class="pssw" data-ps="${id}" tabindex="0" role="button" aria-label="${lbl}"><rect x="${x-11}" y="${y-11}" width="22" height="22" rx="3" fill="${on?"var(--surface)":"var(--bad-soft)"}" stroke="var(--ink)" stroke-width="1.8"/>${on?`<line x1="${x}" y1="${y-11}" x2="${x}" y2="${y+11}" stroke="var(--ink)" stroke-width="2.4"/>`:`<line x1="${x-7}" y1="${y+7}" x2="${x+7}" y2="${y-7}" stroke="var(--bad)" stroke-width="2.4"/>`}<text x="${x+16}" y="${y+4}" font-size="10" font-weight="700" fill="var(--ink)">${lbl}</text></g>`;
+ const ln=(x1,y1,x2,y2,on,w=3)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col(on)}" stroke-width="${w}"/>`+(on?`<line class="flw" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="animation-duration:.8s"/>`:"");
+ let s=`<svg viewBox="0 0 360 430" width="100%" style="max-width:520px;display:block;margin:auto" role="img" aria-label="10/0,4 kV podstansiya sxemasi">`;
+ [[90,"in1","q1",L.h1,"T1","QF1","qf1",L.b1],[270,"in2","q2",L.h2,"T2","QF2","qf2",L.b2]].forEach(([x,inK,qK,h,tn,qfn,qfK,b])=>{
+  const inp=PS[inK];
+  s+=`<text x="${x}" y="14" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--ink)">10 kV ${inK==="in1"?"1":"2"}-kirish</text><circle cx="${x}" cy="26" r="6" fill="${inp?LIVE:DEAD}"/>`;
+  s+=ln(x,32,x,52,inp)+brk(x,63,PS[qK],qK,qK==="q1"?"QS1":"QS2")+ln(x,74,x,92,inp&&PS[qK]);
+  s+=`<rect x="${x-6}" y="92" width="12" height="20" rx="2" fill="var(--surface)" stroke="var(--ink)"/><text x="${x+12}" y="106" font-size="9" fill="var(--muted)">FU ${c.fu}A</text>`;
+  s+=ln(x,112,x,124,h)+`<circle cx="${x}" cy="138" r="14" fill="none" stroke="${col(h)}" stroke-width="2.4"/><circle cx="${x}" cy="156" r="14" fill="none" stroke="${col(h)}" stroke-width="2.4"/><text x="${x+20}" y="144" font-size="10" font-weight="700" fill="var(--ink)">${tn}</text><text x="${x+20}" y="156" font-size="8.5" fill="var(--muted)">${PS.kva} kVA</text><text x="${x+20}" y="166" font-size="8.5" fill="var(--muted)">10/0,4 kV</text>`;
+  s+=ln(x,170,x,190,h)+brk(x,202,PS[qfK],qfK,qfn)+ln(x,213,x,240,b);
+ });
+ s+=`<line x1="14" y1="240" x2="170" y2="240" stroke="${col(L.b1)}" stroke-width="6"/><line x1="190" y1="240" x2="346" y2="240" stroke="${col(L.b2)}" stroke-width="6"/>`;
+ s+=brk(180,240,PS.qf3,"qf3","").replace('font-size="10"','font-size="0"')+`<text x="180" y="226" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)">QF3</text>`;
+ s+=`<text x="14" y="258" font-size="9" fill="var(--muted)">ВРУ-0,4 kV · I seksiya</text><text x="346" y="258" text-anchor="end" font-size="9" fill="var(--muted)">II seksiya</text>`;
+ [[40,"Yoritish",L.b1],[95,"Nasos",L.b1],[150,"Kuch",L.b1],[210,"Isitish",L.b2],[265,"Lift",L.b2],[320,"Sex",L.b2]].forEach(([x,n,on])=>{s+=ln(x,243,x,300,on,2.2)+`<rect x="${x-7}" y="276" width="14" height="12" rx="2" fill="var(--surface)" stroke="var(--ink)"/><polygon points="${x-6},300 ${x+6},300 ${x},310" fill="${col(on)}"/><text x="${x}" y="324" text-anchor="middle" font-size="9" fill="var(--ink)">${n}</text>`;});
+ const kz1=PS.qf3?(L.h1?(PS.p1+PS.p2):0)/(PS.kva*PS.cos):(L.b1?PS.p1/(PS.kva*PS.cos):0),kz2=PS.qf3?(L.h2&&!L.h1?(PS.p1+PS.p2):(L.h2&&L.h1?PS.p2:0))/(PS.kva*PS.cos):(L.b2?PS.p2/(PS.kva*PS.cos):0);
+ const kc=k=>k>1.4?"var(--bad)":k>1?"var(--warn)":"var(--ok)";
+ s+=`<g font-size="10"><text x="14" y="352" fill="var(--ink)" font-weight="700">T1 yuklanishi: <tspan fill="${kc(kz1)}">${fmt(kz1*100,0)}%</tspan></text><text x="190" y="352" fill="var(--ink)" font-weight="700">T2 yuklanishi: <tspan fill="${kc(kz2)}">${fmt(kz2*100,0)}%</tspan></text>
+  <text x="14" y="370" fill="var(--muted)">I(10 kV) = ${fmt(c.I1,1)} A · I(0,4 kV) = ${fmt(c.I2,0)} A</text><text x="14" y="386" fill="var(--muted)">QT 0,4 kV shinada ≈ ${fmt(c.Ik,1)} kA (uk = ${c.uk}%)</text>
+  <text x="14" y="402" fill="var(--muted)">Tanlov: QF1, QF2 = ${c.qf} A; QF3 = ${c.qf3} A; FU = ${c.fu} A</text>
+  <text x="14" y="420" fill="${PS.avr?"var(--ok)":"var(--muted)"}" font-weight="700">АВР: ${PS.avr?"yoqiq":"o'chiq"}${PS.avr&&PS.back?" · avtomatik qaytish":""}</text></g>`;
+ return s+`</svg>`;
+}
+function psHTML(){
+ return `<div class="labctl"><div class="chips"><button class="chip" data-psa="in1">${PS.in1?"1-kirishni o'chirish":"1-kirishni tiklash"}</button><button class="chip" data-psa="in2">${PS.in2?"2-kirishni o'chirish":"2-kirishni tiklash"}</button><button class="chip" data-psa="avr" aria-pressed="${PS.avr}">АВР ${PS.avr?"yoqiq":"o'chiq"}</button><button class="chip" data-psa="reset">Normal sxema</button></div>
+ <div class="labset"><label class="f">Transformator<select id="ps-kva">${KVA.map(k=>opt(k,k+" kVA",PS.kva)).join("")}</select></label><label class="f">I seksiya, kVt<input id="ps-p1" type="number" min="0" step="10" value="${PS.p1}"></label><label class="f">II seksiya, kVt<input id="ps-p2" type="number" min="0" step="10" value="${PS.p2}"></label></div></div>
+ <div class="labsvg" id="psSvg">${psSVG()}</div><div class="lablog" id="psLog">${PS.log.map(x=>`<div class="${x.l}">${esc(x.t)}</div>`).join("")||`<div class="muted">Kirishni o'chirib, АВР ishini kuzating. Avtomatlarni bosib qo'lda boshqarish mumkin.</div>`}</div>`;
+}
+/* ---- B. Rele himoyasi: MTZ va tok otsechkasi (10 kV liniya → transformator) ---- */
+const RZ={kva:400,ct:50,ikMax:10,ikMin:6,tDown:0.3,fault:null,ft:0,done:null};
+const CTS=[20,30,40,50,75,100,150,200,300,400,600];
+function rzCalc(){
+ const S_=RZ.kva,uk=S_>=1000?5.5:4.5,I1=S_/(SQ3*10),Irm=1.4*I1;
+ const kn=1.1,kz=2.0,kv=0.95;const Imtz=kn*kz/kv*Irm;const tm=RZ.tDown+0.4;
+ const IkT=I1*100/uk;const IkLVmax=1/(1/IkT+1/(RZ.ikMax*1000)),IkLVmin=1/(1/IkT+1/(RZ.ikMin*1000));
+ const Ito=1.2*IkLVmax;const Ik2HV=0.87*RZ.ikMin*1000*0.92;const kchTO=Ik2HV/Ito;const kchM=0.87*IkLVmin/Imtz;
+ const ctRec=CTS.find(c=>c>=Irm)||600;const n=RZ.ct/5;
+ return {uk,I1,Irm,kn,kz,kv,Imtz,tm,Ito,IkLVmax,IkLVmin,Ik2HV,kchTO,kchM,ctRec,n,ImtzR:Imtz/n,ItoR:Ito/n,Iqf:5*I1};
+}
+const KPTS={K1:"10 kV kabel boshi",K2:"Transformator 10 kV kirishi",K3:"0,4 kV shinalar (QF1 dan keyin)",K4:"0,4 kV fider oxiri"};
+function rzFaultI(k,c){if(k==="K1")return RZ.ikMax*1000*0.98;if(k==="K2")return RZ.ikMax*1000*0.9;if(k==="K3")return c.IkLVmax;return c.IkLVmax*0.45;}
+function rzPlan(k,c){ // har bir himoyaning ishlash vaqti
+ const I=rzFaultI(k,c),p=[];
+ if(I>=c.Ito)p.push({n:"Tok otsechkasi (TO)",t:0.05,q:"Q1"});
+ if(I>=c.Imtz)p.push({n:"MTZ",t:c.tm,q:"Q1"});
+ if(k==="K3")p.push({n:"QF1 (0,4 kV kirish, qisqa kechikish)",t:RZ.tDown,q:"QF1"});
+ if(k==="K4")p.push({n:"Fider avtomati QF (0,4 kV)",t:0.02,q:"QFf"});
+ p.sort((a,b)=>a.t-b.t);return {I,p};}
+function rzTick(dt){if(!RZ.fault||RZ.done)return;RZ.ft+=dt*0.5;const c=rzCalc();const pl=rzPlan(RZ.fault,c);const first=pl.p[0];
+ if(!first){if(RZ.ft>2){RZ.done={none:true};}return;}
+ if(RZ.ft>=first.t*6+0.15){RZ.done=first;beep("sc");vib(80);}}
+function rzSVG(){
+ const c=rzCalc(),f=RZ.fault,d=RZ.done;const open=q=>d&&d.q===q;
+ const pl=f?rzPlan(f,c):null;const I=pl?pl.I:0;
+ const live=!open("Q1");const liveLV=live&&!open("QF1");
+ const col=v=>v?LIVE:DEAD;
+ const sw=(x,y,o,l)=>`<rect x="${x-11}" y="${y-11}" width="22" height="22" rx="3" fill="${o?"var(--bad-soft)":"var(--surface)"}" stroke="var(--ink)" stroke-width="1.8"/>${o?`<line x1="${x-7}" y1="${y+7}" x2="${x+7}" y2="${y-7}" stroke="var(--bad)" stroke-width="2.4"/>`:`<line x1="${x}" y1="${y-11}" x2="${x}" y2="${y+11}" stroke="var(--ink)" stroke-width="2.4"/>`}<text x="${x+15}" y="${y+4}" font-size="10" font-weight="700" fill="var(--ink)">${l}</text>`;
+ const kp=(k,x,y)=>`<g class="rzk" data-rzk="${k}" tabindex="0" role="button" aria-label="${KPTS[k]} da QT"><circle cx="${x}" cy="${y}" r="13" fill="${f===k?"var(--bad)":"var(--surface)"}" stroke="var(--bad)" stroke-width="2"/><text x="${x}" y="${y+4}" text-anchor="middle" font-size="9.5" font-weight="800" fill="${f===k?"#fff":"var(--bad)"}">${k}</text></g>`;
+ let s=`<svg viewBox="0 0 360 330" width="100%" style="max-width:520px;display:block;margin:auto" role="img" aria-label="Rele himoyasi sxemasi">`;
+ s+=`<line x1="40" y1="24" x2="200" y2="24" stroke="${LIVE}" stroke-width="6"/><text x="40" y="14" font-size="10" font-weight="700" fill="var(--ink)">10 kV shina (PS)</text>`;
+ s+=`<line x1="110" y1="24" x2="110" y2="48" stroke="${LIVE}" stroke-width="3"/>`+sw(110,60,open("Q1"),"Q1");
+ s+=`<line x1="110" y1="71" x2="110" y2="96" stroke="${col(live)}" stroke-width="3"/><circle cx="110" cy="96" r="7" fill="none" stroke="var(--ink)" stroke-width="1.6"/><text x="120" y="100" font-size="9" fill="var(--muted)">TA ${RZ.ct}/5</text>`;
+ const rOn=d&&d.q==="Q1";
+ s+=`<rect x="190" y="70" width="150" height="62" rx="6" fill="var(--surface-2)" stroke="var(--ink)" stroke-width="1.4"/><text x="200" y="86" font-size="10" font-weight="700" fill="var(--ink)">Rele himoyasi</text>
+ <circle cx="206" cy="102" r="6" fill="${rOn&&d.n.startsWith("Tok")?"#ffd23a":"#3a3f44"}"/><text x="216" y="105" font-size="9.5" fill="var(--ink)">TO ${fmt(c.Ito,0)} A, 0,05 s</text>
+ <circle cx="206" cy="120" r="6" fill="${rOn&&d.n==="MTZ"?"#ffd23a":"#3a3f44"}"/><text x="216" y="123" font-size="9.5" fill="var(--ink)">MTZ ${fmt(c.Imtz,1)} A, ${fmt(c.tm,1)} s</text>
+ <path d="M117 96 H190" stroke="var(--muted)" stroke-dasharray="3 3"/><path d="M190 120 H160 V60 H122" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"/>`;
+ s+=`<line x1="110" y1="103" x2="110" y2="160" stroke="${col(live)}" stroke-width="3"/>`+kp("K1",80,128);
+ s+=`<circle cx="110" cy="174" r="14" fill="none" stroke="${col(live)}" stroke-width="2.4"/><circle cx="110" cy="192" r="14" fill="none" stroke="${col(live)}" stroke-width="2.4"/><text x="130" y="186" font-size="10" font-weight="700" fill="var(--ink)">T ${RZ.kva} kVA</text>`+kp("K2",80,170);
+ s+=`<line x1="110" y1="206" x2="110" y2="222" stroke="${col(live)}" stroke-width="3"/>`+sw(110,234,open("QF1"),"QF1 0,4 kV");
+ s+=`<line x1="110" y1="245" x2="110" y2="262" stroke="${col(liveLV)}" stroke-width="3"/><line x1="40" y1="262" x2="300" y2="262" stroke="${col(liveLV)}" stroke-width="6"/>`+kp("K3",60,280);
+ s+=`<line x1="230" y1="262" x2="230" y2="278" stroke="${col(liveLV)}" stroke-width="2.4"/>`+sw(230,290,open("QFf"),"QF fider")+`<line x1="230" y1="301" x2="230" y2="318" stroke="${col(liveLV&&!open("QFf"))}" stroke-width="2.4"/>`+kp("K4",290,312);
+ if(f)s+=`<path d="M${({K1:80,K2:80,K3:60,K4:290})[f]+16} ${({K1:128,K2:170,K3:280,K4:312})[f]} l8 -10 h-5 l6 -10" fill="none" stroke="var(--bad)" stroke-width="2.4" class="flick"/>`;
+ return s+`</svg>`;
+}
+function rzChart(){
+ const c=rzCalc();const W=360,H=230,ml=40,mr=10,mt=10,mb=30,x0=1,x1=20000,y0=0.01,y1=100;
+ const X=I=>ml+(Math.log10(I)-Math.log10(x0))/(Math.log10(x1)-Math.log10(x0))*(W-ml-mr),Y=t=>mt+(Math.log10(y1)-Math.log10(t))/(Math.log10(y1)-Math.log10(y0))*(H-mt-mb);
+ let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:520px;display:block;margin:auto" role="img" aria-label="Himoya tavsifnomalari">`;
+ for(let e=0;e<=4;e++)s+=`<line x1="${X(10**e)}" y1="${mt}" x2="${X(10**e)}" y2="${H-mb}" stroke="var(--line)"/><text x="${X(10**e)}" y="${H-mb+13}" text-anchor="middle" font-size="9" fill="var(--muted)">${10**e>=1000?10**e/1000+"k":10**e}</text>`;
+ for(let e=-2;e<=2;e++)s+=`<line x1="${ml}" y1="${Y(10**e)}" x2="${W-mr}" y2="${Y(10**e)}" stroke="var(--line)"/><text x="${ml-4}" y="${Y(10**e)+3}" text-anchor="end" font-size="9" fill="var(--muted)">${10**e}</text>`;
+ s+=`<text x="${(W+ml)/2}" y="${H-3}" text-anchor="middle" font-size="9.5" fill="var(--muted)">Tok 10 kV tomonda, A</text>`;
+ s+=`<path d="M${X(c.Imtz)} ${mt} V${Y(c.tm)} H${X(c.Ito)} V${Y(0.05)} H${W-mr}" fill="none" stroke="#d1495b" stroke-width="2.6"/>`;
+ s+=`<path d="M${X(c.Iqf)} ${mt} V${Y(RZ.tDown)} H${X(c.IkLVmax*1.3)}" fill="none" stroke="#2f7fd1" stroke-width="2.2" stroke-dasharray="6 4"/>`;
+ ["K1","K2","K3","K4"].forEach(k=>{const I=rzFaultI(k,c);if(I>x1||I<x0)return;s+=`<line x1="${X(I)}" y1="${mt}" x2="${X(I)}" y2="${H-mb}" stroke="var(--bad)" stroke-width="${RZ.fault===k?2.4:1}" stroke-dasharray="${RZ.fault===k?"":"2 3"}"/><text x="${X(I)+2}" y="${mt+10+["K1","K2","K3","K4"].indexOf(k)*11}" font-size="9" font-weight="700" fill="var(--bad)">${k}</text>`;});
+ s+=`<rect x="${ml}" y="${mt}" width="${W-ml-mr}" height="${H-mt-mb}" fill="none" stroke="var(--ink)"/></svg>`;
+ s+=`<div class="legend" style="justify-content:center"><span><i class="sw" style="background:#d1495b"></i>MTZ + TO (Q1)</span><span><svg width="22" height="6"><line x1="0" y1="3" x2="22" y2="3" stroke="#2f7fd1" stroke-width="2" stroke-dasharray="6 4"/></svg>QF1 0,4 kV (10 kV ga keltirilgan)</span></div>`;
+ return s;
+}
+function rzHTML(){
+ const c=rzCalc();const ok=(v,lim)=>`<span class="pill ${v>=lim?"ok":"bad"}">${fmt(v,2)} ${v>=lim?"≥":"<"} ${lim}</span>`;
+ const pl=RZ.fault?rzPlan(RZ.fault,c):null;
+ let res="";if(RZ.fault){res=`<div class="lablog"><div><b>${RZ.fault}: ${KPTS[RZ.fault]}</b> — QT toki ≈ ${fmt(pl.I,0)} A (10 kV tomonda)</div>${pl.p.map(x=>`<div>${esc(x.n)}: ${fmtT(x.t)}</div>`).join("")||"<div class='bad'>Hech bir himoya sezmaydi! Sezgirlik yetarli emas.</div>"}${RZ.done?(RZ.done.none?`<div class="bad">Nosozlik uzilmadi.</div>`:`<div class="ok">✓ Birinchi bo'lib ishladi: ${esc(RZ.done.n)} → ${RZ.done.q} o'chdi${RZ.fault==="K3"&&RZ.done.q==="QF1"?" (selektiv: MTZ zaxirada qoldi)":RZ.fault==="K4"&&RZ.done.q==="QFf"?" (selektiv: faqat shikastlangan fider uzildi)":""}.</div>`):`<div class="muted">Himoya ishlamoqda…</div>`}</div>`;}
+ return `<div class="labctl"><div class="labset"><label class="f">Transformator<select id="rz-kva">${KVA.map(k=>opt(k,k+" kVA",RZ.kva)).join("")}</select></label><label class="f">Tok transformatori<select id="rz-ct">${CTS.map(k=>opt(k,k+"/5",RZ.ct)).join("")}</select></label><label class="f">Ik maks., kA<input id="rz-ikMax" type="number" min="1" step="0.5" value="${RZ.ikMax}"></label><label class="f">Ik min., kA<input id="rz-ikMin" type="number" min="0.5" step="0.5" value="${RZ.ikMin}"></label><label class="f">QF1 kechikishi, s<input id="rz-tDown" type="number" min="0.05" step="0.05" value="${RZ.tDown}"></label></div>
+ <div class="chips">${Object.keys(KPTS).map(k=>`<button class="chip" data-rzk="${k}" aria-pressed="${RZ.fault===k}">QT ${k}</button>`).join("")}<button class="chip" data-rzk="none">Tiklash</button></div></div>
+ <div class="labsvg" id="rzSvg">${rzSVG()}</div>${res}
+ <div class="card rzcalc"><b>Sozlash qiymatlari</b>
+ <div class="rzrow"><span>Nominal tok I₁ₙ = S / (√3·10)</span><b>${fmt(c.I1,1)} A</b></div>
+ <div class="rzrow"><span>Maks. ish toki 1,4·I₁ₙ</span><b>${fmt(c.Irm,1)} A</b></div>
+ <div class="rzrow"><span>MTZ: I = k<sub>n</sub>·k<sub>o'z</sub>/k<sub>q</sub>·I<sub>ish</sub> = ${c.kn}·${c.kz}/${c.kv}·${fmt(c.Irm,1)}</span><b>${fmt(c.Imtz,1)} A</b></div>
+ <div class="rzrow"><span>MTZ vaqti t = t<sub>QF1</sub> + Δt = ${RZ.tDown} + 0,4</span><b>${fmt(c.tm,2)} s</b></div>
+ <div class="rzrow"><span>TO: I = 1,2·I<sub>QT 0,4 kV maks</sub> = 1,2·${fmt(c.IkLVmax,0)}</span><b>${fmt(c.Ito,0)} A</b></div>
+ <div class="rzrow"><span>Rele toklari (TA ${RZ.ct}/5)</span><b>MTZ ${fmt(c.ImtzR,2)} A · TO ${fmt(c.ItoR,1)} A</b></div>
+ <div class="rzrow"><span>MTZ sezgirligi (K3, 2 fazali)</span>${ok(c.kchM,1.5)}</div>
+ <div class="rzrow"><span>TO sezgirligi (K2, 2 fazali)</span>${ok(c.kchTO,2)}</div>
+ <div class="rzrow"><span>Tavsiya etilgan TA</span><b class="${RZ.ct>=c.ctRec?"":"badt"}">${c.ctRec}/5${RZ.ct<c.ctRec?" (tanlangan kichik)":""}</b></div></div>
+ <div class="labsvg">${rzChart()}</div>`;
+}
+/* ---- C. Dvigatel pusklari: ladder (boshqaruv zanjiri) dvigateli ---- */
+const MT={sch:"dol",btn:{},coils:{},kt:0,w:0,dir:1,kk:false,kkH:0,load:false,lock:true,qf:true,hist:[],log:[],delta:false};
+const C=(t,tag)=>({t,tag});
+function ladder(){
+ const lock=MT.lock;
+ if(MT.sch==="dol")return [{coil:"KM1",bl:[[[C("NC","SB1")]],[[C("NO","SB2")],[C("NO","KM1")]],[[C("NC","KK")]]]}];
+ if(MT.sch==="rev")return [
+  {coil:"KM1",bl:[[[C("NC","SB1")]],[[C("NO","SB2")],[C("NO","KM1")]],...(lock?[[[C("NC","KM2")]]]:[]),[[C("NC","KK")]]]},
+  {coil:"KM2",bl:[[[C("NC","SB1")]],[[C("NO","SB3")],[C("NO","KM2")]],...(lock?[[[C("NC","KM1")]]]:[]),[[C("NC","KK")]]]}];
+ return [
+  {coil:"KM1",bl:[[[C("NC","SB1")]],[[C("NO","SB2")],[C("NO","KM1")]],[[C("NC","KK")]]]},
+  {coil:"KT",bl:[[[C("NO","KM1")]]]},
+  {coil:"KM2",bl:[[[C("NO","KM1")]],[[C("NCT","KT")]],...(lock?[[[C("NC","KM3")]]]:[])]},
+  {coil:"KM3",bl:[[[C("NO","KM1")]],[[C("NOT","KT")]],...(lock?[[[C("NC","KM2")]]]:[])]}];
+}
+function cState(c){ // kontakt yopiqmi
+ let act;if(c.tag.startsWith("SB"))act=!!MT.btn[c.tag];else if(c.tag==="KK")act=MT.kk;else if(c.t==="NOT"||c.t==="NCT")act=MT.coils.KT&&MT.kt>=3;else act=!!MT.coils[c.tag];
+ return (c.t==="NO"||c.t==="NOT")?act:!act;}
+function solveLadder(){const L=ladder();for(let it=0;it<6;it++){let ch=false;L.forEach(r=>{const on=MT.qf&&r.bl.every(b=>b.some(p=>p.every(cState)));if(!!MT.coils[r.coil]!==on){MT.coils[r.coil]=on;ch=true;}});if(!ch)break;}}
+function mtLog(t,l){MT.log.unshift({t,l});MT.log=MT.log.slice(0,6);}
+function mtTick(dt){
+ if(MT.coils.KT)MT.kt+=dt;else MT.kt=0;
+ solveLadder();
+ const k=MT.coils;let run=false,mode="",dir=MT.dir;
+ if(MT.sch==="dol"){run=!!k.KM1;mode="to'g'ri";dir=1;}
+ if(MT.sch==="rev"){if(k.KM1&&k.KM2){mtShort("KM1 va KM2 bir vaqtda yoqildi: L1 va L3 fazalar to'g'ridan-to'g'ri tutashdi!");return;}run=!!(k.KM1||k.KM2);dir=k.KM2?-1:1;mode=k.KM2?"orqaga":"oldinga";}
+ if(MT.sch==="yd"){if(k.KM2&&k.KM3){mtShort("Yulduz (KM2) va uchburchak (KM3) bir vaqtda yoqildi: qisqa tutashuv!");return;}run=!!(k.KM1&&(k.KM2||k.KM3));mode=k.KM3?"uchburchak (Δ)":k.KM2?"yulduz (Y)":"";
+  if(k.KM3&&!MT.delta){MT.delta=true;mtLog("KT vaqt relesi ishladi: KM2 (Y) o'chdi, KM3 (Δ) yoqildi. Dvigatel to'liq kuchlanishda.","ok");}if(!k.KM3)MT.delta=false;}
+ MT.dir=dir;
+ const target=run?(MT.sch==="yd"&&k.KM2?0.8:1)*(MT.load?0.93:1):0;
+ MT.w+=(target-MT.w)*Math.min(1,dt/(run?1.1:1.6));
+ let I=0;if(run){const s=Math.max(0,1-MT.w/((MT.sch==="yd"&&k.KM2)?0.8:1));I=(1+5.6*Math.pow(s,1.3))*(MT.sch==="yd"&&k.KM2?1/3:1)*(MT.load?1.6:1);}
+ MT.I=I;
+ if(I>1.2){MT.kkH+=dt*(I*I-1.2)/(I>3?400:30);if(MT.kkH>=1&&!MT.kk){MT.kk=true;mtLog("KK issiqlik relesi ishladi: dvigatel o'ta yuklangan. Boshqaruv zanjiri uzildi, kontaktor qo'yib yubordi.","bad");beep("click");}}else MT.kkH=Math.max(0,MT.kkH-dt/8);
+ MT.hist.push(I);if(MT.hist.length>120)MT.hist.shift();
+ MT.mode=mode;
+}
+function mtShort(t){MT.qf=false;MT.coils={};MT.btn={};mtLog(t+" QF avtomati elektromagnit ajratgich bilan o'chdi.","bad");beep("sc");vib([120,60,160]);MT.w=0;}
+function contactSVG(x,y,c,live){const cl=cState(c),btn=c.tag.startsWith("SB");const colr=live?LIVE:"var(--ink)";
+ let s=`<g ${btn?`class="sb" data-sb="${c.tag}" role="button" tabindex="0" aria-label="${c.tag} tugmasi"`:""}><line x1="${x}" y1="${y}" x2="${x+10}" y2="${y}" stroke="${colr}" stroke-width="2"/><line x1="${x+30}" y1="${y}" x2="${x+40}" y2="${y}" stroke="${live&&cl?LIVE:"var(--ink)"}" stroke-width="2"/>`;
+ s+=cl?`<line x1="${x+10}" y1="${y}" x2="${x+30}" y2="${y}" stroke="${live?LIVE:"var(--ink)"}" stroke-width="2.4"/>`:`<line x1="${x+10}" y1="${y}" x2="${x+28}" y2="${y-9}" stroke="var(--ink)" stroke-width="2.4"/>`;
+ if(c.t.startsWith("NC"))s+=`<line x1="${x+30}" y1="${y}" x2="${x+30}" y2="${y-8}" stroke="var(--ink)" stroke-width="1.6"/>`;
+ if(c.t==="NOT"||c.t==="NCT")s+=`<path d="M${x+14} ${y-12} a6 6 0 0 1 12 0" fill="none" stroke="var(--ink)" stroke-width="1.4"/>`;
+ if(btn)s+=`<rect x="${x+6}" y="${y-24}" width="28" height="30" rx="5" fill="${MT.btn[c.tag]?"var(--accent-soft)":"transparent"}" stroke="${c.tag==="SB1"?"var(--bad)":"var(--ok)"}" stroke-width="2"/>`;
+ s+=`<text x="${x+20}" y="${y+16}" text-anchor="middle" font-size="9" font-weight="700" fill="var(--ink)">${c.tag}</text></g>`;return {s,out:live&&cl};}
+function ladderSVG(y0){
+ const L=ladder();let s="",y=y0;const xL=20,xR=340;
+ s+=`<line x1="${xL}" y1="${y0-14}" x2="${xL}" y2="${y0+L.length*74-20}" stroke="${MT.qf?LIVE:DEAD}" stroke-width="3"/><line x1="${xR}" y1="${y0-14}" x2="${xR}" y2="${y0+L.length*74-20}" stroke="var(--n)" stroke-width="3"/><text x="${xL}" y="${y0-30}" font-size="9" font-weight="700" fill="var(--ink)">L1 (SF)</text><text x="${xR}" y="${y0-30}" text-anchor="end" font-size="9" font-weight="700" fill="var(--ink)">N</text>`;
+ L.forEach(r=>{let x=xL,live=MT.qf;
+  r.bl.forEach(b=>{if(b.length===1){const p=b[0];p.forEach(c=>{const k=contactSVG(x,y,c,live);s+=k.s;live=k.out;x+=40;});}
+   else{const outs=[];b.forEach((p,i)=>{let lv=live,xx=x;const yy=y+i*24;if(i>0)s+=`<line x1="${x}" y1="${y}" x2="${x}" y2="${yy}" stroke="${live?LIVE:"var(--ink)"}" stroke-width="2"/>`;p.forEach(c=>{const k=contactSVG(xx,yy,c,lv);s+=k.s;lv=k.out;xx+=40;});if(i>0)s+=`<line x1="${xx}" y1="${y}" x2="${xx}" y2="${yy}" stroke="${lv?LIVE:"var(--ink)"}" stroke-width="2"/>`;outs.push(lv);});live=outs.some(v=>v);x+=40;}});
+  const on=!!MT.coils[r.coil];s+=`<line x1="${x}" y1="${y}" x2="${xR-46}" y2="${y}" stroke="${live?LIVE:"var(--ink)"}" stroke-width="2"/><rect x="${xR-46}" y="${y-11}" width="30" height="22" fill="${on?"#ffd23a":"var(--surface)"}" stroke="var(--ink)" stroke-width="1.8"/><text x="${xR-31}" y="${y+4}" text-anchor="middle" font-size="9" font-weight="700" fill="#1d1d1d">${r.coil}</text><line x1="${xR-16}" y1="${y}" x2="${xR}" y2="${y}" stroke="var(--ink)" stroke-width="2"/>`;
+  if(r.coil==="KT"&&MT.coils.KT)s+=`<text x="${xR-60}" y="${y-14}" text-anchor="end" font-size="9" fill="var(--warn)">${fmt(Math.min(3,MT.kt),1)} / 3 s</text>`;
+  y+=74;});
+ return {s,h:y-y0};
+}
+function powerSVG(){
+ const k=MT.coils,qf=MT.qf;let s="";const xs=[60,90,120];const col=v=>v?LIVE:DEAD;
+ s+=`<text x="20" y="14" font-size="9" font-weight="700" fill="var(--ink)">Kuch zanjiri</text>`;
+ ["L1","L2","L3"].forEach((p,i)=>{s+=`<text x="${xs[i]}" y="28" text-anchor="middle" font-size="9" font-weight="700" fill="var(--ink)">${p}</text><line x1="${xs[i]}" y1="32" x2="${xs[i]}" y2="48" stroke="${LIVE}" stroke-width="2.4"/>`;});
+ s+=`<rect class="qfbox" data-mqf="1" x="48" y="48" width="84" height="20" rx="3" fill="${qf?"var(--surface)":"var(--bad-soft)"}" stroke="var(--ink)" stroke-width="1.6"/><text x="90" y="62" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)">${qf?"QF":"QF o'chdi"}</text>`;
+ const cont=(x,y,on,lbl)=>`<line x1="${x}" y1="${y}" x2="${x}" y2="${y+6}" stroke="${col(qf)}" stroke-width="2"/>${on?`<line x1="${x}" y1="${y+6}" x2="${x}" y2="${y+20}" stroke="${col(qf)}" stroke-width="2.4"/>`:`<line x1="${x}" y1="${y+6}" x2="${x+8}" y2="${y+18}" stroke="var(--ink)" stroke-width="2.4"/>`}`;
+ if(MT.sch==="rev"){
+  xs.forEach((x,i)=>{s+=`<line x1="${x}" y1="68" x2="${x}" y2="78" stroke="${col(qf)}" stroke-width="2"/>`+cont(x,78,k.KM1)+`<line x1="${x}" y1="98" x2="${x}" y2="118" stroke="${col(qf&&k.KM1)}" stroke-width="2"/>`;});
+  s+=`<text x="135" y="94" font-size="9" font-weight="700" fill="var(--ink)">KM1</text>`;
+  [[60,120],[90,90],[120,60]].forEach(([a,b2],i)=>{const x=170+i*28;s+=`<path d="M${a} 72 H${x} V78" fill="none" stroke="${col(qf)}" stroke-width="1.6"/>`+cont(x,78,k.KM2)+`<path d="M${x} 98 V108 H${b2} V118" fill="none" stroke="${col(qf&&k.KM2)}" stroke-width="1.6"/>`;});
+  s+=`<text x="232" y="94" font-size="9" font-weight="700" fill="var(--ink)">KM2</text><text x="232" y="106" font-size="8.5" fill="var(--muted)">L1↔L3 almashadi</text>`;
+ }else{xs.forEach(x=>{s+=`<line x1="${x}" y1="68" x2="${x}" y2="78" stroke="${col(qf)}" stroke-width="2"/>`+cont(x,78,k.KM1)+`<line x1="${x}" y1="98" x2="${x}" y2="118" stroke="${col(qf&&k.KM1)}" stroke-width="2"/>`;});s+=`<text x="135" y="94" font-size="9" font-weight="700" fill="var(--ink)">KM1</text>`;}
+ const pw=qf&&(k.KM1||k.KM2);
+ s+=`<rect x="48" y="118" width="84" height="16" rx="2" fill="${MT.kk?"var(--bad-soft)":"var(--surface)"}" stroke="var(--ink)"/><text x="90" y="130" text-anchor="middle" font-size="9" font-weight="700" fill="var(--ink)">KK ${MT.kk?"ishladi":"issiqlik relesi"}</text>`;
+ xs.forEach(x=>{s+=`<line x1="${x}" y1="134" x2="${x}" y2="150" stroke="${col(pw)}" stroke-width="2"/>`;});
+ // dvigatel
+ const sp=MT.w;const dur=sp>0.02?(0.9/sp).toFixed(2):0;
+ s+=`<circle cx="90" cy="178" r="26" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.2"/><text x="90" y="174" text-anchor="middle" font-size="12" font-weight="800" fill="var(--ink)">M</text><text x="90" y="188" text-anchor="middle" font-size="9" fill="var(--ink)">3~</text>`;
+ s+=`<g class="rotor" style="transform-origin:90px 178px;${dur?`animation:spin ${dur}s linear infinite;animation-direction:${MT.dir<0?"reverse":"normal"}`:""}"><path d="M90 146 a32 32 0 0 1 28 18" fill="none" stroke="var(--accent)" stroke-width="2.4"/><polygon points="118,164 121,155 112,158" fill="var(--accent)"/></g>`;
+ if(MT.sch==="yd"){s+=`<g font-size="9" fill="var(--ink)"><rect x="160" y="140" width="70" height="20" rx="3" fill="${k.KM2?"#ffd23a":"var(--surface)"}" stroke="var(--ink)"/><text x="195" y="154" text-anchor="middle" font-weight="700" fill="#1d1d1d">KM2 · Y</text><rect x="240" y="140" width="70" height="20" rx="3" fill="${k.KM3?"#ffd23a":"var(--surface)"}" stroke="var(--ink)"/><text x="275" y="154" text-anchor="middle" font-weight="700" fill="#1d1d1d">KM3 · Δ</text><path d="M116 178 H195 V160 M195 178 H275 V160" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"/><text x="160" y="196" fill="var(--muted)">U2 V2 W2 chiqishlari</text></g>`;}
+ // tok grafigi
+ const R=MT.sch==="rev",gx=160,gy=R?126:10,gw=180,gh=R?88:110;s+=`<rect x="${gx}" y="${gy}" width="${gw}" height="${gh}" rx="4" fill="var(--surface-2)" stroke="var(--line)"/><text x="${gx+6}" y="${gy+13}" font-size="9" font-weight="700" fill="var(--ink)">Tok, ×I nom: ${fmt(MT.I||0,1)}</text>`;
+ const maxI=7;[1,3,5,7].forEach(v=>{const yy=gy+gh-6-(v/maxI)*(gh-24);s+=`<line x1="${gx+4}" y1="${yy}" x2="${gx+gw-4}" y2="${yy}" stroke="var(--line)"/><text x="${gx+gw-6}" y="${yy-2}" text-anchor="end" font-size="8" fill="var(--muted)">${v}</text>`;});
+ if(MT.hist.length>1)s+=`<polyline points="${MT.hist.map((v,i)=>`${gx+4+i*(gw-8)/119},${gy+gh-6-Math.min(maxI,v)/maxI*(gh-24)}`).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="2"/>`;
+ if(MT.sch!=="yd")s+=`<text x="160" y="${R?226:140}" font-size="9.5" fill="var(--ink)">Aylanish: ${Math.round(MT.w*100)}% ${MT.w>0.05?(MT.dir<0?"↺ orqaga":"↻ oldinga"):"· to'xtagan"}</text>`;
+ else s+=`<text x="160" y="214" font-size="9.5" fill="var(--ink)">Aylanish: ${Math.round(MT.w*100)}% · ${MT.mode||"to'xtagan"}</text>`;
+ return s;
+}
+function mtSVG(){const lad=ladderSVG(292);return `<svg viewBox="0 0 360 ${292+lad.h+6}" width="100%" style="max-width:520px;display:block;margin:auto" role="img" aria-label="Dvigatel boshqaruv sxemasi">${powerSVG()}<line x1="10" y1="232" x2="350" y2="232" stroke="var(--line)"/><text x="20" y="250" font-size="9" font-weight="700" fill="var(--ink)">Boshqaruv zanjiri (tugmalarni bosing)</text>${lad.s}</svg>`;}
+function mtHTML(){
+ const tabs=[["dol","To'g'ri pusk"],["rev","Reversiv"],["yd","Yulduz-uchburchak"]];
+ return `<div class="labctl"><div class="seg">${tabs.map(([k,n])=>`<button class="mbtn" data-msch="${k}" aria-pressed="${MT.sch===k}">${n}</button>`).join("")}</div>
+ <div class="chips"><button class="chip pusk" data-mb="SB2">Pusk${MT.sch==="rev"?" ↻":""}</button>${MT.sch==="rev"?`<button class="chip pusk" data-mb="SB3">Orqaga ↺</button>`:""}<button class="chip stop" data-mb="SB1">Stop</button><button class="chip" data-mt="load" aria-pressed="${MT.load}">Ortiqcha yuklama</button>${MT.sch!=="dol"?`<button class="chip" data-mt="lock" aria-pressed="${!MT.lock}">${MT.lock?"Blokirovkani olib tashlash":"Blokirovkani qaytarish"}</button>`:""}<button class="chip" data-mt="reset">Tiklash</button></div></div>
+ <div class="labsvg" id="mtSvg">${mtSVG()}</div><div class="lablog" id="mtLog">${MT.log.map(x=>`<div class="${x.l}">${esc(x.t)}</div>`).join("")||`<div class="muted">${MT.sch==="dol"?"Pusk bosing: KM1 g'altagi tortadi va o'z kontakti bilan o'zini ushlab qoladi. Stop zanjirni uzadi.":MT.sch==="rev"?"Oldinga ishlayotganda Orqaga bosing: blokirovka (KM1 ning ochiq kontakti) KM2 ni yoqtirmaydi. Avval Stop.":"Pusk: avval yulduzda (tok 3 marta kam), 3 s dan keyin KT uchburchakka o'tkazadi."}</div>`}</div>`;
+}
+function mtPress(tag){MT.btn[tag]=true;solveLadder();if(MT.qf){if(tag==="SB3"&&MT.coils.KM1&&MT.lock&&MT.sch==="rev")mtLog("Blokirovka: KM1 yoqiq turganda KM2 yoqilmaydi. Avval Stop bosing.","warn");}setTimeout(()=>{MT.btn[tag]=false;},350);}
+function labTick(dt){if($("#p-lab").hidden)return;if(LAB==="ps")psTick(dt);if(LAB==="rz")rzTick(dt);if(LAB==="mt")mtTick(dt);
+ labT=(labT||0)+1;if(labT%2===0)labRefresh();}
+let labT=0;
+function labRefresh(){if(LAB==="ps"){const e=$("#psSvg");if(e)e.innerHTML=psSVG();const l=$("#psLog");if(l)l.innerHTML=PS.log.map(x=>`<div class="${x.l}">${esc(x.t)}</div>`).join("")||l.innerHTML;}
+ if(LAB==="rz"&&RZ.fault){renderLab();}
+ if(LAB==="mt"){const e=$("#mtSvg");if(e)e.innerHTML=mtSVG();const l=$("#mtLog");if(l&&MT.log.length)l.innerHTML=MT.log.map(x=>`<div class="${x.l}">${esc(x.t)}</div>`).join("");}}
+function renderLab(){const box=$("#labBox");if(!box)return;
+ document.querySelectorAll("[data-lab]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lab===LAB?"true":"false"));
+ box.innerHTML=LAB==="ps"?psHTML():LAB==="rz"?rzHTML():mtHTML();}
+
+/* ================= TIL (UZ / RU) ================= */
+let LANG="uz";try{LANG=localStorage.getItem("shitlab-lang")==="ru"?"ru":"uz";}catch(_){}
+const I18PH={"tushuntirish matnlarini ko'rsatish": "Показывать пояснения", "yig'ilgan shitning virtual ko'rinishi": "Виртуальный вид собранного щита", "vaqt-tok egri chiziqlari (selektivlik)": "Время-токовые характеристики (селективность)", "vaqt-tok grafigi: jonli ish nuqtasi": "Время-токовая: рабочая точка онлайн", "vaqt-tok egri chiziqlari": "Время-токовые характеристики", "hodisalar va ogohlantirishlar": "События и предупреждения", "internetsiz hisob yordamchisi": "Офлайн-помощник расчёта", "lokal hisob yordamchisi": "Локальный помощник расчёта", "boshqa odam yuborgan loyihani qo'shish": "Добавить проект, присланный другим", "narxlar (taxminiy, o'zgartirish mumkin)": "Цены (ориентировочные, можно менять)", "narxlarni asl holiga qaytarish": "Сбросить цены", "olib tashlash uchun shu yerga tashlang": "Перетащите сюда, чтобы удалить", "simlarni uzib, qaytadan ulash (mashq)": "Отключить и переподключить провода (упражнение)", "boshqaruv zanjiri (tugmalarni bosing)": "Цепь управления (нажимайте кнопки)", "qatorlar va modullarni o'zingiz kiritasiz": "Ряды и модули вводите сами", "belgilangan qurilma shitga qo'yiladi": "Отмеченное устройство ставится в щит", "qator, modul, o'lchamni kiriting": "введите ряды, модули, размер", "shchuplarni nuqtalarga qo'ying": "Поставьте щупы на точки", "guruhlar qo'shilgach grafik chiziladi.": "График появится после добавления групп.", "avtomatik zaxiraga o'tish": "Автоматический ввод резерва", "impuls kuchlanishdan himoya qurilmasi": "Устройство защиты от импульсных перенапряжений", "impuls kuchlanishdan himoya": "Защита от импульсных перенапряжений", "ulanishlarini o'zgartirish": "— изменить подключения", "simlar qayerga ulanadi": "куда подключаются провода", "rubilnikni yoqish yoki o'chirish": "Включить или отключить рубильник", "guruhni ochish yoki yopish": "Развернуть или свернуть группу", "eshikni ochish / yopish": "Открыть / закрыть дверь", "tasdiqlash va tekshirish": "Подтвердить и проверить", "tekshirish va baholash": "Проверить и оценить", "hammasini ulashish": "Поделиться всеми", "tarixni tozalash": "Очистить историю", "natijalar tarixi": "История результатов", "ustozga yuborish": "Отправить преподавателю", "o'quvchi ismi": "Имя ученика", "ism familiya": "Имя Фамилия", "o'quv va imtihon": "Обучение и экзамен", "nazariy test": "Теоретический тест", "xato topish": "Поиск ошибок", "murakkab sxemalar": "Сложные схемы", "murakkab": "Сложный", "rele himoyasi sxemasi": "Схема релейной защиты", "rele himoyasi": "Релейная защита", "himoya tavsifnomalari": "Характеристики защит", "sozlash qiymatlari": "Уставки", "tavsiya etilgan ta": "Рекомендуемый ТТ", "tok transformatori": "Трансформатор тока", "rele toklari": "Токи реле", "mtz sezgirligi": "Чувствительность МТЗ", "to sezgirligi": "Чувствительность ТО", "mtz vaqti": "Время МТЗ", "maks. ish toki": "Макс. рабочий ток", "nominal tok": "Номинальный ток", "tok otsechkasi": "Токовая отсечка", "fider avtomati": "Фидерный автомат", "kechikishi": "задержка", "qisqa kechikish": "короткая задержка", "podstansiya sxemasi": "схема подстанции", "podstansiya": "Подстанция", "transformator": "Трансформатор", "yuklanishi": "загрузка", "seksiya": "секция", "avtomatik qaytish": "автовозврат", "normal sxema": "Нормальная схема", "kirishni tiklash": "ввод восстановить", "kirishni o'chirish": "ввод отключить", "dvigatel boshqaruv sxemasi": "Схема управления двигателем", "kuch zanjiri": "Силовая цепь", "kk issiqlik relesi": "KK тепловое реле", "issiqlik relesi": "тепловое реле", "to'g'ri pusk": "Прямой пуск", "reversiv": "Реверсивный", "yulduz-uchburchak": "Звезда-треугольник", "uchburchak": "треугольник", "yulduz": "звезда", "blokirovkani olib tashlash": "Убрать блокировку", "blokirovkani qaytarish": "Вернуть блокировку", "almashadi": "меняются местами", "aylanish": "Вращение", "to'xtagan": "остановлен", "oldinga": "вперёд", "orqaga": "назад", "pusk": "Пуск", "tugmasi": "кнопка", "chiqishlari": "выводы", "kabel boshi": "начало кабеля", "fider oxiri": "конец фидера", "shinalar": "шины", "kirishi": "ввод", "keltirilgan": "приведённый", "tomonda": "сторона", "da qt": ": КЗ", "shit turi va o'lchami": "Тип и размер щита", "shit qanday tanlanadi": "Как выбрать щит", "plastik, devorga": "Пластиковый, навесной", "metall, devorga": "Металлический, навесной", "metall, montaj panelli": "Металлический, с монтажной панелью", "o'z o'lchamim": "Свой размер", "qatorlar soni": "Число рядов", "qatordagi modullar": "Модулей в ряду", "eni × bo'yi × chuqurligi, mm": "Ширина × высота × глубина, мм", "kirish qurilmalari": "Вводные устройства", "yuklama uzgich (rubilnik)": "Выключатель нагрузки (рубильник)", "yuklama uzgich": "Выключатель нагрузки", "elektr hisoblagich": "Электросчётчик", "kirish avtomati": "Вводной автомат", "kuchlanish relesi": "Реле напряжения", "faza indikator lampalari": "Лампы индикации фаз", "faza indikator lampasi": "Лампа индикации фаз", "faza nazorat relesi": "Реле контроля фаз", "vaqt relesi (taymer)": "Реле времени (таймер)", "vaqt relesi": "Реле времени", "foto rele": "Фотореле", "tarmoq va kirish kabeli": "Сеть и вводной кабель", "yerga ulash tizimi": "Система заземления", "tarmoq qarshiligi": "Сопротивление сети", "ruxsat δu (jami)": "Допустимое ΔU (всего)", "kabel materiali": "Материал кабеля", "tomirlar soni": "Число жил", "yotqizish": "Прокладка", "ochiq, havoda": "Открыто, по воздуху", "truba / devor ichida": "В трубе / в стене", "uzunlik": "Длина", "shinalar va korpus": "Шины и корпус", "pen ajratish": "Разделение PEN", "pen ulanishi": "Подключение PEN", "peremichka yo'q": "Перемычки нет", "peremichka": "перемычка", "shit korpusi": "Корпус щита", "pe shinaga ulangan": "Подключён к шине PE", "avval shit turini tanlang": "Сначала выберите тип щита", "shit tanlashga o'tish": "Перейти к выбору щита", "namunani yuklash": "Загрузить пример", "hammasini tozalash": "Очистить всё", "guruh qo'shish": "Добавить группу", "shit hali bo'sh": "Щит пока пуст", "pue bo'yicha tekshiruv": "Проверка по ПУЭ", "hisob jadvali": "Расчётная таблица", "siz qo'ygan": "Ваш выбор", "fazalar bo'yicha yuklama": "Нагрузка по фазам", "formulalar": "Формулы", "tayyor ssenariylar": "Готовые сценарии", "ortiqcha yuklama": "Перегрузка", "qisqa tutashuv": "Короткое замыкание", "korpusga tok o'tishi": "Пробой на корпус", "korpusga tok": "Ток на корпусе", "nol uzilishi": "Обрыв нуля", "kuchlanish sakrashi": "Скачок напряжения", "faza uzilishi": "Обрыв фазы", "tarmoq o'chdi": "Сеть отключилась", "tarmoqni qaytarish": "Вернуть сеть", "joylashtirish": "Размещение", "sim ulash": "Подключение проводов", "issiqlik kamerasi": "Тепловизор", "o'lchov asboblari": "Измерительные приборы", "butun shit": "Весь щит", "hammasini tiklash": "Сбросить всё", "ovoz: yoqiq": "Звук: вкл", "ovoz: o'chiq": "Звук: выкл", "kunduz": "День", "tun": "Ночь", "kirishda nol (n) uzildi": "На вводе оборван ноль (N)", "simulyatsiya vaqti": "Время симуляции", "kuchlanish": "напряжение", "me'yorda ishlayapti.": "Работает нормально.", "me'yorda": "Норма", "kuchlanish yo'q": "Нет напряжения", "yuqori, xavfli": "Высокое, опасно", "past": "Низкое", "eng issiq nuqta": "Самая горячая точка", "issiqlik ajratgich": "Тепловой расцепитель", "kabel harorati": "Температура кабеля", "kabel chidamliligi": "стойкость кабеля", "qt toki": "ток КЗ", "tok, a (logarifmik)": "Ток, А (логарифм.)", "o'chish vaqti, s": "Время отключения, с", "nima uchun kerak": "Зачем нужен", "qanday tanlanadi": "Как выбирается", "nima uchun": "Зачем", "manba": "Источник", "ma'lumotnomadan qidirish": "Поиск по справочнику", "qidirish: uzo, kontaktor, kabel…": "Поиск: УЗО, контактор, кабель…", "savolingizni yozing…": "Напишите вопрос…", "yordamchi": "Помощник", "yuborish": "Отправить", "to'xtatish": "Остановить", "loyihalar": "Проекты", "yangi loyiha:": "Новый проект:", "bo'sh loyiha": "Пустой проект", "uy namunasi": "Пример: дом", "do'kon namunasi": "Пример: магазин", "sex namunasi": "Пример: цех", "koddan qo'shish": "Добавить из кода", "fayldan": "Из файла", "faylga": "В файл", "nusxa": "Копия", "ulashish": "Поделиться", "ochish": "Открыть", "bekor qilish": "Отмена", "loyiha nomi": "Название проекта", "bo'limlar": "Разделы", "shit sxemasi": "Схема щита", "ko'rinish rejimi": "Режим просмотра", "kichraytirish": "Уменьшить", "kattalashtirish": "Увеличить", "hujjat ma'lumotlari": "Данные документа", "obyekt nomi": "Название объекта", "manzil": "Адрес", "loyihachi": "Проектировщик", "shahar, ko'cha": "Город, улица", "bir chiziqli sxema": "Однолинейная схема", "pdf yaratish": "Создать PDF", "excel yaratish": "Создать Excel", "eshik uchun jadval": "Таблица для двери", "jadvalni pdf qilish": "Таблицу в PDF", "montaj ishlari": "Монтажные работы", "pozitsiya": "позиций", "varaq": "лист", "materiallar": "материалы", "smeta": "Смета", "markirovka to'plami": "Набор маркировки", "taroq shina": "Гребенчатая шина", "kabel kanal": "Кабель-канал", "din-reyka": "DIN-рейка", "ншви uchliklari": "Наконечники НШВИ", "ншви uchliklar": "Наконечники НШВИ", "ншви uchlik": "Наконечник НШВИ", "mis kabel": "Медный кабель", "alyuminiy kabel": "Алюминиевый кабель", "dona": "шт", "klemma": "клемм", "korpus": "Корпус", "hisoblagich": "Счётчик", "kontaktor modulli": "Контактор модульный", "vanna / nam xona rozetkasi": "Розетка ванной / влажного помещения", "kuch jihozi": "Силовое оборудование", "faza soni": "Число фаз", "himoya apparati": "Аппарат защиты", "avtomat + uzo": "Автомат + УЗО", "xarakt.": "Характ.", "xarakteristika": "Характеристика", "qutblar": "Полюса", "nominal tok in": "Номинальный ток In", "avtomat uzadigan sim": "Провод, который разрывает автомат", "avtomat uzadi": "Автомат разрывает", "faza simini": "Фазный провод", "nol simini": "Нулевой провод", "faza simi": "Фазный провод", "nol simi": "Нулевой провод", "n sim ulanadi": "N-провод подключён к", "pe sim ulanadi": "PE-провод подключён к", "n shinaga": "на шину N", "pe shinaga": "на шину PE", "uzo n chiqishiga": "на выход N УЗО", "uzo chiqishiga": "на выход УЗО", "faza sim rangi": "Цвет фазного провода", "faza rangi": "Цвет фазы", "n sim rangi": "Цвет провода N", "pe sim rangi": "Цвет провода PE", "n rangi": "Цвет N", "pe rangi": "Цвет PE", "jigarrang": "Коричневый", "qora": "Чёрный", "kulrang": "Серый", "ko'k": "Синий", "sariq-yashil": "Жёлто-зелёный", "qo'yilmagan": "Не установлены", "qo'yilgan": "Установлены", "avtomatika": "Автоматика", "boshqaruv": "Управление", "kontaktor (pusk/stop tugmasi)": "Контактор (кнопки Пуск/Стоп)", "kontaktor + vaqt relesi": "Контактор + реле времени", "kontaktor + foto rele": "Контактор + фотореле", "kabel kesimi": "Сечение кабеля", "tasdiqlash": "Подтвердить", "to'g'risi": "Правильно", "hozir": "сейчас", "guruh nomi": "Название группы", "guruhni o'chirish": "Удалить группу", "guruhlar": "Группы", "guruh": "Группа", "yoritish": "Освещение", "rozetkalar": "Розетки", "rozetka": "Розетка", "zal": "зал", "yotoqxona": "спальня", "oshxona rozetkalari": "Розетки кухни", "oshxona": "Кухня", "kir yuvish mashinasi": "Стиральная машина", "kir yuvish": "Стиральная", "mashinasi": "машина", "konditsioner": "Кондиционер", "hovli yoritishi": "Освещение двора", "hovli": "Двор", "elektr plita": "Электроплита", "nasos": "Насос", "kompressor": "Компрессор", "ventilyatsiya": "Вентиляция", "tokarlik stanogi": "Токарный станок", "payvandlash rozetkasi": "Сварочная розетка", "payvandlash": "Сварка", "sex yoritishi": "Освещение цеха", "sex rozetkalari": "Розетки цеха", "maishiy xona": "Бытовка", "savdo zali yoritishi": "Освещение торгового зала", "savdo zali rozetkalari": "Розетки торгового зала", "savdo zali": "Торговый зал", "vitrina yoritishi": "Освещение витрин", "sovutgich vitrinalar": "Холодильные витрины", "peshtaxta reklamasi": "Реклама над прилавком", "kassa va kompyuterlar": "Кассы и компьютеры", "issiq havo pardasi": "Тепловая завеса", "isitish": "Отопление", "lift": "Лифт", "kuch": "Силовая", "sex / ustaxona": "Цех / мастерская", "sex": "Цех", "do'kon": "Магазин", "uy": "Дом", "xonali uy": "-комнатный дом", "mening shitim": "Мой щит", "loyiha": "Проект", "hisobiy quvvat": "Расчётная мощность", "kirish toki": "Ток ввода", "kirish kabeli": "Вводной кабель", "tanlanmagan": "не выбран", "xatolar": "Ошибки", "diqqat": "Внимание", "xato bor": "Есть ошибка", "to'g'ri": "Верно", "ma'lumot": "Справка", "xato": "Ошибка", "yoniq": "Вкл", "o'chgan": "Откл", "pue tekshiruvi": "Проверка ПУЭ", "ma'lumotnoma": "Справочник", "savol-javob": "Вопрос-ответ", "o'quv": "Обучение", "hujjatlar": "Документы", "simulyatsiya": "Симуляция", "tekshiruv": "Проверка", "sxema": "Схема", "shit": "Щит", "yana": "Ещё", "hammasi": "Все", "oddiy": "Обычный", "asl": "Исходный", "pauza": "Пауза", "tiklash": "Сброс", "yopish": "Закрыть", "boshlash": "Начать", "yig'ish": "Сборка", "test": "Тест", "savol": "Вопрос", "vazifa": "Задание", "baho": "Оценка", "ball": "Балл", "sana": "Дата", "holat": "Состояние", "tavsiya": "Рекомендация", "ruxsat": "доп.", "hisob": "расчёт", "kirish": "ввод", "yuklama": "Нагрузка", "turi": "Тип", "faza": "Фаза", "kabel": "Кабель", "mis": "Медь", "alyuminiy": "Алюминий", "kesim": "Сечение", "tomir": "Жила", "tomirlar": "жилы", "ulanish": "Подключение", "avtomat": "Автомат", "difavtomat": "Дифавтомат", "kontaktor": "Контактор", "uzo": "УЗО", "pue": "ПУЭ", "qt": "КЗ", "mtz": "МТЗ", "material": "Материал", "metall": "Металл", "plastik": "Пластик", "mis (cu)": "Медь (Cu)", "alyuminiy (al)": "Алюминий (Al)", "yo'q": "нет", "ulanmagan": "Не подключён", "himoya": "Защита", "rele": "Реле", "dvigatel": "Двигатель", "multimetr": "Мультиметр", "megommetr": "Мегаомметр", "tok kleshi": "Токоизмерительные клещи", "indikator otvertka": "Индикаторная отвёртка", "elektr kuchlanishi": "Электрическое напряжение", "ehtiyot bo'ling!": "Осторожно!", "kuchlanish ostida": "Под напряжением", "aylantirish": "Вращать", "old tomondan": "Спереди", "yon tomondan": "Сбоку", "pe shina": "Шина PE", "n shina": "Шина N", "kanal orqali": "через канал", "taroq shinadan": "от гребёнки", "taroq": "гребёнка", "pe simi": "провод PE", "n simi": "провод N", "shinada": "на шине", "chiqish": "выход", "jihoz korpusi": "корпус оборудования", "jihoz": "Оборудование", "o'chirish": "Отключить", "tekshirish": "Проверить", "foto rele: kunduzi o'chiq.": "Фотореле: днём отключено.", "uzo o'chgan.": "УЗО отключилось.", "avtomat o'chgan.": "Автомат отключился.", "kirish avtomati o'chgan.": "Вводной автомат отключился.", "avtomat sekin qizimoqda.": "Автомат медленно нагревается.", "tarmoqda kuchlanish yo'q.": "В сети нет напряжения.", "kuchlanish relesi o'chirgan.": "Отключено реле напряжения.", "faza nazorat relesi o'chirgan.": "Отключено реле контроля фаз.", "avval guruh qo'shing.": "Сначала добавьте группу.", "hozir bu guruh to'g'ri.": "Сейчас эта группа верна.", "qf o'chdi": "QF отключён", "o'chdi": "отключён", "yoqiq": "вкл", "o'chiq": "откл", "qoniqarsiz": "неудовлетворительно", "qoniqarli": "удовлетворительно", "yaxshi": "хорошо", "a'lo": "отлично", "natija": "Результат", "imtihon": "Экзамен", "ta xato": "ошибок", "shitda": "В щите", "bor, toping": ", найдите", "o'quvchi": "Ученик", "vaqt": "время", "faqat tunda": "Только ночью", "yuklama ulanganda": "При подключении нагрузки", "liniya o'chirilganda": "При отключённой линии", "davom etmoqda": "идёт", "taymer": "Таймер", "ko'cha chirog'i": "Уличный фонарь", "vanna": "Ванная", "nam joy": "влажное место", "nima": "Что", "kirish qismi": "Вводная часть", "qurilmalar spetsifikatsiyasi": "Спецификация устройств", "spetsifikatsiya": "Спецификация", "belgisi": "Обозначение", "nomi": "Наименование", "turi, parametri": "Тип, параметры", "birlik": "Ед.", "soni": "Кол-во", "narx": "Цена", "summa": "Сумма", "jami": "Итого", "montaj": "монтаж", "varaqlar": "Листов", "elektr shiti": "Электрощит", "guruhlar jadvali": "Таблица групп", "so'm": "сум", "kvt·soat": "кВт·ч", "kvt": "кВт", "kv": "кВ", "qator": "ряд", "modul": "мод.", "band": "занято", "mm": "мм", "seksiyada": "секции", "avtomatik o'chirgich": "Автоматический выключатель", "sim ranglari": "Цвета проводов", "rozetkalari": "розетки", "yoritishi": "освещение", "ochiq": "открыто", "xona": "комната", "plita": "плита", "stanogi": "станок", "pardasi": "завеса", "rozetkasi": "розетка", "reklamasi": "реклама", "issiq havo": "Тёплый воздух", "vitrinalar": "витрины", "yerga ulash": "заземление", "kompyuterlar": "компьютеры", "yig'ilgan": "Собранный", "montaj madaniyati": "Культура монтажа", "markirovka": "маркировка", "jadvallari": "таблицы", "fider": "фидер", "shina": "шина", "maks": "макс", "balansi": "баланс", "yoki": "или", "va": "и", "bo'sh": "Пусто", "n sim": "провод N", "pe sim": "провод PE", "imp": "имп", "o'z": "зап", "ish": "раб", "imtihon boshlandi": "Экзамен начат", "kodni o'qib bo'lmadi": "Не удалось прочитать код", "loyiha qo'shildi": "Проект добавлен", "nusxa olindi": "Копия создана"};
+const I18FL={"Shit turini tanlang, qurilmalarni o'zingiz yig'ing: dastur PUE bo'yicha tekshiradi, ishlatib ko'rsatadi va savollarga javob beradi": "Выберите щит и соберите его сами: программа проверит по ПУЭ, покажет в работе и ответит на вопросы", "Ish shu yerdan boshlanadi: shit (korpus) turini tanlang. Shundan keyin DIN-reykalar paydo bo'ladi va qurilmalarni joylashtirasiz.": "Начните здесь: выберите тип щита (корпуса). Затем появятся DIN-рейки, и вы разместите устройства.", "Butun shitni qo'lda uzish uchun. Qisqa tutashuvdan himoya qilmaydi.": "Для ручного отключения всего щита. От КЗ не защищает.", "Iste'mol qilingan energiyani (kVt·soat) hisoblaydi.": "Учитывает потреблённую энергию (кВт·ч).", "Butun shitni o'ta yuklanish va qisqa tutashuvdan himoya qiladi.": "Защищает весь щит от перегрузки и КЗ.", "Chaqmoq va tarmoqdagi sakrashlarda impulsni PE ga o'tkazadi.": "При молнии и скачках в сети отводит импульс на PE.", "Kuchlanish # V dan past yoki # V dan yuqori bo'lsa, shitni o'chiradi.": "Отключает щит, если напряжение ниже # В или выше # В.", "Har bir fazada kuchlanish borligini ko'rsatadi.": "Показывает наличие напряжения на каждой фазе.", "АВР · Avtomatik zaxiraga o'tish (АВР) + generator": "АВР · Автоматический ввод резерва + генератор", "Tarmoq o'chsa generatorni yoqib, yuklamani unga o'tkazadi.": "При пропадании сети запускает генератор и переводит на него нагрузку.", "#-bo'limda shit (korpus) turini va o'lchamini tanlang. Shundan keyin bu yerda hamma narsa ko'rinadi.": "В разделе # выберите тип и размер щита. После этого здесь всё появится.", "Har bir guruh: himoya apparati, kabel, ulanish va xohlasangiz avtomatika (kontaktor, taymer, foto rele, faza nazorat relesi). \"Namunani yuklash\" tayyor uy shitini ataylab qoldirilgan xatolar bilan ochadi.": "Каждая группа: аппарат защиты, кабель, подключение и при желании автоматика (контактор, таймер, фотореле, реле контроля фаз). «Загрузить пример» открывает готовый щит дома с намеренными ошибками.", "\"+ Guruh qo'shish\" tugmasi bilan birinchi guruhni (masalan, yoritish) qo'shing yoki tayyor namunani yuklang.": "Кнопкой «+ Добавить группу» добавьте первую группу (например, освещение) или загрузите пример.", "Shit to'g'ri yig'ilgan: tekshirilgan qoidalar bo'yicha xato topilmadi.": "Щит собран верно: по проверенным правилам ошибок нет.", "Har bir avtomatning o'chish zonasi (to'q rangli maydon), kabelning qisqa vaqtli chidamliligi (shtrix chiziq) va liniya oxiridagi QT toki (tik chiziq). Sichqoncha yoki barmoqni grafik ustida yuriting: shu tokda kim qancha vaqtda o'chishi ko'rinadi.": "Зона срабатывания каждого автомата (тёмная область), кратковременная стойкость кабеля (штрих) и ток КЗ в конце линии (вертикаль). Проведите пальцем по графику — видно, кто и за сколько отключится при этом токе.", "#F: I = P / (# · cosφ); #F: I = P / (√# · # · cosφ)": "#Ф: I = P / (# · cosφ); #Ф: I = P / (√# · # · cosφ)", "Ruxsat etilgan toklar PUE-# #.#–#.# jadvallari bo'yicha, +# °C uchun olingan. Bu o'quv va dastlabki hisob vositasi: haqiqiy obyekt loyihasini litsenziyali muhandis tekshirishi shart.": "Допустимые токи по таблицам ПУЭ-# #.#–#.#, для +# °C. Это учебный и предварительный расчёт: проект реального объекта должен проверить лицензированный инженер.", "Sxema siz kiritgan ulanishlar bo'yicha chiziladi. KM — kontaktor, KT — vaqt relesi, BL — foto rele, KV — kuchlanish yoki faza nazorat relesi.": "Схема строится по вашим подключениям. KM — контактор, KT — реле времени, BL — фотореле, KV — реле напряжения или контроля фаз.", "Avtomat va boshqa qurilmalar dastagini bosib yoqing yoki o'chiring. Qurilma nomini (QF…, KM…, PV…) bossangiz, u haqidagi ma'lumot yoki ulanishlar oynasi ochiladi. Kabel rangi harorat bilan o'zgaradi: kulrang me'yorda, sariq # °C, to'q sariq # °C (chegara), qizil # °C (izolyatsiya eriydi), qora — kuygan.": "Нажимайте рычаги автоматов, чтобы включить или отключить. Нажатие на имя (QF…, KM…, PV…) открывает справку или подключения. Цвет кабеля зависит от температуры: серый — норма, жёлтый # °C, оранжевый # °C (предел), красный # °C (плавится изоляция), чёрный — сгорел.", "Nuqta guruhning hozirgi tokini va avtomat qancha vaqtda o'chishini ko'rsatadi. Yuklamani oshirsangiz, nuqta o'ngga va pastga siljiydi.": "Точка показывает текущий ток группы и время отключения автомата. При росте нагрузки точка смещается вправо и вниз.", "Hozircha hodisa yo'q. Ssenariyni tanlang yoki yuklamani oshiring.": "Событий пока нет. Выберите сценарий или увеличьте нагрузку.", "Vaqt tezlashtirilgan: haqiqatda daqiqalar davom etadigan qizish bu yerda soniyalarda ko'rsatiladi.": "Время ускорено: нагрев, длящийся минуты, показан за секунды.", "DIN-reykali quti: ichiga avtomatlar, UZO, hisoblagich va boshqa modulli qurilmalar o'rnatiladi. Modul — # mm kenglik birligi.": "Корпус с DIN-рейкой для автоматов, УЗО, счётчика и других модульных устройств. Модуль — единица ширины # мм.", "Qurilmalarni bir joyga yig'adi, tok o'tkazuvchi qismlarni yopadi, kabellarni tartibli kiritadi.": "Собирает устройства в одном месте, закрывает токоведущие части, упорядочивает ввод кабелей.", "Modullar soni = barcha qurilmalar modullari yig'indisi + #% zaxira. Uy uchun ichki joyda IP#–IP#, yerto'la, ko'cha va nam joylar uchun IP# va undan yuqori. Avtomatika (kontaktor, rele) ko'p bo'lsa, montaj panelli ЩМП qulay.": "Число модулей = сумма модулей всех устройств + #% запаса. Для дома внутри IP#–IP#, для подвала, улицы и влажных мест IP# и выше. При большой автоматике удобен ЩМП с монтажной панелью.", "Metall korpus va eshik PE shinaga ulanishi shart. Plastik korpus ikki qavat izolyatsiyaga ega.": "Металлический корпус и дверь обязательно подключаются к шине PE. Пластиковый корпус имеет двойную изоляцию.", "Ichida ikki ajratgich bor: issiqlik (bimetall plastina) va elektromagnit (g'altak). Bimetall o'ta yuklanishda sekin qizib egiladi va o'chiradi. G'altak qisqa tutashuvda sekundning yuzdan bir ulushida o'chiradi.": "Внутри два расцепителя: тепловой (биметалл) и электромагнитный (катушка). Биметалл при перегрузке медленно нагревается, изгибается и отключает. Катушка при КЗ отключает за сотые доли секунды.", "Avtomat jihozni emas, KABELNI himoya qiladi: kabel qizib yonib ketishidan oldin tokni uzadi.": "Автомат защищает не прибор, а КАБЕЛЬ: отключает ток раньше, чем кабель перегреется и загорится.", "Uch shart: I hisob ≤ In ≤ I ruxsat (kabel). Mis kabel uchun odatiy juftlar: # mm² → # A, # mm² → # A, # mm² → # A, # mm² → # A, # mm² → #–# A. Xarakteristika: B (#–#·In) — uzun liniya va yoritish; C (#–#·In) — uy va rozetkalar; D (#–#·In) — dvigatel, payvandlash apparati, katta ishga tushish toki.": "Три условия: I расч ≤ In ≤ I доп (кабель). Типичные пары для меди: # мм² → # А, # мм² → # А, # мм² → # А, # мм² → # А, # мм² → #–# А. Характеристика: B (#–#·In) — длинные линии и освещение; C (#–#·In) — дом и розетки; D (#–#·In) — двигатели, сварка, большой пусковой ток.", "Uch shart: I hisob ≤ In ≤ I ruxsat (kabel). Mis kabel uchun odatiy juftlar: # mm² → # A, # mm² → # A, # mm² → # A, # mm² → # A, # mm² → #–# A.": "Три условия: I расч ≤ In ≤ I доп (кабель). Типичные пары для меди: # мм² → # А, # мм² → # А, # мм² → # А, # мм² → # А, # мм² → #–# А.", "Xarakteristika: B (#–#·In) — uzun liniya va yoritish; C (#–#·In) — uy va rozetkalar; D (#–#·In) — dvigatel, payvandlash apparati, katta ishga tushish toki.": "Характеристика: B (#–#·In) — длинные линии и освещение; C (#–#·In) — дом и розетки; D (#–#·In) — двигатели, сварка, большой пусковой ток.", "Avtomatni \"o'chib qolmasin\" deb kattalashtirish eng xavfli xato: kabel qiziydi, avtomat esa o'chmaydi. Avtomat faza simini uzishi kerak, nolni emas.": "Ставить автомат больше, «чтобы не выбивало», — самая опасная ошибка: кабель греется, а автомат не отключает. Автомат должен разрывать фазу, а не ноль.", "Fazadan ketgan va noldan qaytgan tokni solishtiradi. Farq (sizish) IΔn dan oshsa, # s ichida o'chiradi.": "Сравнивает ток в фазе и в нуле. Если разница (утечка) больше IΔn, отключает за # с.", "Odamni tok urishidan va izolyatsiya eskirgan joyda yong'indan saqlaydi. O'ta yuklanish va qisqa tutashuvdan himoya qilmaydi, shuning uchun avtomat bilan birga qo'yiladi.": "Защищает человека от поражения током и от пожара при старой изоляции. От перегрузки и КЗ не защищает, поэтому ставится вместе с автоматом.", "IΔn: # mA — vanna va bolalar xonasi, # mA — rozetka guruhlari, #–# mA — yong'inga qarshi (kirishda). Nominal toki undan keyingi avtomatdan bir pog'ona katta. Turi: AC — oddiy yuklama, A — kir yuvish mashinasi, induksion plita, invertorli jihozlar.": "IΔn: # мА — ванная и детская, # мА — розеточные группы, #–# мА — противопожарное (на вводе). Номинал на ступень больше автомата после него. Тип: AC — обычная нагрузка, A — стиральная машина, индукционная плита, инверторная техника.", "Guruh N simi faqat shu UZO chiqishidan olinadi va boshqa guruh nollari bilan aralashmaydi, aks holda UZO o'z-o'zidan o'chadi. \"T\" test tugmasini oyda bir bosib tekshiring.": "N группы берётся только с выхода этого УЗО и не смешивается с нулями других групп, иначе УЗО будет ложно срабатывать. Раз в месяц нажимайте кнопку «Т».", "Avtomat va UZO bitta korpusda: o'ta yuklanish, qisqa tutashuv va sizish tokidan himoya qiladi.": "Автомат и УЗО в одном корпусе: защита от перегрузки, КЗ и тока утечки.", "Har bir guruhni alohida himoyalaydi: bitta guruhda sizish bo'lsa, faqat o'sha o'chadi. Joyni tejaydi.": "Защищает каждую группу отдельно: при утечке отключается только она. Экономит место.", "In — kabel bo'yicha (avtomat kabi), IΔn — # mA (rozetka), # mA (vanna). Xarakteristika odatda C, yoritish uchun B.": "In — по кабелю (как автомат), IΔn — # мА (розетки), # мА (ванная). Характеристика обычно C, для освещения B.", "Difavtomat orqali o'tgan N simi faqat uning N chiqishidan olinadi.": "N, прошедший через дифавтомат, берётся только с его выхода N.", "Butun shitni qo'lda, ko'rinadigan tarzda uzadigan kalit.": "Выключатель для ручного видимого отключения всего щита.", "Ta'mir va xizmat ko'rsatishda shitni xavfsiz o'chirish uchun.": "Для безопасного отключения щита при ремонте и обслуживании.", "Nominal toki kirish avtomatidan kam bo'lmasin. Uy shiti uchun odatda #P #–# A.": "Номинал не меньше вводного автомата. Для дома обычно #P #–# А.", "Himoya qilmaydi: qisqa tutashuvda o'chmaydi. Shuning uchun undan keyin kirish avtomati bo'lishi kerak.": "Не защищает: при КЗ не отключается. Поэтому после него нужен вводной автомат.", "Iste'mol qilingan energiyani kVt·soatda hisoblaydi. Qizil chiroq har impulsda miltillaydi (masalan, # imp = # kVt·soat), qancha tez miltillasa, quvvat shuncha katta.": "Учитывает энергию в кВт·ч. Красный светодиод мигает на каждый импульс (например, # имп = # кВт·ч): чем чаще, тем больше мощность.", "Hisob-kitob uchun, energiya ta'minoti tashkiloti talab qiladi.": "Для расчётов, требует энергоснабжающая организация.", "# fazali to'g'ridan-to'g'ri ulanadigan #(#) A yoki #(#) A. Aniqlik klassi # yoki #S. Ko'p tarifli bo'lsa, tungi tarifdan foydalanish mumkin.": "#-фазный прямого включения #(#) А или #(#) А. Класс точности # или #S. Многотарифный позволяет пользоваться ночным тарифом.", "Ulanish sxemasi va oldiga qo'yiladigan apparat mahalliy energiya ta'minoti talablariga bog'liq; plombalanadi.": "Схема подключения и аппарат перед ним зависят от требований местной энергокомпании; пломбируется.", "Impuls kuchlanishdan himoya qurilmasi (УЗИП, ОПН)": "Устройство защиты от импульсных перенапряжений (УЗИП, ОПН)", "Chaqmoq yoki tarmoqdagi kommutatsiya natijasidagi minglab voltli, mikrosekundlik impulsni PE (yer)ga o'tkazib yuboradi.": "Отводит на PE (землю) микросекундные импульсы в тысячи вольт от молнии или коммутаций в сети.", "Televizor, kompyuter, qozon platasi kabi elektronikani kuyishdan saqlaydi. Kuchlanish relesi bunga ulgurmaydi.": "Спасает электронику (телевизор, компьютер, плату котла) от выгорания. Реле напряжения на это не успевает.", "T# — havo liniyasi va chaqmoq qaytargich bo'lsa kirishda; T# — asosiy shitda (eng ko'p ishlatiladi), #–# kA; T# — sezgir jihoz yonida. Oldidan avtomat yoki saqlagich qo'yiladi.": "T# — на вводе при воздушной линии и молниеотводе; T# — в главном щите (самый частый), #–# кА; T# — возле чувствительной техники. Перед ним ставится автомат или предохранитель.", "PE to'g'ri ulanmasa ishlamaydi. Kartrij oynachasi qizil bo'lsa, almashtiriladi.": "Без правильного PE не работает. Если окошко картриджа красное — заменить.", "Fazadagi kuchlanishni doimiy o'lchaydi. Belgilangan chegaradan (masalan, #–# V) chiqsa, yuklamani uzadi, kuchlanish me'yorga qaytgach kechikish bilan qayta yoqadi.": "Постоянно измеряет напряжение фазы. При выходе за пределы (например, #–# В) отключает нагрузку и включает с задержкой после возврата в норму.", "TN-C-S da nol uzilganda bir fazada kuchlanish #–# V gacha ko'tarilib, jihozlarni kuydiradi. РН ularni saqlaydi. Past kuchlanishda muzlatgich kompressorini ham saqlaydi.": "В TN-C-S при обрыве нуля на одной фазе напряжение растёт до #–# В и сжигает технику. РН её спасает. При низком напряжении бережёт и компрессор холодильника.", "Tok bo'yicha kirish avtomatidan kam bo'lmasin (#/#/# A) yoki katta yuklamada kontaktor orqali ishlaydi. # fazali tarmoq uchun # fazali rele.": "По току не меньше вводного автомата (#/#/# А) или при большой нагрузке работает через контактор. Для #-фазной сети — #-фазное реле.", "Impulsdan himoya qilmaydi: u uchun УЗИП kerak. # fazali dvigatellar uchun faza nazorat relesi qulayroq.": "От импульсов не защищает: для этого нужен УЗИП. Для #-фазных двигателей удобнее реле контроля фаз.", "Shit eshigini ochmasdan qaysi faza yo'qligini bilish mumkin.": "Без открывания двери видно, какой фазы нет.", "Uch rangli (qizil, sariq, yashil) # modulli ЛС-# kabi. Kirish avtomatidan keyin ulanadi.": "Трёхцветные (красный, жёлтый, зелёный) на # модуль, типа ЛС-#. Подключаются после вводного автомата.", "Lampa o'chiq bo'lsa ham kuchlanish yo'q deb ishonmang: ish oldidan indikator bilan tekshiring.": "Даже если лампа не горит, не верьте, что напряжения нет: проверяйте индикатором перед работой.", "Asosiy tarmoq yo'qolsa, generatorni ishga tushiradi va yuklamani zaxira manbaga (II kirish) o'tkazadi. Tarmoq qaytgach, I kirishga qaytaradi.": "При пропадании основной сети запускает генератор и переводит нагрузку на резерв (ввод II). После возврата сети переключает обратно на ввод I.", "Nasos, qozon, sovutgich, server kabi to'xtab qolmasligi kerak bo'lgan jihozlar uchun.": "Для оборудования, которое не должно останавливаться: насос, котёл, холодильник, сервер.", "Ikki manba hech qachon birga ulanmasligi uchun mexanik va elektr blokirovka bo'lishi shart. Generator quvvati zaxiraga ulangan yuklamadan katta bo'lsin. O'tish kechikishi generatorning barqarorlashishiga yetarli bo'lsin.": "Обязательна механическая и электрическая блокировка, чтобы два источника никогда не соединились. Мощность генератора больше резервируемой нагрузки. Задержка переключения достаточна для стабилизации генератора.", "Generatorni АВР siz uyning rozetkasiga ulash ta'mirchilar uchun halokatli: tok tarmoqqa qaytadi.": "Подключать генератор в розетку без АВР смертельно опасно для ремонтников: ток уходит обратно в сеть.", "Elektromagnit kalit: g'altakka (A#–A#) kuchlanish berilsa, kuch kontaktlari yopiladi. Kichik signal bilan katta tokni yoqadi.": "Электромагнитный ключ: при подаче напряжения на катушку (A#–A#) замыкаются силовые контакты. Малым сигналом включает большой ток.", "Nasos, isitgich, ko'cha yoritishini tugma, taymer, foto rele yoki faza nazorat relesi orqali boshqarish uchun.": "Для управления насосом, обогревателем, уличным освещением от кнопки, таймера, фотореле или реле контроля фаз.", "Kontakt toki yuklama tokidan katta: AC-# (isitgich, yoritish) yoki AC-# (dvigatel) toifasi bo'yicha. Modulli #F # A, #F #–# A.": "Ток контактов больше тока нагрузки по категории AC-# (нагреватели, освещение) или AC-# (двигатели). Модульные #Ф # А, #Ф #–# А.", "Kontaktor himoya qilmaydi: oldida avtomat bo'lishi shart.": "Контактор не защищает: перед ним обязателен автомат.", "Belgilangan vaqtda yoki siklda kontaktor g'altagini yoqadi va o'chiradi.": "Включает и отключает катушку контактора по времени или циклу.", "Ventilyatsiya, sug'orish, suv isitgichni tungi tarifda yoqish, reklama yoritishi.": "Вентиляция, полив, водонагреватель по ночному тарифу, рекламная подсветка.", "Rejim: sutkalik, haftalik yoki sikl (yoqish/tanaffus). Kontakt toki kichik, shuning uchun yuklama kontaktor orqali ulanadi.": "Режим: суточный, недельный или цикл (работа/пауза). Ток контакта мал, поэтому нагрузка — через контактор.", "Simulyatsiyada sikl: # s yoqiq, # s tanaffus.": "В симуляции цикл: # с работа, # с пауза.", "Yorug'lik datchigi qorong'i tushganda yoritishni yoqadi, tong otganda o'chiradi.": "Датчик освещённости включает свет в сумерках и отключает на рассвете.", "Hovli, ko'cha va reklama yoritishini avtomatlashtirish.": "Автоматизация освещения двора, улицы и рекламы.", "Datchik shimol tomonga, chiroq nuri tushmaydigan joyga o'rnatiladi. Sezgirlik regulyatori bor. Katta yuklama kontaktor orqali.": "Датчик ставят на северную сторону, куда не падает свет фонаря. Есть регулятор чувствительности. Большая нагрузка — через контактор.", "Simulyatsiyada \"Kunduz/Tun\" tugmasi bilan sinab ko'ring.": "В симуляции проверьте кнопкой «День/Ночь».", "Uchala faza borligini, ketma-ketligini va nosimmetriyasini kuzatadi. Buzilsa kontaktorni uzadi.": "Контролирует наличие, порядок и перекос трёх фаз. При нарушении отключает контактор.", "# fazali dvigatel bitta fazasiz qolsa, ikki fazada ishlab, tok # baravar oshadi va cho'lg'am kuyadi. Faza ketma-ketligi noto'g'ri bo'lsa, nasos teskari aylanadi.": "#-фазный двигатель без одной фазы работает на двух, ток растёт в # раза и обмотка сгорает. При неверном чередовании фаз насос вращается в обратную сторону.", "Nasos, kompressor, lift, ventilyator uchun shart. Kontaktor g'altagi zanjiriga ulanadi.": "Обязательно для насосов, компрессоров, лифтов, вентиляторов. Включается в цепь катушки контактора.", "Avtomat bunday holatda o'z vaqtida o'chmasligi mumkin, chunki tok unchalik katta emas.": "Автомат в этом случае может не отключиться вовремя: ток не так велик.", "Kirishdagi umumiy PEN o'tkazgich shitda ikkiga bo'linadi: himoya PE va ishchi N.": "Общий PEN на вводе в щите делится на защитный PE и рабочий N.", "Shundan keyin jihozlar korpusi alohida PE orqali yerga ulanadi va UZO ishlay oladi.": "После этого корпуса оборудования заземляются отдельным PE, и УЗО может работать.", "PEN avval PE shinaga (u korpusga ulangan) ulanadi, undan peremichka orqali N shinaga. Ajratish nuqtasidan keyin N va PE hech qayerda qayta birlashtirilmaydi.": "PEN сначала на шину PE (соединена с корпусом), от неё перемычкой на шину N. После точки разделения N и PE нигде повторно не соединяются.", "PEN o'tkazgichga avtomat, uzgich yoki saqlagich qo'yish man etiladi. Nol uzilsa, kuchlanish relesi jihozlarni saqlaydi.": "Ставить в PEN автомат, выключатель или предохранитель запрещено. При обрыве нуля технику спасает реле напряжения.", "Kabel kesimi uch narsaga qarab tanlanadi: uzoq vaqt o'tadigan tokka, kuchlanish yo'qolishiga va qisqa tutashuvda avtomat o'chishiga.": "Сечение кабеля выбирают по трём условиям: длительный ток, потеря напряжения и отключение автомата при КЗ.", "Kichik kesim qiziydi, izolyatsiya eriydi va yong'in chiqadi.": "Малое сечение греется, изоляция плавится, возникает пожар.", "Mis, yashirin yotqizish, # tomir: # mm² → # A, # → # A, # → # A, # → # A, # → # A. Kuchlanish yo'qolishi ≤ #% (uzun liniyada kesimni oshiring). Avtomat In kabel ruxsat tokidan oshmasin.": "Медь, скрыто, # жилы: # мм² → # А, # → # А, # → # А, # → # А, # → # А. Потеря напряжения ≤ #% (на длинной линии увеличьте сечение). In автомата не больше допустимого тока кабеля.", "Turar joyda guruh tarmoqlari mis bo'ladi (alyuminiy faqat # mm² dan).": "В жилье групповые сети медные (алюминий только от # мм²).", "Faza: jigarrang, qora, kulrang. Nol (N): ko'k. Himoya (PE): sariq-yashil.": "Фаза: коричневый, чёрный, серый. Ноль (N): синий. Защита (PE): жёлто-зелёный.", "Har qanday elektrik qaysi sim nima ekanini bir qarashda biladi va xato ulamaydi.": "Любой электрик с первого взгляда понимает, какой провод что, и не ошибётся.", "L# jigarrang, L# qora, L# kulrang. Ko'k simni faza sifatida ishlatmang, sariq-yashilni faqat PE uchun ishlating.": "L# коричневый, L# чёрный, L# серый. Синий не используйте как фазу, жёлто-зелёный — только для PE.", "Rangni adashtirish keyingi ta'mirchini o'limga olib kelishi mumkin.": "Путаница цветов может стоить жизни следующему электрику.", "Ko'p tolali sim uchiga press-qisqich bilan siqiladigan izolyatsiyali vtulka.": "Изолированная втулка, обжимаемая пресс-клещами на конце многожильного провода.", "Tolalar vint ostida ezilib sochilmaydi, kontakt bo'shamaydi va qizimaydi.": "Жилки не расплющиваются под винтом, контакт не ослабевает и не греется.", "Vtulka kesimi sim kesimiga mos (# / # / # / # mm²). Bir klemmaga ikki sim — НШВИ(#).": "Сечение втулки по проводу (# / # / # / # мм²). Два провода в клемму — НШВИ(#).", "Uchliksiz ko'p tolali sim vaqt o'tib bo'shashib, klemmani kuydiradi.": "Многожильный провод без наконечника со временем ослабевает и выжигает клемму.", "Kabel kanal simlarni yashiradi va tartibda ushlaydi. Taroq shina avtomatlarni fazadan bir xilda ta'minlaydi. Markirovka har kabel qaysi guruhga tegishli ekanini ko'rsatadi.": "Кабель-канал прячет и упорядочивает провода. Гребёнка равномерно питает автоматы. Маркировка показывает, к какой группе относится кабель.", "Tartibli shit tez ta'mirlanadi, xato kamayadi, qizish joylari tez topiladi.": "Аккуратный щит быстро ремонтируется, ошибок меньше, нагрев находится сразу.", "Kanal to'ldirilishi ≤ #%. Har kabel uchida guruh raqami (QF#) yozilgan yorliq. Shit eshigiga bir chiziqli sxema yopishtiriladi.": "Заполнение канала ≤ #%. На каждом кабеле бирка с номером группы (QF#). На дверь щита клеится однолинейная схема.", "Klemmalarni #–# haftadan keyin qayta torting.": "Через #–# недели подтяните клеммы.", "Uch fazali kirish # V. Iste'molchilar: yoritish (# guruh) # kVt; zal va yotoqxona rozetkalari # kVt; oshxona rozetkalari # kVt; kir yuvish mashinasi (vanna) # kVt; suv isitgich # kVt; konditsioner # kVt. Shitni tanlang, kirish qurilmalarini va guruhlarni yig'ing.": "Трёхфазный ввод # В. Потребители: освещение (# гр.) # кВт; розетки зала и спальни # кВт; розетки кухни # кВт; стиральная машина (ванная) # кВт; водонагреватель # кВт; кондиционер # кВт. Выберите щит, соберите вводные устройства и группы.", "Uch fazali kirish. Savdo zali va vitrina yoritishi (# guruh, # kVt), rozetkalar (# guruh, # kVt), sovutgich vitrinalar # kVt, # ta konditsioner # kVt, peshtaxta reklamasi foto rele bilan. Hisoblagich va УЗИП bo'lsin.": "Трёхфазный ввод. Освещение зала и витрин (# гр., # кВт), розетки (# гр., # кВт), холодильные витрины # кВт, # кондиционера # кВт, реклама с фотореле. Нужны счётчик и УЗИП.", "Tayyor do'kon shitiga # ta xato yashirilgan. Tekshiruv bo'limi yopiq. Guruhlar, sxema, simulyatsiya va o'lchov asboblari yordamida xatolarni toping va tuzating.": "В готовом щите магазина спрятано # ошибок. Раздел проверки закрыт. Найдите и исправьте их с помощью групп, схемы, симуляции и приборов.", "Sex shitiga # ta xato yashirilgan. Vaqtga e'tibor bering.": "В щите цеха спрятано # ошибок. Следите за временем.", "PUE va shit yig'ish bo'yicha # ta savol. Har bir to'g'ri javob # ball.": "# вопросов по ПУЭ и сборке щитов. Каждый верный ответ — # баллов.", "Savolingizni oddiy so'z bilan yozing: \"# kVt uchun qanday kabel?\", \"# metrga # kVt\", \"avtomat nimaga qarab tanlanadi\". Raqamli savollarga dastur o'zi hisoblab beradi.": "Пишите вопрос простыми словами: «какой кабель на # кВт?», «# кВт на # метров», «как выбрать автомат». Числовые вопросы программа посчитает сама.", "# fazali nasosni qanday himoyalash kerak?": "Как защитить #-фазный насос?", "Salom! Elektr shiti, kabel, avtomat, UZO va avtomatika bo'yicha savol bering. Masalan:": "Здравствуйте! Спрашивайте про щиты, кабели, автоматы, УЗО и автоматику. Например:", "Ulashish kodini (SHL… bilan boshlanadi) shu yerga qo'ying yoki .json faylni tanlang.": "Вставьте код (начинается с SHL…) или выберите .json-файл.", "Tanlandi: ЩМП-#, # qator × # modul, #×#×# mm, metall. Endi kirish qurilmalarini belgilang va #-bo'limda guruhlarni qo'shing.": "Выбрано: ЩМП-#, # ряда × # мод., #×#×# мм, металл. Теперь отметьте вводные устройства и добавьте группы в разделе #.", "Tanlandi: ЩРН-#, # qator × # modul, #×#×# mm, metall. Endi kirish qurilmalarini belgilang va #-bo'limda guruhlarni qo'shing.": "Выбрано: ЩРН-#, # ряда × # мод., #×#×# мм, металл. Теперь отметьте вводные устройства и добавьте группы в разделе #.", "QF#: kabel # mm² (I ruxsat # A) avtomatdan (# A) kuchsiz. Ortiqcha yuklamada avtomat o'chishidan oldin kabel qizib, izolyatsiya eriydi.": "QF#: кабель # мм² (I доп # А) слабее автомата (# А). При перегрузке кабель перегреется и изоляция расплавится раньше, чем отключится автомат.", "To'g'risi: Kabelni # mm² ga oshiring yoki avtomatni # A qiling.": "Правильно: увеличьте кабель до # мм² или поставьте автомат # А.", "✓ belgisi tavsiya etilgan qiymat. Boshqasini tanlasangiz ham, tasdiqlagach qayta tekshiriladi.": "✓ — рекомендуемое значение. Можно выбрать другое — после подтверждения будет повторная проверка.", "QF#: kesim # mm² minimal # mm² dan kichik (rozetka tarmog'i).": "QF#: сечение # мм² меньше минимального # мм² (розеточная сеть).", "QF#: rozetka guruhida UZO yoki difavtomat yo'q.": "QF#: в розеточной группе нет УЗО или дифавтомата.", "QF#: N sim UZO chiqishidan emas, umumiy N shinadan olingan. UZO faza tokini ko'radi, N tokini ko'rmaydi: yuklama ulanishi bilan o'chadi.": "QF#: N взят не с выхода УЗО, а с общей шины N. УЗО видит ток фазы, но не видит ток N: отключится при включении нагрузки.", "To'g'risi: N simni UZO ning N chiqish klemmasiga ulang.": "Правильно: подключите N к выходной клемме N УЗО.", "QF#: ko'k sim faza sifatida ishlatilgan. Ko'k rang faqat N uchun.": "QF#: синий провод использован как фаза. Синий — только для N.", "To'g'risi: Faza: jigarrang, qora yoki kulrang.": "Правильно: фаза — коричневый, чёрный или серый.", "Fazalar nosimmetriyasi #% (tavsiya ≤ #%). L# # A, L# # A, L# # A.": "Перекос фаз #% (рекомендуется ≤ #%). L# # А, L# # А, L# # А.", "To'g'risi: Bir fazali guruhlarni kam yuklangan fazaga o'tkazing.": "Правильно: перенесите однофазные группы на менее загруженную фазу.", "QF#: oddiy rozetka # A ga mo'ljallangan, avtomat # A.": "QF#: обычная розетка рассчитана на # А, а автомат # А.", "QF#: sim uchlariga НШВИ uchlik qo'yilmagan. Ko'p tolali sim vint ostida ezilib, kontakt bo'shashadi va klemma qiziydi.": "QF#: на концах проводов нет наконечников НШВИ. Многожильный провод расплющивается под винтом, контакт ослабевает, клемма греется.", "To'g'risi: Izolyatsiyali НШВИ vtulka siqing.": "Правильно: обожмите изолированные втулки НШВИ.", "Kuchlanish relesi (РН) yo'q. TN-C-S da nol uzilsa jihozlarga # V gacha tushishi mumkin: РН ularni o'chirib saqlaydi.": "Нет реле напряжения (РН). В TN-C-S при обрыве нуля на технику может прийти до # В: РН отключит и спасёт её.", "QF#: liniya oxiridagi QT (# A) da B# elektromagnit ajratgich bilan # ms ichida o'chadi. ✓": "QF#: при КЗ в конце линии (# А) B# отключается электромагнитным расцепителем за # мс. ✓", "QF#: liniya oxiridagi QT (# A) da C# elektromagnit ajratgich bilan # ms ichida o'chadi. ✓": "QF#: при КЗ в конце линии (# А) C# отключается электромагнитным расцепителем за # мс. ✓", "QF#: liniya oxiridagi QT (# A) da D# elektromagnit ajratgich bilan # ms ichida o'chadi. ✓": "QF#: при КЗ в конце линии (# А) D# отключается электромагнитным расцепителем за # мс. ✓", "QF# va QF#: # A da ikkala avtomat ham elektromagnit zonada. Modulli avtomatlarda bu odatiy, odatda guruh avtomati tezroq uziladi, lekin to'liq selektivlik kafolatlanmaydi.": "QF# и QF#: при # А оба автомата в электромагнитной зоне. Для модульных это обычно: групповой обычно срабатывает быстрее, но полная селективность не гарантирована.", "QF# va QF#: zonalar kesishmaydi, to'liq selektivlik ✓": "QF# и QF#: зоны не пересекаются, полная селективность ✓", "QF#: UZO yuklama ulanishi bilan o'chdi. Sababi: N sim umumiy N shinaga ulangan, UZO ichidan qaytmayapti (# A sizish deb ko'rindi).": "QF#: УЗО отключилось при включении нагрузки. Причина: N подключён к общей шине N и не возвращается через УЗО (# А воспринято как утечка).", "Sxema, spetsifikatsiya va guruhlar jadvali, shtamp bilan": "Схема, спецификация и таблица групп со штампом", "Tanlov: QF#, QF# = # A; QF# = # A; FU = # A": "Выбор: QF#, QF# = # А; QF# = # А; FU = # А", "Kirishni o'chirib, АВР ishini kuzating. Avtomatlarni bosib qo'lda boshqarish mumkin.": "Отключите ввод и наблюдайте работу АВР. Автоматы можно переключать вручную нажатием.", "Pusk bosing: KM# g'altagi tortadi va o'z kontakti bilan o'zini ushlab qoladi. Stop zanjirni uzadi.": "Нажмите Пуск: катушка KM# втягивается и самоподхватывается своим контактом. Стоп разрывает цепь.", "Oldinga ishlayotganda Orqaga bosing: blokirovka (KM# ning ochiq kontakti) KM# ni yoqtirmaydi. Avval Stop.": "Нажмите «Назад» при работе вперёд: блокировка (контакт KM#) не даст включиться KM#. Сначала Стоп.", "Pusk: avval yulduzda (tok # marta kam), # s dan keyin KT uchburchakka o'tkazadi.": "Пуск: сначала звездой (ток в # раза меньше), через # с KT переключает на треугольник.", "KT vaqt relesi ishladi: KM# (Y) o'chdi, KM# (Δ) yoqildi. Dvigatel to'liq kuchlanishda.": "Сработало реле времени KT: KM# (Y) отключён, KM# (Δ) включён. Двигатель на полном напряжении.", "KM# va KM# bir vaqtda yoqildi: L# va L# fazalar to'g'ridan-to'g'ri tutashdi! QF avtomati elektromagnit ajratgich bilan o'chdi.": "KM# и KM# включились одновременно: фазы L# и L# замкнуты накоротко! Автомат QF отключился электромагнитным расцепителем.", "Yulduz (KM#) va uchburchak (KM#) bir vaqtda yoqildi: qisqa tutashuv! QF avtomati elektromagnit ajratgich bilan o'chdi.": "Звезда (KM#) и треугольник (KM#) включились одновременно: КЗ! Автомат QF отключился электромагнитным расцепителем.", "Blokirovka: KM# yoqiq turganda KM# yoqilmaydi. Avval Stop bosing.": "Блокировка: при включённом KM# KM# не включится. Сначала нажмите Стоп.", "KK issiqlik relesi ishladi: dvigatel o'ta yuklangan. Boshqaruv zanjiri uzildi, kontaktor qo'yib yubordi.": "Сработало тепловое реле KK: двигатель перегружен. Цепь управления разорвана, контактор отпал.", "QF qayta yoqildi.": "QF снова включён.", "АВР: I seksiyada kuchlanish yo'q → QF# o'chdi, QF# (seksiya) yoqildi. I seksiya T# dan ta'minlanmoqda.": "АВР: на I секции нет напряжения → QF# отключён, QF# (секционный) включён. I секция питается от T#.", "✓ Birinchi bo'lib ishladi: Tok otsechkasi (TO) → Q# o'chdi.": "✓ Первой сработала токовая отсечка (ТО) → Q# отключён.", "✓ Birinchi bo'lib ishladi: QF# (# kV kirish, qisqa kechikish) → QF# o'chdi (selektiv: MTZ zaxirada qoldi).": "✓ Первым сработал QF# (ввод # кВ, короткая задержка) → QF# отключён (селективно: МТЗ осталась в резерве).", "✓ Birinchi bo'lib ishladi: Fider avtomati QF (# kV) → QFf o'chdi (selektiv: faqat shikastlangan fider uzildi).": "✓ Первым сработал фидерный автомат QF (# кВ) → QFf отключён (селективно: отключён только повреждённый фидер).", "Rele himoyasi": "Релейная защита", "Ssenariy: tarmoqda # kV impuls. УЗИП yo'q.": "Сценарий: импульс # кВ в сети. УЗИП нет.", "Ssenariy: tarmoq o'chdi (avariya yoki rejali uzilish).": "Сценарий: сеть отключилась (авария или плановое отключение).", "Ssenariy: kirishda N sim uzildi, L# fazada yuklama kam.": "Сценарий: на вводе оборван N, на фазе L# нагрузка мала.", "Ssenariy: QF# liniya oxirida qisqa tutashuv, I QT ≈ # A.": "Сценарий: КЗ в конце линии QF#, I КЗ ≈ # А.", "Ssenariy: QF# ga ko'p jihoz ulandi, tok ≈ # A (avtomat # A, kabel # A).": "Сценарий: к QF# подключено много техники, ток ≈ # А (автомат # А, кабель # А).", "Ssenariy: QF# ga ko'p jihoz ulandi, tok ≈ # A (avtomat # A, kabel # A). Avtomat kabelga mos emas: kuzating.": "Сценарий: к QF# подключено много техники, ток ≈ # А (автомат # А, кабель # А). Автомат не соответствует кабелю: наблюдайте.", "Ssenariy: kirishda L# faza uzildi (masalan, ustundagi sim). L# dagi bir fazali guruhlar o'chdi, # fazali dvigatellar xavf ostida.": "Сценарий: на вводе оборвана фаза L# (например, на опоре). Однофазные группы на L# отключились, #-фазные двигатели под угрозой.", "Ssenariy: chaqmoq tufayli tarmoqda # kV impuls. FV# УЗИП impulsni PE ga o'tkazdi, jihozlar saqlandi. L# kartrijining oynachasi qizil bo'ldi: uni almashtirish kerak.": "Сценарий: импульс # кВ от молнии. УЗИП FV# отвёл импульс на PE, техника цела. Окошко картриджа L# стало красным: нужна замена.", "Tarmoq o'chdi. АВР va generator yo'q: shit to'liq o'chdi.": "Сеть отключилась. АВР и генератора нет: щит полностью обесточен.", "Nol uzilgan: L# # V. Shu fazadagi jihozlar kuyishi mumkin.": "Обрыв нуля: L# # В. Техника на этой фазе может сгореть.", "QF#: kuchlanish # V. Jihoz kuyishi mumkin!": "QF#: напряжение # В. Техника может сгореть!", "XAVF: QF#: korpusda ~# V, avtomat o'chguncha xavfli": "ОПАСНО: QF#: на корпусе ~# В, опасно до отключения автомата", "QF#: nosozlik bartaraf etildi, kabel almashtirildi, avtomat yoqildi.": "QF#: неисправность устранена, кабель заменён, автомат включён.", "QF#: avtomat #·In tokda sekin qizimoqda, issiqlik ajratgichi ishlashga yaqin.": "QF#: автомат медленно греется при #·In, тепловой расцепитель близок к срабатыванию.", "KV# kuchlanish relesi shitni o'chirdi: kuchlanish sakradi. Jihozlar saqlandi.": "Реле напряжения KV# отключило щит: скачок напряжения. Техника цела.", "KV# kuchlanish relesi shitni o'chirdi: L# fazada kuchlanish yo'q. Jihozlar saqlandi.": "Реле напряжения KV# отключило щит: нет напряжения на L#. Техника цела.", "KV# kuchlanish relesi shitni o'chirdi: nol uzilgan, fazalarda kuchlanish og'di. Jihozlar saqlandi.": "Реле напряжения KV# отключило щит: обрыв нуля, перекос напряжений. Техника цела.", "QF# o'chdi: qisqa tutashuv, # A = #·In. Elektromagnit ajratgich darhol ishladi.": "QF# отключился: КЗ, # А = #·In. Электромагнитный расцепитель сработал мгновенно.", "QF# o'chdi: korpusga tok o'tishi, # A = #·In. Elektromagnit ajratgich darhol ishladi.": "QF# отключился: пробой на корпус, # А = #·In. Электромагнитный расцепитель сработал мгновенно.", "QF# kirish avtomati o'chdi: katta tok, elektromagnit ajratgich (selektivlik buzildi).": "Вводной автомат QF# отключился: большой ток, электромагнитный расцепитель (селективность нарушена).", "QF#: KF faza nazorat relesi L# yo'qligini sezdi va kontaktorni o'chirdi. Dvigatel saqlandi.": "QF#: реле контроля фаз KF обнаружило пропадание L# и отключило контактор. Двигатель цел.", "QF#: PE ulanmagan. Jihoz korpusiga tok o'tsa avtomat o'chmaydi, odamga tok uradi.": "QF#: PE не подключён. При пробое на корпус автомат не отключит, человека ударит током.", "To'g'risi: PE simni PE shinaga ulang.": "Правильно: подключите PE к шине PE.", "To'g'risi: PE ni PE shinaga ulang.": "Правильно: подключите PE к шине PE.", "QF#: PE sim N shinaga ulangan. PEN ajratish nuqtasidan keyin N va PE birlashtirilmaydi: nol uzilsa jihoz korpusiga faza chiqadi.": "QF#: PE подключён к шине N. После разделения PEN N и PE не объединяют: при обрыве нуля на корпус выйдет фаза.", "QF#: sariq-yashil sim faza sifatida ishlatilgan. Bu rang faqat PE uchun, juda xavfli.": "QF#: жёлто-зелёный провод использован как фаза. Этот цвет только для PE — очень опасно.", "PEN ajratilmagan: N shina hech narsaga ulanmagan. Bir fazali jihozlar ishlamaydi yoki kuchlanish og'adi.": "PEN не разделён: шина N никуда не подключена. Однофазная техника не работает или напряжение перекашивается.", "To'g'risi: PEN → PE shina, PE → N peremichka.": "Правильно: PEN → шина PE, PE → N перемычкой.", "QF#: # fazali dvigatel faza nazorat relesisiz. Bitta faza uzilsa dvigatel ikki fazada ishlab qiziydi va kuyadi.": "QF#: #-фазный двигатель без реле контроля фаз. При обрыве фазы он работает на двух, греется и сгорает.", "To'g'risi: Faza nazorat relesi (РКФ) va kontaktor qo'ying.": "Правильно: поставьте реле контроля фаз (РКФ) и контактор.", "To'g'risi: # mA UZO yoki difavtomat.": "Правильно: УЗО или дифавтомат # мА.", "To'g'risi: # A avtomat.": "Правильно: автомат # А.", "To'g'risi: # mm².": "Правильно: # мм².", "Issiqlik kamerasi (teplovizor): qizigan joylar oq-sariq, sovuqlari binafsha. Qo'shni nuqtadan # °C dan ortiq issiq joy tekshirilishi kerak.": "Тепловизор: горячие места бело-жёлтые, холодные — фиолетовые. Место горячее соседних более чем на # °C нужно проверить.", "Ikki nuqta orasidagi kuchlanish. Faza–N: ~# V, faza–PE: ~# V, N–PE: # V bo'lishi kerak.": "Напряжение между двумя точками. Фаза–N: ~# В, фаза–PE: ~# В, N–PE: # В.", "Asbobni tanlang va uning shchuplarini (uchlarini) shitdagi nuqtalarga sudrab qo'ying. Nuqtalar kichik doirachalar bilan belgilangan.": "Выберите прибор и перетащите щупы на точки щита. Точки отмечены кружками.", "Guruhni tanlang, keyin uning L, N, PE sim uchlarini ushlab kerakli klemma yoki shinaga olib boring. Mos joylar yashil halqa bilan ko'rsatiladi.": "Выберите группу, затем перетащите концы её проводов L, N, PE на нужную клемму или шину. Подходящие места подсвечены зелёным кольцом.", "Qurilmani pastdagi palitradan sudrab DIN-reykaga tashlang yoki shitdagi qurilmani ushlab boshqa joyga suring. Telefonda barmoq bilan ushlab torting.": "Перетащите устройство из палитры на DIN-рейку или передвиньте уже стоящее. На телефоне — удерживая пальцем.", "Shitni barmoq yoki sichqoncha bilan aylantiring. Eshikni ochib-yoping.": "Вращайте щит пальцем или мышью. Открывайте и закрывайте дверь.", "ЩРН-# · #×#×# mm · # qator × # modul · metall korpus. Ichidagi shit jonli: simulyatsiya holati shu yerda ham ko'rinadi.": "ЩРН-# · #×#×# мм · # ряда × # мод. · металлический корпус. Внутри живой щит: состояние симуляции видно и здесь.", "ЩМП-# · #×#×# mm · # qator × # modul · metall korpus. Ichidagi shit jonli: simulyatsiya holati shu yerda ham ko'rinadi.": "ЩМП-# · #×#×# мм · # ряда × # мод. · металлический корпус. Внутри живой щит: состояние симуляции видно и здесь.", "• Rozetka yoki nam joyda bo'lsa, # mA UZO yoki difavtomat qo'ying.": "• Для розеток или влажных мест ставьте УЗО/дифавтомат # мА.", "• # kVt bir fazaga katta (# A). Uch fazali ulanish tavsiya etiladi: tok fazalarga taqsimlanadi.": "• # кВт для одной фазы много (# А). Рекомендуется трёхфазное подключение: ток распределится по фазам.", "• Hisob PUE-# jadvallari bo'yicha (mis, yashirin yotqizish, +# °C). Ochiq yotqizishda yoki issiq joyda qiymatlar o'zgaradi.": "• Расчёт по таблицам ПУЭ-# (медь, скрыто, +# °C). При открытой прокладке или в жарком месте значения меняются.", "• Dvigatel uchun ishga tushish toki #–# baravar katta: D yoki C xarakteristika, kontaktor va faza nazorat relesi (# fazali bo'lsa) qo'ying.": "• Пусковой ток двигателя в #–# раз больше: характеристика D или C, контактор и реле контроля фаз (если #-фазный).", "avtomat D#, kabel #×# mm² mis. Jihozlar keyinchalik qo'shilsa ham kabel yetadi.": "автомат D#, кабель #×# мм² медь. Кабеля хватит и при добавлении техники.", "avtomat C#, kabel #×# mm² mis. Jihozlar keyinchalik qo'shilsa ham kabel yetadi.": "автомат C#, кабель #×# мм² медь. Кабеля хватит и при добавлении техники.", "avtomat B#, kabel #×# mm² mis. Jihozlar keyinchalik qo'shilsa ham kabel yetadi.": "автомат B#, кабель #×# мм² медь. Кабеля хватит и при добавлении техники.", "Amaliy tavsiya (#% zaxira bilan, # faza):": "Практическая рекомендация (с запасом #%, # фаз.):", "Hisob (# m liniya):": "Расчёт (линия # м):", "Kirishda nol (N) uzildi": "На вводе оборван ноль (N)", "Shitda # ta xato bor, toping": "В щите # ошибок — найдите", "Murakkab: # ta xato": "Сложный: # ошибок", "# xonali uy, # kVt": "#-комнатный дом, # кВт", "Do'kon, # kVt": "Магазин, # кВт", "Nazariy test (# savol)": "Теоретический тест (# вопросов)", "Savol #/#": "Вопрос #/#", "# kVt uchun qanday kabel?": "Какой кабель на # кВт?", "Konditsioner # kVt, # metr": "Кондиционер # кВт, # метров", "Avtomat nimaga qarab tanlanadi?": "Как выбрать автомат?", "UZO va difavtomat farqi": "Чем отличаются УЗО и дифавтомат", "B, C, D xarakteristika farqi": "Чем отличаются характеристики B, C, D", "Nol uzilsa nima bo'ladi?": "Что будет при обрыве нуля?", "Kontaktor nima uchun kerak?": "Зачем нужен контактор?", "Megommetr bilan qachon o'lchanadi?": "Когда мерить мегаомметром?", "UZO (differensial tok qurilmasi)": "УЗО (устройство защитного отключения)", "Avtomatik zaxiraga o'tish (АВР)": "Автоматический ввод резерва (АВР)", "TN-C-S (# simli kirish, PEN)": "TN-C-S (#-проводный ввод, PEN)", "TN-S (# simli kirish, N va PE alohida)": "TN-S (#-проводный ввод, N и PE раздельно)", "PEN → PE shina, PE → N peremichka": "PEN → шина PE, PE → N перемычкой", "PEN → N shina, N → PE peremichka": "PEN → шина N, N → PE перемычкой", "Peremichka yo'q (N shina ulanmagan)": "Перемычки нет (шина N не подключена)", "✓ PEN → PE shina, PE → N peremichka": "✓ PEN → шина PE, PE → N перемычкой", "Nosimmetriya #% (tavsiya ≤ #%).": "Перекос #% (рекомендуется ≤ #%).", "# qator × # modul = #": "# ряда × # мод. = #", "Maks. ish toki #·I₁ₙ": "Макс. рабочий ток #·I₁ₙ", "Nominal tok I₁ₙ = S / (√#·#)": "Номинальный ток I₁ₙ = S / (√#·#)", "QT # kV shinada ≈ # kA (uk = #%)": "КЗ на шинах # кВ ≈ # кА (uk = #%)", "АВР: yoqiq · avtomatik qaytish": "АВР: вкл · автовозврат", "АВР: o'chiq": "АВР: откл", "АВР yoqiq": "АВР вкл", "АВР o'chiq": "АВР откл", "#-kirishni tiklash": "Восстановить ввод #", "#-kirishni o'chirish": "Отключить ввод #", "#-kirish (# kV) o'chdi.": "Ввод # (# кВ) отключён.", "#-kirish (# kV) tiklandi.": "Ввод # (# кВ) восстановлен.", "# kV #-kirish": "# кВ ввод #", "T# yuklanishi:": "Загрузка T#:", "I seksiya, kVt": "I секция, кВт", "II seksiya, kVt": "II секция, кВт", "ВРУ-# kV · I seksiya": "ВРУ-# кВ · I секция", "QF# kechikishi, s": "Задержка QF#, с", "Ik maks., kA": "Iкз макс., кА", "Ik min., kA": "Iкз мин., кА", "K#: # kV kabel boshi": "K#: начало кабеля # кВ", "K#: Transformator # kV kirishi": "K#: ввод трансформатора # кВ", "K#: # kV shinalar (QF# dan keyin)": "K#: шины # кВ (после QF#)", "K#: # kV fider oxiri": "K#: конец фидера # кВ", "# kV kabel boshi da QT": "КЗ в начале кабеля # кВ", "Transformator # kV kirishi da QT": "КЗ на вводе трансформатора # кВ", "# kV shinalar (QF# dan keyin) da QT": "КЗ на шинах # кВ (после QF#)", "# kV fider oxiri da QT": "КЗ в конце фидера # кВ", "Tok # kV tomonda, A": "Ток на стороне # кВ, А", "QF# # kV (# kV ga keltirilgan)": "QF# # кВ (приведён к # кВ)", "— QT toki ≈ # A (# kV tomonda)": "— ток КЗ ≈ # А (на стороне # кВ)", "Tok otsechkasi (TO): # ms": "Токовая отсечка (ТО): # мс", "Fider avtomati QF (# kV): # ms": "Фидерный автомат QF (# кВ): # мс", "QF# (# kV kirish, qisqa kechikish): # ms": "QF# (ввод # кВ, короткая задержка): # мс", "MTZ: # ms": "МТЗ: # мс", "Rele toklari (TA #/#)": "Токи реле (ТТ #/#)", "MTZ sezgirligi (K#, # fazali)": "Чувствительность МТЗ (K#, 2ф КЗ)", "TO sezgirligi (K#, # fazali)": "Чувствительность ТО (K#, 2ф КЗ)", "MTZ vaqti t = t": "Время МТЗ t = t", "Aylanish: #% · to'xtagan": "Вращение: #% · стоп", "Aylanish: #% ↻ oldinga": "Вращение: #% ↻ вперёд", "Aylanish: #% ↺ orqaga": "Вращение: #% ↺ назад", "Aylanish: #% · uchburchak (Δ)": "Вращение: #% · треугольник (Δ)", "Aylanish: #% · yulduz (Y)": "Вращение: #% · звезда (Y)", "Tok, ×I nom: #": "Ток, ×I ном: #", "U# V# W# chiqishlari": "Выводы U# V# W#", "L#↔L# almashadi": "L#↔L# меняются", "Simulyatsiya vaqti: # s": "Время симуляции: # с", "Me'yorda · # A": "Норма · # А", "Past · # A": "Низкое · # А", "Kuchlanish yo'q · # A": "Нет напряжения · # А", "Yuqori, xavfli · # A": "Высокое, опасно · # А", "#°C · klemma #°C": "#°C · клемма #°C", "Hisoblagich — #°C": "Счётчик — #°C", "Eng issiq nuqta: —": "Самая горячая точка: —", "materiallar # # # so'm + montaj #%": "материалы # # # сум + монтаж #%", "PDF · # varaq": "PDF · # листа", "# pozitsiya": "# позиций", "Montaj ishlari, %": "Монтажные работы, %", "Mis kabel, so'm / (tomir·mm²·m)": "Медный кабель, сум / (жила·мм²·м)", "Alyuminiy kabel, so'm / (tomir·mm²·m)": "Алюминиевый кабель, сум / (жила·мм²·м)", "Natijalar tarixi (#)": "История результатов (#)", "· vaqt #:# · O'quvchi": "· время #:# · Ученик", "Natija: # xonali uy, # kVt": "Результат: #-комнатный дом, # кВт", "Natija: Do'kon, # kVt": "Результат: магазин, # кВт", "Natija: Shitda # ta xato bor, toping": "Результат: найти # ошибок", "Natija: Murakkab: # ta xato": "Результат: сложный, # ошибок", "Natija: Nazariy test (# savol)": "Результат: теория (# вопросов)", "Imtihon: # xonali uy, # kVt": "Экзамен: #-комнатный дом, # кВт", "Imtihon: Do'kon, # kVt": "Экзамен: магазин, # кВт", "Imtihon: Shitda # ta xato bor, toping": "Экзамен: найти # ошибок", "Imtihon: Murakkab: # ta xato": "Экзамен: сложный, # ошибок", "Baho: # (qoniqarsiz)": "Оценка: # (неуд.)", "# (qoniqarsiz)": "# (неуд.)", "✗ QF#: PE ulanmagan": "✗ QF#: PE не подключён", "✗ QF#: PE N shinaga ulangan": "✗ QF#: PE на шине N", "✗ QF#: Ko'k sim faza sifatida": "✗ QF#: синий как фаза", "✗ QF#: Sariq-yashil sim faza sifatida": "✗ QF#: жёлто-зелёный как фаза", "✗ QF#: Kabel avtomatdan kuchsiz": "✗ QF#: кабель слабее автомата", "✗ Kirish: PEN ajratilmagan (peremichka yo'q)": "✗ Ввод: PEN не разделён (нет перемычки)", "✗ Hisoblagich bor (#/#)": "✗ Есть счётчик (#/#)", "✗ УЗИП (qo'shimcha talab)": "✗ УЗИП (доп. требование)", "✗ Foto releli guruh (qo'shimcha talab)": "✗ Группа с фотореле (доп. требование)", "✗ Fazalar balansi #% (#/#)": "✗ Баланс фаз #% (#/#)", "✗ N, PE va sim ranglari to'g'ri (#/#)": "✗ N, PE и цвета проводов верны (#/#)", "✗ Kabel, avtomat va tomirlar mos (#/#)": "✗ Кабель, автомат и жилы согласованы (#/#)", "✗ Kirish avtomati to'g'ri va selektiv (#/#)": "✗ Вводной автомат верный и селективный (#/#)", "✗ Shit tanlangan va qurilmalar sig'adi (#/#)": "✗ Щит выбран, устройства помещаются (#/#)", "✗ Rozetka va vanna guruhlarida # mA UZO (#/#)": "✗ УЗО # мА в группах розеток и ванной (#/#)", "✗ Barcha iste'molchilar guruhlarda (# kVt) (#/#)": "✗ Все потребители в группах (# кВт) (#/#)", "✗ N (nol) sim qaysi rangda bo'ladi? → Ko'k": "✗ Цвет провода N (ноль)? → Синий", "✗ Avtomat qaysi simni uzishi kerak? → Fazani": "✗ Какой провод разрывает автомат? → Фазу", "✗ PE sim qaysi rangda bo'ladi? → Sariq-yashil": "✗ Цвет провода PE? → Жёлто-зелёный", "✗ Chaqmoq impulsidan nima himoya qiladi? → УЗИП (ОПН)": "✗ Что защищает от импульса молнии? → УЗИП (ОПН)", "✗ Izolyatsiya qarshiligining me'yori (# V da)? → ≥ # MΩ": "✗ Норма сопротивления изоляции (при # В)? → ≥ # МОм", "✗ Megommetr bilan qachon o'lchanadi? → Liniya o'chirilganda": "✗ Когда мерить мегаомметром? → При отключённой линии", "✗ Mis # mm² kabel (yashirin) uchun odatiy avtomat qaysi? → C#": "✗ Типичный автомат для меди # мм² (скрыто)? → C#", "✗ АВР ning asosiy vazifasi? → Asosiy manba yo'qolsa zaxiraga o'tkazish": "✗ Главная задача АВР? → Перевести на резерв при пропадании основного", "✗ Avtomatik o'chirgich birinchi navbatda nimani himoya qiladi? → Kabelni": "✗ Что в первую очередь защищает автомат? → Кабель", "✗ Reversiv puskda KM# va KM# o'rtasida nima bo'lishi shart? → Blokirovka (o'zaro to'siq)": "✗ Что обязательно между KM# и KM# при реверсе? → Блокировка (взаимная)", "Kirish: #×# Cu, # m · TN-C-S": "Ввод: #×# Cu, # м · TN-C-S", "Kirish: #×# Cu, # m · TN-C-S · QS# → PI# → QF# → FV# → HL#": "Ввод: #×# Cu, # м · TN-C-S · QS# → PI# → QF# → FV# → HL#", "Kirish: #×# Cu, # m · TN-C-S · PI# → QF# → FV# → KV# → HL#": "Ввод: #×# Cu, # м · TN-C-S · PI# → QF# → FV# → KV# → HL#", "Kirish: #×# Cu, # m · TN-C-S · QS# → PI# → QF# → FV# → KV# → HL#": "Ввод: #×# Cu, # м · TN-C-S · QS# → PI# → QF# → FV# → KV# → HL#", "ЩМП-# · #×# modul · #×#×# mm · metall · band: #/#": "ЩМП-# · #×# мод. · #×#×# мм · металл · занято: #/#", "ЩРН-# · #×# modul · #×#×# mm · metall · band: #/#": "ЩРН-# · #×# мод. · #×#×# мм · металл · занято: #/#", "ЩМП-#: #/# modul band": "ЩМП-#: #/# мод. занято", "ЩРН-#: #/# modul band": "ЩРН-#: #/# мод. занято", "ЩМП-# · # guruh · #-#-# #:#": "ЩМП-# · # гр. · #-#-# #:#", "ЩРН-# · # guruh · #-#-# #:#": "ЩРН-# · # гр. · #-#-# #:#", "shit tanlanmagan · # guruh · #-#-# #:#": "щит не выбран · # гр. · #-#-# #:#", "#/# modul": "#/# мод.", "# metrga # kVt": "#{2} кВт на #{1} м", "# fazali # kVt dvigatel # m": "#-фазный двигатель # кВт, # м", "# faza, # V": "# фаз., # В", "Jihoz: avtomat #P C#": "Оборудование: автомат #P C#", "Yoritish: avtomat #P B#": "Освещение: автомат #P B#", "Rozetka: difavtomat #P C#": "Розетки: дифавтомат #P C#", "Vanna: avtomat + UZO # mA": "Ванная: автомат + УЗО # мА", "# fazali: avtomat #P C#": "#-фазная: автомат #P C#", "Taymer: #P + KM + KT": "Таймер: #P + KM + KT", "Dvigatel: #P + KM + РКФ": "Двигатель: #P + KM + РКФ", "Ko'cha chirog'i: #P + KM + BL": "Уличный фонарь: #P + KM + BL", "Kabel (mis)": "Кабель (медь)", "#×# mm² (ruxsat # A)": "#×# мм² (доп. # А)", "Tok, A (logarifmik)": "Ток, А (логарифм.)", "O'chish vaqti, s": "Время отключения, с", "QF#: # tomirli kabel. PE tomir yo'q, jihoz korpusi yerga ulanmaydi.": "QF#: кабель # жилы. Нет жилы PE, корпус не заземлён.", "QF#: Cu # mm² bu yotqizish usuli uchun jadvalda yo'q.": "QF#: Cu # мм² нет в таблице для этого способа прокладки.", "QF#: Al # mm² bu yotqizish usuli uchun jadvalda yo'q.": "QF#: Al # мм² нет в таблице для этого способа прокладки.", "QF#: # fazali jihozga #P avtomat qo'yilgan. Barcha fazalar birga uzilishi kerak.": "QF#: на #-фазное оборудование стоит автомат #P. Все фазы должны отключаться вместе.", "QF#: N sim PE shinaga ulangan. Ish toki PE orqali qaytadi, UZO darhol o'chadi.": "QF#: N подключён к шине PE. Рабочий ток идёт через PE, УЗО сразу отключится.", "QF#: N sim PE shinaga ulangan. Ish toki himoya o'tkazgichi orqali oqadi, PE uzilsa korpusda kuchlanish bo'ladi.": "QF#: N подключён к шине PE. Рабочий ток течёт по защитному проводнику; при обрыве PE на корпусе будет напряжение.", "QF#: N sim ulanmagan. Bir fazali jihoz ishlamaydi.": "QF#: N не подключён. Однофазное оборудование не работает.", "QF#: UZO # mA. Odamni himoya qilish uchun # mA dan oshmasligi kerak.": "QF#: УЗО # мА. Для защиты человека — не более # мА.", "QF#: UZO nominal toki # A avtomatdan (# A) kichik. UZO o'ta yuklanishdan himoyalanmagan.": "QF#: номинал УЗО # А меньше автомата (# А). УЗО не защищено от перегрузки.", "QF#: avtomat B# yuklama tokidan kichik (# A). Ishlash paytida qizib o'chib qoladi.": "QF#: автомат B# меньше тока нагрузки (# А). Будет греться и отключаться в работе.", "QF#: avtomat C# yuklama tokidan kichik (# A). Ishlash paytida qizib o'chib qoladi.": "QF#: автомат C# меньше тока нагрузки (# А). Будет греться и отключаться в работе.", "QF#: avtomat D# yuklama tokidan kichik (# A). Ishlash paytida qizib o'chib qoladi.": "QF#: автомат D# меньше тока нагрузки (# А). Будет греться и отключаться в работе.", "QF#: avtomat nol (N) simiga qo'yilgan. O'chirilganda ham jihozda faza qoladi, korpusga tok o'tsa avtomat bu tokni ko'rmaydi.": "QF#: автомат стоит в нулевом проводе (N). При отключении на оборудовании остаётся фаза, ток пробоя на корпус автомат не видит.", "QF#: bir fazali jihozga #P avtomat. Ortiqcha qutblar keraksiz.": "QF#: на однофазное оборудование автомат #P. Лишние полюса не нужны.", "QF#: kuchlanish yo'qolishi #% > #%.": "QF#: потеря напряжения #% > #%.", "QF#: qisqa tutashuv toki # A < #·In = # A. Liniya oxirida QT bo'lsa avtomat darhol o'chmaydi.": "QF#: ток КЗ # А < #·In = # А. При КЗ в конце линии автомат не отключится мгновенно.", "QF#: turar joy guruh tarmoqlari mis bo'lishi kerak (alyuminiy faqat # mm² dan).": "QF#: групповые сети в жилье должны быть медными (алюминий только от # мм²).", "QF#: N \"UZO chiqishidan\" deb ko'rsatilgan, lekin bu guruhda UZO yo'q.": "QF#: N указан «с выхода УЗО», но в этой группе нет УЗО.", "QF#: faza nazorat relesi faqat # fazali jihoz uchun.": "QF#: реле контроля фаз — только для #-фазного оборудования.", "#P C# qo'ying.": "Поставьте #P C#.", "#P C# kirish avtomatini qo'ying.": "Поставьте вводной автомат #P C#.", "Generator quvvati # kVt hisobiy yuklamadan (# kVt) kichik. АВР generatorga o'tganda u o'ta yuklanadi.": "Мощность генератора # кВт меньше расчётной нагрузки (# кВт). При переходе АВР на генератор он перегрузится.", "Kabelni # mm² ga oshiring yoki avtomatni # A qiling.": "Увеличьте кабель до # мм² или поставьте автомат # А.", "Kesimni oshiring, B xarakteristika yoki kichikroq In tanlang.": "Увеличьте сечение, выберите характеристику B или меньший In.", "Kesimni oshiring: # mm².": "Увеличьте сечение: # мм².", "Kesimni oshiring yoki liniyani qisqartiring.": "Увеличьте сечение или сократите линию.", "Kirish avtomati C# hisobiy tokdan kichik (# A). Oddiy yuklamada o'chib qoladi.": "Вводной автомат C# меньше расчётного тока (# А). Будет отключаться при обычной нагрузке.", "Kirish avtomati D# hisobiy tokdan kichik (# A). Oddiy yuklamada o'chib qoladi.": "Вводной автомат D# меньше расчётного тока (# А). Будет отключаться при обычной нагрузке.", "Kirish avtomati B# hisobiy tokdan kichik (# A). Oddiy yuklamada o'chib qoladi.": "Вводной автомат B# меньше расчётного тока (# А). Будет отключаться при обычной нагрузке.", "Kirish kabeli #×# Cu (I ruxsat # A) kirish avtomatidan (# A) kuchsiz. Kabel avtomatdan oldin qiziydi.": "Вводной кабель #×# Cu (I доп # А) слабее вводного автомата (# А). Кабель перегреется раньше.", "Kirish kabeli #×# Al (I ruxsat # A) kirish avtomatidan (# A) kuchsiz. Kabel avtomatdan oldin qiziydi.": "Вводной кабель #×# Al (I доп # А) слабее вводного автомата (# А). Кабель перегреется раньше.", "Kirish kabeli: Cu # mm² jadvalda yo'q.": "Вводной кабель: Cu # мм² нет в таблице.", "Kirish kabeli: Al # mm² jadvalda yo'q.": "Вводной кабель: Al # мм² нет в таблице.", "Kirish kabelida kuchlanish yo'qolishi #% (katta).": "Потеря напряжения во вводном кабеле #% (много).", "Qurilmalar shitga sig'madi: # modul kerak, ЩРН-# da # modul (#×#). Ortiqcha qator qizil bilan chizilgan.": "Устройства не помещаются: нужно # мод., в ЩРН-# — # мод. (#×#). Лишний ряд выделен красным.", "Qurilmalar shitga sig'madi: # modul kerak, ЩМП-# da # modul (#×#). Ortiqcha qator qizil bilan chizilgan.": "Устройства не помещаются: нужно # мод., в ЩМП-# — # мод. (#×#). Лишний ряд выделен красным.", "Selektivlik yo'q: kirish avtomati (# A) eng katta guruh avtomatidan (# A) katta emas. Guruhdagi nosozlikda butun shit o'chadi.": "Нет селективности: вводной автомат (# А) не больше наибольшего группового (# А). При аварии в группе отключится весь щит.", "Shit #% band (#/# modul). Kelajakdagi guruhlar uchun #% zaxira qoldirish tavsiya etiladi.": "Щит занят на #% (#/# мод.). Рекомендуется оставить #% запаса на будущее.", "# tomirli kabel (L, N, PE).": "Кабель # жилы (L, N, PE).", "# mA UZO yoki difavtomat.": "УЗО или дифавтомат # мА.", "Alyuminiy kirish kabeli # mm² dan kichik bo'lmasligi kerak.": "Алюминиевый вводной кабель — не менее # мм².", "Avtomat faza simini uzishi kerak; N to'g'ridan-to'g'ri N shinaga.": "Автомат должен разрывать фазу; N — напрямую на шину N.", "Bir fazali guruhlarni kam yuklangan fazaga o'tkazing.": "Перенесите однофазные группы на менее загруженную фазу.", "Elektr hisoblagich qo'yilmagan. Energiya ta'minoti tashkiloti uni kirishda talab qiladi.": "Нет электросчётчика. Энергокомпания требует его на вводе.", "Faza nazorat relesi (РКФ) va kontaktor qo'ying.": "Поставьте реле контроля фаз (РКФ) и контактор.", "Faza: jigarrang, qora yoki kulrang.": "Фаза: коричневый, чёрный или серый.", "Impuls kuchlanishdan himoya (УЗИП) yo'q. Havo liniyasidan kirsa va momaqaldiroq ko'p bo'lsa, tavsiya etiladi.": "Нет УЗИП. Рекомендуется при воздушном вводе и частых грозах.", "Ishlab chiqaruvchi talabi": "Требование производителя", "Izolyatsiyali НШВИ vtulka siqing.": "Обожмите изолированные втулки НШВИ.", "Kattaroq generator yoki muhim guruhlarnigina zaxiraga ulang.": "Возьмите генератор мощнее или резервируйте только важные группы.", "Kattaroq shit tanlang yoki qurilmalarni kamaytiring.": "Выберите щит больше или уменьшите число устройств.", "Kirish avtomati qo'yilmagan. Kirish kabeli va butun shit qisqa tutashuvdan himoyasiz.": "Нет вводного автомата. Вводной кабель и весь щит не защищены от КЗ.", "Korpus va eshikni PE ga ulang.": "Подключите корпус и дверь к PE.", "L#, L#, L#, PE uchun kamida # tomir kerak.": "Для L#, L#, L#, PE нужно минимум # жилы.", "Mis kabel yoki Al ≥ # mm².": "Медный кабель или Al ≥ # мм².", "N ni UZO chiqishiga ulang.": "Подключите N к выходу УЗО.", "N shinaga ulang yoki UZO qo'ying.": "Подключите к шине N или поставьте УЗО.", "N simni UZO ning N chiqish klemmasiga ulang.": "Подключите N к выходной клемме N УЗО.", "PE simni PE shinaga ulang.": "Подключите PE к шине PE.", "PE uchun sariq-yashil sim.": "Для PE — жёлто-зелёный провод.", "PEN avval N shinaga ulangan. PEN o'tkazgich birinchi navbatda PE shinaga ulanishi, N shina undan peremichka orqali olinishi kerak.": "PEN подключён сначала на шину N. PEN должен сначала идти на шину PE, а шина N — от неё перемычкой.", "PEN → PE shina, PE → N peremichka.": "PEN → шина PE, PE → N перемычкой.", "Shit korpusi PE shinaga ulanmagan. Ichkarida izolyatsiya buzilsa, korpusda kuchlanish paydo bo'ladi.": "Корпус щита не подключён к PE. При пробое изоляции на корпусе появится напряжение.", "TN-S tizimida kirish kabeli # tomirli bo'lishi kerak (L#, L#, L#, N, PE).": "В системе TN-S вводной кабель должен быть #-жильным (L#, L#, L#, N, PE).", "Uch fazali kirishga # qutbli avtomat qo'yilgan: L# va L# himoyasiz qoladi.": "На трёхфазный ввод стоит #-полюсный автомат: L# и L# без защиты.", "УЗИП dan oldin avtomat qo'ying.": "Поставьте автомат перед УЗИП.", "УЗИП himoya apparatisiz ulangan. Moduli shikastlanganda qisqa tutashuv bo'lishi mumkin.": "УЗИП подключён без аппарата защиты. При повреждении модуля возможно КЗ.", "# mm².": "# мм².", "Kamida B#.": "Минимум B#.", "Kamida C#.": "Минимум C#.", "Kamida D#.": "Минимум D#.", "Kirishni kamida # A qiling.": "Сделайте ввод минимум # А.", "UZO ≥ # A.": "УЗО ≥ # А.", "Avtomatik o'chirgich birinchi navbatda nimani himoya qiladi?": "Что в первую очередь защищает автомат?", "Mis # mm² kabel (yashirin) uchun odatiy avtomat qaysi?": "Типичный автомат для меди # мм² (скрыто)?", "Rozetka guruhida UZO ning sizish toki qancha bo'lishi kerak?": "Каким должен быть ток утечки УЗО в розеточной группе?", "N (nol) sim qaysi rangda bo'ladi?": "Какого цвета провод N (ноль)?", "PE sim qaysi rangda bo'ladi?": "Какого цвета провод PE?", "TN-C-S da PEN o'tkazgich avval qayerga ulanadi?": "Куда в TN-C-S сначала подключается PEN?", "Avtomat qaysi simni uzishi kerak?": "Какой провод должен разрывать автомат?", "UZO o'ta yuklanishdan himoya qiladimi?": "Защищает ли УЗО от перегрузки?", "C xarakteristikali avtomat qaysi tokda darhol (elektromagnit) o'chadi?": "При каком токе автомат C отключается мгновенно (электромагнитно)?", "Dvigatel uchun qaysi xarakteristika qulay?": "Какая характеристика удобна для двигателя?", "Selektivlik nima?": "Что такое селективность?", "Nol uzilsa (TN-C-S) jihozlarni nima saqlaydi?": "Что спасёт технику при обрыве нуля (TN-C-S)?", "Chaqmoq impulsidan nima himoya qiladi?": "Что защищает от импульса молнии?", "Faza nazorat relesi qaysi jihoz uchun shart?": "Для какого оборудования обязательно реле контроля фаз?", "Ko'p tolali sim uchiga nima qo'yiladi?": "Что ставят на конец многожильного провода?", "Kuchlanish yo'qolishi odatda necha foizdan oshmasligi kerak?": "Сколько процентов обычно не должна превышать потеря напряжения?", "Fazalar nosimmetriyasi tavsiya bo'yicha qancha?": "Какой перекос фаз рекомендуется?", "Kontaktor o'zi qisqa tutashuvdan himoya qiladimi?": "Защищает ли контактор сам от КЗ?", "Turar joy guruh tarmoqlarida qaysi sim ishlatiladi?": "Какой провод используют в групповых сетях жилья?", "Izolyatsiya qarshiligining me'yori (# V da)?": "Норма сопротивления изоляции (при # В)?", "Yulduz-uchburchak puskda yulduzda ishga tushish toki taxminan necha marta kamayadi?": "Во сколько раз примерно снижается пусковой ток при пуске звездой?", "Reversiv puskda KM# va KM# o'rtasida nima bo'lishi shart?": "Что обязательно между KM# и KM# при реверсе?", "АВР ning asosiy vazifasi?": "Главная задача АВР?", "Shitda qancha zaxira joy qoldirish tavsiya etiladi?": "Сколько запаса места рекомендуется оставлять в щите?", "Jihozni": "Оборудование", "Kabelni": "Кабель", "Odamni": "Человека", "Hisoblagichni": "Счётчик", "# yoki # mA": "# или # мА", "# mA": "# мА", "UZO shart emas": "УЗО не обязательно", "Qizil": "Красный", "Avtomatga": "На автомат", "UZO ga": "На УЗО", "Nolni": "Ноль", "Fazani": "Фазу", "PE ni": "PE", "Ikkalasini ham, farqi yo'q": "Оба, без разницы", "Ha": "Да", "Yo'q, avtomat bilan birga qo'yiladi": "Нет, ставится вместе с автоматом", "Faqat # fazada": "Только на # фазах", "Faqat # mA li": "Только на # мА", "C yoki D": "C или D", "Faqat B": "Только B", "Xarakteristika muhim emas": "Характеристика не важна", "Barcha avtomatlarning birga o'chishi": "Одновременное отключение всех автоматов", "Nosozlikka eng yaqin avtomatning o'chishi": "Отключение ближайшего к аварии автомата", "UZO ning tez ishlashi": "Быстрая работа УЗО", "Fazalar balansi": "Баланс фаз", "Rubilnik": "Рубильник", "Chiroq": "Светильник", "# fazali dvigatel": "#-фазный двигатель", "Suv isitgich": "Водонагреватель", "Izolenta": "Изолента", "Hech narsa": "Ничего", "Lehim": "Пайка", "Ahamiyatsiz": "Не важно", "Aynan #%": "Ровно #%", "Yo'q, oldida avtomat bo'lishi kerak": "Нет, перед ним нужен автомат", "Faqat AC-# bo'lsa": "Только если AC-#", "Alyuminiy # mm²": "Алюминий # мм²", "Po'lat": "Сталь", "Farqi yo'q": "Без разницы", "Me'yor yo'q": "Нормы нет", "# marta": "в # раз", "Kamaymaydi": "Не снижается", "Blokirovka (o'zaro to'siq)": "Блокировка (взаимная)", "Taymer": "Таймер", "Hisob yuritish": "Учёт энергии", "Asosiy manba yo'qolsa zaxiraga o'tkazish": "Переключение на резерв при пропадании основного", "Kuchlanishni oshirish": "Повышение напряжения", "Fazalarni almashtirish": "Смена фаз", "Kabel avtomatdan kuchsiz": "Кабель слабее автомата", "Rozetkada UZO yo'q": "Нет УЗО на розетках", "UZO li guruh N simi umumiy shinada": "N группы с УЗО на общей шине", "Ko'k sim faza sifatida": "Синий как фаза", "PE ulanmagan": "PE не подключён", "Avtomat nolni uzadi": "Автомат разрывает ноль", "PE N shinaga ulangan": "PE на шине N", "Avtomat yuklamaga kichik": "Автомат мал для нагрузки", "НШВИ yo'q": "Нет НШВИ", "Sariq-yashil sim faza sifatida": "Жёлто-зелёный как фаза", "Kabel kesimini tanlash": "Выбор сечения кабеля", "QF#: kabel #°C, qizishni boshladi.": "QF#: кабель #°C, начал нагреваться.", "# XATO": "Ошибок: #", "# DIQQAT": "Внимание: #", "# xato": "Ошибок: #", "Tayyor: fayl saqlandi.": "Готово: файл сохранён.", "Tayyorlanmoqda…": "Готовится…", "Faylni saqlab bo'lmadi.": "Не удалось сохранить файл.", "Fayl ShitLab loyihasi emas": "Файл не является проектом ShitLab", "Fayldan qo'shildi": "Добавлено из файла", "Kod nusxalandi. Uni Telegram yoki boshqa joyga yuboring.": "Код скопирован. Отправьте его в Telegram или куда удобно.", "Yangi loyiha ochildi": "Открыт новый проект"};
+const I18RULES=[[/(\d+)-qavat/g,"$1 этаж"],[/(\d+)-kirish(?![a-z'])/g,"ввод $1"],[/(\d+)-bo'lim(da)?/g,"раздел $1"],[/(\d+) fazali/g,"$1-фазный"],[/(\d+) xonali/g,"$1-комнатный"],[/(\d+) ta /g,"$1 "],[/(\d+) guruh/g,"$1 гр."]];
+const I18SPLIT=[[/^Ssenariy: (QF\d+) \((.+)\) ichida faza sim korpusga tegdi\.$/,(m,a,b)=>"Сценарий: в "+a+" ("+b+") фаза коснулась корпуса."],[/^([✗✓•]\s*)(.+)$/,(m,a,b)=>a+trCore(b)],[/^(.+?) → (.+)$/,(m,a,b)=>trCore(a)+" → "+trCore(b)],[/^To'g'risi: (.+)$/,(m,a)=>"Правильно: "+trCore(a)],[/^(.+) haqida$/,(m,a)=>"Справка: "+trCore(a)],[/^((?:QF|KM|KV|FV|QS|PI|HL|K)\d+[a-z]?): (.+)$/,(m,a,b)=>a+": "+trCore(b)]];
+let I18RE=null;const I18C=new Map();
+function capLike(src,dst){if(!dst)return dst;if(src.length>1&&src===src.toUpperCase()&&/[A-Z]/.test(src))return dst.toUpperCase();const up=src[0]!==src[0].toLowerCase();if(up)return dst[0].toUpperCase()+dst.slice(1);if(dst.length>1&&dst[1]!==dst[1].toLowerCase())return dst;return dst[0].toLowerCase()+dst.slice(1);}
+function trPh(s){if(!I18RE){const ks=Object.keys(I18PH).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));I18RE=new RegExp("(?<![\\wА-Яа-яЁё'ʻ’])("+ks.join("|")+")(?![\\wА-Яа-яЁё'ʻ’])","gi");}
+ I18RULES.forEach(([r,t])=>{s=s.replace(r,t);});return s.replace(I18RE,m=>{const v=I18PH[m.toLowerCase()];return v==null?m:capLike(m,v);});}
+function trFL(core){const nums=[];const shape=core.replace(/\s+/g," ").replace(/\d+(?:[.,]\d+)?/g,m=>{nums.push(m);return "#";});const f=I18FL[shape];if(f==null)return null;let i=0;return f.replace(/#\{(\d)\}|#/g,(m,n)=>n?(nums[+n-1]??""):(nums[i++]??""));}
+function trCore(core){const f=trFL(core);if(f!=null)return f;for(const [r,fn] of I18SPLIT){if(r.test(core))return core.replace(r,fn);}return trPh(core);}
+function trS(s){if(LANG!=="ru"||s==null)return s;s=String(s);const core=s.trim();if(!core||!/[a-z]/i.test(core))return s;
+ if(I18C.has(s))return I18C.get(s);
+ const out=s.match(/^\s*/)[0]+trCore(core)+s.match(/\s*$/)[0];
+ if(I18C.size>8000)I18C.clear();I18C.set(s,out);return out;}
+const I18ATTR=["placeholder","aria-label","title"];
+function trEl(root){if(LANG!=="ru"||!root)return;
+ if(root.nodeType===3){const v=root.nodeValue;if(root.parentNode&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(root.parentNode.nodeName))return;const t=trS(v);if(t!==v)root.nodeValue=t;return;}
+ if(root.nodeType!==1)return;if(/^(SCRIPT|STYLE|TEXTAREA)$/.test(root.nodeName))return;
+ const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;const list=[];while(n=w.nextNode())list.push(n);list.forEach(trEl);
+ const els=[root,...root.querySelectorAll("[placeholder],[aria-label],[title]")];els.forEach(e=>I18ATTR.forEach(a=>{if(e.hasAttribute&&e.hasAttribute(a)){const v=e.getAttribute(a),t=trS(v);if(t!==v)e.setAttribute(a,t);}}));}
+function i18nStart(){const lb=$("#langBtn");if(lb)lb.textContent=LANG==="ru"?"UZ":"RU";
+ if(LANG!=="ru")return;document.documentElement.lang="ru";trEl(document.body);
+ const mo=new MutationObserver(rs=>{for(const r of rs){if(r.type==="childList")r.addedNodes.forEach(trEl);else if(r.type==="characterData")trEl(r.target);else if(r.type==="attributes"&&I18ATTR.includes(r.attributeName)){const v=r.target.getAttribute(r.attributeName),t=trS(v);if(v!=null&&t!==v)r.target.setAttribute(r.attributeName,t);}}});
+ mo.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:I18ATTR});
+ const ft=CanvasRenderingContext2D.prototype.fillText;CanvasRenderingContext2D.prototype.fillText=function(t,...a){return ft.call(this,trS(t),...a);};}
+function setLang(l){try{localStorage.setItem("shitlab-lang",l);}catch(_){}location.reload();}
+/* ================= TIL tugadi ================= */
 
 /* ================= YANGILASH ================= */
 function refresh(){
@@ -2207,16 +2966,61 @@ document.addEventListener("input",e=>{
  if(t.dataset.pd){S.main[t.dataset.pd]=t.checked;resetSim();renderMain();refresh();return;}
  if(t.id&&t.id.startsWith("c-")){const k={rows:"rows",mods:"mods",dims:"dims",mat:"mat"}[t.id.slice(2)];S.main.custom[k]=(k==="rows"||k==="mods")?+t.value:t.value;renderMain();refresh();return;}
  if(t.id==="infoQ"){renderInfo();return;}
+ if(t.id&&t.id.startsWith("ps-")){const k=t.id.slice(3);PS[k]=+t.value||0;labRefresh();return;}
+ if(t.id&&t.id.startsWith("rz-")){const k=t.id.slice(3);RZ[k]=+t.value||0;RZ.done=null;RZ.ft=0;const box=document.activeElement&&document.activeElement.id;renderLab();const el=box&&document.getElementById(box);if(el){el.focus();}return;}
+ if(t.id&&t.id.startsWith("d-")){const k=t.id.slice(2);if(k==="labor"){S.labor=+t.value||0;}else{S.doc=S.doc||{};S.doc[k]=t.value;}save();if(k==="labor"){const r=$(".dsum b");if(r){const it=specItems();const sm=it.reduce((a,x)=>a+x.qty*x.price,0);r.textContent=Math.round(sm*(1+S.labor/100)).toLocaleString("ru-RU").replace(/,/g," ")+" so'm";}}return;}
+ if(t.dataset.price){S.prices=S.prices||{};S.prices[t.dataset.price]=+t.value||0;save();return;}
+ if(t.id==="notesTog"){document.body.classList.toggle("notes",t.checked);try{localStorage.setItem("shitlab-notes",t.checked?"1":"0");}catch(_){}return;}
+ if(t.id==="exName"){EX.name=t.value;saveEX();return;}
+ if(t.dataset.pren){const p=PRJ.list.find(x=>x.id===t.dataset.pren);if(p){p.name=t.value||"Nomsiz";persistProjects();if(p.id===PRJ.active)$("#prjName").textContent=p.name;}return;}
  if(t.dataset.load){const st=simG(+t.dataset.load);st.load=+t.value;t.closest("label").querySelector("[data-lv]").textContent=t.value+"%";return;}
  if(t.id==="sim-nbreak"){sim.nBreak=t.checked;logEv(t.checked?"Kirishda N sim uzildi.":"N sim tiklandi.",t.checked?"warn":"");}
 });
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#infoModal").hidden){$("#infoModal").hidden=true;return;}const ik=e.target.closest&&e.target.closest("[data-infokey]");if(ik&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openInfo(ik.dataset.infokey);return;}const cn=e.target.closest&&e.target.closest("[data-conn]");if(cn&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openConn(+cn.dataset.conn);return;}const bp=e.target.closest&&e.target.closest("[data-bp]");if(bp&&(e.key==="Enter"||e.key===" ")){e.preventDefault();toggleDev(bp.dataset.bp);}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#prjModal").hidden){$("#prjModal").hidden=true;return;}if(e.key==="Escape"&&!$("#infoModal").hidden){$("#infoModal").hidden=true;return;}const ik=e.target.closest&&e.target.closest("[data-infokey]");if(ik&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openInfo(ik.dataset.infokey);return;}const cn=e.target.closest&&e.target.closest("[data-conn]");if(cn&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openConn(+cn.dataset.conn);return;}const bp=e.target.closest&&e.target.closest("[data-bp]");if(bp&&(e.key==="Enter"||e.key===" ")){e.preventDefault();toggleDev(bp.dataset.bp);}});
 document.addEventListener("click",e=>{
  const ik=e.target.closest("[data-infokey]");if(ik){openInfo(ik.dataset.infokey);return;}
+ const psw=e.target.closest(".pssw");if(psw){const k=psw.dataset.ps;PS[k]=!PS[k];psLog(`${k.toUpperCase()} qo'lda ${PS[k]?"yoqildi":"o'chirildi"}.`,"");renderLab();return;}
+ const rzk=e.target.closest("g[data-rzk]");if(rzk){RZ.fault=rzk.dataset.rzk;RZ.ft=0;RZ.done=null;renderLab();return;}
+ const sb=e.target.closest("[data-sb]");if(sb){mtPress(sb.dataset.sb);return;}
+ const mq=e.target.closest("[data-mqf]");if(mq){if(!MT.qf){MT.qf=true;mtLog("QF qayta yoqildi.","ok");}return;}
  const cn=e.target.closest("[data-conn]");if(cn){if(MODE==="wire"){wireSel=+cn.dataset.conn;renderModePanel();drawWire();return;}openConn(+cn.dataset.conn);return;}
  if(e.target.id==="infoModal"){$("#infoModal").hidden=true;return;}
+ if(e.target.id==="moreSheet"){$("#moreSheet").hidden=true;return;}
+ if(e.target.id==="prjModal"){$("#prjModal").hidden=true;prjConfirm=null;return;}
  const bp=e.target.closest("[data-bp]");if(bp){toggleDev(bp.dataset.bp);return;}
  const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.exstart){startTask(b.dataset.exstart);if(EX.active&&EX.active.kind!=="quiz")showTab(EX.active.kind==="find"?"yigish":"kirish");return;}
+ if(b.dataset.exfin){finishExam();return;}
+ if(b.dataset.excancel){EX.active=null;saveEX();examChrome();renderExam();return;}
+ if(b.dataset.exhide){EX.last=null;saveEX();renderExam();return;}
+ if(b.dataset.exshare){shareText("ShitLab natija",examText(b.dataset.exshare==="all"?EX.history:[EX.last||EX.history[0]]));return;}
+ if(b.dataset.exclear){EX.clearAsk=true;renderExam();return;}
+ if(b.dataset.exclearno){EX.clearAsk=false;renderExam();return;}
+ if(b.dataset.exclearok){EX.history=[];EX.clearAsk=false;EX.last=null;saveEX();renderExam();return;}
+ if(b.dataset.qopt){const a=EX.active;if(a&&a.pick==null){a.pick=+b.dataset.qopt;a.ans[a.i]=a.pick;saveEX();renderExam();if(a.pick===QBANK[a.q[a.i]][2])beep("click");else vib(60);}return;}
+ if(b.dataset.qnext){const a=EX.active;if(!a)return;a.pick=null;if(a.i<9){a.i++;saveEX();renderExam();}else finishExam();return;}
+ if(b.dataset.gtog){const id=+b.dataset.gtog;if(GOPEN.has(id))GOPEN.delete(id);else GOPEN.add(id);const c=b.closest(".g");c.classList.toggle("open",GOPEN.has(id));b.textContent=GOPEN.has(id)?"▴":"▾";return;}
+ if(b.dataset.more){openMore();return;}
+ if(b.dataset.doc){if(b.dataset.doc==="preset"){S.prices={};save();renderDocs();return;}makeDoc(b.dataset.doc);return;}
+ if(b.dataset.lab){LAB=b.dataset.lab;renderLab();return;}
+ if(b.dataset.psa){const a=b.dataset.psa;if(a==="in1"||a==="in2"){PS[a]=!PS[a];psLog(`${a==="in1"?"1":"2"}-kirish (10 kV) ${PS[a]?"tiklandi":"o'chdi"}.`,PS[a]?"ok":"warn");}if(a==="avr"){PS.avr=!PS.avr;}if(a==="reset"){Object.assign(PS,{in1:true,in2:true,q1:true,q2:true,qf1:true,qf2:true,qf3:false,log:[]});}renderLab();return;}
+ if(b.dataset.rzk){RZ.fault=b.dataset.rzk==="none"?null:b.dataset.rzk;RZ.ft=0;RZ.done=null;renderLab();return;}
+ if(b.dataset.msch){MT.sch=b.dataset.msch;Object.assign(MT,{btn:{},coils:{},kt:0,w:0,kk:false,kkH:0,qf:true,hist:[],log:[],delta:false,lock:true});renderLab();return;}
+ if(b.dataset.mb){mtPress(b.dataset.mb);return;}
+ if(b.dataset.mt){const a=b.dataset.mt;if(a==="load")MT.load=!MT.load;if(a==="lock")MT.lock=!MT.lock;if(a==="reset")Object.assign(MT,{btn:{},coils:{},kt:0,w:0,kk:false,kkH:0,qf:true,hist:[],log:[],delta:false,load:false});renderLab();return;}
+ if(b.id==="langBtn"){setLang(LANG==="ru"?"uz":"ru");return;}
+ if(b.dataset.lang){if(b.dataset.lang!==LANG)setLang(b.dataset.lang);return;}
+ if(b.id==="prjBtn"){openProjects();return;}
+ if(b.id==="pmClose"){$("#prjModal").hidden=true;prjConfirm=null;return;}
+ if(b.dataset.pnew){newProject(b.dataset.pnew);$("#prjModal").hidden=true;toast2("Yangi loyiha ochildi");return;}
+ if(b.dataset.popen){switchProject(b.dataset.popen);$("#prjModal").hidden=true;return;}
+ if(b.dataset.pdup){dupProject(b.dataset.pdup);return;}
+ if(b.dataset.pdel){prjConfirm=b.dataset.pdel;renderProjects();return;}
+ if(b.dataset.pdelno){prjConfirm=null;renderProjects();return;}
+ if(b.dataset.pdelok){const id=b.dataset.pdelok;PRJ.list=PRJ.list.filter(p=>p.id!==id);prjConfirm=null;if(PRJ.active===id)switchProject(PRJ.list[0].id);persistProjects();renderProjects();return;}
+ if(b.dataset.pshare){const p=PRJ.list.find(x=>x.id===b.dataset.pshare);if(p){encodeProject(p).then(code=>shareText("ShitLab: "+p.name,"ShitLab loyihasi \""+p.name+"\". Ochish: ShitLab → Loyihalar → kodni qo'ying.\n"+code));}return;}
+ if(b.dataset.pfile){const p=PRJ.list.find(x=>x.id===b.dataset.pfile);if(p)saveFile(p.name.replace(/[^\w\-]+/g,"_")+".shitlab.json",JSON.stringify({v:1,name:p.name,data:p.data},null,1),"application/json");return;}
+ if(b.id==="pImpBtn"){importCode($("#pImpCode").value);return;}
  if(b.dataset.mode){setMode(b.dataset.mode);return;}
  if(b.dataset["3d"]){const a=b.dataset["3d"];if(a==="door"){V3.door=!V3.door;const d=$("#door3d");if(d)d.classList.toggle("open",V3.door);}if(a==="front"){V3.rx=-6;V3.ry=-8;V3.spin=false;apply3D();}if(a==="side"){V3.rx=-14;V3.ry=-62;V3.spin=false;apply3D();}if(a==="spin"){V3.spin=!V3.spin;if(V3.spin)spin3D();}return;}
  if(b.dataset.wsel){wireSel=+b.dataset.wsel;renderModePanel();drawWire();focusOn(wireSel);return;}
@@ -2234,7 +3038,7 @@ document.addEventListener("click",e=>{
  if(b.dataset.cclose){$("#connEd").hidden=true;return;}
  if(b.dataset.flt){flt=b.dataset.flt;document.querySelectorAll("[data-flt]").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));renderChecks(R);return;}
  if(b.dataset.del){S.groups=S.groups.filter(g=>g.id!=b.dataset.del);renderGroups();refresh();return;}
- if(b.id==="btn-add"){S.groups.push(G({id:uid++}));renderGroups();refresh();const l=document.querySelector(".g:last-child input");if(l){l.focus();l.select();}return;}
+ if(b.id==="btn-add"){GOPEN.add(uid);S.groups.push(G({id:uid++}));renderGroups();refresh();const l=document.querySelector(".g:last-child input");if(l){l.focus();l.select();}return;}
  if(b.id==="btn-reset-ex"){S=JSON.parse(JSON.stringify(EXAMPLE));S.order=null;S.groups.forEach(g=>{g.id=uid++;});resetSim();renderMain();renderGroups();refresh();return;}
  if(b.id==="btn-clear"){S.groups=[];resetSim();renderGroups();refresh();return;}
  if(b.dataset.sc){const st=simG(+b.dataset.sc);if(!powered(null,st))return;st.sc=true;const r=R.groups.find(x=>x.g.id==b.dataset.sc);logEv(`QF${r.n}: liniya oxirida qisqa tutashuv, I QT ≈ ${fmt(r.Ik,0)} A.`,"warn");return;}
@@ -2272,24 +3076,30 @@ document.addEventListener("click",e=>{
 });
 document.addEventListener("pointermove",e=>{if(e.target.closest&&e.target.closest(".tccwrap"))tccHover(e);});
 document.addEventListener("pointerdown",e=>{if(MODE==="place"&&e.target.closest&&e.target.closest(".pchip"))paletteDown(e);});
+document.addEventListener("change",e=>{if(e.target.id==="pImpFile"&&e.target.files[0]){const f=e.target.files[0];f.text().then(t=>{try{const o=JSON.parse(t);if(!o.data)throw 0;const d=fixIds(normS(o.data));const id=pid();PRJ.list.unshift({id,name:o.name||f.name,updated:Date.now(),data:d});switchProject(id);$("#prjModal").hidden=true;toast2("Fayldan qo'shildi");}catch(_){toast2("Fayl ShitLab loyihasi emas","bad");}});}});
 document.addEventListener("submit",e=>{if(e.target.id==="chatForm"){e.preventDefault();ask($("#chatIn").value);}});
-const TABS=["kirish","yigish","tekshir","sxema","sim","info","chat"];
+const TABS=["kirish","yigish","tekshir","sxema","sim","info","chat","oquv","docs","lab"];
+const MORE_TABS=[["sxema","Sxema"],["lab","Murakkab sxemalar"],["docs","Hujjatlar"],["oquv","O'quv"],["info","Ma'lumotnoma"],["chat","Savol-javob"]];
+function openMore(){const cur=(location.hash||"").slice(1);$("#moreGrid").innerHTML=MORE_TABS.map(([k,n])=>`<button data-tab="${k}" aria-current="${cur===k}">${n}</button>`).join("");$("#notesTog").checked=document.body.classList.contains("notes");$("#moreSheet").hidden=false;}
 function showTab(id){
  if(!TABS.includes(id))id=enclOf()?"yigish":"kirish";
  $("#toasts").innerHTML="";
+ $("#moreSheet").hidden=true;
+ document.querySelectorAll("#bnav button").forEach(b=>b.setAttribute("aria-current",b.dataset.tab===id||(b.dataset.more&&MORE_TABS.some(([k])=>k===id))?"true":"false"));
  TABS.forEach(t=>{$("#p-"+t).hidden=t!==id;$(`#tabs [data-tab=${t}]`).setAttribute("aria-selected",t===id?"true":"false");});
  if(id==="sim"){last=performance.now();updateSim();}
+ if(id==="docs")renderDocs();
+ if(id==="lab")renderLab();
  try{history.replaceState(null,"","#"+id);}catch(e){}
 }
-renderMain();renderGroups();refresh();renderInfo();initChat();
+try{if(localStorage.getItem("shitlab-notes")==="1")document.body.classList.add("notes");}catch(_){}
+renderMain();renderGroups();refresh();renderInfo();initChat();examChrome();renderExam();$("#prjName").textContent=curProject().name;
 window.ShitLab={state:()=>S,order:()=>orderKeys()};
 (function(){const b=$("#sim-sound");const upd=()=>{b.textContent="Ovoz: "+(SOUND?"yoqiq":"o'chiq");b.setAttribute("aria-pressed",SOUND?"true":"false");};upd();
  b.addEventListener("click",()=>{SOUND=!SOUND;upd();if(SOUND)beep("click");});
  if(IS_APP){const sp=$("#splash");sp.hidden=false;setTimeout(()=>{sp.classList.add("out");setTimeout(()=>{sp.hidden=true;},500);},1500);}})();
 showTab((location.hash||"").slice(1));
+i18nStart();document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===LANG?"true":"false"));
 setInterval(loop,100);
 })();
 </script>
-
-</body>
-</html>

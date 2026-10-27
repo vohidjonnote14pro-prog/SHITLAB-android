@@ -1,15 +1,31 @@
 package uz.shitlab.app;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 public class MainActivity extends Activity {
     private WebView web;
+    private ValueCallback<Uri[]> fileCb;
+    private static final int PICK = 41;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +45,89 @@ public class MainActivity extends Activity {
         s.setDisplayZoomControls(false);
         s.setUseWideViewPort(true);
         s.setLoadWithOverviewMode(true);
-        s.setUserAgentString(s.getUserAgentString() + " ShitLabApp/1.0");
+        s.setUserAgentString(s.getUserAgentString() + " ShitLabApp/4.0");
 
+        web.addJavascriptInterface(new Bridge(), "ShitLabNative");
         web.setWebViewClient(new WebViewClient());
-        web.setWebChromeClient(new WebChromeClient());
+        web.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onShowFileChooser(WebView v, ValueCallback<Uri[]> cb, FileChooserParams p) {
+                if (fileCb != null) fileCb.onReceiveValue(null);
+                fileCb = cb;
+                try {
+                    startActivityForResult(p.createIntent(), PICK);
+                } catch (Exception e) {
+                    fileCb = null;
+                    return false;
+                }
+                return true;
+            }
+        });
         setContentView(web);
 
         if (savedInstanceState != null) {
             web.restoreState(savedInstanceState);
         } else {
             web.loadUrl("file:///android_asset/index.html");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int req, int res, Intent data) {
+        if (req == PICK && fileCb != null) {
+            fileCb.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(res, data));
+            fileCb = null;
+            return;
+        }
+        super.onActivityResult(req, res, data);
+    }
+
+    /** JavaScript ko'prigi: fayl saqlash va ulashish */
+    private class Bridge {
+        @JavascriptInterface
+        public void saveFile(final String name, final String b64, final String mime) {
+            runOnUiThread(() -> {
+                try {
+                    byte[] bytes = Base64.decode(b64, Base64.DEFAULT);
+                    Uri uri = null;
+                    String where;
+                    if (Build.VERSION.SDK_INT >= 29) {
+                        ContentValues cv = new ContentValues();
+                        cv.put(MediaStore.Downloads.DISPLAY_NAME, name);
+                        cv.put(MediaStore.Downloads.MIME_TYPE, mime);
+                        cv.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/ShitLab");
+                        uri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, cv);
+                        try (OutputStream os = getContentResolver().openOutputStream(uri)) { os.write(bytes); }
+                        where = "Download/ShitLab/" + name;
+                    } else {
+                        File dir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                        File f = new File(dir, name);
+                        try (FileOutputStream os = new FileOutputStream(f)) { os.write(bytes); }
+                        where = f.getAbsolutePath();
+                    }
+                    Toast.makeText(MainActivity.this, "Saqlandi: " + where, Toast.LENGTH_LONG).show();
+                    if (uri != null) {
+                        Intent send = new Intent(Intent.ACTION_SEND);
+                        send.setType(mime);
+                        send.putExtra(Intent.EXTRA_STREAM, uri);
+                        send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        startActivity(Intent.createChooser(send, "Ulashish yoki ochish: " + name));
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Saqlab bo'lmadi: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void share(final String title, final String text) {
+            runOnUiThread(() -> {
+                Intent send = new Intent(Intent.ACTION_SEND);
+                send.setType("text/plain");
+                send.putExtra(Intent.EXTRA_SUBJECT, title);
+                send.putExtra(Intent.EXTRA_TEXT, text);
+                startActivity(Intent.createChooser(send, title));
+            });
         }
     }
 

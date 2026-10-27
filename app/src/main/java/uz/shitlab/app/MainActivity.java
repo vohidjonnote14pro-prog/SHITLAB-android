@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
         s.setDisplayZoomControls(false);
         s.setUseWideViewPort(true);
         s.setLoadWithOverviewMode(true);
-        s.setUserAgentString(s.getUserAgentString() + " ShitLabApp/4.1");
+        s.setUserAgentString(s.getUserAgentString() + " ShitLabApp/4.2");
 
         web.addJavascriptInterface(new Bridge(), "ShitLabNative");
         web.setWebViewClient(new WebViewClient());

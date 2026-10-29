@@ -34,7 +34,13 @@ jobs:
 
       - name: Ilova nomi va ikonka
         run: |
-          sed -i 's/android:label="shitlab"/android:label="ShitLab"/' android/app/src/main/AndroidManifest.xml
+          M=android/app/src/main/AndroidManifest.xml
+          sed -i 's/android:label="shitlab"/android:label="ShitLab"/' $M
+          # Internet (Telegram) ruxsati
+          sed -i 's#<application#<uses-permission android:name="android.permission.INTERNET"/>\n    <application#' $M
+          # Havolalarni ochish uchun (Android 11+)
+          sed -i 's#<queries>#<queries>\n        <intent><action android:name="android.intent.action.VIEW"/><data android:scheme="https"/></intent>#' $M
+          grep -n "INTERNET\|label\|scheme" $M
           cp -r branding/android-res/* android/app/src/main/res/
 
       - name: Kutubxonalar
@@ -84,4 +90,4 @@ jobs:
           gh release create "v5.${{ github.run_number }}" ShitLab.apk ShitLab-eski-telefonlar.apk \
             --target "${{ github.sha }}" \
             --title "ShitLab v5.${{ github.run_number }} (Flutter)" \
-            --notes "Haqiqiy Flutter ilova. ShitLab.apk ni yuklab oling va o'rnating (noma'lum manbalarga ruxsat bering). O'rnatilmasa (juda eski telefon), ShitLab-eski-telefonlar.apk ni oling. 2-bosqich: simulyatsiya, o'lchov asboblari (suriladigan shchuplar), 3D, issiqlik kamerasi, joylashtirish, sim ulash."
+            --notes "Haqiqiy Flutter ilova. ShitLab.apk ni yuklab oling va o'rnating (noma'lum manbalarga ruxsat bering). O'rnatilmasa (juda eski telefon), ShitLab-eski-telefonlar.apk ni oling. 3-bosqich: hisob-kitob va materiallar PDF, QR montaj (rasmlar Telegram kanalga), montaj pasporti va sxema PDF."

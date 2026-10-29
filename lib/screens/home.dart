@@ -6,8 +6,10 @@ import '../store.dart';
 import '../theme.dart';
 import '../widgets/painters.dart';
 import '../widgets/ui.dart';
+import 'hisob.dart';
 import 'new_panel.dart';
 import 'panel.dart';
+import 'qr.dart';
 
 class HomeShell extends StatefulWidget {
   const HomeShell({super.key});
@@ -23,18 +25,8 @@ class _HomeShellState extends State<HomeShell> {
   Widget build(BuildContext context) {
     final pages = <Widget>[
       const ProjectsPage(),
-      const SoonPage(
-        title: 'QR montaj',
-        icon: Icons.photo_camera_outlined,
-        text: 'Kabel yo\'llarini rasmga olish, QR stiker va Telegram orqali uy egasiga ko\'rsatish.',
-        stage: 3,
-      ),
-      const SoonPage(
-        title: 'Hisob-kitob',
-        icon: Icons.calculate_outlined,
-        text: 'Xonalar bo\'yicha nuqtalar jadvali va materiallar hisobi (PDF bilan).',
-        stage: 3,
-      ),
+      const QrPage(),
+      const HisobPage(),
       const SoonPage(
         title: 'AI yordamchi',
         icon: Icons.chat_bubble_outline,

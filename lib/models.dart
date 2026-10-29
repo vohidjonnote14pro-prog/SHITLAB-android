@@ -66,6 +66,15 @@ class Project {
   DateTime updated;
   List<Load> loads;
   List<String> layout;
+  // 3-bosqich: hisob-kitob, montaj rasmlari, hujjatlar
+  List<CalcRoom> calcRooms;
+  String calcMark;
+  List<PhotoRoom> photoRooms;
+  String client;
+  String clientPhone;
+  String measIns;
+  String measUzo;
+  String measEarth;
 
   Project({
     required this.id,
@@ -78,7 +87,20 @@ class Project {
     required this.updated,
     required this.loads,
     List<String>? layout,
-  }) : layout = layout ?? [];
+    List<CalcRoom>? calcRooms,
+    this.calcMark = 'ВВГнг-LS',
+    List<PhotoRoom>? photoRooms,
+    this.client = '',
+    this.clientPhone = '',
+    this.measIns = '',
+    this.measUzo = '',
+    this.measEarth = '',
+  })  : layout = layout ?? [],
+        calcRooms = calcRooms ?? [],
+        photoRooms = photoRooms ?? [];
+
+  /// Telegram heshteg uchun qisqa belgi (faqat harf/raqam).
+  String get tag => 'SL${id.length > 8 ? id.substring(id.length - 8) : id}';
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -91,6 +113,14 @@ class Project {
         'updated': updated.toIso8601String(),
         'loads': loads.map((l) => l.toJson()).toList(),
         'layout': layout,
+        'calcRooms': calcRooms.map((r) => r.toJson()).toList(),
+        'calcMark': calcMark,
+        'photoRooms': photoRooms.map((r) => r.toJson()).toList(),
+        'client': client,
+        'clientPhone': clientPhone,
+        'measIns': measIns,
+        'measUzo': measUzo,
+        'measEarth': measEarth,
       };
 
   factory Project.fromJson(Map<String, dynamic> j) => Project(
@@ -106,8 +136,137 @@ class Project {
             .map((e) => Load.fromJson(Map<String, dynamic>.from(e as Map)))
             .toList(),
         layout: ((j['layout'] as List?) ?? []).map((e) => e.toString()).toList(),
+        calcRooms: ((j['calcRooms'] as List?) ?? [])
+            .map((e) => CalcRoom.fromJson(Map<String, dynamic>.from(e as Map)))
+            .toList(),
+        calcMark: (j['calcMark'] ?? 'ВВГнг-LS').toString(),
+        photoRooms: ((j['photoRooms'] as List?) ?? [])
+            .map((e) => PhotoRoom.fromJson(Map<String, dynamic>.from(e as Map)))
+            .toList(),
+        client: (j['client'] ?? '').toString(),
+        clientPhone: (j['clientPhone'] ?? '').toString(),
+        measIns: (j['measIns'] ?? '').toString(),
+        measUzo: (j['measUzo'] ?? '').toString(),
+        measEarth: (j['measEarth'] ?? '').toString(),
       );
 }
+
+/// Hisob-kitob: bitta xonadagi nuqta (rozetka, vyklyuchatel...).
+class PointRow {
+  String id;
+  String type;
+  int qty;
+  String cable;
+  double len;
+  PointRow({required this.id, required this.type, required this.qty, required this.cable, required this.len});
+
+  Map<String, dynamic> toJson() => {'id': id, 'type': type, 'qty': qty, 'cable': cable, 'len': len};
+
+  factory PointRow.fromJson(Map<String, dynamic> j) => PointRow(
+        id: (j['id'] ?? newId()).toString(),
+        type: (j['type'] ?? 'roz').toString(),
+        qty: (j['qty'] as num?)?.toInt() ?? 0,
+        cable: (j['cable'] ?? 'c25').toString(),
+        len: (j['len'] as num?)?.toDouble() ?? 0,
+      );
+}
+
+class CalcRoom {
+  String id;
+  String name;
+  List<PointRow> items;
+  CalcRoom({required this.id, required this.name, required this.items});
+
+  Map<String, dynamic> toJson() => {'id': id, 'name': name, 'items': items.map((e) => e.toJson()).toList()};
+
+  factory CalcRoom.fromJson(Map<String, dynamic> j) => CalcRoom(
+        id: (j['id'] ?? newId()).toString(),
+        name: (j['name'] ?? '').toString(),
+        items: ((j['items'] as List?) ?? [])
+            .map((e) => PointRow.fromJson(Map<String, dynamic>.from(e as Map)))
+            .toList(),
+      );
+}
+
+/// Montaj rasmlari: xona, rasmlar, izoh, Telegram postlari.
+class PhotoItem {
+  String path;
+  bool sent;
+  PhotoItem({required this.path, this.sent = false});
+  Map<String, dynamic> toJson() => {'path': path, 'sent': sent};
+  factory PhotoItem.fromJson(Map<String, dynamic> j) =>
+      PhotoItem(path: (j['path'] ?? '').toString(), sent: j['sent'] == true);
+}
+
+class PhotoRoom {
+  String id;
+  String name;
+  String note;
+  List<PhotoItem> photos;
+  List<int> posts;
+  PhotoRoom({required this.id, required this.name, this.note = '', List<PhotoItem>? photos, List<int>? posts})
+      : photos = photos ?? [],
+        posts = posts ?? [];
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'note': note,
+        'photos': photos.map((p) => p.toJson()).toList(),
+        'posts': posts,
+      };
+
+  factory PhotoRoom.fromJson(Map<String, dynamic> j) => PhotoRoom(
+        id: (j['id'] ?? newId()).toString(),
+        name: (j['name'] ?? '').toString(),
+        note: (j['note'] ?? '').toString(),
+        photos: ((j['photos'] as List?) ?? [])
+            .map((e) => PhotoItem.fromJson(Map<String, dynamic>.from(e as Map)))
+            .toList(),
+        posts: ((j['posts'] as List?) ?? []).map((e) => (e as num).toInt()).toList(),
+      );
+}
+
+/// Hisob-kitob uchun nuqta turlari.
+class PointType {
+  final String key;
+  final String label;
+  final String cable;
+  final bool box;
+  final String mech;
+  const PointType(this.key, this.label, this.cable, this.box, this.mech);
+}
+
+const pointTypes = <PointType>[
+  PointType('roz', 'Rozetka', 'c25', true, 'Rozetka mexanizmi'),
+  PointType('vkl', 'Vyklyuchatel', 'c15', true, 'Vyklyuchatel'),
+  PointType('chir', 'Chiroq / lyustra', 'c15', false, ''),
+  PointType('tv', 'TV rozetka', 'rg6', true, 'TV rozetka'),
+  PointType('net', 'Internet', 'utp', true, 'Internet rozetka'),
+  PointType('kond', 'Konditsioner', 'c25', false, ''),
+  PointType('isit', 'Suv isitgich', 'c25', true, 'Rozetka mexanizmi'),
+  PointType('plita', 'Elektr plita', 'c525', false, 'Plita rozetkasi'),
+];
+
+class PointCable {
+  final String key;
+  final String short;
+  final String sec;
+  final bool power;
+  const PointCable(this.key, this.short, this.sec, this.power);
+}
+
+const pointCables = <PointCable>[
+  PointCable('c15', '3×1,5', '3×1,5', true),
+  PointCable('c25', '3×2,5', '3×2,5', true),
+  PointCable('c4', '3×4', '3×4', true),
+  PointCable('c525', '5×2,5', '5×2,5', true),
+  PointCable('rg6', 'RG-6', 'Koaksial RG-6 (TV)', false),
+  PointCable('utp', 'UTP', 'UTP cat.5e (internet)', false),
+];
+
+PointType pointType(String k) => pointTypes.firstWhere((t) => t.key == k, orElse: () => pointTypes.first);
+PointCable pointCable(String k) => pointCables.firstWhere((t) => t.key == k, orElse: () => pointCables[1]);
 
 /// Shit turlari ro'yxati.
 class PanelType {

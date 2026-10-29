@@ -8,6 +8,7 @@ import '../store.dart';
 import '../theme.dart';
 import '../widgets/painters.dart';
 import '../widgets/ui.dart';
+import 'docs.dart';
 
 class SchemaScreen extends StatelessWidget {
   final String projectId;
@@ -32,7 +33,8 @@ class SchemaScreen extends StatelessWidget {
               actions: [
                 IconButton(
                   tooltip: 'PDF',
-                  onPressed: () => soon(context, 'PDF qilib saqlash', 3),
+                  onPressed: () => Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => DocsScreen(projectId: p.id))),
                   icon: const Icon(Icons.picture_as_pdf_outlined, color: C.text2),
                 ),
               ],

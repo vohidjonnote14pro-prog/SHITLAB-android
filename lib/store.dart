@@ -12,6 +12,13 @@ class AppState extends ChangeNotifier {
   List<Project> projects = [];
   bool loaded = false;
 
+  // Sozlamalar (bajaruvchi va Telegram)
+  String installer = '';
+  String installerPhone = '';
+  String tgToken = '';
+  String tgChannel = '';
+  bool tgOk = false;
+
   Future<void> init() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -20,6 +27,11 @@ class AppState extends ChangeNotifier {
         final list = jsonDecode(raw) as List;
         projects = list.map((e) => Project.fromJson(Map<String, dynamic>.from(e as Map))).toList();
       }
+      installer = prefs.getString('sl_installer') ?? '';
+      installerPhone = prefs.getString('sl_installer_phone') ?? '';
+      tgToken = prefs.getString('sl_tg_token') ?? '';
+      tgChannel = prefs.getString('sl_tg_channel') ?? '';
+      tgOk = prefs.getBool('sl_tg_ok') ?? false;
     } catch (_) {
       projects = [];
     }
@@ -52,6 +64,34 @@ class AppState extends ChangeNotifier {
     _persist();
     notifyListeners();
   }
+
+  /// Loyihani tartibini o'zgartirmasdan saqlash (matn yozilayotganda).
+  void save(Project p) {
+    p.updated = DateTime.now();
+    _persist();
+    notifyListeners();
+  }
+
+  Future<void> saveSettings() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('sl_installer', installer);
+      await prefs.setString('sl_installer_phone', installerPhone);
+      await prefs.setString('sl_tg_token', tgToken);
+      await prefs.setString('sl_tg_channel', tgChannel);
+      await prefs.setBool('sl_tg_ok', tgOk);
+    } catch (_) {}
+    notifyListeners();
+  }
+
+  /// Kanal nomi @ belgisisiz.
+  String get channelUser {
+    final c = tgChannel.trim().replaceAll('https://t.me/', '').replaceAll('@', '');
+    return RegExp(r'^[A-Za-z][A-Za-z0-9_]{3,}$').hasMatch(c) ? c : '';
+  }
+
+  String channelSearchLink(String tag) =>
+      channelUser.isEmpty ? '' : 'https://t.me/s/$channelUser?q=%23$tag';
 
   Future<void> _persist() async {
     try {

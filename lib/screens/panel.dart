@@ -5,7 +5,9 @@ import '../models.dart';
 import '../store.dart';
 import '../theme.dart';
 import '../widgets/ui.dart';
+import 'docs.dart';
 import 'load_edit.dart';
+import 'qr.dart';
 import 'schema.dart';
 import 'sim/simulation.dart';
 
@@ -80,9 +82,18 @@ class PanelScreen extends StatelessWidget {
                       icon: const Icon(Icons.more_vert, color: C.text2),
                       onSelected: (v) {
                         if (v == 'rename') _rename(context, p);
+                        if (v == 'docs') {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (_) => DocsScreen(projectId: p.id)));
+                        }
+                        if (v == 'photos') {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (_) => ObjectPhotosScreen(projectId: p.id)));
+                        }
                         if (v == 'delete') _delete(context, p);
                       },
                       itemBuilder: (_) => const [
+                        PopupMenuItem(value: 'docs', child: Text('Mijoz hujjatlari (PDF)')),
+                        PopupMenuItem(value: 'photos', child: Text('Montaj rasmlari va QR')),
                         PopupMenuItem(value: 'rename', child: Text('Nomini o\'zgartirish')),
                         PopupMenuItem(value: 'delete', child: Text('Loyihani o\'chirish')),
                       ],

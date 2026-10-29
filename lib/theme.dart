@@ -77,8 +77,8 @@ ThemeData buildTheme() {
   );
   return base.copyWith(
     pageTransitionsTheme: const PageTransitionsTheme(builders: {
-      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.android: SlidePageTransitionsBuilder(),
+      TargetPlatform.iOS: SlidePageTransitionsBuilder(),
     }),
     snackBarTheme: const SnackBarThemeData(
       backgroundColor: C.card2,
@@ -106,4 +106,28 @@ ThemeData buildTheme() {
       ),
     ),
   );
+}
+
+/// Oynalar o'ngdan surilib ochiladi (ilova uslubi).
+class SlidePageTransitionsBuilder extends PageTransitionsBuilder {
+  const SlidePageTransitionsBuilder();
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    final inCurve = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic, reverseCurve: Curves.easeInCubic);
+    final outCurve = CurvedAnimation(parent: secondaryAnimation, curve: Curves.easeOutCubic);
+    return SlideTransition(
+      position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(inCurve),
+      child: SlideTransition(
+        position: Tween<Offset>(begin: Offset.zero, end: const Offset(-0.25, 0)).animate(outCurve),
+        child: child,
+      ),
+    );
+  }
 }

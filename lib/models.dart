@@ -65,6 +65,7 @@ class Project {
   String size;
   DateTime updated;
   List<Load> loads;
+  List<String> layout;
 
   Project({
     required this.id,
@@ -76,7 +77,8 @@ class Project {
     required this.size,
     required this.updated,
     required this.loads,
-  });
+    List<String>? layout,
+  }) : layout = layout ?? [];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -88,6 +90,7 @@ class Project {
         'size': size,
         'updated': updated.toIso8601String(),
         'loads': loads.map((l) => l.toJson()).toList(),
+        'layout': layout,
       };
 
   factory Project.fromJson(Map<String, dynamic> j) => Project(
@@ -102,6 +105,7 @@ class Project {
         loads: ((j['loads'] as List?) ?? [])
             .map((e) => Load.fromJson(Map<String, dynamic>.from(e as Map)))
             .toList(),
+        layout: ((j['layout'] as List?) ?? []).map((e) => e.toString()).toList(),
       );
 }
 

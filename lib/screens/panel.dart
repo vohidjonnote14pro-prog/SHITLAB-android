@@ -7,6 +7,7 @@ import '../theme.dart';
 import '../widgets/ui.dart';
 import 'load_edit.dart';
 import 'schema.dart';
+import 'sim/simulation.dart';
 
 class PanelScreen extends StatelessWidget {
   final String projectId;
@@ -106,7 +107,12 @@ class PanelScreen extends StatelessWidget {
                           _Tile(
                             icon: Icons.play_arrow_rounded,
                             label: 'Simulyatsiya',
-                            onTap: () => soon(context, 'Simulyatsiya', 2),
+                            onTap: p.loads.isEmpty
+                                ? () => ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Avval yuklama qo\'shing')),
+                                    )
+                                : () => Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (_) => SimulationScreen(projectId: p.id))),
                           ),
                           const SizedBox(width: 8),
                           _Tile(

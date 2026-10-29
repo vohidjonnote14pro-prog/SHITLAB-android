@@ -83,5 +83,5 @@ jobs:
         run: |
           gh release create "v5.${{ github.run_number }}" ShitLab.apk ShitLab-eski-telefonlar.apk \
             --target "${{ github.sha }}" \
-            --title "ShitLab v5.${{ github.run_number }} (Flutter, 1-bosqich)" \
-            --notes "Haqiqiy Flutter ilova. ShitLab.apk ni yuklab oling va o'rnating (noma'lum manbalarga ruxsat bering). O'rnatilmasa (juda eski telefon), ShitLab-eski-telefonlar.apk ni oling. 1-bosqich: kirish ekrani, loyihalar, yangi shit, yuklama hisobi (PUE), bir chiziqli sxema, telefonga saqlash."
+            --title "ShitLab v5.${{ github.run_number }} (Flutter)" \
+            --notes "Haqiqiy Flutter ilova. ShitLab.apk ni yuklab oling va o'rnating (noma'lum manbalarga ruxsat bering). O'rnatilmasa (juda eski telefon), ShitLab-eski-telefonlar.apk ni oling. 2-bosqich: simulyatsiya, o'lchov asboblari (suriladigan shchuplar), 3D, issiqlik kamerasi, joylashtirish, sim ulash."

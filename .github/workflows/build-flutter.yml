@@ -41,10 +41,28 @@ jobs:
         run: flutter pub get
 
       - name: Kodni tekshirish
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+        run: |
+          set +e
+          flutter analyze --no-fatal-infos --no-fatal-warnings > analyze.txt 2>&1
+          code=$?
+          cat analyze.txt
+          grep -E "^\s*error " analyze.txt | head -40 | while IFS= read -r line; do
+            echo "::error title=analyze::$line"
+          done
+          exit $code
 
       - name: APK yig'ish
-        run: flutter build apk --release
+        run: |
+          set +e
+          flutter build apk --release > build.txt 2>&1
+          code=$?
+          cat build.txt
+          if [ $code -ne 0 ]; then
+            grep -iE "error|exception|failed|what went wrong" build.txt | head -40 | while IFS= read -r line; do
+              echo "::error title=build::$line"
+            done
+          fi
+          exit $code
 
       - name: Nomlash
         run: |

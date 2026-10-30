@@ -5,6 +5,7 @@ import '../models.dart';
 import '../store.dart';
 import '../theme.dart';
 import '../widgets/ui.dart';
+import 'ai.dart';
 import 'docs.dart';
 import 'load_edit.dart';
 import 'qr.dart';
@@ -143,7 +144,7 @@ class PanelScreen extends StatelessWidget {
                           _Tile(
                             icon: Icons.menu_book_outlined,
                             label: 'Qurilmalar',
-                            onTap: () => soon(context, 'Ma\'lumotnoma', 4),
+                            onTap: () => openReference(context),
                           ),
                         ],
                       ),

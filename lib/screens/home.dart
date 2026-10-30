@@ -6,6 +6,7 @@ import '../store.dart';
 import '../theme.dart';
 import '../widgets/painters.dart';
 import '../widgets/ui.dart';
+import 'ai.dart';
 import 'hisob.dart';
 import 'new_panel.dart';
 import 'panel.dart';
@@ -27,12 +28,7 @@ class _HomeShellState extends State<HomeShell> {
       const ProjectsPage(),
       const QrPage(),
       const HisobPage(),
-      const SoonPage(
-        title: 'AI yordamchi',
-        icon: Icons.chat_bubble_outline,
-        text: 'PUE bo\'yicha savol-javob.',
-        stage: 4,
-      ),
+      const AiPage(),
     ];
     return Scaffold(
       body: SafeArea(bottom: false, child: IndexedStack(index: _tab, children: pages)),
@@ -171,7 +167,7 @@ class ProjectsPage extends StatelessWidget {
                         ),
                         IconButton(
                           tooltip: 'Ma\'lumotnoma',
-                          onPressed: () => soon(context, 'Ma\'lumotnoma', 4),
+                          onPressed: () => openReference(context),
                           icon: const Icon(Icons.menu_book_outlined, color: C.text2),
                         ),
                       ],

@@ -1,7 +1,7 @@
 name: shitlab
 description: ShitLab — elektr shitlarini PUE bo'yicha loyihalash.
 publish_to: 'none'
-version: 5.3.0+4
+version: 5.3.1+5
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

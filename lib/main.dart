@@ -15,7 +15,17 @@ void main() {
     systemNavigationBarIconBrightness: Brightness.light,
   ));
   app.init();
+  WidgetsBinding.instance.addObserver(_Lifecycle());
   runApp(const ShitLabApp());
+}
+
+class _Lifecycle extends WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive || state == AppLifecycleState.detached) {
+      app.flush();
+    }
+  }
 }
 
 class ShitLabApp extends StatelessWidget {

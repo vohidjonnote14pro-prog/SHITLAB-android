@@ -4,6 +4,7 @@ import '../calc.dart';
 import '../models.dart';
 import '../store.dart';
 import '../theme.dart';
+import '../widgets/app_builder.dart';
 import '../widgets/ui.dart';
 import 'ai.dart';
 import 'docs.dart';
@@ -60,9 +61,8 @@ class PanelScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: app,
-      builder: (context, _) {
+    return AppBuilder(
+      builder: (context) {
         final p = app.byId(projectId);
         if (p == null) {
           return const Scaffold(body: SafeArea(child: Header(title: 'Loyiha topilmadi')));

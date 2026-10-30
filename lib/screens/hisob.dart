@@ -7,6 +7,7 @@ import '../models.dart';
 import '../pdfs.dart';
 import '../store.dart';
 import '../theme.dart';
+import '../widgets/app_builder.dart';
 import '../widgets/ui.dart';
 
 /// Pastki menyudagi "Hisob-kitob" bo'limi.
@@ -48,9 +49,8 @@ class _HisobPageState extends State<HisobPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: app,
-      builder: (context, _) {
+    return AppBuilder(
+      builder: (context) {
         final p = _current();
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

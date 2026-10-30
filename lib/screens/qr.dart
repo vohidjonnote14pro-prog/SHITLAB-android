@@ -12,6 +12,7 @@ import '../pdfs.dart';
 import '../store.dart';
 import '../telegram.dart';
 import '../theme.dart';
+import '../widgets/app_builder.dart';
 import '../widgets/ui.dart';
 import 'docs.dart';
 
@@ -57,9 +58,8 @@ class QrPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: app,
-      builder: (context, _) => Column(
+    return AppBuilder(
+      builder: (context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Header(title: 'QR montaj', subtitle: 'Montaj rasmlari va mijoz hujjatlari', back: false),
@@ -553,9 +553,8 @@ class _ObjectPhotosScreenState extends State<ObjectPhotosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: app,
-      builder: (context, _) {
+    return AppBuilder(
+      builder: (context) {
         final p = app.byId(widget.projectId);
         if (p == null) return const Scaffold(body: SafeArea(child: Header(title: 'Loyiha topilmadi')));
         final total = p.photoRooms.fold<int>(0, (s, r) => s + r.photos.length);
@@ -777,7 +776,9 @@ class _ObjectPhotosScreenState extends State<ObjectPhotosScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (f.existsSync()) InteractiveViewer(child: Image.file(f)),
+              InteractiveViewer(
+                child: Image.file(f, errorBuilder: (_, __, ___) => const SizedBox(height: 120, child: Center(child: Icon(Icons.broken_image, color: C.muted)))),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -805,9 +806,14 @@ class _ObjectPhotosScreenState extends State<ObjectPhotosScreen> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            f.existsSync()
-                ? Image.file(f, fit: BoxFit.cover, cacheWidth: 300)
-                : Container(color: const Color(0xFF232A36), child: const Icon(Icons.broken_image, color: C.muted)),
+            Image.file(
+              f,
+              fit: BoxFit.cover,
+              cacheWidth: 300,
+              gaplessPlayback: true,
+              errorBuilder: (_, __, ___) =>
+                  Container(color: const Color(0xFF232A36), child: const Icon(Icons.broken_image, color: C.muted)),
+            ),
             if (ph.sent)
               Positioned(
                 left: 4,

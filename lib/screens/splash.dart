@@ -43,12 +43,13 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       backgroundColor: C.blueprint,
       body: Stack(
         children: [
-          Positioned.fill(child: CustomPaint(painter: _BlueprintPainter())),
+          Positioned.fill(child: RepaintBoundary(child: CustomPaint(painter: _BlueprintPainter()))),
           SafeArea(
             child: Column(
               children: [
                 const Spacer(flex: 3),
-                SizedBox(
+                RepaintBoundary(
+                  child: SizedBox(
                   width: 220,
                   height: 220,
                   child: AnimatedBuilder(
@@ -77,6 +78,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       );
                     },
                   ),
+                ),
                 ),
                 const SizedBox(height: 30),
                 Text('SHITLAB',

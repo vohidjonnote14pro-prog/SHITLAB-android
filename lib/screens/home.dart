@@ -5,6 +5,7 @@ import '../models.dart';
 import '../store.dart';
 import '../theme.dart';
 import '../widgets/painters.dart';
+import '../widgets/app_builder.dart';
 import '../widgets/ui.dart';
 import 'ai.dart';
 import 'hisob.dart';
@@ -31,7 +32,18 @@ class _HomeShellState extends State<HomeShell> {
       const AiPage(),
     ];
     return Scaffold(
-      body: SafeArea(bottom: false, child: IndexedStack(index: _tab, children: pages)),
+      body: SafeArea(
+        bottom: false,
+        child: Stack(
+          children: [
+            for (var i = 0; i < pages.length; i++)
+              Offstage(
+                offstage: i != _tab,
+                child: TickerMode(enabled: i == _tab, child: pages[i]),
+              ),
+          ],
+        ),
+      ),
       bottomNavigationBar: _BottomNav(index: _tab, onTap: (i) => setState(() => _tab = i)),
     );
   }
@@ -139,9 +151,8 @@ class ProjectsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: app,
-      builder: (context, _) {
+    return AppBuilder(
+      builder: (context) {
         return Stack(
           children: [
             CustomScrollView(

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -93,13 +94,42 @@ class AppState extends ChangeNotifier {
   String channelSearchLink(String tag) =>
       channelUser.isEmpty ? '' : 'https://t.me/s/$channelUser?q=%23$tag';
 
-  Future<void> _persist() async {
+  Timer? _saveTimer;
+  bool _saving = false;
+  bool _again = false;
+
+  /// Xotiraga yozish 0,6 soniya kechiktiriladi: tez yozganda har harfda emas,
+  /// to'xtaganingizda bir marta saqlanadi.
+  void _persist() {
+    _saveTimer?.cancel();
+    _saveTimer = Timer(const Duration(milliseconds: 600), flush);
+  }
+
+  /// Darhol saqlash (ilova yopilayotganda).
+  Future<void> flush() async {
+    _saveTimer?.cancel();
+    if (_saving) {
+      _again = true;
+      return;
+    }
+    _saving = true;
     try {
+      final data = projects.map((p) => p.toJson()).toList();
+      final raw = await compute(_encode, data);
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_key, jsonEncode(projects.map((p) => p.toJson()).toList()));
-    } catch (_) {}
+      await prefs.setString(_key, raw);
+    } catch (_) {
+    } finally {
+      _saving = false;
+    }
+    if (_again) {
+      _again = false;
+      await flush();
+    }
   }
 }
+
+String _encode(List<Map<String, dynamic>> data) => jsonEncode(data);
 
 final app = AppState();
 

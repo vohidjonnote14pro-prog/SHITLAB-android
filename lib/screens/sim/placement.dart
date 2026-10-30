@@ -71,7 +71,7 @@ class _PlacementScreenState extends State<PlacementScreen> {
     final p = app.byId(widget.projectId);
     if (p != null && p.layout.isEmpty && p.loads.isNotEmpty) {
       p.layout = autoLayout(p);
-      app.touch(p);
+      WidgetsBinding.instance.addPostFrameCallback((_) => app.save(p));
     }
   }
 

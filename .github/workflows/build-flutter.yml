@@ -40,7 +40,9 @@ jobs:
           sed -i 's#<application#<uses-permission android:name="android.permission.INTERNET"/>\n    <application#' $M
           # Havolalarni ochish uchun (Android 11+)
           sed -i 's#<queries>#<queries>\n        <intent><action android:name="android.intent.action.VIEW"/><data android:scheme="https"/></intent>#' $M
-          grep -n "INTERNET\|label\|scheme" $M
+          # Impeller o'chirildi: ayrim telefonlarda qotish va qayta yonishga sabab bo'ladi
+          sed -i '0,/<activity/s##<meta-data android:name="io.flutter.embedding.android.EnableImpeller" android:value="false"/>\n        <activity#' $M
+          grep -n "INTERNET\|label\|scheme\|Impeller" $M
           cp -r branding/android-res/* android/app/src/main/res/
 
       - name: Kutubxonalar
@@ -90,4 +92,4 @@ jobs:
           gh release create "v5.${{ github.run_number }}" ShitLab.apk ShitLab-eski-telefonlar.apk \
             --target "${{ github.sha }}" \
             --title "ShitLab v5.${{ github.run_number }} (Flutter)" \
-            --notes "Haqiqiy Flutter ilova. ShitLab.apk ni yuklab oling va o'rnating (noma'lum manbalarga ruxsat bering). O'rnatilmasa (juda eski telefon), ShitLab-eski-telefonlar.apk ni oling. 4-bosqich: ma'lumotnoma (14 qurilma, chizmalari bilan) va AI yordamchi (internetsiz hisob + Claude'dan batafsil)."
+            --notes "Haqiqiy Flutter ilova. ShitLab.apk ni yuklab oling va o'rnating (noma'lum manbalarga ruxsat bering). O'rnatilmasa (juda eski telefon), ShitLab-eski-telefonlar.apk ni oling. Tuzatish: qotish va telefon qayta yonishi (grafika dvigateli almashtirildi), tezroq saqlash, orqadagi oynalar keraksiz qayta chizilmaydi."

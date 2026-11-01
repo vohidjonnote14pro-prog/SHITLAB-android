@@ -4,6 +4,9 @@ on:
   push:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -233,7 +236,17 @@ jobs:
       - name: APK yig'ish
         run: cd app && gradle assembleDebug --no-daemon
 
+      - name: APK nomini o'zgartirish
+        run: cp app/build/outputs/apk/debug/*.apk TezTerminal.apk
+
       - uses: actions/upload-artifact@v4
         with:
           name: TezTerminal-APK
-          path: app/build/outputs/apk/debug/*.apk
+          path: TezTerminal.apk
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: tez-terminal-v1
+          name: Tez Terminal
+          target_commitish: tez-terminal
+          files: TezTerminal.apk

@@ -44,8 +44,8 @@ jobs:
                   applicationId 'uz.vohid.terminal'
                   minSdk 24
                   targetSdk 34
-                  versionCode 1
-                  versionName '1.0'
+                  versionCode 2
+                  versionName '1.1'
               }
               compileOptions {
                   sourceCompatibility JavaVersion.VERSION_17
@@ -140,7 +140,7 @@ jobs:
                   CheckBox auto = new CheckBox(this);
                   auto.setText("Avto Termux");
                   auto.setTextColor(Color.WHITE);
-                  auto.setChecked(sp.getBoolean("auto", true));
+                  auto.setChecked(sp.getBoolean("auto", false));
                   auto.setOnCheckedChangeListener((c, x) -> sp.edit().putBoolean("auto", x).apply());
                   Button c = btn("Tozalash");
                   c.setOnClickListener(v -> out.setText(""));
@@ -175,8 +175,12 @@ jobs:
                   setContentView(root);
                   print("Terminal tayyor. Masalan: ls, pwd, date, cd /sdcard, clear\n");
                   in.requestFocus();
+                  in.postDelayed(() -> {
+                      android.view.inputmethod.InputMethodManager im = (android.view.inputmethod.InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                      im.showSoftInput(in, 0);
+                  }, 300);
 
-                  if (b == null && sp.getBoolean("auto", true)) openTermux(false);
+                  if (b == null && sp.getBoolean("auto", false)) openTermux(false);
               }
 
               Button btn(String s) {
@@ -246,7 +250,7 @@ jobs:
 
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: tez-terminal-v1
+          tag_name: tez-terminal-v2
           name: Tez Terminal
           target_commitish: tez-terminal
           files: TezTerminal.apk

@@ -1,0 +1,239 @@
+name: Tez Terminal APK
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.7"
+
+      - name: Loyiha fayllarini yaratish
+        run: |
+          mkdir -p app && cd app
+          mkdir -p src/main/java/uz/vohid/terminal src/main/res/drawable
+
+          cat > settings.gradle <<'EOF'
+          pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+          dependencyResolutionManagement { repositories { google(); mavenCentral() } }
+          rootProject.name = "TezTerminal"
+          EOF
+
+          cat > gradle.properties <<'EOF'
+          org.gradle.jvmargs=-Xmx2g
+          EOF
+
+          cat > build.gradle <<'EOF'
+          plugins { id 'com.android.application' version '8.5.2' }
+          android {
+              namespace 'uz.vohid.terminal'
+              compileSdk 34
+              defaultConfig {
+                  applicationId 'uz.vohid.terminal'
+                  minSdk 24
+                  targetSdk 34
+                  versionCode 1
+                  versionName '1.0'
+              }
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+          }
+          EOF
+
+          cat > src/main/AndroidManifest.xml <<'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <queries>
+                  <package android:name="com.termux" />
+              </queries>
+              <application
+                  android:label="Tez Terminal"
+                  android:icon="@drawable/ic_launcher"
+                  android:roundIcon="@drawable/ic_launcher"
+                  android:theme="@android:style/Theme.Material.NoActionBar">
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true"
+                      android:windowSoftInputMode="stateVisible|adjustResize">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
+
+          cat > src/main/res/drawable/ic_launcher.xml <<'EOF'
+          <vector xmlns:android="http://schemas.android.com/apk/res/android"
+              android:width="108dp" android:height="108dp"
+              android:viewportWidth="108" android:viewportHeight="108">
+              <path android:fillColor="#111111" android:pathData="M0,0h108v108h-108z"/>
+              <path android:fillColor="#00000000" android:strokeColor="#33FF66"
+                  android:strokeWidth="8" android:strokeLineCap="round" android:strokeLineJoin="round"
+                  android:pathData="M30,36L50,54L30,72"/>
+              <path android:fillColor="#00000000" android:strokeColor="#33FF66"
+                  android:strokeWidth="8" android:strokeLineCap="round"
+                  android:pathData="M58,72L80,72"/>
+          </vector>
+          EOF
+
+          cat > src/main/java/uz/vohid/terminal/MainActivity.java <<'EOF'
+          package uz.vohid.terminal;
+
+          import android.app.Activity;
+          import android.content.Intent;
+          import android.content.SharedPreferences;
+          import android.graphics.Color;
+          import android.graphics.Typeface;
+          import android.net.Uri;
+          import android.os.Bundle;
+          import android.os.Handler;
+          import android.os.Looper;
+          import android.text.InputType;
+          import android.view.View;
+          import android.view.inputmethod.EditorInfo;
+          import android.widget.Button;
+          import android.widget.CheckBox;
+          import android.widget.EditText;
+          import android.widget.LinearLayout;
+          import android.widget.ScrollView;
+          import android.widget.TextView;
+          import java.io.BufferedReader;
+          import java.io.File;
+          import java.io.IOException;
+          import java.io.InputStreamReader;
+
+          public class MainActivity extends Activity {
+              TextView out; EditText in; ScrollView sv; SharedPreferences sp; File cwd; Handler h;
+
+              @Override
+              protected void onCreate(Bundle b) {
+                  super.onCreate(b);
+                  h = new Handler(Looper.getMainLooper());
+                  sp = getSharedPreferences("s", 0);
+                  cwd = getFilesDir();
+
+                  LinearLayout root = new LinearLayout(this);
+                  root.setOrientation(LinearLayout.VERTICAL);
+                  root.setBackgroundColor(Color.BLACK);
+                  root.setPadding(16, 16, 16, 16);
+                  root.setFitsSystemWindows(true);
+
+                  LinearLayout bar = new LinearLayout(this);
+                  Button t = btn("Termux");
+                  t.setOnClickListener(v -> openTermux(true));
+                  CheckBox auto = new CheckBox(this);
+                  auto.setText("Avto Termux");
+                  auto.setTextColor(Color.WHITE);
+                  auto.setChecked(sp.getBoolean("auto", true));
+                  auto.setOnCheckedChangeListener((c, x) -> sp.edit().putBoolean("auto", x).apply());
+                  Button c = btn("Tozalash");
+                  c.setOnClickListener(v -> out.setText(""));
+                  bar.addView(t); bar.addView(auto); bar.addView(c);
+                  root.addView(bar);
+
+                  sv = new ScrollView(this);
+                  out = new TextView(this);
+                  out.setTextColor(Color.parseColor("#33FF66"));
+                  out.setTypeface(Typeface.MONOSPACE);
+                  out.setTextSize(13);
+                  out.setTextIsSelectable(true);
+                  sv.addView(out);
+                  root.addView(sv, new LinearLayout.LayoutParams(-1, 0, 1));
+
+                  LinearLayout row = new LinearLayout(this);
+                  in = new EditText(this);
+                  in.setSingleLine(true);
+                  in.setTextColor(Color.WHITE);
+                  in.setHintTextColor(Color.GRAY);
+                  in.setHint("buyruq yozing...");
+                  in.setTypeface(Typeface.MONOSPACE);
+                  in.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                  in.setImeOptions(EditorInfo.IME_ACTION_GO);
+                  in.setOnEditorActionListener((v, a, e) -> { go(); return true; });
+                  Button r = btn("Bajar");
+                  r.setOnClickListener(v -> go());
+                  row.addView(in, new LinearLayout.LayoutParams(0, -2, 1));
+                  row.addView(r);
+                  root.addView(row);
+
+                  setContentView(root);
+                  print("Terminal tayyor. Masalan: ls, pwd, date, cd /sdcard, clear\n");
+                  in.requestFocus();
+
+                  if (b == null && sp.getBoolean("auto", true)) openTermux(false);
+              }
+
+              Button btn(String s) {
+                  Button x = new Button(this);
+                  x.setText(s);
+                  x.setAllCaps(false);
+                  return x;
+              }
+
+              void print(String s) {
+                  out.append(s);
+                  sv.post(() -> sv.fullScroll(View.FOCUS_DOWN));
+              }
+
+              boolean openTermux(boolean loud) {
+                  Intent i = getPackageManager().getLaunchIntentForPackage("com.termux");
+                  if (i != null) { startActivity(i); return true; }
+                  if (loud) {
+                      print("Termux o'rnatilmagan. F-Droid sahifasi ochilmoqda...\n");
+                      try {
+                          startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://f-droid.org/packages/com.termux/")));
+                      } catch (Exception e) { }
+                  }
+                  return false;
+              }
+
+              void go() {
+                  final String cmd = in.getText().toString().trim();
+                  in.setText("");
+                  if (cmd.isEmpty()) return;
+                  print("$ " + cmd + "\n");
+                  if (cmd.equals("clear")) { out.setText(""); return; }
+                  if (cmd.equals("cd") || cmd.startsWith("cd ")) {
+                      String p = cmd.length() > 2 ? cmd.substring(3).trim() : getFilesDir().getPath();
+                      File f = p.startsWith("/") ? new File(p) : new File(cwd, p);
+                      try { f = f.getCanonicalFile(); } catch (IOException e) { }
+                      if (f.isDirectory()) cwd = f; else print("bunday papka yo'q: " + p + "\n");
+                      return;
+                  }
+                  final File dir = cwd;
+                  new Thread(() -> {
+                      try {
+                          Process pr = new ProcessBuilder("sh", "-c", cmd).directory(dir).redirectErrorStream(true).start();
+                          BufferedReader br = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+                          String l;
+                          while ((l = br.readLine()) != null) { final String L = l; h.post(() -> print(L + "\n")); }
+                          pr.waitFor();
+                      } catch (Exception e) {
+                          final String m = String.valueOf(e.getMessage());
+                          h.post(() -> print("xato: " + m + "\n"));
+                      }
+                  }).start();
+              }
+          }
+          EOF
+
+      - name: APK yig'ish
+        run: cd app && gradle assembleDebug --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TezTerminal-APK
+          path: app/build/outputs/apk/debug/*.apk

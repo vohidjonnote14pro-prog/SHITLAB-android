@@ -1,0 +1,55 @@
+name: Shit pasporti APK
+
+on:
+  push:
+    branches: [ shit-pasporti ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Kutubxona va shriftlarni ilovaga joylash
+        run: |
+          npm install --no-save --no-audit --no-fund html2canvas@1.4.1 jspdf@2.5.1 \
+            @fontsource/ibm-plex-sans@5 @fontsource/ibm-plex-mono@5 @fontsource/oswald@5 @fontsource/pt-serif@5
+          node tools/assets.js
+          ls -la app/src/main/assets app/src/main/assets/lib app/src/main/assets/fonts
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: APK yig'ish
+        run: gradle :app:assembleRelease --no-daemon --stacktrace
+
+      - name: Nomlash
+        run: cp app/build/outputs/apk/release/app-release.apk ShitPasporti.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ShitPasporti-apk
+          path: ShitPasporti.apk
+
+      - name: Release yaratish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "pasport-v1.${{ github.run_number }}" ShitPasporti.apk \
+            --target "${{ github.sha }}" --latest=false \
+            --title "Shit pasporti v1.${{ github.run_number }}" \
+            --notes "Shit pasporti ilovasi. Telefonga yuklab oling va o'rnating (noma'lum manbalarga ruxsat bering)."

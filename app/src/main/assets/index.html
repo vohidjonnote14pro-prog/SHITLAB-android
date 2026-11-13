@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shit pasporti</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+/* Layout idea: form on the left, live A4 sheets on the right; one column on a phone. */
+:root{
+  --bg:#eef1f4; --panel:#ffffff; --ink:#16202b; --muted:#5b6876; --line:#d3dae1; --accent:#0b5a7a; --accent-ink:#ffffff; --warn:#8a5a00;
+  --font-display:"Oswald","Arial Narrow",Arial,sans-serif;
+  --font-body:"IBM Plex Sans","Segoe UI",Roboto,Arial,sans-serif;
+  --font-mono:"IBM Plex Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10161c; --panel:#19222b; --ink:#e6ecf1; --muted:#93a1ae; --line:#2b3743; --accent:#58b6d8; --accent-ink:#0b1a22; --warn:#e2b558;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10161c; --panel:#19222b; --ink:#e6ecf1; --muted:#93a1ae; --line:#2b3743; --accent:#58b6d8; --accent-ink:#0b1a22; --warn:#e2b558;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.45}
+.app{max-width:1280px;margin:0 auto;padding:20px 16px 48px;display:flex;flex-direction:column;gap:18px}
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.top h1{font-family:var(--font-display);font-weight:600;font-size:28px;letter-spacing:.02em;margin:0;text-transform:uppercase}
+.top p{margin:2px 0 0;color:var(--muted);max-width:60ch}
+.cols{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.cols{grid-template-columns:minmax(0,1fr)}}
+.form{display:flex;flex-direction:column;gap:14px}
+fieldset{border:1px solid var(--line);background:var(--panel);border-radius:8px;margin:0;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+legend{font-family:var(--font-display);font-weight:500;font-size:15px;letter-spacing:.06em;text-transform:uppercase;padding:0 6px;color:var(--accent)}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:420px){.row{grid-template-columns:minmax(0,1fr)}}
+label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:0}
+input[type=text],input[type=date],input[type=number],select{
+  font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 9px;width:100%;min-width:0}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hint{font-size:13px;color:var(--muted);margin:0}
+.hint.warn{color:var(--warn)}
+.line{display:grid;grid-template-columns:26px 66px 78px minmax(0,1fr) 34px;gap:6px;align-items:center}
+.line .num{font-family:var(--font-mono);font-size:13px;color:var(--muted);text-align:right}
+.line .r2{grid-column:2 / 6;display:flex;gap:6px;flex-wrap:wrap}
+.line .r2 select{width:124px;flex:none}
+.line .r2 .use{flex:1 1 120px;min-width:0}
+.line .r2 .kw{width:84px;flex:none}
+.line + .line{border-top:1px dashed var(--line);padding-top:8px}
+.lines{display:flex;flex-direction:column;gap:8px}
+.linehead{display:grid;grid-template-columns:26px 66px 78px minmax(0,1fr) 34px;gap:6px;font-size:12px;color:var(--muted)}
+button{font:inherit;cursor:pointer;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:8px 12px}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600;padding:10px 16px}
+button.del{padding:6px 0;color:var(--muted)}
+button:disabled{opacity:.55;cursor:default}
+.checks{display:flex;flex-direction:column;gap:6px}
+.checks label{flex-direction:row;align-items:flex-start;gap:8px;font-size:14px;color:var(--ink)}
+.checks input{margin-top:3px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+#status{font-size:13px;color:var(--muted)}
+.preview{display:flex;flex-direction:column;gap:16px;min-width:0}
+.pvwrap{display:flex;flex-direction:column;gap:12px;min-width:0}
+.styles{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.styles span{font-size:13px;color:var(--muted);margin-right:4px}
+.styles button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.fit{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:4px;background:#ffffff}
+.fit > .sheet{transform-origin:0 0;position:absolute;left:0;top:0}
+#stage{position:fixed;left:-12000px;top:0;width:794px}
+
+/* ---------- A4 sheets: fixed paper colours, same in both themes ---------- */
+.sheet{width:794px;height:1123px;background:#ffffff;color:#16202b;padding:44px 48px;font-family:"IBM Plex Sans","Segoe UI",Arial,sans-serif;font-size:13px;line-height:1.4;display:flex;flex-direction:column;gap:16px;overflow:hidden}
+.sheet h2{font-family:"Oswald","Arial Narrow",Arial,sans-serif;font-weight:600;font-size:34px;line-height:1.05;letter-spacing:.03em;margin:0;text-transform:uppercase}
+.sheet h3{font-family:"Oswald","Arial Narrow",Arial,sans-serif;font-weight:500;font-size:14px;letter-spacing:.1em;text-transform:uppercase;margin:0;color:#0b5a7a}
+.s-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+.s-head .sub{font-size:15px;margin-top:4px;color:#3a4856}
+.s-id{text-align:right;font-family:"IBM Plex Mono",Consolas,monospace;font-size:13px;white-space:nowrap}
+.s-id b{display:block;font-size:17px;font-weight:500}
+.phases{display:flex;height:5px}
+.phases i{flex:1}
+.pa{background:#e3b100}.pb{background:#2e9e4f}.pc{background:#d23b3b}
+.s-body{display:flex;gap:20px;align-items:flex-start}
+.s-body table{flex:1}
+.sheet table{border-collapse:collapse;width:100%}
+.spec td{padding:5px 0;border-bottom:1px solid #dfe4e9;vertical-align:top}
+.spec td:first-child{color:#5b6876;width:42%;padding-right:10px}
+.spec td:last-child{font-weight:500}
+.photo{width:230px;height:230px;border:1px solid #cfd6dd;display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden;background:#f5f7f9}
+.photo img{max-width:100%;max-height:100%;display:block}
+.sec{display:flex;flex-direction:column;gap:8px}
+.legend{display:flex;gap:14px;font-size:11px;color:#5b6876;align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.lt th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#5b6876;text-align:left;padding:5px 6px;border-bottom:1.5px solid #16202b;font-weight:500}
+.lt td{padding:5px 6px;border-bottom:1px solid #dfe4e9}
+.lt td.m{font-family:"IBM Plex Mono",Consolas,monospace;font-size:12px;white-space:nowrap}
+.s-foot{margin-top:auto;display:flex;justify-content:space-between;font-size:11px;color:#5b6876;border-top:1px solid #dfe4e9;padding-top:8px}
+/* certificate page */
+.cert{padding:30px}
+.cert .frame{flex:1;border:2px solid #16202b;padding:6px;display:flex}
+.cert .frame-in{flex:1;border:1px solid #16202b;padding:48px 50px 34px;display:flex;flex-direction:column;gap:18px;text-align:center;align-items:center}
+.cert .eyebrow{font-family:"Oswald","Arial Narrow",Arial,sans-serif;letter-spacing:.24em;text-transform:uppercase;font-size:13px;color:#0b5a7a}
+.cert h2{font-size:46px}
+.cert .no{font-family:"IBM Plex Mono",Consolas,monospace;font-size:14px}
+.cert .phases{width:160px}
+.cert p{margin:0;font-size:15px;max-width:520px}
+.cert .big{font-size:20px;font-weight:600}
+.cert ul{list-style:none;margin:0;padding:0;text-align:left;display:flex;flex-direction:column;gap:7px;font-size:14px}
+.cert li{display:flex;gap:10px}
+.cert li::before{content:"✓";color:#2e9e4f;font-weight:600}
+.cert .war{border-top:1px solid #cfd6dd;border-bottom:1px solid #cfd6dd;padding:12px 24px}
+.signs{margin-top:auto;display:flex;justify-content:space-between;gap:40px;width:100%;text-align:left;font-size:12px;color:#5b6876}
+.signs div{flex:1}
+.signs .ln{border-bottom:1px solid #16202b;height:38px;margin-bottom:5px;color:#16202b;font-size:14px;display:flex;align-items:flex-end;padding-bottom:3px}
+.cert .note{font-size:11px;color:#5b6876;max-width:560px}
+.dframe{border:1.5px solid #16202b;flex:1;display:flex;flex-direction:column;min-height:0}
+.dframe canvas{display:block;margin:10px auto 0}
+.dnote{font-size:10.5px;color:#5b6876;padding:6px 12px}
+.stamp{margin-top:auto;align-self:flex-end;border-collapse:collapse;width:430px!important;font-size:11px}
+.stamp td{border:1px solid #16202b;padding:4px 7px}
+.stamp td.k{color:#5b6876;width:84px;font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+.stamp td.t{font-family:"Oswald","Arial Narrow",Arial,sans-serif;font-size:15px;letter-spacing:.05em;text-transform:uppercase}
+.loads{display:flex;gap:10px}
+.loads div{flex:1;border:1px solid #dfe4e9;border-top:4px solid #16202b;padding:8px 10px}
+.loads b{display:block;font-family:"IBM Plex Mono",Consolas,monospace;font-size:17px;font-weight:500}
+.loads small{color:#5b6876;font-size:11px}
+.over{color:#c22a2a;font-weight:600}
+canvas.pan{display:block}
+/* variant: Klassik */
+.v-classic{font-family:"PT Serif",Georgia,serif}
+.v-classic h2{font-family:"PT Serif",Georgia,serif;font-weight:700;text-transform:none;letter-spacing:0;color:#1c2a44}
+.v-classic h3,.v-classic .eyebrow{font-family:"PT Serif",Georgia,serif;color:#8a6a1c;letter-spacing:.14em}
+.v-classic .phases{height:4px;border-top:1px solid #1c2a44;border-bottom:1px solid #1c2a44}
+.v-classic .phases i{background:none}
+.v-classic.cert .frame{border-color:#1c2a44}
+.v-classic.cert .frame-in{border-color:#a8842c}
+.v-classic .lt th{border-bottom-color:#1c2a44}
+.v-classic .stamp td.t{font-family:"PT Serif",Georgia,serif;text-transform:none;letter-spacing:0;font-weight:700}
+/* variant: Zamonaviy */
+.v-modern .s-head{background:#16202b;color:#ffffff;margin:-44px -48px 0;padding:34px 48px 20px}
+.v-modern .s-head .sub{color:#c9d3dc}
+.v-modern .phases{margin:-16px -48px 0;height:6px}
+.v-modern h3{color:#16202b;border-left:4px solid #e3a008;padding-left:8px}
+.v-modern .spec td:first-child{text-transform:uppercase;font-size:11px;letter-spacing:.05em}
+.v-modern.cert .frame{border:none;border-top:12px solid #16202b;background:#f3f5f7;padding:0}
+.v-modern.cert .frame-in{border:none}
+.v-modern.cert .eyebrow{background:#e3a008;color:#16202b;padding:4px 12px}
+.v-modern.cert .phases{margin:0}
+.sheet.cert{position:relative;padding:0}
+canvas.certbg{position:absolute;left:0;top:0;width:794px;height:1123px}
+.sheet.cert .frame{position:relative;border:none!important;background:none!important;padding:0!important}
+.sheet.cert .frame-in{border:none!important;padding:96px 104px 62px}
+.sheet.cert .signs{gap:150px}
+.styles .sep{width:1px;align-self:stretch;background:var(--line);margin:0 6px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div>
+      <h1>Shit pasporti</h1>
+      <p>Ma'lumotni kiriting. Passport, bir chiziqli sxema va sifat guvohnomasi o'ng tomonda darhol yangilanadi.</p>
+    </div>
+    <div class="actions">
+      <button class="primary" id="btnPdf" type="button">PDF yuklab olish</button>
+      <span id="status" role="status"></span>
+    </div>
+  </header>
+
+  <div class="cols">
+    <form class="form" id="form" autocomplete="off">
+      <fieldset>
+        <legend>Yig'uvchi</legend>
+        <label>Ism yoki firma nomi<input type="text" id="maker"></label>
+        <div class="row">
+          <label>Telefon<input type="text" id="phone" placeholder="+998 __ ___ __ __"></label>
+          <label>Manzil<input type="text" id="addr" placeholder="Shahar, tuman"></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Shit</legend>
+        <label>Nomi yoki turi<input type="text" id="name"></label>
+        <div class="row">
+          <label>Seriya raqami<input type="text" id="serial"></label>
+          <label>Yig'ilgan sana<input type="date" id="date"></label>
+        </div>
+        <div class="row">
+          <label>Kuchlanish
+            <select id="volt"><option>220 V, 1 faza</option><option>380 V, 3 faza</option></select>
+          </label>
+          <label>Nominal tok, A<input type="text" id="amp" inputmode="numeric"></label>
+        </div>
+        <div class="row">
+          <label>Himoya darajasi (IP)<input type="text" id="ip"></label>
+          <label>Korpus o'lchami<input type="text" id="size" placeholder="masalan 300×400×120 mm"></label>
+        </div>
+        <label>Kirish apparati turi
+          <select id="inType"><option value="mcb">Avtomat</option><option value="sw">Rubilnik (ajratgich)</option><option value="rcbo">Difavtomat</option><option value="rcd">UZO</option></select>
+        </label>
+        <div class="row">
+          <label>Kirish apparati nominali<input type="text" id="inBreaker"></label>
+          <label>Kirish kabeli<input type="text" id="inCable"></label>
+        </div>
+        <div class="row">
+          <label>Shit rasmi: kameradan<input type="file" id="photoCam" accept="image/*" capture="environment"></label>
+          <label>Shit rasmi: galereyadan<input type="file" id="photo" accept="image/*"></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Liniyalar</legend>
+        <p class="hint">Har liniya uchun apparat turini tanlang. UZO va difavtomatda nominalga tok va mA ni yozing, masalan: 40A 30mA. Quvvat kiritilsa, tok va faza yuklamasi hisoblanadi.</p>
+        <div class="linehead"><span></span><span>Faza</span><span>Nominal</span><span>Kabel</span><span></span></div>
+        <div class="lines" id="lines"></div>
+        <div class="actions">
+          <button type="button" id="btnAdd">+ Liniya qo'shish</button>
+          <span class="hint" id="lineCount"></span>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Tekshiruvlar</legend>
+        <p class="hint warn">Faqat haqiqatan bajarilgan tekshiruvlarni belgilang. Guvohnomaga faqat belgilanganlari yoziladi.</p>
+        <div class="checks" id="checks"></div>
+        <label>Kafolat muddati, oy<input type="number" id="warranty" min="0" max="120"></label>
+      </fieldset>
+    </form>
+
+    <div class="pvwrap">
+      <div class="styles" role="group" aria-label="Hujjat uslubi">
+        <span>Hujjat uslubi</span>
+        <button type="button" id="st-tech" data-style="tech">Texnik</button>
+        <button type="button" id="st-classic" data-style="classic">Klassik</button>
+        <button type="button" id="st-modern" data-style="modern">Zamonaviy</button>
+        <i class="sep"></i>
+        <span>Guvohnoma foni</span>
+        <button type="button" id="bg-gil" data-bg="gil">Gilyosh naqsh</button>
+        <button type="button" id="bg-frame" data-bg="frame">Klassik ramka</button>
+        <button type="button" id="bg-grid" data-bg="grid">Texnik to'r</button>
+      </div>
+      <section class="preview" id="preview" aria-label="Hujjat ko'rinishi"></section>
+    </div>
+  </div>
+</div>
+<div id="stage" aria-hidden="true"></div>
+
+<script src="lib/html2canvas.min.js"></script>
+<script src="lib/jspdf.umd.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var CHECKS = [
+    "Barcha ulanishlar tortilgan va qayta tekshirilgan",
+    "Izolyatsiya qarshiligi o'lchangan",
+    "Faza, nol va yerlash to'g'ri ulangan",
+    "Avtomatlar va UZO sinov tugmasi bilan tekshirilgan",
+    "Liniyalar markirovka qilingan",
+    "Yuklama ostida sinab ko'rilgan"
+  ];
+  var TYPES = {mcb:"Avtomat", rcd:"UZO", rcbo:"Difavtomat", sw:"Rubilnik"};
+  var FIELDS = ["inType","maker","phone","addr","name","serial","date","volt","amp","ip","size","inBreaker","inCable","warranty"];
+  var MAX_LINES = 24, KEY = "shit-pasporti-v1";
+  var PH = {A:"#e3b100", B:"#2e9e4f", C:"#d23b3b"};
+
+  /* Namuna ma'lumot: birinchi ochilganda ko'rinadi, ustidan yozib ketiladi. */
+  var state = {
+    maker:"Vohidjon", phone:"", addr:"", name:"Kvartira shiti, 12 modul (namuna)", serial:"SH-2026-001",
+    date:"2026-11-13", volt:"220 V, 1 faza", amp:"40", ip:"IP40", size:"", inBreaker:"C40, 2P", inCable:"VVG 3×10",
+    warranty:"12", style:"tech", bg:"gil", inType:"mcb", checks:[true,true,true,true,true,false],
+    lines:[
+      {ph:"A", br:"C10", cab:"VVG 3×1.5", use:"Yoritish", kw:"0.6"},
+      {ph:"A", br:"C16", cab:"VVG 3×2.5", use:"Rozetkalar, xonalar", kw:"2.2"},
+      {ph:"A", br:"C16", cab:"VVG 3×2.5", use:"Oshxona rozetkalari", kw:"3"},
+      {ph:"A", br:"C32", cab:"VVG 3×6", use:"Elektr plita", kw:"5.5"},
+      {ph:"A", t:"rcbo", br:"C16 30mA", cab:"VVG 3×2.5", use:"Kir yuvish mashinasi", kw:"2.2"},
+      {ph:"A", br:"C16", cab:"VVG 3×2.5", use:"Konditsioner", kw:"1.5"}
+    ]
+  };
+  var photoUrl = "";
+
+  try{
+    var saved = JSON.parse(localStorage.getItem(KEY) || "null");
+    if(saved && Array.isArray(saved.lines)) state = Object.assign(state, saved);
+    if(["tech","classic","modern"].indexOf(state.style) < 0) state.style = "tech";
+    if(!TYPES[state.inType]) state.inType = "mcb";
+    if(["gil","frame","grid"].indexOf(state.bg) < 0) state.bg = "gil";
+  }catch(e){}
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+  var $ = function(id){ return document.getElementById(id); };
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function fmtDate(d){ var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || ""); return m ? m[3]+"."+m[2]+"."+m[1] : ""; }
+
+  /* ---------- form ---------- */
+  FIELDS.forEach(function(f){ $(f).value = state[f] || ""; });
+  $("checks").innerHTML = CHECKS.map(function(t,i){
+    return '<label><input type="checkbox" id="chk'+i+'"'+(state.checks[i]?" checked":"")+'><span>'+esc(t)+'</span></label>';
+  }).join("");
+
+  function renderLines(){
+    $("lines").innerHTML = state.lines.map(function(l,i){
+      var opts = ["A","B","C","ABC"].map(function(p){ return '<option'+(l.ph===p?" selected":"")+'>'+p+'</option>'; }).join("");
+      return '<div class="line" data-i="'+i+'">'+
+        '<span class="num">'+(i+1)+'</span>'+
+        '<select id="l'+i+'-ph" data-f="ph" aria-label="Faza">'+opts+'</select>'+
+        '<input type="text" id="l'+i+'-br" data-f="br" aria-label="Nominal" value="'+esc(l.br)+'">'+
+        '<input type="text" id="l'+i+'-cab" data-f="cab" aria-label="Kabel" value="'+esc(l.cab)+'">'+
+        '<button type="button" class="del" data-del="'+i+'" aria-label="'+(i+1)+'-liniyani o\'chirish">✕</button>'+
+        '<div class="r2"><select id="l'+i+'-t" data-f="t" aria-label="Apparat turi">'+Object.keys(TYPES).map(function(k){ return '<option value="'+k+'"'+(typeOf(l)===k?" selected":"")+'>'+TYPES[k]+'</option>'; }).join("")+'</select>'+
+        '<input type="text" class="use" id="l'+i+'-use" data-f="use" aria-label="Iste\'molchi" placeholder="Nima ulangan" value="'+esc(l.use)+'">'+
+        '<input type="text" class="kw" id="l'+i+'-kw" data-f="kw" inputmode="decimal" aria-label="Quvvat, kVt" placeholder="kVt" value="'+esc(l.kw)+'"></div>'+
+        '</div>';
+    }).join("");
+    $("lineCount").textContent = state.lines.length + " / " + MAX_LINES;
+    $("btnAdd").disabled = state.lines.length >= MAX_LINES;
+  }
+  renderLines();
+
+  var pending = false;
+  function refresh(){
+    save();
+    if(pending) return;
+    pending = true;
+    requestAnimationFrame(function(){ pending = false; renderPreview(); });
+  }
+
+  $("form").addEventListener("submit", function(e){ e.preventDefault(); });
+  $("form").addEventListener("input", function(e){
+    var t = e.target;
+    if(FIELDS.indexOf(t.id) >= 0){ state[t.id] = t.value; }
+    else if(/^chk\d+$/.test(t.id)){ state.checks[+t.id.slice(3)] = t.checked; }
+    else if(t.dataset && t.dataset.f){
+      var row = t.closest(".line"); if(row) state.lines[+row.dataset.i][t.dataset.f] = t.value;
+    } else return;
+    refresh();
+  });
+  $("lines").addEventListener("click", function(e){
+    var b = e.target.closest("[data-del]"); if(!b) return;
+    state.lines.splice(+b.dataset.del, 1); renderLines(); refresh();
+  });
+  $("btnAdd").addEventListener("click", function(){
+    if(state.lines.length >= MAX_LINES) return;
+    state.lines.push({t:"mcb", ph:"A", br:"C16", cab:"VVG 3×2.5", use:"", kw:""});
+    renderLines(); refresh();
+    var el = $("l"+(state.lines.length-1)+"-use"); if(el) el.focus();
+  });
+  function markStyle(){
+    document.querySelectorAll("[data-style]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.style === state.style)); });
+    document.querySelectorAll("[data-bg]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.bg === state.bg)); });
+  }
+  markStyle();
+  document.querySelector(".styles").addEventListener("click", function(e){
+    var b = e.target.closest("[data-style],[data-bg]"); if(!b) return;
+    if(b.dataset.style) state.style = b.dataset.style; else state.bg = b.dataset.bg;
+    markStyle(); refresh();
+  });
+  function onPhoto(e){
+    var f = e.target.files && e.target.files[0];
+    if(!f){ photoUrl = ""; refresh(); return; }
+    var r = new FileReader();
+    r.onload = function(){ photoUrl = r.result; refresh(); };
+    r.readAsDataURL(f);
+  }
+  $("photo").addEventListener("change", onPhoto);
+  $("photoCam").addEventListener("change", onPhoto);
+
+  /* ---------- helpers for lines ---------- */
+  function clip(s, n){ s = String(s || ""); return s.length > n ? s.slice(0, n-1) + "…" : s; }
+  function isRcd(t){ return /uzo|узо|dif|диф|\bma\b|мА/i.test(String(t || "")); }
+  function three(){ return /380/.test(state.volt || ""); }
+  function typeOf(l){ return TYPES[l.t] ? l.t : (isRcd(l.br) ? "rcd" : "mcb"); }
+  function hasRcd(t){ return t === "rcd" || t === "rcbo"; }
+  function desig(t, i){ return (t === "sw" ? "QS" : "QF") + i; }
+  function maOf(br){ var m = /(\d+)\s*(?:ma|мА)/i.exec(br || ""); return m ? m[1] + "mA" : "30mA"; }
+  function polesOf(l){ var p = l.ph === "ABC" ? 3 : 1; return hasRcd(typeOf(l)) ? p + 1 : p; }
+  function inPoles(){ var m = /(\d)\s*[pPпП]/.exec(state.inBreaker || ""); return m ? Math.min(4, Math.max(1, +m[1])) : (three() ? 3 : 2); }
+  function cores(cab){ var m = /(\d+)\s*[x×хX*]/.exec(String(cab || "")); return m ? Math.min(5, +m[1]) : 0; }
+  function nominal(br){ var m = /(\d{1,3})\s*[AА]\b/.exec(br || "") || /[BCDВСД]\s?(\d{1,3})/i.exec(br || ""); return m ? +m[1] : 0; }
+  function rating(br, t){
+    br = String(br || "");
+    var amps = /(\d{1,3})\s*[AА]\b/.exec(br), curve = /[BCDВСД]\s?\d{1,3}/i.exec(br);
+    if(t === "rcd" || t === "sw") return amps ? amps[1] + "A" : (curve ? curve[0].replace(/\D/g, "") + "A" : clip(br, 5));
+    return curve ? curve[0].replace(/\s/g, "").toUpperCase() : (amps ? amps[1] + "A" : clip(br, 5));
+  }
+  function kwOf(l){ var v = parseFloat(String(l.kw || "").replace(",", ".")); return isFinite(v) && v > 0 ? v : 0; }
+  function ampOf(l){ var p = kwOf(l); if(!p) return 0; return l.ph === "ABC" ? p*1000/(1.732*380*0.95) : p*1000/(220*0.95); }
+  function f1(v){ return (Math.round(v*10)/10).toString(); }
+  function phaseLoads(){
+    var s = {A:0, B:0, C:0};
+    state.lines.forEach(function(l){ var p = kwOf(l); if(!p) return; if(l.ph === "ABC"){ s.A += p/3; s.B += p/3; s.C += p/3; } else if(s[l.ph] != null) s[l.ph] += p; });
+    return s;
+  }
+
+  /* ---------- realistic modular breaker, front view ---------- */
+  function rr(c, x, y, w, h, r){ c.beginPath(); c.moveTo(x+r, y); c.arcTo(x+w, y, x+w, y+h, r); c.arcTo(x+w, y+h, x, y+h, r); c.arcTo(x, y+h, x, y, r); c.arcTo(x, y, x+w, y, r); c.closePath(); }
+  function screw(c, x, y, r){
+    var g = c.createRadialGradient(x-r*0.3, y-r*0.3, r*0.1, x, y, r);
+    g.addColorStop(0, "#c9ced3"); g.addColorStop(1, "#6f757c");
+    c.fillStyle = "#3a4047"; c.beginPath(); c.arc(x, y, r*1.25, 0, Math.PI*2); c.fill();
+    c.fillStyle = g; c.beginPath(); c.arc(x, y, r, 0, Math.PI*2); c.fill();
+    c.strokeStyle = "#3a4047"; c.lineWidth = Math.max(0.8, r*0.28);
+    c.beginPath(); c.moveTo(x-r*0.7, y); c.lineTo(x+r*0.7, y); c.stroke();
+  }
+  function drawDevice(c, x, y, mw, mh, poles, label, opt){
+    var rcd = opt && hasRcd(opt.type) ? opt : null, sw = !!opt && opt.type === "sw";
+    var w = mw*poles, i;
+    // housing
+    var g = c.createLinearGradient(x, 0, x+w, 0);
+    g.addColorStop(0, "#fafbfb"); g.addColorStop(0.5, "#eef0f2"); g.addColorStop(1, "#dcdfe3");
+    c.fillStyle = g; rr(c, x+0.5, y, w-1, mh, 2.5); c.fill();
+    c.strokeStyle = "#aab0b7"; c.lineWidth = 0.8; c.stroke();
+    for(i=0; i<poles; i++){
+      var px = x + i*mw, cxp = px + mw/2;
+      if(i){ c.strokeStyle = "#b9bec4"; c.lineWidth = 0.7; c.beginPath(); c.moveTo(px, y+1); c.lineTo(px, y+mh-1); c.stroke(); }
+      // terminal recesses with screws
+      c.fillStyle = "#cdd2d7"; c.fillRect(px+mw*0.16, y+mh*0.035, mw*0.68, mh*0.13);
+      c.fillRect(px+mw*0.16, y+mh*0.835, mw*0.68, mh*0.13);
+      screw(c, cxp, y+mh*0.10, mw*0.19); screw(c, cxp, y+mh*0.90, mw*0.19);
+    }
+    // raised front face
+    var fy = y+mh*0.30, fh = mh*0.42;
+    c.fillStyle = "rgba(0,0,0,.14)"; c.fillRect(x+1, fy+fh, w-2, 2.2);
+    c.fillStyle = "#ffffff"; c.fillRect(x+1, fy, w-2, fh);
+    c.strokeStyle = "#c2c7cd"; c.lineWidth = 0.7; c.strokeRect(x+1, fy, w-2, fh);
+    // lever
+    var lp = rcd ? poles-1 : poles, lw = mw*0.44, lx = x + mw*0.28, lspan = (lp-1)*mw + lw;
+    for(i=0; i<lp; i++){ c.fillStyle = "#23282e"; rr(c, x+i*mw+mw*0.26, fy+fh*0.12, mw*0.48, fh*0.50, 1.5); c.fill(); }
+    var lg = c.createLinearGradient(0, fy+fh*0.10, 0, fy+fh*0.40);
+    if(sw){ lg.addColorStop(0, "#ef6a5e"); lg.addColorStop(0.45, "#d23b3b"); lg.addColorStop(1, "#8f1f1f"); }
+    else { lg.addColorStop(0, "#4a525b"); lg.addColorStop(0.45, "#2a3037"); lg.addColorStop(1, "#15191d"); }
+    c.fillStyle = lg; rr(c, lx, fy+fh*0.09, lspan, fh*0.30, 2); c.fill();
+    c.fillStyle = "rgba(255,255,255,.28)"; c.fillRect(lx+1.5, fy+fh*0.11, lspan-3, 1.2);
+    // ON window
+    if(!sw){ c.fillStyle = "#d23b3b"; c.fillRect(x+mw*0.36, fy+fh*0.68, mw*0.28, fh*0.09); }
+    // print
+    c.textAlign = "center"; c.textBaseline = "middle"; c.fillStyle = "#16202b";
+    c.font = "600 " + Math.max(6, mw*(poles > 1 ? 0.30 : 0.29)) + 'px "IBM Plex Sans", Arial, sans-serif';
+    c.fillText(label, x + (rcd ? mw*lp/2 : w/2), y+mh*0.235, w-3);
+    c.font = Math.max(4.5, mw*0.15) + 'px "IBM Plex Sans", Arial, sans-serif'; c.fillStyle = "#5b6876";
+    c.fillText(rcd ? "I ON" : (sw ? "I-0" : "230/400V~"), x + mw*lp/2, fy+fh*0.88, mw*lp-3);
+    if(rcd){ // test button on the last module
+      var tx = x + (poles-0.5)*mw, ty = fy+fh*0.36;
+      c.fillStyle = "#b9bec4"; c.beginPath(); c.arc(tx, ty, mw*0.23, 0, Math.PI*2); c.fill();
+      c.fillStyle = "#e3a008"; c.beginPath(); c.arc(tx, ty, mw*0.18, 0, Math.PI*2); c.fill();
+      c.fillStyle = "#16202b"; c.font = "600 " + Math.max(5, mw*0.2) + 'px "IBM Plex Sans", Arial, sans-serif';
+      c.fillText("T", tx, ty+0.5);
+      c.font = Math.max(4.5, mw*0.16) + 'px "IBM Plex Sans", Arial, sans-serif'; c.fillStyle = "#16202b";
+      c.fillText(rcd.ma || "30mA", tx, fy+fh*0.74, mw-2);
+    }
+  }
+  function rail(c, x, y, w, h){
+    var g = c.createLinearGradient(0, y, 0, y+h);
+    g.addColorStop(0, "#e9ecef"); g.addColorStop(0.5, "#b4bac1"); g.addColorStop(1, "#8d949c");
+    c.fillStyle = g; c.fillRect(x, y, w, h);
+    c.fillStyle = "#5d646c";
+    for(var i = x+10; i < x+w-12; i += 22){ rr(c, i, y+h/2-2, 11, 4, 2); c.fill(); }
+  }
+  function busbar(c, x, y, w, body, stripe, name){
+    c.fillStyle = body; rr(c, x, y, w, 20, 3); c.fill();
+    if(stripe){ c.fillStyle = stripe; for(var k = x+6; k < x+w-6; k += 16) c.fillRect(k, y, 8, 20); }
+    var g = c.createLinearGradient(0, y+5, 0, y+15); g.addColorStop(0, "#e9cf7a"); g.addColorStop(1, "#b08d2e");
+    c.fillStyle = g; c.fillRect(x+26, y+5, w-34, 10);
+    for(var i = x+34; i < x+w-10; i += 15) screw(c, i, y+10, 3);
+    c.fillStyle = "#ffffff"; c.font = '600 10px "IBM Plex Sans", Arial, sans-serif'; c.textAlign = "center"; c.textBaseline = "middle";
+    c.fillText(name, x+13, y+10.5);
+  }
+  function drawPanel(cv){
+    var W = 698, PAD = 22, items = [], total;
+    items.push({label:rating(state.inBreaker, state.inType), poles:inPoles(), tag:"Kirish", rcd:{type:state.inType, ma:maOf(state.inBreaker)}});
+    state.lines.forEach(function(l, i){
+      var t = typeOf(l);
+      items.push({label:rating(l.br, t), poles:polesOf(l), tag:String(i+1), rcd:{type:t, ma:maOf(l.br)}});
+    });
+    total = items.reduce(function(a, it){ return a + it.poles; }, 0);
+    var per = total <= 36 ? 18 : Math.ceil(total/2) + 3;
+    var mw = (W - PAD*2) / per, mh = Math.min(150, mw*4.2);
+    var rows = [[]], used = 0;
+    items.forEach(function(it){
+      if(used + it.poles > per){ rows.push([]); used = 0; }
+      rows[rows.length-1].push(it); used += it.poles;
+    });
+    var RH = mh + 34, H = 16 + rows.length*RH + 40;
+    cv.width = W*2; cv.height = H*2; cv.style.width = W+"px"; cv.style.height = H+"px";
+    var c = cv.getContext("2d"); c.setTransform(2,0,0,2,0,0);
+    // enclosure
+    c.fillStyle = "#c9ced4"; rr(c, 0, 0, W, H, 8); c.fill();
+    var bg = c.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, "#f1f3f5"); bg.addColorStop(1, "#e2e6ea");
+    c.fillStyle = bg; rr(c, 5, 5, W-10, H-10, 5); c.fill();
+    c.strokeStyle = "#aab0b7"; c.lineWidth = 1; c.stroke();
+    rows.forEach(function(row, r){
+      var y = 16 + r*RH, x = PAD;
+      rail(c, PAD-8, y + mh*0.42, W - PAD*2 + 16, mh*0.2);
+      row.forEach(function(it){
+        drawDevice(c, x, y, mw, mh, it.poles, it.label, it.rcd);
+        c.fillStyle = "#ffffff"; c.strokeStyle = "#b9bec4"; c.lineWidth = 0.7;
+        var tw = mw*it.poles - 3; c.fillRect(x+1.5, y+mh+5, tw, 14); c.strokeRect(x+1.5, y+mh+5, tw, 14);
+        c.fillStyle = "#16202b"; c.textAlign = "center"; c.textBaseline = "middle";
+        c.font = '500 ' + Math.min(10, Math.max(6, mw*0.3)) + 'px "IBM Plex Mono", Consolas, monospace';
+        c.fillText(it.tag, x + mw*it.poles/2, y+mh+12.5, tw-2);
+        x += mw*it.poles;
+      });
+    });
+    var by = 16 + rows.length*RH + 4, bw = (W - PAD*2 - 16)/2;
+    busbar(c, PAD, by, bw, "#1f6fc2", null, "N");
+    busbar(c, PAD+bw+16, by, bw, "#3f9b46", "#e8c81e", "PE");
+  }
+
+  /* ---------- single-line diagram with data table ---------- */
+  function breaker(c, x, y, t){ // contact gap with blade, 30px tall; mark differs by device type
+    c.beginPath(); c.moveTo(x, y+30); c.lineTo(x-9, y+7); c.stroke();
+    c.beginPath();
+    if(t === "sw"){ c.moveTo(x-5, y+5); c.lineTo(x+5, y+5); c.moveTo(x, y); c.lineTo(x, y+5); }
+    else if(t === "rcd"){ c.moveTo(x, y); c.lineTo(x, y+6); }
+    else { c.moveTo(x-3, y+1); c.lineTo(x+3, y+7); c.moveTo(x+3, y+1); c.lineTo(x-3, y+7); }
+    c.stroke();
+  }
+  function ring(c, x, y){ c.save(); c.fillStyle = "#ffffff"; c.beginPath(); c.ellipse(x, y, 8, 4.5, 0, 0, Math.PI*2); c.fill(); c.stroke(); c.restore(); }
+  function ticks(c, x, y, n){
+    if(!n) return;
+    c.save(); c.lineWidth = 1;
+    for(var i=0; i<n; i++){ var yy = y + (i-(n-1)/2)*4; c.beginPath(); c.moveTo(x-5, yy+3); c.lineTo(x+5, yy-3); c.stroke(); }
+    c.restore();
+  }
+  function vtext(c, t, x, y, h, font, color){
+    c.save(); c.translate(x, y + h/2); c.rotate(-Math.PI/2);
+    c.font = font; c.fillStyle = color || "#16202b"; c.textAlign = "center"; c.textBaseline = "middle";
+    c.fillText(t, 0, 0.5, h-6); c.restore();
+  }
+  function drawDiagram(cv){
+    var W = 676, LH = 76, BUS = 112, TT = 216, n = state.lines.length;
+    var ROWS = [["Belgi",20],["Faza",20],["Apparat",60],["Kabel",86],["P, kVt",22],["I, A",22],["Iste'molchi",150]];
+    var H = TT + ROWS.reduce(function(a, r){ return a + r[1]; }, 0) + 2;
+    cv.width = W*2; cv.height = H*2; cv.style.width = W+"px"; cv.style.height = H+"px";
+    var c = cv.getContext("2d"); c.setTransform(2,0,0,2,0,0);
+    c.fillStyle = "#ffffff"; c.fillRect(0, 0, W, H);
+    var INK = "#16202b", MUT = "#5b6876", SANS = '"IBM Plex Sans", Arial, sans-serif', MONO = '"IBM Plex Mono", Consolas, monospace';
+    c.strokeStyle = INK; c.fillStyle = INK; c.lineWidth = 1.4; c.lineCap = "round";
+    var cw = (W - LH) / Math.max(n, 6), small = cw < 34;
+    var cx = LH + (W-LH)/2;
+    // feeder
+    c.font = "500 12px " + SANS; c.textAlign = "center"; c.textBaseline = "middle";
+    c.fillText("Tarmoq ~ " + (three() ? "380/220 V" : "220 V") + ", 50 Hz", cx, 9);
+    c.beginPath(); c.moveTo(cx, 20); c.lineTo(cx, 56); c.stroke();
+    ticks(c, cx, 38, cores(state.inCable) || (three() ? 5 : 3));
+    breaker(c, cx, 56, state.inType);
+    c.beginPath(); c.moveTo(cx, 86); c.lineTo(cx, BUS); c.stroke();
+    if(hasRcd(state.inType)) ring(c, cx, 98);
+    c.textAlign = "right"; c.fillText(clip(state.inCable, 28), cx-16, 38);
+    c.textAlign = "left"; c.fillText((state.inType === "sw" ? "QS  " : "QF  ") + TYPES[state.inType] + " " + clip(state.inBreaker, 22), cx+14, 71);
+    // bus
+    c.lineWidth = 3.2; c.beginPath(); c.moveTo(LH+4, BUS); c.lineTo(W-4, BUS); c.stroke(); c.lineWidth = 1.4;
+    c.textAlign = "left"; c.font = "500 11px " + MONO; c.fillText(three() ? "L1 L2 L3" : "L", 4, BUS-8);
+    c.font = "10px " + SANS; c.fillStyle = MUT; c.fillText(three() ? "~380 V" : "~220 V", 4, BUS+7); c.fillStyle = INK;
+    // table grid
+    var y = TT;
+    c.lineWidth = 1.2; c.strokeRect(0.6, TT, W-1.2, H-TT-1.2);
+    ROWS.forEach(function(r, k){
+      c.lineWidth = 0.8;
+      if(k){ c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke(); }
+      c.font = "10.5px " + SANS; c.fillStyle = MUT; c.textAlign = "left"; c.textBaseline = "middle";
+      c.fillText(r[0], 6, y + r[1]/2 + 0.5); c.fillStyle = INK;
+      r.push(y); y += r[1];
+    });
+    c.lineWidth = 1.2; c.beginPath(); c.moveTo(LH, TT); c.lineTo(LH, H-1); c.stroke();
+    // branches
+    state.lines.forEach(function(l, i){
+      var x = LH + cw*(i+0.5), x0 = LH + cw*i, tp = typeOf(l), rcd = hasRcd(tp), amp = ampOf(l), nom = nominal(l.br);
+      c.strokeStyle = INK; c.fillStyle = INK; c.lineWidth = 1.4;
+      c.beginPath(); c.moveTo(x, BUS); c.lineTo(x, 130); c.stroke();
+      breaker(c, x, 130, tp);
+      c.beginPath(); c.moveTo(x, 160); c.lineTo(x, TT-2); c.stroke();
+      c.beginPath(); c.moveTo(x-4, TT-9); c.lineTo(x, TT-2); c.lineTo(x+4, TT-9); c.stroke();
+      if(rcd) ring(c, x, 172);
+      ticks(c, x, 192, cores(l.cab));
+      var ps = String(l.ph || "A").split("");
+      ps.forEach(function(p, j){ c.fillStyle = PH[p] || INK; c.beginPath(); c.arc(x + (j-(ps.length-1)/2)*(small ? 6 : 8), BUS, small ? 3 : 4, 0, Math.PI*2); c.fill(); });
+      c.strokeStyle = INK; c.lineWidth = 0.6;
+      if(i){ c.beginPath(); c.moveTo(x0, TT); c.lineTo(x0, H-1); c.stroke(); }
+      c.textAlign = "center"; c.textBaseline = "middle"; c.fillStyle = INK;
+      var fs = small ? 9 : 10.5;
+      c.font = "500 " + fs + "px " + MONO; c.fillText(small ? String(i+1) : desig(tp, i+1), x, ROWS[0][2] + 10.5, cw-2);
+      c.fillText(l.ph || "", x, ROWS[1][2] + 10.5, cw-2);
+      vtext(c, (tp === "mcb" ? "" : (tp === "rcbo" ? "Dif " : TYPES[tp] + " ")) + (l.br || ""), x, ROWS[2][2], 60, "500 " + fs + "px " + MONO);
+      vtext(c, l.cab || "", x, ROWS[3][2], 86, fs + "px " + MONO);
+      c.font = fs + "px " + MONO;
+      if(kwOf(l)) c.fillText(f1(kwOf(l)), x, ROWS[4][2] + 11.5, cw-2);
+      if(amp){ c.fillStyle = nom && amp > nom ? "#c22a2a" : INK; c.fillText(f1(amp), x, ROWS[5][2] + 11.5, cw-2); c.fillStyle = INK; }
+      vtext(c, l.use || "", x, ROWS[6][2], 150, fs + "px " + SANS);
+    });
+  }
+
+  /* ---------- certificate background and seal ---------- */
+  function rosette(c, cx, cy, R, m, n, col, alpha, lw){
+    c.save(); c.strokeStyle = col; c.globalAlpha = alpha; c.lineWidth = lw || 0.6;
+    for(var j=0; j<n; j++){
+      c.beginPath();
+      for(var a=0; a<=Math.PI*2+0.02; a+=0.02){
+        var r = R*(0.56 + 0.44*Math.cos(m*a + j*Math.PI*2/n));
+        var x = cx + r*Math.cos(a), y = cy + r*Math.sin(a);
+        if(a === 0) c.moveTo(x, y); else c.lineTo(x, y);
+      }
+      c.stroke();
+    }
+    c.restore();
+  }
+  function waveSide(c, ax, ay, bx, by, amp, periods, ph){
+    var L = Math.hypot(bx-ax, by-ay), ux = (bx-ax)/L, uy = (by-ay)/L, nx = -uy, ny = ux, k = Math.PI*2*periods/L;
+    c.beginPath();
+    for(var t=0; t<=L; t+=1.5){
+      var o = amp*Math.sin(k*t + ph);
+      var x = ax + ux*t + nx*o, y = ay + uy*t + ny*o;
+      if(t === 0) c.moveTo(x, y); else c.lineTo(x, y);
+    }
+    c.stroke();
+  }
+  function guilloche(c, x0, y0, x1, y1, amp, col, alpha){
+    c.save(); c.strokeStyle = col; c.globalAlpha = alpha; c.lineWidth = 0.6;
+    var px = Math.round((x1-x0)/46), py = Math.round((y1-y0)/46);
+    for(var j=0; j<6; j++){
+      var ph = j*Math.PI/3;
+      waveSide(c, x0, y0, x1, y0, amp, px, ph); waveSide(c, x1, y0, x1, y1, amp, py, ph);
+      waveSide(c, x1, y1, x0, y1, amp, px, ph); waveSide(c, x0, y1, x0, y0, amp, py, ph);
+    }
+    c.globalAlpha = alpha*0.7;
+    for(j=0; j<3; j++){
+      ph = j*Math.PI*2/3;
+      waveSide(c, x0, y0, x1, y0, amp*0.45, px*3, ph); waveSide(c, x1, y0, x1, y1, amp*0.45, py*3, ph);
+      waveSide(c, x1, y1, x0, y1, amp*0.45, px*3, ph); waveSide(c, x0, y1, x0, y0, amp*0.45, py*3, ph);
+    }
+    c.restore();
+  }
+  function boltPath(c, cx, cy, s){
+    c.beginPath();
+    c.moveTo(cx+0.18*s, cy-s); c.lineTo(cx-0.52*s, cy+0.12*s); c.lineTo(cx-0.06*s, cy+0.12*s);
+    c.lineTo(cx-0.22*s, cy+s); c.lineTo(cx+0.52*s, cy-0.2*s); c.lineTo(cx+0.06*s, cy-0.2*s); c.closePath();
+  }
+  function arcText(c, str, r, mid, bottom, font, gap){
+    c.save(); c.font = font; c.textAlign = "center"; c.textBaseline = "middle";
+    var ws = [], total = 0, i;
+    for(i=0; i<str.length; i++){ var w = c.measureText(str[i]).width + gap; ws.push(w); total += w; }
+    var a = mid + (bottom ? 1 : -1) * (total/r)/2;
+    for(i=0; i<str.length; i++){
+      var half = (ws[i]/r)/2;
+      a += (bottom ? -half : half);
+      c.save(); c.translate(r*Math.cos(a), r*Math.sin(a)); c.rotate(a + (bottom ? -Math.PI/2 : Math.PI/2));
+      c.fillText(str[i], 0, 0); c.restore();
+      a += (bottom ? -half : half);
+    }
+    c.restore();
+  }
+  function drawSeal(c, cx, cy, r){
+    var INKB = "#27409c";
+    c.save(); c.translate(cx, cy); c.rotate(-0.17); c.globalAlpha = 0.8;
+    c.strokeStyle = INKB; c.fillStyle = INKB;
+    c.lineWidth = 2.4; c.beginPath(); c.arc(0, 0, r, 0, Math.PI*2); c.stroke();
+    c.lineWidth = 0.8; c.beginPath(); c.arc(0, 0, r-4.5, 0, Math.PI*2); c.stroke();
+    c.lineWidth = 1.1; c.beginPath(); c.arc(0, 0, r-23, 0, Math.PI*2); c.stroke();
+    var f = '600 10.5px "IBM Plex Sans", Arial, sans-serif';
+    arcText(c, "SHIT PASPORTI", r-13.5, -Math.PI/2, false, f, 2.2);
+    arcText(c, clip(String(state.maker || "").toUpperCase(), 24), r-13.5, Math.PI/2, true, f, 1.4);
+    c.font = "9px Arial"; c.textAlign = "center"; c.textBaseline = "middle";
+    c.fillText("★", -(r-13.5), 0.5); c.fillText("★", r-13.5, 0.5);
+    boltPath(c, 0, -8, 15); c.fill();
+    c.font = '600 8.5px "IBM Plex Sans", Arial, sans-serif'; c.fillText("SIFAT NAZORATI", 0, 14, (r-25)*1.9);
+    c.font = '500 8px "IBM Plex Mono", Consolas, monospace'; c.fillText(clip(state.serial || "", 16), 0, 25, (r-28)*1.7);
+    c.restore();
+  }
+  function drawCertBg(cv){
+    var W = 794, H = 1123, bg = state.bg, i, k;
+    cv.width = W*2; cv.height = H*2;
+    var c = cv.getContext("2d"); c.setTransform(2,0,0,2,0,0); c.lineCap = "butt";
+    if(bg === "frame"){
+      var NAVY = "#1c2a44", GOLD = "#a8842c";
+      c.fillStyle = "#fdfaf1"; c.fillRect(0, 0, W, H);
+      c.save(); c.beginPath(); c.rect(46, 46, W-92, H-92); c.clip();
+      c.strokeStyle = GOLD; c.globalAlpha = 0.09; c.lineWidth = 0.7;
+      for(i=-H; i<W+H; i+=26){ c.beginPath(); c.moveTo(i, 0); c.lineTo(i+H, H); c.stroke(); c.beginPath(); c.moveTo(i, H); c.lineTo(i+H, 0); c.stroke(); }
+      c.restore();
+      c.save(); c.strokeStyle = GOLD; c.globalAlpha = 0.13; c.lineWidth = 0.8;
+      for(i=0; i<72; i++){ var a = i*Math.PI/36; c.beginPath(); c.moveTo(397+70*Math.cos(a), 560+70*Math.sin(a)); c.lineTo(397+(i%2 ? 215 : 240)*Math.cos(a), 560+(i%2 ? 215 : 240)*Math.sin(a)); c.stroke(); }
+      [70, 215, 240, 250].forEach(function(r){ c.beginPath(); c.arc(397, 560, r, 0, Math.PI*2); c.stroke(); });
+      c.restore();
+      c.strokeStyle = NAVY; c.lineWidth = 4; c.strokeRect(26, 26, W-52, H-52);
+      c.strokeStyle = GOLD; c.lineWidth = 1.4; c.strokeRect(35, 35, W-70, H-70);
+      c.strokeStyle = NAVY; c.lineWidth = 0.8; c.strokeRect(41, 41, W-82, H-82);
+      [[41,41,1,1],[W-41,41,-1,1],[41,H-41,1,-1],[W-41,H-41,-1,-1]].forEach(function(q){
+        c.save(); c.translate(q[0], q[1]); c.scale(q[2], q[3]);
+        c.fillStyle = "#fdfaf1"; c.fillRect(-3, -3, 46, 46);
+        c.strokeStyle = GOLD; c.lineWidth = 1.2;
+        for(k=0; k<3; k++){ c.beginPath(); c.arc(0, 0, 18 + k*9, 0, Math.PI/2); c.stroke(); }
+        c.strokeStyle = NAVY; c.lineWidth = 0.9; c.beginPath(); c.moveTo(44, 0); c.lineTo(0, 0); c.lineTo(0, 44); c.stroke();
+        c.fillStyle = NAVY; c.beginPath(); c.moveTo(9, 3); c.lineTo(15, 9); c.lineTo(9, 15); c.lineTo(3, 9); c.closePath(); c.fill();
+        c.fillStyle = GOLD; c.beginPath(); c.arc(50, 6, 2.2, 0, Math.PI*2); c.arc(6, 50, 2.2, 0, Math.PI*2); c.fill();
+        c.restore();
+      });
+    } else if(bg === "grid"){
+      var DK = "#16202b", AMB = "#e3a008";
+      c.fillStyle = "#f6f8fa"; c.fillRect(0, 0, W, H);
+      c.strokeStyle = "#0b5a7a";
+      for(i=0; i<=W; i+=20){ c.globalAlpha = i%100 ? 0.07 : 0.16; c.lineWidth = 0.6; c.beginPath(); c.moveTo(i-3, 0); c.lineTo(i-3, H); c.stroke(); }
+      for(i=0; i<=H; i+=20){ c.globalAlpha = i%100 ? 0.07 : 0.16; c.beginPath(); c.moveTo(0, i+1.5); c.lineTo(W, i+1.5); c.stroke(); }
+      c.globalAlpha = 0.06; c.fillStyle = "#0b5a7a"; boltPath(c, 397, 560, 250); c.fill(); c.globalAlpha = 1;
+      c.strokeStyle = DK; c.lineWidth = 0.8; c.strokeRect(30, 30, W-60, H-60);
+      c.fillStyle = DK;
+      for(i=30; i<=W-30; i+=7.34){ k = Math.round((i-30)/7.34); c.fillRect(i-0.3, 30, 0.6, k%10 ? (k%5 ? 5 : 8) : 12); }
+      for(i=30; i<=H-30; i+=7.34){ k = Math.round((i-30)/7.34); c.fillRect(30, i-0.3, k%10 ? (k%5 ? 5 : 8) : 12, 0.6); }
+      [[30,30,1,1],[W-30,30,-1,1],[30,H-30,1,-1],[W-30,H-30,-1,-1]].forEach(function(q){
+        c.save(); c.translate(q[0], q[1]); c.scale(q[2], q[3]);
+        c.fillStyle = DK; c.fillRect(-5, -5, 58, 5); c.fillRect(-5, -5, 5, 58);
+        c.fillStyle = AMB; c.fillRect(57, -5, 16, 5); c.fillRect(-5, 57, 5, 16);
+        c.restore();
+      });
+      c.fillStyle = "#e3b100"; c.fillRect(30, H-36, (W-60)/3, 6);
+      c.fillStyle = "#2e9e4f"; c.fillRect(30+(W-60)/3, H-36, (W-60)/3, 6);
+      c.fillStyle = "#d23b3b"; c.fillRect(30+2*(W-60)/3, H-36, (W-60)/3, 6);
+    } else {
+      var G = "#0b5a7a", G2 = "#2e7d5b";
+      c.fillStyle = "#fafdfc"; c.fillRect(0, 0, W, H);
+      rosette(c, 397, 560, 255, 8, 16, G, 0.10, 0.6);
+      rosette(c, 397, 560, 150, 12, 12, G2, 0.10, 0.6);
+      guilloche(c, 44, 44, W-44, H-44, 11, G, 0.55);
+      guilloche(c, 44, 44, W-44, H-44, 6, G2, 0.5);
+      c.strokeStyle = G; c.lineWidth = 1.4; c.strokeRect(27, 27, W-54, H-54);
+      c.lineWidth = 0.7; c.strokeRect(61, 61, W-122, H-122);
+      [[44,44],[W-44,44],[44,H-44],[W-44,H-44]].forEach(function(q){
+        c.fillStyle = "#fafdfc"; c.beginPath(); c.arc(q[0], q[1], 25, 0, Math.PI*2); c.fill();
+        rosette(c, q[0], q[1], 24, 6, 8, G, 0.75, 0.6);
+        rosette(c, q[0], q[1], 13, 5, 5, G2, 0.8, 0.6);
+      });
+    }
+    drawSeal(c, 397, H-160, 66);
+  }
+
+  /* ---------- sheets ---------- */
+  function specRows(){
+    var rows = [
+      ["Yig'uvchi", state.maker], ["Telefon", state.phone], ["Manzil", state.addr],
+      ["Kuchlanish", state.volt], ["Nominal tok", state.amp ? state.amp + " A" : ""],
+      ["Himoya darajasi", state.ip], ["Korpus o'lchami", state.size],
+      ["Kirish apparati", (TYPES[state.inType] + " " + (state.inBreaker || "")).trim()], ["Kirish kabeli", state.inCable],
+      ["Liniyalar soni", String(state.lines.length)]
+    ];
+    return rows.filter(function(r){ return r[1]; }).map(function(r){
+      return "<tr><td>"+esc(r[0])+"</td><td>"+esc(r[1])+"</td></tr>";
+    }).join("");
+  }
+  function linesTable(){
+    return '<table class="lt"><thead><tr><th>Belgi</th><th>Faza</th><th>Turi</th><th>Nominal</th><th>Kabel</th><th>P, kVt</th><th>I, A</th><th>Iste\'molchi</th></tr></thead><tbody>'+
+      state.lines.map(function(l,i){
+        var a = ampOf(l), nom = nominal(l.br), over = nom && a > nom;
+        return '<tr><td class="m">'+desig(typeOf(l), i+1)+'</td><td class="m">'+esc(l.ph)+'</td><td>'+TYPES[typeOf(l)]+'</td><td class="m">'+esc(l.br)+'</td><td class="m">'+esc(l.cab)+'</td>'+
+          '<td class="m">'+(kwOf(l) ? f1(kwOf(l)) : "")+'</td><td class="m'+(over ? " over" : "")+'">'+(a ? f1(a) : "")+'</td><td>'+esc(l.use)+'</td></tr>';
+      }).join("")+'</tbody></table>';
+  }
+  function loadsBlock(){
+    var s = phaseLoads(), sum = s.A + s.B + s.C;
+    if(!sum) return "";
+    var keys = three() ? ["A","B","C"] : ["A"];
+    var html = '<div class="sec"><h3>Hisobiy yuklama</h3><div class="loads">'+keys.map(function(k){
+      return '<div style="border-top-color:'+PH[k]+'"><small>'+k+' faza</small><b>'+f1(s[k])+' kVt</b><small>'+f1(s[k]*1000/(220*0.95))+' A</small></div>';
+    }).join("")+'<div><small>Jami</small><b>'+f1(sum)+' kVt</b><small>hamma liniya birga ishlasa</small></div></div>'+
+      '<div class="legend"><span>cos φ = 0.95 deb olingan. Bir vaqtda ishlash koeffitsiyenti hisobga olinmagan, haqiqiy yuklama odatda kamroq bo\'ladi.</span></div>';
+    if(three()){
+      var mx = Math.max(s.A, s.B, s.C), mn = Math.min(s.A, s.B, s.C);
+      html += '<div class="legend"><span>Fazalar orasidagi farq: '+(mx ? Math.round((mx-mn)/mx*100) : 0)+'%</span></div>';
+    }
+    var bad = state.lines.filter(function(l){ var n = nominal(l.br); return n && ampOf(l) > n; }).length;
+    if(bad) html += '<div class="legend"><span class="over">'+bad+' ta liniyada hisobiy tok avtomat nominalidan katta. Qizil bilan belgilangan.</span></div>';
+    return html + '</div>';
+  }
+  function head(title){
+    return '<div class="s-head"><div><h2>'+title+'</h2><div class="sub">'+esc(state.name)+'</div></div>'+
+      '<div class="s-id"><b>№ '+esc(state.serial || "—")+'</b>'+esc(fmtDate(state.date))+'</div></div>'+
+      '<div class="phases"><i class="pa"></i><i class="pb"></i><i class="pc"></i></div>';
+  }
+  function foot(p, total){
+    return '<div class="s-foot"><span>'+esc(state.maker)+(state.phone ? " · "+esc(state.phone) : "")+'</span><span>'+p+' / '+total+'</span></div>';
+  }
+  function buildSheets(host){
+    var total = 4, v = " v-" + state.style, html = "";
+    html += '<div class="sheet'+v+'">'+head("Shit pasporti")+
+      '<div class="s-body"><table class="spec">'+specRows()+'</table>'+
+      (photoUrl ? '<div class="photo"><img alt="Shit rasmi" src="'+photoUrl+'"></div>' : '')+'</div>'+
+      '<div class="sec"><h3>Shitning ichki ko\'rinishi</h3><canvas class="pan"></canvas>'+
+      '<div class="legend"><span>Yorliqdagi raqam liniya tartibini bildiradi. Rasm sxematik, joylashuv haqiqiysidan farq qilishi mumkin.</span></div></div>'+
+      foot(1,total)+'</div>';
+    html += '<div class="sheet'+v+'"><div class="dframe"><canvas class="dia"></canvas>'+
+      '<div class="dnote">Belgilar: × avtomat, halqa UZO, × va halqa difavtomat, ko\'ndalang chiziq rubilnik. Qiya chiziqchalar kabel tomirlari soni. Tok: I = P / (U · cos φ), cos φ = 0.95.</div>'+
+      '<table class="stamp"><tr><td class="k">Hujjat</td><td class="t" colspan="3">Bir chiziqli sxema</td></tr>'+
+      '<tr><td class="k">Obyekt</td><td colspan="3">'+esc(state.name)+'</td></tr>'+
+      '<tr><td class="k">Yig\'uvchi</td><td>'+esc(state.maker)+'</td><td class="k">Sana</td><td>'+esc(fmtDate(state.date))+'</td></tr>'+
+      '<tr><td class="k">Seriya №</td><td>'+esc(state.serial)+'</td><td class="k">Varaq</td><td>2 / '+total+'</td></tr></table></div></div>';
+    html += '<div class="sheet'+v+'">'+head("Liniyalar jadvali")+'<div class="sec">'+linesTable()+'</div>'+loadsBlock()+foot(3,total)+'</div>';
+    var done = CHECKS.filter(function(t,i){ return state.checks[i]; });
+    var w = parseInt(state.warranty, 10);
+    html += '<div class="sheet cert'+v+'"><canvas class="certbg"></canvas><div class="frame"><div class="frame-in">'+
+      '<div class="eyebrow">Yig\'uvchining kafolati</div>'+
+      '<h2>Sifat guvohnomasi</h2>'+
+      '<div class="no">№ '+esc(state.serial || "—")+' · '+esc(fmtDate(state.date))+'</div>'+
+      '<div class="phases"><i class="pa"></i><i class="pb"></i><i class="pc"></i></div>'+
+      '<p>Ushbu guvohnoma quyidagi elektr shiti</p>'+
+      '<p class="big">'+esc(state.name || "—")+'</p>'+
+      '<p><b>'+esc(state.maker || "—")+'</b> tomonidan yig\'ilganini'+(done.length ? " va quyidagi tekshiruvlardan o'tganini" : "")+' tasdiqlaydi.</p>'+
+      (done.length ? '<ul>'+done.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join("")+'</ul>' : '')+
+      (w > 0 ? '<p class="war">Yig\'ish ishlariga kafolat muddati: <b>'+w+' oy</b>, '+esc(fmtDate(state.date))+' dan boshlab.</p>' : '')+
+      '<div class="signs"><div><div class="ln">'+esc(state.maker)+'</div>Yig\'uvchi, imzo</div><div><div class="ln"></div>Qabul qildi, imzo</div></div>'+
+      '<p class="note">Bu hujjat yig\'uvchining o\'z nomidan bergan kafolati. U davlat muvofiqlik sertifikati emas va uning o\'rnini bosmaydi.</p>'+
+      '</div></div></div>';
+    host.innerHTML = html;
+    var cv = host.querySelector("canvas.dia"); if(cv) drawDiagram(cv);
+    var pn = host.querySelector("canvas.pan"); if(pn) drawPanel(pn);
+    var cb = host.querySelector("canvas.certbg"); if(cb) drawCertBg(cb);
+    return host.querySelectorAll(".sheet");
+  }
+
+  function fit(){
+    var wraps = $("preview").querySelectorAll(".fit");
+    wraps.forEach(function(w){
+      var s = w.clientWidth / 794;
+      w.style.height = Math.round(1123*s) + "px";
+      w.firstElementChild.style.transform = "scale("+s+")";
+    });
+  }
+  function renderPreview(){
+    var tmp = document.createElement("div");
+    var sheets = buildSheets(tmp);
+    var pv = $("preview"); pv.innerHTML = "";
+    sheets.forEach(function(s){
+      var w = document.createElement("div"); w.className = "fit"; w.appendChild(s); pv.appendChild(w);
+    });
+    fit();
+  }
+  renderPreview();
+  window.addEventListener("resize", fit);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(renderPreview);
+
+  /* ---------- PDF ---------- */
+  var downloads = null, status = $("status"), btn = $("btnPdf");
+  var native = window.PasportNative && typeof window.PasportNative.saveFile === "function" ? window.PasportNative : null;
+  if(!native){
+    btn.disabled = true; status.textContent = "Yuklab olish tayyorlanmoqda…";
+    var ready = (window.claude && typeof window.claude.use === "function") ? window.claude.use("downloads") : Promise.resolve(null);
+    ready.then(function(d){
+      downloads = d;
+      if(d){ btn.disabled = false; status.textContent = ""; }
+      else { btn.hidden = true; status.textContent = "Bu ko'rinishda PDF yuklab bo'lmaydi. Sahifani claude.ai da oching."; }
+    }, function(){ btn.hidden = true; status.textContent = "PDF yuklab olish bu yerda ishlamaydi."; });
+  }
+
+  btn.addEventListener("click", async function(){
+    if((!downloads && !native) || !window.html2canvas || !window.jspdf){ status.textContent = "PDF kutubxonasi yuklanmadi."; return; }
+    btn.disabled = true; status.textContent = "PDF tayyorlanmoqda…";
+    var stage = $("stage");
+    try{
+      if(document.fonts && document.fonts.ready) await document.fonts.ready;
+      var sheets = buildSheets(stage);
+      var pdf = new window.jspdf.jsPDF({unit:"mm", format:"a4", orientation:"portrait"});
+      for(var i=0; i<sheets.length; i++){
+        var cv = await window.html2canvas(sheets[i], {scale:2, backgroundColor:"#ffffff", logging:false});
+        if(i) pdf.addPage();
+        pdf.addImage(cv.toDataURL("image/jpeg", 0.92), "JPEG", 0, 0, 210, 297);
+      }
+      var name = "shit-pasporti-" + (state.serial || "hujjat").replace(/[^\w\-]+/g, "_") + ".pdf";
+      if(native){
+        native.saveFile(name, pdf.output("datauristring").split(",")[1], "application/pdf");
+        status.textContent = "PDF tayyor: Download/ShitPasporti papkasida.";
+      } else {
+        await downloads.save({filename:name, data:pdf.output("blob")});
+        status.textContent = "PDF saqlandi.";
+      }
+    }catch(err){
+      var code = err && err.code;
+      status.textContent = code === "declined" ? "Yuklab olish bekor qilindi."
+        : code === "rate_limited" ? "Biroz kutib, qayta bosing."
+        : "PDF chiqmadi. Qayta urinib ko'ring.";
+    }finally{
+      stage.innerHTML = ""; btn.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>

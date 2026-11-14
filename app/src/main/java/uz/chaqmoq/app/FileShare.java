@@ -23,6 +23,22 @@ public class FileShare extends ContentProvider {
     /** Faqat foydalanuvchi o'zi ochgan yoki ulashgan fayllar beriladi. */
     private static final Set<String> ALLOWED = Collections.synchronizedSet(new HashSet<String>());
 
+    /** Kamera dasturi yozishi mumkin bo'lgan vaqtinchalik fayllar. */
+    private static final Set<String> WRITABLE = Collections.synchronizedSet(new HashSet<String>());
+
+    public static File camDir(android.content.Context c) {
+        File d = new File(c.getCacheDir(), "cam");
+        if (!d.exists()) d.mkdirs();
+        return d;
+    }
+
+    public static Uri camUri(File f) {
+        String p = f.getAbsolutePath();
+        ALLOWED.add(p);
+        WRITABLE.add(p);
+        return new Uri.Builder().scheme("content").authority(AUTH).path(p).build();
+    }
+
     public static Uri uriFor(File f) {
         String p = f.getAbsolutePath();
         ALLOWED.add(p);
@@ -49,6 +65,10 @@ public class FileShare extends ContentProvider {
 
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+        String p = uri.getPath();
+        if (p != null && WRITABLE.contains(p)) {
+            return ParcelFileDescriptor.open(new File(p), ParcelFileDescriptor.parseMode(mode));
+        }
         return ParcelFileDescriptor.open(fileFor(uri), ParcelFileDescriptor.MODE_READ_ONLY);
     }
 

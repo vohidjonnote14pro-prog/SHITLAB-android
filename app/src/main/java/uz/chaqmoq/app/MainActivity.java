@@ -2,36 +2,72 @@ package uz.chaqmoq.app;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.pdf.PdfDocument;
+import android.media.ExifInterface;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
+import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Base64;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.EnumMap;
+import java.util.Map;
 
 public class MainActivity extends Activity {
     private WebView web;
     private static final int REQ_PERM = 7;
+    private static final int REQ_CAMPERM = 8;
+    private static final int REQ_CAM = 21;
+    private static final int REQ_PICK = 22;
+    private String camTag = "";
+    private File camFile;
+    private PdfDocument pdf;
+    private int pdfPages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +86,26 @@ public class MainActivity extends Activity {
         s.setTextZoom(100);
         s.setSupportZoom(false);
         s.setBuiltInZoomControls(false);
+        s.setMediaPlaybackRequiresUserGesture(false);
+
+        try {
+            File[] old = FileShare.camDir(this).listFiles();
+            if (old != null) for (File f : old) f.delete();
+        } catch (Exception ignored) { }
 
         web.addJavascriptInterface(new Bridge(), "Native");
         web.setWebViewClient(new WebViewClient());
-        web.setWebChromeClient(new WebChromeClient());
+        web.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onPermissionRequest(final PermissionRequest request) {
+                runOnUiThread(() -> {
+                    try {
+                        if (hasCam()) request.grant(request.getResources());
+                        else request.deny();
+                    } catch (Exception ignored) { }
+                });
+            }
+        });
         setContentView(web);
         web.loadUrl("file:///android_asset/index.html");
     }
@@ -68,6 +120,110 @@ public class MainActivity extends Activity {
     public void onRequestPermissionsResult(int code, String[] perms, int[] res) {
         super.onRequestPermissionsResult(code, perms, res);
         if (web != null) web.evaluateJavascript("window.onAppResume && window.onAppResume()", null);
+    }
+
+    @Override
+    protected void onActivityResult(int req, int res, Intent data) {
+        super.onActivityResult(req, res, data);
+        if (req == REQ_CAM) {
+            final File f = camFile;
+            final String tag = camTag;
+            boolean ok = res == RESULT_OK && f != null && f.length() > 0;
+            js("window.onPhoto && window.onPhoto(" + JSONObject.quote(tag) + "," + JSONObject.quote(ok ? f.getAbsolutePath() : "") + ")");
+        } else if (req == REQ_PICK) {
+            final String tag = camTag;
+            final Uri uri = (res == RESULT_OK && data != null) ? data.getData() : null;
+            if (uri == null) {
+                js("window.onPhoto && window.onPhoto(" + JSONObject.quote(tag) + ",\"\")");
+                return;
+            }
+            new Thread(() -> {
+                String path = "";
+                try {
+                    File f = new File(FileShare.camDir(MainActivity.this), "g_" + System.currentTimeMillis() + ".jpg");
+                    try (InputStream in = getContentResolver().openInputStream(uri); OutputStream out = new FileOutputStream(f)) {
+                        byte[] buf = new byte[1 << 16];
+                        int n;
+                        while ((n = in.read(buf)) > 0) out.write(buf, 0, n);
+                    }
+                    path = f.getAbsolutePath();
+                } catch (Exception ignored) { }
+                js("window.onPhoto && window.onPhoto(" + JSONObject.quote(tag) + "," + JSONObject.quote(path) + ")");
+            }).start();
+        }
+    }
+
+    private boolean hasCam() {
+        return checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /** Suratni xotiraga sig'adigan o'lchamda o'qiydi va EXIF bo'yicha to'g'ri buradi. */
+    private static Bitmap loadPhoto(String path, int max) throws Exception {
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, o);
+        int big = Math.max(o.outWidth, o.outHeight);
+        if (big <= 0) throw new Exception("rasm emas");
+        int sample = 1;
+        while (big / (sample * 2) >= max) sample *= 2;
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = sample;
+        Bitmap bm = BitmapFactory.decodeFile(path, o2);
+        if (bm == null) throw new Exception("rasm ochilmadi");
+        int deg = 0;
+        try {
+            int or = new ExifInterface(path).getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            if (or == ExifInterface.ORIENTATION_ROTATE_90) deg = 90;
+            else if (or == ExifInterface.ORIENTATION_ROTATE_180) deg = 180;
+            else if (or == ExifInterface.ORIENTATION_ROTATE_270) deg = 270;
+        } catch (Exception ignored) { }
+        float sc = Math.min(1f, (float) max / Math.max(bm.getWidth(), bm.getHeight()));
+        if (deg != 0 || sc < 1f) {
+            Matrix m = new Matrix();
+            if (sc < 1f) m.postScale(sc, sc);
+            if (deg != 0) m.postRotate(deg);
+            bm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), m, true);
+        }
+        return bm;
+    }
+
+    private static Bitmap fromB64(String b64) {
+        int c = b64.indexOf(',');
+        if (b64.startsWith("data:") && c > 0) b64 = b64.substring(c + 1);
+        byte[] raw = Base64.decode(b64, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(raw, 0, raw.length);
+    }
+
+    /** QR va shtrix-kodni o'qiydi; topilmasa bo'sh satr. */
+    private static String readCode(Bitmap bm, boolean hard) {
+        if (bm == null) return "";
+        try {
+            int w = bm.getWidth(), h = bm.getHeight();
+            int[] px = new int[w * h];
+            bm.getPixels(px, 0, w, 0, 0, w, h);
+            LuminanceSource src = new RGBLuminanceSource(w, h, px);
+            Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
+            if (hard) hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
+            try {
+                return new MultiFormatReader().decode(new BinaryBitmap(new HybridBinarizer(src)), hints).getText();
+            } catch (Exception e) {
+                return new MultiFormatReader().decode(new BinaryBitmap(new HybridBinarizer(src.invert())), hints).getText();
+            }
+        } catch (Throwable t) {
+            return "";
+        }
+    }
+
+    private File outDir(String type, String sub) {
+        File d = new File(Environment.getExternalStoragePublicDirectory(type), sub);
+        if (!d.exists()) d.mkdirs();
+        return d;
+    }
+
+    private static String cleanName(String n, String def) {
+        if (n == null) return def;
+        n = n.replaceAll("[\\\\/:*?\"<>|]", "_").trim();
+        return n.isEmpty() ? def : n;
     }
 
     @Override
@@ -357,6 +513,192 @@ public class MainActivity extends Activity {
             } catch (Exception e) {
                 return "";
             }
+        }
+
+        @JavascriptInterface
+        public boolean camPerm() {
+            if (hasCam()) return true;
+            runOnUiThread(() -> requestPermissions(new String[]{Manifest.permission.CAMERA}, REQ_CAMPERM));
+            return false;
+        }
+
+        @JavascriptInterface
+        public void cam(final String tag) {
+            runOnUiThread(() -> {
+                try {
+                    if (!hasCam()) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA}, REQ_CAMPERM);
+                        return;
+                    }
+                    File f = new File(FileShare.camDir(MainActivity.this), "p_" + System.currentTimeMillis() + ".jpg");
+                    f.createNewFile();
+                    camFile = f;
+                    camTag = tag;
+                    Uri uri = FileShare.camUri(f);
+                    Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    i.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                    i.setClipData(ClipData.newRawUri("", uri));
+                    i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivityForResult(i, REQ_CAM);
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Kamera ochilmadi", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void pick(final String tag) {
+            runOnUiThread(() -> {
+                try {
+                    camTag = tag;
+                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                    i.setType("image/*");
+                    i.addCategory(Intent.CATEGORY_OPENABLE);
+                    startActivityForResult(Intent.createChooser(i, "Rasm tanlang"), REQ_PICK);
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Galereya ochilmadi", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        /** Vaqtinchalik suratni data: URL qilib qaytaradi (faqat dasturning cam papkasidan). */
+        @JavascriptInterface
+        public String photoData(String path, int max) {
+            try {
+                File f = new File(path);
+                if (!f.getCanonicalPath().startsWith(FileShare.camDir(MainActivity.this).getCanonicalPath())) return "";
+                Bitmap bm = loadPhoto(path, Math.max(400, Math.min(max, 2400)));
+                ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.JPEG, 88, bo);
+                bm.recycle();
+                return "data:image/jpeg;base64," + Base64.encodeToString(bo.toByteArray(), Base64.NO_WRAP);
+            } catch (Throwable t) {
+                return "";
+            }
+        }
+
+        @JavascriptInterface
+        public String decodeImg(String b64) {
+            try {
+                return readCode(fromB64(b64), false);
+            } catch (Throwable t) {
+                return "";
+            }
+        }
+
+        @JavascriptInterface
+        public String decodeFile(String path) {
+            try {
+                String r = readCode(loadPhoto(path, 1600), true);
+                if (r.isEmpty()) r = readCode(loadPhoto(path, 800), true);
+                return r;
+            } catch (Throwable t) {
+                return "";
+            }
+        }
+
+        /** QR matritsasi: {n: o'lcham, d: "0101..."} */
+        @JavascriptInterface
+        public String qr(String text) {
+            try {
+                Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
+                hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+                hints.put(EncodeHintType.MARGIN, 0);
+                hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+                BitMatrix m = new QRCodeWriter().encode(text, BarcodeFormat.QR_CODE, 0, 0, hints);
+                int n = m.getWidth();
+                StringBuilder sb = new StringBuilder(n * n);
+                for (int y = 0; y < n; y++) for (int x = 0; x < n; x++) sb.append(m.get(x, y) ? '1' : '0');
+                JSONObject o = new JSONObject();
+                o.put("n", n);
+                o.put("d", sb.toString());
+                return o.toString();
+            } catch (Throwable t) {
+                return "";
+            }
+        }
+
+        @JavascriptInterface
+        public String savePng(String name, String b64) {
+            try {
+                Bitmap bm = fromB64(b64);
+                if (bm == null) return "";
+                File f = freeName(outDir(Environment.DIRECTORY_PICTURES, "Chaqmoq"), cleanName(name, "QR") + ".png");
+                try (FileOutputStream os = new FileOutputStream(f)) {
+                    bm.compress(Bitmap.CompressFormat.PNG, 100, os);
+                }
+                MediaScannerConnection.scanFile(MainActivity.this, new String[]{f.getAbsolutePath()}, null, null);
+                return f.getAbsolutePath();
+            } catch (Throwable t) {
+                return "";
+            }
+        }
+
+        @JavascriptInterface
+        public void pdfBegin() {
+            try { if (pdf != null) pdf.close(); } catch (Exception ignored) { }
+            pdf = new PdfDocument();
+            pdfPages = 0;
+        }
+
+        @JavascriptInterface
+        public boolean pdfPage(String b64) {
+            try {
+                Bitmap bm = fromB64(b64);
+                if (bm == null || pdf == null) return false;
+                boolean land = bm.getWidth() > bm.getHeight();
+                int pw = land ? 842 : 595, ph = land ? 595 : 842;
+                PdfDocument.Page page = pdf.startPage(new PdfDocument.PageInfo.Builder(pw, ph, ++pdfPages).create());
+                Canvas c = page.getCanvas();
+                c.drawColor(Color.WHITE);
+                float sc = Math.min((float) pw / bm.getWidth(), (float) ph / bm.getHeight());
+                float w = bm.getWidth() * sc, h = bm.getHeight() * sc;
+                float l = (pw - w) / 2f, t = (ph - h) / 2f;
+                c.drawBitmap(bm, null, new RectF(l, t, l + w, t + h), new Paint(Paint.FILTER_BITMAP_FLAG));
+                pdf.finishPage(page);
+                bm.recycle();
+                return true;
+            } catch (Throwable t) {
+                return false;
+            }
+        }
+
+        @JavascriptInterface
+        public String pdfEnd(String name) {
+            if (pdf == null) return "";
+            try {
+                if (pdfPages == 0) return "";
+                File f = freeName(outDir(Environment.DIRECTORY_DOCUMENTS, "Chaqmoq"), cleanName(name, "Skan") + ".pdf");
+                try (FileOutputStream os = new FileOutputStream(f)) {
+                    pdf.writeTo(os);
+                }
+                MediaScannerConnection.scanFile(MainActivity.this, new String[]{f.getAbsolutePath()}, null, null);
+                return f.getAbsolutePath();
+            } catch (Throwable t) {
+                return "";
+            } finally {
+                try { pdf.close(); } catch (Exception ignored) { }
+                pdf = null;
+            }
+        }
+
+        @JavascriptInterface
+        public void copy(final String text) {
+            runOnUiThread(() -> {
+                ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                if (cm != null) cm.setPrimaryClip(ClipData.newPlainText("Chaqmoq", text));
+            });
+        }
+
+        @JavascriptInterface
+        public void openUrl(final String url) {
+            runOnUiThread(() -> {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Ochadigan dastur topilmadi", Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
         @JavascriptInterface

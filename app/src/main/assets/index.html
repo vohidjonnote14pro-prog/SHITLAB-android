@@ -17,17 +17,17 @@ body[data-theme=pastel]{--bg:#FAFAFC;--surf:#EFF0F4;--card:#FFFFFF;--tx:#14161A;
 --navbg:#14161A;--navfg:#FFFFFF;--navon:#FFFFFF;--navonfg:#14161A;--plus:#FFD23F;--plusfg:#14161A;
 --c1:#DCE6FF;--c2:#D5F0E8;--c3:#FBE0CF;--c4:#E4DBFB;--cfg:#14161A;--csub:#3A4152;
 --i1:#2F5BEA;--i2:#0E7C66;--i3:#B4470E;--i4:#5B36C9;--ifg:#FFFFFF;
---calc:#14161A;--calc2:#23262D;--calcfg:#F2F4F7;--calcsub:#B6BDC9;--volt:#FFD23F;--voltfg:#14161A;--rad:30px}
+--calc:#14161A;--calc2:#23262D;--calcfg:#F2F4F7;--calcsub:#B6BDC9;--volt:#FFD23F;--voltfg:#14161A;--rad:30px;--red:#C62828}
 body[data-theme=tungi]{--bg:#0F1115;--surf:#1A1D24;--card:#1A1D24;--tx:#F2F4F7;--sub:#9AA3B2;--line:#2A2E38;--acc:#C6F432;--accfg:#14161A;--link:#C6F432;
 --navbg:#1A1D24;--navfg:#9AA3B2;--navon:#C6F432;--navonfg:#14161A;--plus:#F2F4F7;--plusfg:#14161A;
 --c1:#2F5BEA;--c2:#0E7C66;--c3:#B4470E;--c4:#5B36C9;--cfg:#FFFFFF;--csub:#FFFFFF;
 --i1:rgba(255,255,255,.18);--i2:rgba(255,255,255,.18);--i3:rgba(255,255,255,.18);--i4:rgba(255,255,255,.18);--ifg:#FFFFFF;
---calc:#1A1D24;--calc2:#262A33;--calcfg:#F2F4F7;--calcsub:#9AA3B2;--volt:#C6F432;--voltfg:#14161A;--rad:24px}
+--calc:#1A1D24;--calc2:#262A33;--calcfg:#F2F4F7;--calcsub:#9AA3B2;--volt:#C6F432;--voltfg:#14161A;--rad:24px;--red:#FF8A80}
 body[data-theme=mozaika]{--bg:#F4F5F7;--surf:#FFFFFF;--card:#FFFFFF;--tx:#14161A;--sub:#5B616E;--line:#E4E7EC;--acc:#14161A;--accfg:#FFFFFF;--link:#1E3FB0;
 --navbg:#FFFFFF;--navfg:#5B616E;--navon:#14161A;--navonfg:#FFFFFF;--plus:#14161A;--plusfg:#FFFFFF;
 --c1:#2F5BEA;--c2:#0E7C66;--c3:#B4470E;--c4:#5B36C9;--cfg:#FFFFFF;--csub:#FFFFFF;
 --i1:rgba(255,255,255,.18);--i2:rgba(255,255,255,.18);--i3:rgba(255,255,255,.18);--i4:rgba(255,255,255,.18);--ifg:#FFFFFF;
---calc:#14161A;--calc2:#23262D;--calcfg:#F2F4F7;--calcsub:#B6BDC9;--volt:#FFD23F;--voltfg:#14161A;--rad:28px}
+--calc:#14161A;--calc2:#23262D;--calcfg:#F2F4F7;--calcsub:#B6BDC9;--volt:#FFD23F;--voltfg:#14161A;--rad:28px;--red:#C62828}
 
 @keyframes pop{0%{opacity:0;transform:scale(.8)}70%{opacity:1;transform:scale(1.03)}100%{opacity:1;transform:none}}
 @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
@@ -202,6 +202,30 @@ body[data-theme=tungi] .sh .it.red{color:#FF8A80}
 .imgv{position:fixed;inset:0;background:#000;z-index:15;display:flex;align-items:center;justify-content:center;animation:fade .2s both}
 .imgv img{max-width:100%;max-height:100%}
 .imgv button{position:absolute;left:16px;top:16px;width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.16);color:#FFFFFF;display:flex;align-items:center;justify-content:center}
+@keyframes scanl{0%,100%{top:8%}50%{top:88%}}
+.camw{position:relative;border-radius:28px;overflow:hidden;background:#000;aspect-ratio:1/1}
+.camw video{width:100%;height:100%;object-fit:cover;display:block}
+.camw .frame{position:absolute;inset:16%;border:3px solid #FFD23F;border-radius:24px;box-shadow:0 0 0 2000px rgba(0,0,0,.4)}
+.camw .frame i{position:absolute;left:6%;right:6%;height:3px;border-radius:2px;background:#FFD23F;animation:scanl 2.4s ease-in-out infinite}
+.camw .cmsg{position:absolute;left:0;right:0;bottom:14px;text-align:center;color:#FFFFFF;font-size:13px;font-weight:600;padding:0 16px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.two .btn{width:100%}
+.qt{min-height:110px;border-radius:18px;border:0;background:var(--surf);padding:14px 16px;font-size:16px;line-height:22px;outline:0;width:100%;resize:none}
+.qrc{border-radius:24px;background:#FFFFFF;padding:18px;display:flex;align-items:center;justify-content:center;min-height:120px;color:#5B616E;font-size:14px}
+.qrc canvas{width:230px;height:230px;image-rendering:pixelated}
+.rtx{border-radius:16px;background:var(--surf);padding:14px;font-size:15px;line-height:21px;word-break:break-word;-webkit-user-select:text;user-select:text;max-height:180px;overflow-y:auto}
+.pg{position:relative;width:100%;aspect-ratio:3/4;border-radius:20px;overflow:hidden;background:var(--surf);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;font-size:13px;font-weight:700}
+.pg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pg em{position:absolute;left:10px;top:10px;font-style:normal;min-width:28px;height:28px;border-radius:10px;background:#14161A;color:#FFFFFF;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 8px}
+.f-doc{filter:grayscale(1) contrast(1.6) brightness(1.1)}
+.f-bw{filter:grayscale(1) contrast(4) brightness(1.25)}
+.cropw{position:relative;border-radius:16px;overflow:hidden;background:#000;touch-action:none}
+.cropw img{display:block;width:100%;height:auto}
+#cbox{position:absolute;border:2px solid #FFD23F;box-shadow:0 0 0 2000px rgba(0,0,0,.5)}
+#cbox .h{position:absolute;width:36px;height:36px;margin:-18px;border-radius:18px;background:#FFD23F;border:3px solid #14161A;touch-action:none}
+.chs{display:flex;gap:8px;flex-wrap:wrap}
+.chs .ch{background:var(--surf);color:var(--tx)}
+.chs .ch.on{background:var(--acc);color:var(--accfg)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -271,6 +295,16 @@ var N = window.Native || (function () {
     shareText: function (t, x) { toast('Ulashish: ' + t); },
     save: function (k, v) { mem[k] = v; persist(); return true; },
     load: function (k) { return mem[k] || ''; },
+    camPerm: function () { return true; },
+    cam: function (tag) { setTimeout(function () { window.onPhoto(tag, '/cache/x.jpg'); }, 200); },
+    pick: function (tag) { setTimeout(function () { window.onPhoto(tag, '/cache/x.jpg'); }, 200); },
+    photoData: function () { var c = document.createElement('canvas'); c.width = 600; c.height = 800; var x = c.getContext('2d'); x.fillStyle = '#8a7'; x.fillRect(0, 0, 600, 800); x.fillStyle = '#fff'; x.fillRect(80, 100, 440, 600); x.fillStyle = '#222'; x.font = '28px sans-serif'; for (var i = 0; i < 12; i++) x.fillText('Hujjat matni qatori ' + (i + 1), 110, 170 + i * 42); return c.toDataURL('image/jpeg', 0.8); },
+    decodeImg: function () { return ''; },
+    decodeFile: function () { return 'https://example.uz/sinov'; },
+    qr: function (t) { var n = 25, d = ''; for (var i = 0; i < n * n; i++) d += ((i * 7 + t.length * 3 + (i % 5) * (i % 3)) % 3 === 0) ? '1' : '0'; return JSON.stringify({ n: n, d: d }); },
+    savePng: function (n) { return '/sd/Pictures/Chaqmoq/' + n + '.png'; },
+    pdfBegin: function () {}, pdfPage: function () { return true; }, pdfEnd: function (n) { return '/sd/Documents/Chaqmoq/' + n + '.pdf'; },
+    copy: function () {}, openUrl: function (u) { toast('Ochish: ' + u); },
     bars: function () {},
     toast: function (t) { toast(t); }
   };
@@ -293,7 +327,8 @@ var info = {}, cfg = loadJ('cfg', {}), notes = loadJ('notes', []);
 if (!cfg.theme) cfg.theme = 'pastel';
 if (!cfg.calc) cfg.calc = { mode: 'I', val: '2.2', u: 220, cos: 0.95 };
 if (!Array.isArray(notes)) notes = [];
-var stack = [{ t: 'home' }], clip = null, cur = null, ops = {}, opSeq = 1, sheetOpen = false, imgOpen = false, ovLock = false, calcT = 0;
+if (!Array.isArray(cfg.qrh)) cfg.qrh = [];
+var stack = [{ t: 'home' }], clip = null, cur = null, ops = {}, opSeq = 1, sheetOpen = false, imgOpen = false, ovLock = false, calcT = 0, afterOv = null, scanPages = [], lastPdf = '';
 var THEMES = { pastel: ['#FAFAFC', true], tungi: ['#0F1115', false], mozaika: ['#F4F5F7', true] };
 function applyTheme() { document.body.setAttribute('data-theme', cfg.theme); var t = THEMES[cfg.theme]; N.bars(t[0], t[1]); }
 function refreshInfo() { try { info = JSON.parse(N.info()); } catch (e) { info = { root: '', perm: false, total: 0, free: 0 }; } }
@@ -309,28 +344,31 @@ function go(s) { stack.push(s); render('fwd'); }
 function goBack() {
   if (imgOpen) { closeImg(); return true; }
   if (sheetOpen) { if (!ovLock) closeOv(); return true; }
+  if (tp().t === 'scan' && tp().edit != null) { tp().edit = null; render('back'); return true; }
   if (stack.length > 1) { leave(); stack.pop(); render('back'); return true; }
   return false;
 }
 window.goBack = goBack;
-function leave() { var s = tp(); if (s.t === 'note') flushNote(); }
+function leave() { var s = tp(); if (s.t === 'note') flushNote(); if (s.t === 'qr') qrStop(); }
 function home(t) { leave(); stack = [{ t: 'home' }]; if (t) stack.push({ t: t }); render(t ? 'fwd' : 'back'); }
-window.onAppResume = function () { var was = info.perm; refreshInfo(); var s = tp(); if (s.t === 'home' || s.t === 'set' || (s.t === 'dir' && !was && info.perm)) render(''); };
+window.onAppResume = function () { var was = info.perm; refreshInfo(); var s = tp(); if (s.t === 'qr' && (s.m || 'scan') === 'scan' && !qrStream && !sheetOpen) qrStart(); if (s.t === 'home' || s.t === 'set' || (s.t === 'dir' && !was && info.perm)) render(''); };
 window.onOp = function (id, ok) { var f = ops[id]; delete ops[id]; if (f) f(ok); };
 function op(fn, done) { var id = opSeq++; ops[id] = done; fn(id); }
 
 function render(dir) {
   var s = tp(), v = $('#view'), h = '';
-  if (s.t === 'home') h = vHome(); else if (s.t === 'dir') h = vDir(s); else if (s.t === 'notes') h = vNotes(s); else if (s.t === 'note') h = vNote(s); else if (s.t === 'calc') h = vCalc(); else if (s.t === 'set') h = vSet();
+  if (s.t === 'home') h = vHome(); else if (s.t === 'dir') h = vDir(s); else if (s.t === 'notes') h = vNotes(s); else if (s.t === 'note') h = vNote(s); else if (s.t === 'calc') h = vCalc(); else if (s.t === 'set') h = vSet(); else if (s.t === 'qr') h = vQr(s); else if (s.t === 'scan') h = vScan(s);
   v.className = dir || '';
   v.innerHTML = '<div class="scr">' + h + '</div>';
   if (dir) v.scrollTop = 0;
   renderNav(s);
   if (s.t === 'home' || s.t === 'calc') calcUpdate();
-  $('#nav').classList.toggle('hide', s.t === 'note');
+  $('#nav').classList.toggle('hide', s.t === 'note' || (s.t === 'scan' && s.edit != null));
+  if (s.t === 'qr') { if ((s.m || 'scan') === 'scan') qrStart(); else { qrStop(); qrDraw(); } }
+  if (s.t === 'scan' && s.edit != null) cropPaint();
 }
 function renderNav(s) {
-  var a = s.t === 'home' || s.t === 'dir' ? 0 : s.t === 'notes' || s.t === 'note' ? 1 : s.t === 'calc' ? 2 : 3;
+  var a = s.t === 'home' || s.t === 'dir' || s.t === 'qr' || s.t === 'scan' ? 0 : s.t === 'notes' || s.t === 'note' ? 1 : s.t === 'calc' ? 2 : 3;
   function tab(i, act, icon, lbl) { return '<button class="tab' + (a === i ? ' on' : '') + '" data-a="' + act + '" aria-label="' + lbl + '">' + ic(icon) + '<span class="lbl">' + lbl + '</span></button>'; }
   $('#nav').innerHTML = tab(0, 'tabHome', 'folder', 'Fayllar') + tab(1, 'tabNotes', 'note', 'Zametka') + '<button class="plus press" data-a="plus" aria-label="Yangi papka yoki zametka">' + ic('plus', 26) + '</button>' + tab(2, 'tabCalc', 'bolto', 'Hisob') + tab(3, 'tabSet', 'gear', 'Sozlama');
 }
@@ -354,7 +392,7 @@ function vHome() {
   if (ns.length) { h += '<div class="notes2 pop" style="animation-delay:.52s">' + ns.map(function (n) { return noteCard(n, false); }).join('') + '</div>'; }
   else h += '<div class="empty pop" style="animation-delay:.52s"><span>Hali zametka yo\'q</span><button class="btn press" data-a="newNote">' + ic('plus', 20) + 'Yangi zametka</button></div>';
   h += '<div class="sec pop" style="animation-delay:.56s"><h2>Asboblar</h2></div><div class="tools pop" style="animation-delay:.6s">' +
-    '<button class="tl press" data-a="soon">' + ic('scan', 28) + 'Skaner<small>Tez orada</small></button><button class="tl press" data-a="soon">' + ic('qr', 28) + 'QR kod<small>Tez orada</small></button><button class="tl press" data-a="soon">' + ic('doc', 28) + 'Ofis<small>Tez orada</small></button></div>';
+    '<button class="tl press" data-a="toScan">' + ic('scan', 28) + 'Skaner<small>PDF qilish</small></button><button class="tl press" data-a="toQr">' + ic('qr', 28) + 'QR kod<small>O\'qish, yasash</small></button><button class="tl press" data-a="soon">' + ic('doc', 28) + 'Ofis<small>Tez orada</small></button></div>';
   return h;
 }
 
@@ -460,7 +498,7 @@ function closeImg() { var e = $('#imgv'); if (e) e.remove(); imgOpen = false; }
 
 /* ---------- Oynalar ---------- */
 function openOv(html, mid) { var o = $('#ov'); o.className = 'on' + (mid ? ' mid' : ''); o.innerHTML = html; sheetOpen = true; }
-function closeOv() { var o = $('#ov'); o.className = ''; o.innerHTML = ''; sheetOpen = false; dlgCb = null; ovLock = false; }
+function closeOv() { var o = $('#ov'); o.className = ''; o.innerHTML = ''; sheetOpen = false; dlgCb = null; ovLock = false; if (afterOv) { var f = afterOv; afterOv = null; f(); } }
 function sheet(title, items) {
   openOv('<div class="sh" role="dialog" aria-label="' + esc(title) + '"><div class="grab"></div><h3>' + esc(title) + '</h3>' + items.map(function (it) { return '<button class="it' + (it[3] ? ' red' : '') + '" data-a="' + it[0] + '">' + ic(it[1]) + it[2] + '</button>'; }).join('') + '</div>');
 }
@@ -526,6 +564,144 @@ function vSet() {
     '<div class="sec"><h2>Dastur haqida</h2></div><div class="wide"><span class="n">Chaqmoq internet va serversiz ishlaydi. Zametkalar va sozlamalar faqat shu telefonda saqlanadi.</span></div>';
 }
 
+/* ---------- QR kod ---------- */
+var qrStream = null, qrTimer = 0, qrBusy = false, qrDet = null, qrN = 0, qrLast = '';
+function stamp() { var d = new Date(); return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate()) + '_' + p2(d.getHours()) + p2(d.getMinutes()); }
+function vQr(s) {
+  var m = s.m || 'scan';
+  var h = '<div class="hd"><button class="ib press" data-a="back" aria-label="Orqaga">' + ic('back') + '</button><div class="tt"><span class="sm">O\'qish va yasash</span><h1 class="s">QR kod</h1></div></div>';
+  h += '<div class="chs"><button class="ch f' + (m === 'scan' ? ' on' : '') + '" data-a="qrM" data-v="scan">Skanerlash</button><button class="ch f' + (m === 'make' ? ' on' : '') + '" data-a="qrM" data-v="make">Yaratish</button></div>';
+  if (m === 'scan') {
+    h += '<div class="camw"><video id="qv" playsinline muted autoplay></video><div class="frame"><i></i></div><div class="cmsg" id="qmsg">Kamera ochilmoqda...</div></div>';
+    h += '<div class="two"><button class="btn g press" data-a="qrShot">Suratga olib o\'qish</button><button class="btn g press" data-a="qrPick">Galereyadan</button></div>';
+    if (cfg.qrh.length) h += '<div class="sec"><h2>Oxirgi o\'qilganlar</h2><button data-a="qrClear">Tozalash</button></div><div class="list">' + cfg.qrh.map(function (x, i) { return '<div class="fr" data-a="qrH" data-i="' + i + '" role="button" tabindex="0"><span class="bd a">QR</span><span class="tx"><b>' + esc(x.x) + '</b><span>' + when(x.m) + '</span></span></div>'; }).join('') + '</div>';
+  } else {
+    h += '<textarea class="qt" id="qtext" placeholder="Matn, havola yoki telefon raqam yozing" aria-label="QR uchun matn">' + esc(s.text || '') + '</textarea>';
+    h += '<div class="qrc" id="qrc">Matn yozing, QR kod shu yerda chiqadi</div>';
+    h += '<div class="two"><button class="btn press" data-a="qrSave">Rasm qilib saqlash</button><button class="btn g press" data-a="qrShare">Ulashish</button></div>';
+  }
+  return h;
+}
+function qmsg(t) { var e = $('#qmsg'); if (e) e.textContent = t; }
+function qrStop() { clearInterval(qrTimer); qrTimer = 0; qrBusy = false; if (qrStream) { try { qrStream.getTracks().forEach(function (t) { t.stop(); }); } catch (e) {} qrStream = null; } }
+function qrStart() {
+  qrStop(); var v = $('#qv'); if (!v) return;
+  if (!N.camPerm()) { qmsg('Kameraga ruxsat bering'); return; }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { qmsg('Jonli kamera ishlamadi. «Suratga olib o\'qish»ni bosing.'); return; }
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false }).then(function (st) {
+    var s = tp(), vv = $('#qv');
+    if (s.t !== 'qr' || (s.m || 'scan') !== 'scan' || !vv || sheetOpen) { st.getTracks().forEach(function (t) { t.stop(); }); return; }
+    qrStop(); qrStream = st; vv.srcObject = st; var pr = vv.play(); if (pr && pr.catch) pr.catch(function () {});
+    qmsg('Kodni ramka ichiga tuting');
+    try { qrDet = ('BarcodeDetector' in window) ? new BarcodeDetector() : null; } catch (e) { qrDet = null; }
+    qrTimer = setInterval(qrTick, 300);
+  }).catch(function () { qmsg('Jonli kamera ishlamadi. «Suratga olib o\'qish»ni bosing.'); });
+}
+function qrNative(v) {
+  try { var c = document.createElement('canvas'), w = 640; c.width = w; c.height = Math.round(w * v.videoHeight / v.videoWidth); c.getContext('2d').drawImage(v, 0, 0, c.width, c.height); var r = N.decodeImg(c.toDataURL('image/jpeg', 0.6)); if (r) qrFound(r); } catch (e) {}
+}
+function qrTick() {
+  var v = $('#qv'); if (!v || qrBusy || !qrStream || v.readyState < 2 || !v.videoWidth) return;
+  qrN++;
+  if (qrDet) {
+    qrBusy = true;
+    qrDet.detect(v).then(function (r) { qrBusy = false; if (!qrStream) return; if (r && r.length && r[0].rawValue) qrFound(r[0].rawValue); else if (qrN % 3 === 0) qrNative(v); }).catch(function () { qrDet = null; qrBusy = false; });
+  } else qrNative(v);
+}
+function qrFound(text) {
+  qrStop(); try { navigator.vibrate && navigator.vibrate(60); } catch (e) {}
+  cfg.qrh = cfg.qrh.filter(function (x) { return x.x !== text; }); cfg.qrh.unshift({ x: text, m: Date.now() }); cfg.qrh = cfg.qrh.slice(0, 30); saveJ('cfg', cfg);
+  qrResult(text);
+}
+function qrResult(text) {
+  qrLast = text; var url = /^https?:\/\//i.test(text);
+  var it = [['qrCopy', 'copy', 'Nusxalash']]; if (url) it.push(['qrOpen', 'open', 'Havolani ochish']); it.push(['qrSh', 'share', 'Ulashish'], ['qrNote', 'note', 'Zametkaga saqlash']);
+  openOv('<div class="sh" role="dialog" aria-label="QR natijasi"><div class="grab"></div><h3>QR kod o\'qildi</h3><div class="rtx">' + esc(text) + '</div>' + it.map(function (x) { return '<button class="it" data-a="' + x[0] + '">' + ic(x[1]) + x[2] + '</button>'; }).join('') + '</div>');
+  afterOv = function () { var s = tp(); if (s.t === 'qr' && (s.m || 'scan') === 'scan') render(''); };
+}
+function qrDraw() {
+  var s = tp(), box = $('#qrc'); if (!box) return; var t = (s.text || '').trim();
+  if (!t) { box.textContent = 'Matn yozing, QR kod shu yerda chiqadi'; return; }
+  var r; try { r = JSON.parse(N.qr(t)); } catch (e) { r = null; }
+  if (!r || !r.n) { box.textContent = 'Matn juda uzun, qisqartiring'; return; }
+  var q = 4, cell = Math.max(4, Math.floor(720 / (r.n + q * 2))), c = document.createElement('canvas'); c.id = 'qcan'; c.width = c.height = cell * (r.n + q * 2);
+  var x = c.getContext('2d'); x.fillStyle = '#FFFFFF'; x.fillRect(0, 0, c.width, c.height); x.fillStyle = '#000000';
+  for (var i = 0; i < r.n * r.n; i++) if (r.d.charAt(i) === '1') x.fillRect((q + i % r.n) * cell, (q + Math.floor(i / r.n)) * cell, cell, cell);
+  box.textContent = ''; box.appendChild(c);
+}
+function qrSaveFile() { var c = $('#qcan'); if (!c) { toast('Avval matn yozing'); return ''; } var p = N.savePng('QR_' + stamp(), c.toDataURL('image/png')); if (!p) toast('Saqlab bo\'lmadi. Fayllarga ruxsat berilganmi?'); return p; }
+window.onPhoto = function (tag, path) {
+  if (!path) return;
+  if (tag === 'qr') { var r = N.decodeFile(path); if (r) qrFound(r); else toast('Bu suratda kod topilmadi'); }
+  else if (tag === 'scan') { var d = N.photoData(path, 1800); if (!d) { toast('Surat ochilmadi'); return; } scanPages.push({ src: d, flt: 'doc', crop: [0, 0, 1, 1] }); if (tp().t === 'scan') { tp().edit = null; render(''); } toast(scanPages.length + '-sahifa qo\'shildi'); }
+};
+
+/* ---------- Skaner ---------- */
+var FLT = [['asl', 'Asl'], ['doc', 'Hujjat'], ['bw', 'Oq-qora']];
+var FCSS = { asl: 'none', doc: 'grayscale(1) contrast(1.6) brightness(1.1)', bw: 'grayscale(1) contrast(4) brightness(1.25)' };
+function vScan(s) {
+  if (s.edit != null && scanPages[s.edit]) return vScanEdit(s, scanPages[s.edit]);
+  s.edit = null;
+  var h = '<div class="hd"><button class="ib press" data-a="back" aria-label="Orqaga">' + ic('back') + '</button><div class="tt"><span class="sm">' + (scanPages.length ? scanPages.length + ' ta sahifa' : 'Suratdan PDF') + '</span><h1 class="s">Skaner</h1></div></div>';
+  if (!scanPages.length) h += '<div class="empty">' + ic('scan', 34) + '<span>Hujjatni suratga oling. Har bir surat bitta sahifa bo\'ladi, keyin hammasi bitta PDF qilib saqlanadi.</span></div>';
+  else h += '<div class="grid">' + scanPages.map(function (p, i) { return '<button class="pg press" data-a="spEdit" data-i="' + i + '" aria-label="' + (i + 1) + '-sahifa"><img alt="" class="f-' + p.flt + '" src="' + p.src + '"><em>' + (i + 1) + '</em></button>'; }).join('') + '</div>';
+  h += '<div class="two"><button class="btn press" data-a="scanCam">' + ic('plus', 20) + 'Suratga olish</button><button class="btn g press" data-a="scanPick">Galereyadan</button></div>';
+  if (scanPages.length) h += '<button class="btn press" data-a="scanPdf" style="background:var(--calc);color:#FFFFFF">' + ic('doc', 20) + 'PDF qilib saqlash</button>';
+  return h;
+}
+function vScanEdit(s, p) {
+  var h = '<div class="hd"><button class="ib press" data-a="spDone" aria-label="Orqaga">' + ic('back') + '</button><div class="tt"><span class="sm">Burchaklarni surib keraksiz joyni kesing</span><h1 class="s">' + (s.edit + 1) + '-sahifa</h1></div></div>';
+  h += '<div class="cropw" id="cropw"><img id="cimg" alt="" class="f-' + p.flt + '" src="' + p.src + '"><div id="cbox"><i class="h" data-h="0"></i><i class="h" data-h="1"></i><i class="h" data-h="2"></i><i class="h" data-h="3"></i></div></div>';
+  h += '<div class="chs">' + FLT.map(function (f) { return '<button class="ch f' + (p.flt === f[0] ? ' on' : '') + '" data-a="spFlt" data-v="' + f[0] + '">' + f[1] + '</button>'; }).join('') + '</div>';
+  h += '<div class="two"><button class="btn g press" data-a="spRot">90° burish</button><button class="btn g press" data-a="spDel" style="color:var(--red)">O\'chirish</button></div><button class="btn press" data-a="spDone">Tayyor</button>';
+  return h;
+}
+function cropPaint() {
+  var s = tp(), p = scanPages[s.edit], b = $('#cbox'); if (!p || !b) return; var c = p.crop;
+  b.style.left = c[0] * 100 + '%'; b.style.top = c[1] * 100 + '%'; b.style.width = (c[2] - c[0]) * 100 + '%'; b.style.height = (c[3] - c[1]) * 100 + '%';
+  var hs = b.querySelectorAll('.h'), pos = [[0, 0], [100, 0], [0, 100], [100, 100]];
+  for (var i = 0; i < 4; i++) { hs[i].style.left = pos[i][0] + '%'; hs[i].style.top = pos[i][1] + '%'; }
+}
+var dragH = -1;
+document.addEventListener('pointerdown', function (e) { var h = e.target.closest ? e.target.closest('.h') : null; if (h) { dragH = +h.dataset.h; e.preventDefault(); } });
+document.addEventListener('pointermove', function (e) {
+  if (dragH < 0) return; var s = tp(), p = scanPages[s.edit], im = $('#cimg'); if (!p || !im) { dragH = -1; return; }
+  var r = im.getBoundingClientRect(), x = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), y = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)), c = p.crop, m = 0.12;
+  if (dragH === 0 || dragH === 2) c[0] = Math.min(x, c[2] - m); else c[2] = Math.max(x, c[0] + m);
+  if (dragH === 0 || dragH === 1) c[1] = Math.min(y, c[3] - m); else c[3] = Math.max(y, c[1] + m);
+  cropPaint(); e.preventDefault();
+});
+document.addEventListener('pointerup', function () { dragH = -1; });
+document.addEventListener('pointercancel', function () { dragH = -1; });
+function loadImg(src, cb) { var im = new Image(); im.onload = function () { cb(im); }; im.onerror = function () { cb(null); }; im.src = src; }
+function pageOut(p, max, cb) {
+  loadImg(p.src, function (im) {
+    if (!im) { cb(''); return; }
+    var c = p.crop, sx = Math.round(c[0] * im.width), sy = Math.round(c[1] * im.height), sw = Math.max(1, Math.round((c[2] - c[0]) * im.width)), sh = Math.max(1, Math.round((c[3] - c[1]) * im.height));
+    var k = Math.min(1, max / Math.max(sw, sh)), cv = document.createElement('canvas'); cv.width = Math.round(sw * k); cv.height = Math.round(sh * k);
+    var x = cv.getContext('2d'); x.fillStyle = '#FFFFFF'; x.fillRect(0, 0, cv.width, cv.height); try { x.filter = FCSS[p.flt] || 'none'; } catch (e) {}
+    x.drawImage(im, sx, sy, sw, sh, 0, 0, cv.width, cv.height);
+    cb(cv.toDataURL('image/jpeg', 0.82));
+  });
+}
+function scanMakePdf(name) {
+  busy('PDF tayyorlanmoqda...');
+  setTimeout(function () {
+    N.pdfBegin(); var i = 0, bad = 0;
+    (function next() {
+      if (i >= scanPages.length) {
+        var path = N.pdfEnd(name); closeOv();
+        if (!path) { toast('PDF saqlanmadi. Fayllarga ruxsat berilganmi?'); return; }
+        lastPdf = path; scanPages = []; render('');
+        sheet('PDF saqlandi: ' + path.split('/').pop(), [['pdfOpen', 'open', 'Ochish'], ['pdfShare', 'share', 'Ulashish'], ['pdfDir', 'folder', 'Papkani ko\'rish']]);
+        if (bad) toast(bad + ' ta sahifa qo\'shilmadi');
+        return;
+      }
+      pageOut(scanPages[i], 1500, function (d) { if (!d || !N.pdfPage(d)) bad++; i++; setTimeout(next, 10); });
+    })();
+  }, 60);
+}
+
 /* ---------- Amallar ---------- */
 var selItem = null;
 var A = {
@@ -568,6 +744,30 @@ var A = {
   ckT: function (el) { var n = findNote(tp().id), x = n.items[+el.dataset.i]; x.done = !x.done; touchNote(); rerenderCks(); },
   ckDel: function (el) { var n = findNote(tp().id); n.items.splice(+el.dataset.i, 1); touchNote(); rerenderCks(); },
   ckAdd: function () { var n = findNote(tp().id); n.items.push({ x: '', done: false }); touchNote(); rerenderCks(); var ins = document.querySelectorAll('#cks input'); if (ins.length) ins[ins.length - 1].focus(); },
+  toQr: function () { go({ t: 'qr' }); },
+  toScan: function () { go({ t: 'scan' }); },
+  qrM: function (el) { var s = tp(); if ((s.m || 'scan') === el.dataset.v) return; s.m = el.dataset.v; render(''); },
+  qrShot: function () { qrStop(); N.cam('qr'); },
+  qrPick: function () { qrStop(); N.pick('qr'); },
+  qrH: function (el) { var x = cfg.qrh[+el.dataset.i]; if (x) { qrStop(); qrResult(x.x); } },
+  qrClear: function () { cfg.qrh = []; saveJ('cfg', cfg); render(''); },
+  qrCopy: function () { N.copy(qrLast); closeOv(); toast('Nusxalandi'); },
+  qrOpen: function () { N.openUrl(qrLast); closeOv(); },
+  qrSh: function () { N.shareText('QR kod', qrLast); closeOv(); },
+  qrNote: function () { notes.push({ id: Date.now(), t: 'QR kod', b: qrLast, items: null, pin: false, col: 3, m: Date.now() }); saveJ('notes', notes); closeOv(); toast('Zametkaga saqlandi'); },
+  qrSave: function () { var p = qrSaveFile(); if (p) toast('Saqlandi: Pictures/Chaqmoq'); },
+  qrShare: function () { var p = qrSaveFile(); if (p) N.share(p); },
+  scanCam: function () { N.cam('scan'); },
+  scanPick: function () { N.pick('scan'); },
+  scanPdf: function () { ask('PDF nomi', 'Skan_' + stamp(), 'Saqlash', function (v) { if (!v) { toast('Nom bo\'sh bo\'lmasin'); return; } scanMakePdf(v); }); },
+  spEdit: function (el) { tp().edit = +el.dataset.i; render('fwd'); },
+  spDone: function () { tp().edit = null; render('back'); },
+  spFlt: function (el) { var p = scanPages[tp().edit]; p.flt = el.dataset.v; render(''); },
+  spDel: function () { scanPages.splice(tp().edit, 1); tp().edit = null; render('back'); toast('Sahifa o\'chirildi'); },
+  spRot: function () { var s = tp(), p = scanPages[s.edit]; loadImg(p.src, function (im) { if (!im) return; var c = document.createElement('canvas'); c.width = im.height; c.height = im.width; var x = c.getContext('2d'); x.translate(c.width / 2, c.height / 2); x.rotate(Math.PI / 2); x.drawImage(im, -im.width / 2, -im.height / 2); p.src = c.toDataURL('image/jpeg', 0.9); p.crop = [0, 0, 1, 1]; render(''); }); },
+  pdfOpen: function () { closeOv(); N.open(lastPdf); },
+  pdfShare: function () { closeOv(); N.share(lastPdf); },
+  pdfDir: function () { closeOv(); var i = lastPdf.lastIndexOf('/'); go({ t: 'dir', path: lastPdf.slice(0, i), title: 'Skanerlar' }); },
   theme: function (el) { cfg.theme = el.dataset.v; saveJ('cfg', cfg); applyTheme(); render(''); }
 };
 function swapCalc() { var e = document.querySelector('.calc'); if (e) { e.outerHTML = calcCard(); calcUpdate(); } }
@@ -581,6 +781,7 @@ document.addEventListener('contextmenu', function (e) { var el = e.target.closes
 document.addEventListener('input', function (e) {
   var t = e.target, s = tp();
   if (t.id === 'cval') { cfg.calc.val = t.value; calcUpdate(); clearTimeout(calcT); calcT = setTimeout(function () { saveJ('cfg', cfg); }, 600); }
+  else if (t.id === 'qtext') { s.text = t.value; clearTimeout(calcT); calcT = setTimeout(qrDraw, 250); }
   else if (t.id === 'q') { s.q = t.value; s.lim = 120; $('#dirBody').innerHTML = dirBody(s); }
   else if (t.id === 'nq') { s.q = t.value; var v = vNotes(s), d = document.createElement('div'); d.innerHTML = v; $('#notesBody').innerHTML = d.querySelector('#notesBody').innerHTML; }
   else if (t.id === 'nt') { var n = findNote(s.id); if (n) { n.t = t.value; touchNote(); } }
@@ -594,9 +795,9 @@ document.addEventListener('keydown', function (e) {
   else if (t.id === 'cval' || t.id === 'q' || t.id === 'nq') t.blur();
 });
 document.addEventListener('focusin', function (e) { var t = e.target; if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA') $('#nav').classList.add('hide'); });
-document.addEventListener('focusout', function () { setTimeout(function () { var a = document.activeElement; if (!a || (a.tagName !== 'INPUT' && a.tagName !== 'TEXTAREA')) $('#nav').classList.toggle('hide', tp().t === 'note'); }, 60); });
+document.addEventListener('focusout', function () { setTimeout(function () { var a = document.activeElement; if (!a || (a.tagName !== 'INPUT' && a.tagName !== 'TEXTAREA')) $('#nav').classList.toggle('hide', tp().t === 'note' || (tp().t === 'scan' && tp().edit != null)); }, 60); });
 window.addEventListener('pagehide', function () { if (tp().t === 'note') { clearTimeout(noteT); saveJ('notes', notes); } });
-document.addEventListener('visibilitychange', function () { if (document.hidden) { saveJ('notes', notes); saveJ('cfg', cfg); } });
+document.addEventListener('visibilitychange', function () { if (document.hidden) { qrStop(); saveJ('notes', notes); saveJ('cfg', cfg); } });
 
 refreshInfo(); applyTheme(); render('');
 </script>

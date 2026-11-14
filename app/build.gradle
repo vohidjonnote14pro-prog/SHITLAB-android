@@ -1,0 +1,45 @@
+plugins {
+    id 'com.android.application'
+}
+
+def runNo = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger()
+
+android {
+    namespace 'uz.chaqmoq.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'uz.chaqmoq.app'
+        minSdk 26
+        targetSdk 34
+        versionCode runNo
+        versionName "1." + runNo
+    }
+
+    signingConfigs {
+        // Doimiy kalit: yangi versiya eskisining ustidan o'rnatiladi, ma'lumot o'chmaydi
+        chaqmoq {
+            storeFile file('chaqmoq.jks')
+            storePassword 'chaqmoq2026'
+            keyAlias 'chaqmoq'
+            keyPassword 'chaqmoq2026'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.chaqmoq
+        }
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

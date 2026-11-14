@@ -1,0 +1,59 @@
+name: Chaqmoq APK
+
+on:
+  push:
+    branches: [ chaqmoq ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: APK yig'ish
+        run: |
+          set -o pipefail
+          gradle :app:assembleRelease --no-daemon --stacktrace 2>&1 | tee build.log
+
+      - name: Nomlash
+        run: cp app/build/outputs/apk/release/app-release.apk Chaqmoq.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Chaqmoq-apk
+          path: Chaqmoq.apk
+
+      - name: Release yaratish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "chaqmoq-v1.${{ github.run_number }}" Chaqmoq.apk \
+            --prerelease \
+            --target chaqmoq \
+            --title "Chaqmoq v1.${{ github.run_number }}" \
+            --notes "Chaqmoq: fayl menejer, zametka, elektr kalkulyator. Telefonga yuklab oling va o'rnating."
+
+      - name: Xato jurnalini saqlash
+        if: failure()
+        run: |
+          tail -n 400 build.log > log.txt || echo "log yo'q" > log.txt
+          git config user.name "chaqmoq-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git checkout --orphan chaqmoq-log
+          git rm -rfq --cached . || true
+          git add -f log.txt
+          git commit -qm "log ${{ github.run_number }}"
+          git push -f origin chaqmoq-log

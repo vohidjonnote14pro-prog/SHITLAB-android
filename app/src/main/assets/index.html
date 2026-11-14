@@ -202,6 +202,33 @@ body[data-theme=tungi] .sh .it.red{color:#FF8A80}
 .imgv{position:fixed;inset:0;background:#000;z-index:15;display:flex;align-items:center;justify-content:center;animation:fade .2s both}
 .imgv img{max-width:100%;max-height:100%}
 .imgv button{position:absolute;left:16px;top:16px;width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.16);color:#FFFFFF;display:flex;align-items:center;justify-content:center}
+.paper{background:#FFFFFF;color:#14161A;border-radius:18px;padding:18px 16px;font-size:15px;line-height:1.5;overflow-x:auto;-webkit-user-select:text;user-select:text;word-break:break-word}
+.paper.z2{font-size:19px}
+.paper p{margin:0 0 8px;white-space:pre-wrap}
+.paper h1{font-size:1.5em;margin:6px 0 10px;line-height:1.25}
+.paper h2{font-size:1.25em;margin:6px 0 8px}
+.paper h3{font-size:1.1em;margin:6px 0 8px}
+.paper img{max-width:100%;height:auto}
+.paper .tw{overflow-x:auto;margin:6px 0 10px}
+.paper table{border-collapse:collapse;min-width:60%}
+.paper td{border:1px solid #9AA3B2;padding:5px 7px;vertical-align:top}
+.paper td p{margin:0}
+.paper .pb{display:block;border-top:2px dashed #C9CFDA;margin:14px 0}
+.paper .cut{color:#8A3409;font-weight:700}
+.paper pre{margin:0;white-space:pre-wrap;font:inherit;font-family:monospace;font-size:.92em}
+.xw{background:#FFFFFF;color:#14161A;border-radius:18px;overflow:auto;max-height:calc(100vh - 250px);-webkit-user-select:text;user-select:text}
+.xl{border-collapse:separate;border-spacing:0;font-size:14px}
+.xl.z2{font-size:18px}
+.xl th,.xl td{border-right:1px solid #D5DAE2;border-bottom:1px solid #D5DAE2;padding:6px 9px;white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+.xl th{background:#EFF0F4;color:#4F5665;font-weight:700;font-size:12px;text-align:center;position:sticky;left:0;z-index:1}
+.xl thead th{top:0;z-index:2}
+.xl thead th:first-child{z-index:3}
+.xl td.n{text-align:right}
+.pp{background:#FFFFFF;border-radius:10px;overflow:hidden;position:relative;width:100%}
+.pp img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.pp span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#9AA3B2;font-size:13px;font-weight:700}
+.pz{overflow-x:auto;margin:0 -20px;padding:0 20px}
+.pz.z2 .scr{width:200%}
 @keyframes scanl{0%,100%{top:8%}50%{top:88%}}
 .camw{position:relative;border-radius:28px;overflow:hidden;background:#000;aspect-ratio:1/1}
 .camw video{width:100%;height:100%;object-fit:cover;display:block}
@@ -304,6 +331,13 @@ var N = window.Native || (function () {
     qr: function (t) { var n = 25, d = ''; for (var i = 0; i < n * n; i++) d += ((i * 7 + t.length * 3 + (i % 5) * (i % 3)) % 3 === 0) ? '1' : '0'; return JSON.stringify({ n: n, d: d }); },
     savePng: function (n) { return '/sd/Pictures/Chaqmoq/' + n + '.png'; },
     pdfBegin: function () {}, pdfPage: function () { return true; }, pdfEnd: function (n) { return '/sd/Documents/Chaqmoq/' + n + '.pdf'; },
+    docx: function () { return JSON.stringify({ ok: true, html: '<h1>Shartnoma №1</h1><p>Oddiy matn, <b>qalin</b> va <span style="color:#C80000"><i>qizil</i></span>.</p><p>&bull;&nbsp;Birinchi band</p><div class="tw"><table><tr><td><p>Nomi</p></td><td><p>Soni</p></td></tr><tr><td><p>Kabel</p></td><td><p>25</p></td></tr></table></div>' }); },
+    xlsx: function () { return JSON.stringify({ ok: true, sheets: [{ name: 'Smeta', html: '<table class="xl"><thead><tr><th></th><th>A</th><th>B</th><th>C</th></tr></thead><tbody><tr><th>1</th><td>Nomi</td><td>Soni</td><td>Narx</td></tr><tr><th>2</th><td>Kabel 3x2.5</td><td class="n">120</td><td class="n">4500.5</td></tr></tbody></table>', cut: false }, { name: 'Ikkinchi', html: '', cut: false }] }); },
+    readText: function () { return 'Oddiy matn fayli\nIkkinchi qator'; },
+    rOpen: function () { return JSON.stringify({ n: 3, r: [1.414, 1.414, 0.707] }); },
+    rImg: function (i, w) { var c = document.createElement('canvas'); c.width = 300; c.height = 424; var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, 300, 424); x.fillStyle = '#222'; x.font = '20px sans-serif'; x.fillText('PDF sahifa ' + (i + 1), 40, 80); return c.toDataURL('image/jpeg', 0.8); },
+    rClose: function () {},
+    findDocs: function (id) { setTimeout(function () { window.onDocs(id, [{ p: '/sd/Documents/Shartnoma.docx', n: 'Shartnoma.docx', s: 84000, m: Date.now() }, { p: '/sd/Documents/Smeta.xlsx', n: 'Smeta.xlsx', s: 212000, m: Date.now() - 9e7 }, { p: '/sd/Download/Sxema.pdf', n: 'Sxema.pdf', s: 1400000, m: Date.now() - 3e8 }, { p: '/sd/Download/eski.doc', n: 'eski.doc', s: 40000, m: Date.now() - 6e8 }]); }, 300); },
     copy: function () {}, openUrl: function (u) { toast('Ochish: ' + u); },
     bars: function () {},
     toast: function (t) { toast(t); }
@@ -349,7 +383,7 @@ function goBack() {
   return false;
 }
 window.goBack = goBack;
-function leave() { var s = tp(); if (s.t === 'note') flushNote(); if (s.t === 'qr') qrStop(); }
+function leave() { var s = tp(); if (s.t === 'note') flushNote(); if (s.t === 'qr') qrStop(); if (s.t === 'view') viewClose(s); }
 function home(t) { leave(); stack = [{ t: 'home' }]; if (t) stack.push({ t: t }); render(t ? 'fwd' : 'back'); }
 window.onAppResume = function () { var was = info.perm; refreshInfo(); var s = tp(); if (s.t === 'qr' && (s.m || 'scan') === 'scan' && !qrStream && !sheetOpen) qrStart(); if (s.t === 'home' || s.t === 'set' || (s.t === 'dir' && !was && info.perm)) render(''); };
 window.onOp = function (id, ok) { var f = ops[id]; delete ops[id]; if (f) f(ok); };
@@ -357,7 +391,7 @@ function op(fn, done) { var id = opSeq++; ops[id] = done; fn(id); }
 
 function render(dir) {
   var s = tp(), v = $('#view'), h = '';
-  if (s.t === 'home') h = vHome(); else if (s.t === 'dir') h = vDir(s); else if (s.t === 'notes') h = vNotes(s); else if (s.t === 'note') h = vNote(s); else if (s.t === 'calc') h = vCalc(); else if (s.t === 'set') h = vSet(); else if (s.t === 'qr') h = vQr(s); else if (s.t === 'scan') h = vScan(s);
+  if (s.t === 'home') h = vHome(); else if (s.t === 'dir') h = vDir(s); else if (s.t === 'notes') h = vNotes(s); else if (s.t === 'note') h = vNote(s); else if (s.t === 'calc') h = vCalc(); else if (s.t === 'set') h = vSet(); else if (s.t === 'qr') h = vQr(s); else if (s.t === 'scan') h = vScan(s); else if (s.t === 'view') h = vView(s); else if (s.t === 'docs') h = vDocs(s);
   v.className = dir || '';
   v.innerHTML = '<div class="scr">' + h + '</div>';
   if (dir) v.scrollTop = 0;
@@ -366,9 +400,11 @@ function render(dir) {
   $('#nav').classList.toggle('hide', s.t === 'note' || (s.t === 'scan' && s.edit != null));
   if (s.t === 'qr') { if ((s.m || 'scan') === 'scan') qrStart(); else { qrStop(); qrDraw(); } }
   if (s.t === 'scan' && s.edit != null) cropPaint();
+  if (s.t === 'view' && s.kind === 'pdf') pdfWatch(s);
+  if (s.t === 'docs' && !s.items && !s.wait) { s.wait = true; var did = opSeq++; s.did = did; N.findDocs(did); }
 }
 function renderNav(s) {
-  var a = s.t === 'home' || s.t === 'dir' || s.t === 'qr' || s.t === 'scan' ? 0 : s.t === 'notes' || s.t === 'note' ? 1 : s.t === 'calc' ? 2 : 3;
+  var a = s.t === 'home' || s.t === 'dir' || s.t === 'qr' || s.t === 'scan' || s.t === 'view' || s.t === 'docs' ? 0 : s.t === 'notes' || s.t === 'note' ? 1 : s.t === 'calc' ? 2 : 3;
   function tab(i, act, icon, lbl) { return '<button class="tab' + (a === i ? ' on' : '') + '" data-a="' + act + '" aria-label="' + lbl + '">' + ic(icon) + '<span class="lbl">' + lbl + '</span></button>'; }
   $('#nav').innerHTML = tab(0, 'tabHome', 'folder', 'Fayllar') + tab(1, 'tabNotes', 'note', 'Zametka') + '<button class="plus press" data-a="plus" aria-label="Yangi papka yoki zametka">' + ic('plus', 26) + '</button>' + tab(2, 'tabCalc', 'bolto', 'Hisob') + tab(3, 'tabSet', 'gear', 'Sozlama');
 }
@@ -392,7 +428,7 @@ function vHome() {
   if (ns.length) { h += '<div class="notes2 pop" style="animation-delay:.52s">' + ns.map(function (n) { return noteCard(n, false); }).join('') + '</div>'; }
   else h += '<div class="empty pop" style="animation-delay:.52s"><span>Hali zametka yo\'q</span><button class="btn press" data-a="newNote">' + ic('plus', 20) + 'Yangi zametka</button></div>';
   h += '<div class="sec pop" style="animation-delay:.56s"><h2>Asboblar</h2></div><div class="tools pop" style="animation-delay:.6s">' +
-    '<button class="tl press" data-a="toScan">' + ic('scan', 28) + 'Skaner<small>PDF qilish</small></button><button class="tl press" data-a="toQr">' + ic('qr', 28) + 'QR kod<small>O\'qish, yasash</small></button><button class="tl press" data-a="soon">' + ic('doc', 28) + 'Ofis<small>Tez orada</small></button></div>';
+    '<button class="tl press" data-a="toScan">' + ic('scan', 28) + 'Skaner<small>PDF qilish</small></button><button class="tl press" data-a="toQr">' + ic('qr', 28) + 'QR kod<small>O\'qish, yasash</small></button><button class="tl press" data-a="toDocs">' + ic('doc', 28) + 'Ofis<small>PDF, Word, Excel</small></button></div>';
   return h;
 }
 
@@ -486,9 +522,77 @@ function reloadDir() { var s = tp(); if (s.t !== 'dir') return; var q = s.q; loa
 function openItem(x) {
   var p = cur.path + '/' + x.n;
   if (x.d) { go({ t: 'dir', path: p }); return; }
-  if (IMG[extOf(x.n)]) { openImg(p); return; }
-  N.open(p);
+  openFile(p, x.n);
 }
+var VIEW = { pdf: 'pdf', docx: 'doc', xlsx: 'xls', txt: 'txt', csv: 'txt', log: 'txt', json: 'txt', xml: 'txt', md: 'txt', ini: 'txt' };
+function openFile(p, name) {
+  var e = extOf(name), kind = VIEW[e];
+  if (IMG[e]) { openImg(p); return; }
+  if (!kind) { N.open(p); return; }
+  busy('Ochilmoqda...');
+  setTimeout(function () {
+    var s = { t: 'view', path: p, name: name, kind: kind, z: 1 }, ok = false;
+    try {
+      if (kind === 'pdf') { var r = JSON.parse(N.rOpen(p)); if (r.n > 0) { s.n = r.n; s.r = r.r || []; ok = true; } }
+      else if (kind === 'doc') { var d = JSON.parse(N.docx(p)); if (d.ok) { s.html = d.html || '<p>Hujjat bo\'sh</p>'; ok = true; } }
+      else if (kind === 'xls') { var x = JSON.parse(N.xlsx(p)); if (x.ok && x.sheets && x.sheets.length) { s.sheets = x.sheets; s.si = 0; ok = true; } }
+      else { s.text = N.readText(p); ok = true; }
+    } catch (err) { ok = false; }
+    closeOv();
+    if (ok) go(s); else { toast('Dastur ichida ochilmadi, boshqa dasturda ochiladi'); N.open(p); }
+  }, 60);
+}
+/* ---------- Hujjatni ko'rish ---------- */
+var pdfObs = null;
+function viewClose(s) { if (pdfObs) { pdfObs.disconnect(); pdfObs = null; } if (s.kind === 'pdf') N.rClose(); }
+function vView(s) {
+  var sub = s.kind === 'pdf' ? s.n + ' sahifa' : s.kind === 'xls' ? s.sheets.length + ' ta varaq' : s.kind === 'doc' ? 'Word hujjat' : 'Matn';
+  var h = '<div class="hd"><button class="ib press" data-a="back" aria-label="Orqaga">' + ic('back') + '</button><div class="tt"><span class="sm">' + sub + ' · faqat ko\'rish</span><h1 class="s">' + esc(s.name) + '</h1></div><button class="ib press" data-a="vZoom" aria-label="Kattalashtirish">' + ic('search') + '</button><button class="ib press" data-a="vMenu" aria-label="Amallar">' + ic('more') + '</button></div>';
+  if (s.kind === 'pdf') {
+    h += '<div class="pz' + (s.z === 2 ? ' z2' : '') + '"><div class="scr">';
+    for (var i = 0; i < s.n; i++) h += '<div class="pp" data-pg="' + i + '" style="aspect-ratio:1/' + (s.r[i] || 1.414) + '"><span>' + (i + 1) + '</span></div>';
+    h += '</div></div>';
+  } else if (s.kind === 'doc') h += '<div class="paper' + (s.z === 2 ? ' z2' : '') + '">' + s.html + '</div>';
+  else if (s.kind === 'xls') {
+    var sh = s.sheets[s.si];
+    if (s.sheets.length > 1) h += '<div class="chs">' + s.sheets.map(function (x, i) { return '<button class="ch' + (i === s.si ? ' on' : '') + '" data-a="vSheet" data-v="' + i + '">' + esc(x.name) + '</button>'; }).join('') + '</div>';
+    h += sh.html ? '<div class="xw">' + (s.z === 2 ? sh.html.replace('class="xl"', 'class="xl z2"') : sh.html) + '</div>' : '<div class="empty">Bu varaq bo\'sh</div>';
+    if (sh.cut) h += '<div class="wide"><span class="n">Jadval juda katta, faqat boshi ko\'rsatildi. To\'liq ko\'rish uchun boshqa dasturda oching.</span></div>';
+  } else h += '<div class="paper' + (s.z === 2 ? ' z2' : '') + '"><pre>' + esc(s.text || 'Fayl bo\'sh') + '</pre></div>';
+  return h;
+}
+function pdfWatch(s) {
+  if (pdfObs) pdfObs.disconnect();
+  var loaded = [];
+  function load(el) {
+    if (el.firstChild && el.firstChild.tagName === 'IMG') return;
+    var d = N.rImg(+el.dataset.pg, 1300); if (!d) return;
+    el.innerHTML = '<img alt="' + (+el.dataset.pg + 1) + '-sahifa" src="' + d + '">'; loaded.push(el);
+    while (loaded.length > 10) { var o = loaded.shift(); if (o !== el && o.isConnected) o.innerHTML = '<span>' + (+o.dataset.pg + 1) + '</span>'; }
+  }
+  pdfObs = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) setTimeout(function () { if (e.target.isConnected) load(e.target); }, 30); }); }, { root: $('#view'), rootMargin: '500px 0px' });
+  var all = document.querySelectorAll('.pp'); for (var i = 0; i < all.length; i++) pdfObs.observe(all[i]);
+  setTimeout(function () { for (var j = 0; j < all.length && j < 2; j++) if (all[j].isConnected) load(all[j]); }, 80);
+}
+/* ---------- Ofis: telefondagi hujjatlar ---------- */
+var DF = [['', 'Hammasi'], ['pdf', 'PDF'], ['w', 'Word'], ['x', 'Excel'], ['o', 'Boshqa']];
+function docKind(n) { var e = extOf(n); if (e === 'pdf') return 'pdf'; if (e === 'doc' || e === 'docx' || e === 'rtf') return 'w'; if (e === 'xls' || e === 'xlsx' || e === 'csv') return 'x'; return 'o'; }
+function vDocs(s) {
+  var h = '<div class="hd"><button class="ib press" data-a="back" aria-label="Orqaga">' + ic('back') + '</button><div class="tt"><span class="sm">' + (s.items ? s.items.length + ' ta hujjat topildi' : 'Telefondagi hujjatlar') + '</span><h1 class="s">Ofis</h1></div></div>';
+  h += '<label class="search">' + ic('search', 20) + '<input id="dq" type="search" placeholder="Hujjat nomidan qidirish" aria-label="Qidirish" value="' + esc(s.q || '') + '"></label>';
+  h += '<div class="chs">' + DF.map(function (f) { return '<button class="ch' + ((s.f || '') === f[0] ? ' on' : '') + '" data-a="dF" data-v="' + f[0] + '">' + f[1] + '</button>'; }).join('') + '</div>';
+  return h + '<div id="docsBody">' + docsBody(s) + '</div>';
+}
+function docsBody(s) {
+  if (!info.perm) return '<div class="empty"><span>Hujjatlarni topish uchun fayllarga ruxsat kerak.</span><button class="btn press" data-a="perm">Ruxsat berish</button></div>';
+  if (!s.items) return '<div class="empty"><span class="spin" style="border-color:var(--line);border-top-color:var(--acc)"></span><span>Hujjatlar qidirilmoqda...</span></div>';
+  var q = (s.q || '').toLowerCase(), f = s.f || '';
+  var a = s.items.filter(function (x) { return (!f || docKind(x.n) === f) && (!q || x.n.toLowerCase().indexOf(q) >= 0); });
+  s.shown = a;
+  if (!a.length) return '<div class="empty">' + ic('doc', 34) + '<span>Hujjat topilmadi</span></div>';
+  return '<div class="list">' + a.slice(0, 300).map(function (x, i) { var dir = x.p.slice(0, x.p.lastIndexOf('/')).replace(info.root, '').replace(/^\//, '') || 'Ichki xotira'; return '<div class="fr" data-a="dOpen" data-i="' + i + '" role="button" tabindex="0">' + badge(x.n) + '<span class="tx"><b>' + esc(x.n) + '</b><span>' + size(x.s) + ' · ' + when(x.m) + ' · ' + esc(dir) + '</span></span></div>'; }).join('') + '</div>';
+}
+window.onDocs = function (id, arr) { for (var i = 0; i < stack.length; i++) { var s = stack[i]; if (s.t === 'docs' && s.did === id) { s.items = arr || []; s.wait = false; if (tp() === s) { var b = $('#docsBody'); if (b) b.innerHTML = docsBody(s); var sm = document.querySelector('.hd .sm'); if (sm) sm.textContent = s.items.length + ' ta hujjat topildi'; } } } };
 function openImg(p) {
   var el = document.createElement('div'); el.className = 'imgv'; el.id = 'imgv';
   el.innerHTML = '<img alt="" src="file://' + p.split('/').map(encodeURIComponent).join('/') + '"><button data-a="imgX" aria-label="Yopish">' + ic('x') + '</button>';
@@ -744,6 +848,14 @@ var A = {
   ckT: function (el) { var n = findNote(tp().id), x = n.items[+el.dataset.i]; x.done = !x.done; touchNote(); rerenderCks(); },
   ckDel: function (el) { var n = findNote(tp().id); n.items.splice(+el.dataset.i, 1); touchNote(); rerenderCks(); },
   ckAdd: function () { var n = findNote(tp().id); n.items.push({ x: '', done: false }); touchNote(); rerenderCks(); var ins = document.querySelectorAll('#cks input'); if (ins.length) ins[ins.length - 1].focus(); },
+  toDocs: function () { go({ t: 'docs' }); },
+  dF: function (el) { tp().f = el.dataset.v; render(''); },
+  dOpen: function (el) { var x = tp().shown[+el.dataset.i]; if (x) openFile(x.p, x.n); },
+  vZoom: function () { var s = tp(); s.z = s.z === 2 ? 1 : 2; render(''); },
+  vSheet: function (el) { tp().si = +el.dataset.v; render(''); },
+  vMenu: function () { sheet(tp().name, [['vOpen', 'open', 'Boshqa dasturda ochish'], ['vShare', 'share', 'Ulashish']]); },
+  vOpen: function () { closeOv(); N.open(tp().path); },
+  vShare: function () { closeOv(); N.share(tp().path); },
   toQr: function () { go({ t: 'qr' }); },
   toScan: function () { go({ t: 'scan' }); },
   qrM: function (el) { var s = tp(); if ((s.m || 'scan') === el.dataset.v) return; s.m = el.dataset.v; render(''); },
@@ -782,6 +894,7 @@ document.addEventListener('input', function (e) {
   var t = e.target, s = tp();
   if (t.id === 'cval') { cfg.calc.val = t.value; calcUpdate(); clearTimeout(calcT); calcT = setTimeout(function () { saveJ('cfg', cfg); }, 600); }
   else if (t.id === 'qtext') { s.text = t.value; clearTimeout(calcT); calcT = setTimeout(qrDraw, 250); }
+  else if (t.id === 'dq') { s.q = t.value; $('#docsBody').innerHTML = docsBody(s); }
   else if (t.id === 'q') { s.q = t.value; s.lim = 120; $('#dirBody').innerHTML = dirBody(s); }
   else if (t.id === 'nq') { s.q = t.value; var v = vNotes(s), d = document.createElement('div'); d.innerHTML = v; $('#notesBody').innerHTML = d.querySelector('#notesBody').innerHTML; }
   else if (t.id === 'nt') { var n = findNote(s.id); if (n) { n.t = t.value; touchNote(); } }
@@ -792,7 +905,7 @@ document.addEventListener('keydown', function (e) {
   if (e.key !== 'Enter') return; var t = e.target;
   if (t.id === 'dval' && dlgCb) { e.preventDefault(); dlgCb(); }
   else if (t.dataset && t.dataset.ck !== undefined) { e.preventDefault(); A.ckAdd(); }
-  else if (t.id === 'cval' || t.id === 'q' || t.id === 'nq') t.blur();
+  else if (t.id === 'cval' || t.id === 'q' || t.id === 'nq' || t.id === 'dq') t.blur();
 });
 document.addEventListener('focusin', function (e) { var t = e.target; if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA') $('#nav').classList.add('hide'); });
 document.addEventListener('focusout', function () { setTimeout(function () { var a = document.activeElement; if (!a || (a.tagName !== 'INPUT' && a.tagName !== 'TEXTAREA')) $('#nav').classList.toggle('hide', tp().t === 'note' || (tp().t === 'scan' && tp().edit != null)); }, 60); });

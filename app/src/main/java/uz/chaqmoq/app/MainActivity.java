@@ -14,12 +14,14 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.pdf.PdfDocument;
+import android.graphics.pdf.PdfRenderer;
 import android.media.ExifInterface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.os.StatFs;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -55,7 +57,11 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends Activity {
@@ -68,6 +74,8 @@ public class MainActivity extends Activity {
     private File camFile;
     private PdfDocument pdf;
     private int pdfPages;
+    private PdfRenderer rdr;
+    private ParcelFileDescriptor rfd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,6 +219,46 @@ public class MainActivity extends Activity {
             }
         } catch (Throwable t) {
             return "";
+        }
+    }
+
+    private void closeReader() {
+        try { if (rdr != null) rdr.close(); } catch (Exception ignored) { }
+        try { if (rfd != null) rfd.close(); } catch (Exception ignored) { }
+        rdr = null;
+        rfd = null;
+    }
+
+    private static final String[] DOC_EXT = {"pdf", "docx", "doc", "xlsx", "xls", "pptx", "ppt", "txt", "csv", "rtf"};
+
+    private static boolean isDoc(String name) {
+        int dot = name.lastIndexOf('.');
+        if (dot < 0) return false;
+        String e = name.substring(dot + 1).toLowerCase(Locale.ROOT);
+        for (String x : DOC_EXT) if (x.equals(e)) return true;
+        return false;
+    }
+
+    /** Telefon xotirasidan hujjatlarni qidiradi (chuqurlik va soni cheklangan). */
+    private static void walkDocs(File dir, int depth, List<File> out, int[] seen) {
+        if (depth > 6 || out.size() >= 600 || seen[0] > 40000) return;
+        File[] kids = dir.listFiles();
+        if (kids == null) return;
+        for (File k : kids) {
+            seen[0]++;
+            String n = k.getName();
+            if (n.startsWith(".")) continue;
+            if (k.isDirectory()) {
+                if (depth == 1 && n.equals("Android")) {
+                    File media = new File(k, "media");
+                    if (media.isDirectory()) walkDocs(media, depth + 1, out, seen);
+                    continue;
+                }
+                walkDocs(k, depth + 1, out, seen);
+            } else if (isDoc(n)) {
+                out.add(k);
+                if (out.size() >= 600) return;
+            }
         }
     }
 
@@ -680,6 +728,124 @@ public class MainActivity extends Activity {
                 try { pdf.close(); } catch (Exception ignored) { }
                 pdf = null;
             }
+        }
+
+        @JavascriptInterface
+        public String docx(String path) {
+            JSONObject o = new JSONObject();
+            try {
+                o.put("html", Office.docx(new File(path)));
+                o.put("ok", true);
+            } catch (Throwable t) {
+                try { o.put("ok", false); } catch (Exception ignored) { }
+            }
+            return o.toString();
+        }
+
+        @JavascriptInterface
+        public String xlsx(String path) {
+            try {
+                return Office.xlsx(new File(path));
+            } catch (Throwable t) {
+                return "{\"ok\":false}";
+            }
+        }
+
+        @JavascriptInterface
+        public String readText(String path) {
+            try {
+                File f = new File(path);
+                int len = (int) Math.min(f.length(), 600000);
+                byte[] buf = new byte[len];
+                int off = 0;
+                try (FileInputStream in = new FileInputStream(f)) {
+                    while (off < len) {
+                        int n = in.read(buf, off, len - off);
+                        if (n < 0) break;
+                        off += n;
+                    }
+                }
+                String s = new String(buf, 0, off, StandardCharsets.UTF_8);
+                int bad = 0;
+                for (int i = 0; i < s.length(); i++) if (s.charAt(i) == '\uFFFD') bad++;
+                if (bad > 3 && bad * 50 > s.length()) s = new String(buf, 0, off, "windows-1251");
+                if (f.length() > len) s += "\n\n... (fayl katta, davomi ko'rsatilmadi)";
+                return s;
+            } catch (Throwable t) {
+                return "";
+            }
+        }
+
+        /** PDF ni ochadi: {n: sahifalar soni, r: [balandlik/en nisbati]} */
+        @JavascriptInterface
+        public String rOpen(String path) {
+            closeReader();
+            JSONObject o = new JSONObject();
+            try {
+                rfd = ParcelFileDescriptor.open(new File(path), ParcelFileDescriptor.MODE_READ_ONLY);
+                rdr = new PdfRenderer(rfd);
+                int n = rdr.getPageCount();
+                JSONArray r = new JSONArray();
+                for (int i = 0; i < n && i < 400; i++) {
+                    PdfRenderer.Page pg = rdr.openPage(i);
+                    r.put(Math.round(1000.0 * pg.getHeight() / Math.max(1, pg.getWidth())) / 1000.0);
+                    pg.close();
+                }
+                o.put("n", n);
+                o.put("r", r);
+            } catch (Throwable t) {
+                closeReader();
+                try { o.put("n", 0); } catch (Exception ignored) { }
+            }
+            return o.toString();
+        }
+
+        @JavascriptInterface
+        public String rImg(int index, int width) {
+            try {
+                if (rdr == null || index < 0 || index >= rdr.getPageCount()) return "";
+                PdfRenderer.Page pg = rdr.openPage(index);
+                int w = Math.max(300, Math.min(width, 2000));
+                int h = Math.max(1, Math.round((float) w * pg.getHeight() / Math.max(1, pg.getWidth())));
+                if (h > 4000) { w = Math.max(1, w * 4000 / h); h = 4000; }
+                Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+                bm.eraseColor(Color.WHITE);
+                pg.render(bm, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+                pg.close();
+                ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.JPEG, 85, bo);
+                bm.recycle();
+                return "data:image/jpeg;base64," + Base64.encodeToString(bo.toByteArray(), Base64.NO_WRAP);
+            } catch (Throwable t) {
+                return "";
+            }
+        }
+
+        @JavascriptInterface
+        public void rClose() {
+            closeReader();
+        }
+
+        @JavascriptInterface
+        public void findDocs(final int id) {
+            new Thread(() -> {
+                JSONArray arr = new JSONArray();
+                try {
+                    List<File> out = new ArrayList<>();
+                    walkDocs(Environment.getExternalStorageDirectory(), 1, out, new int[1]);
+                    Collections.sort(out, (a, b) -> Long.compare(b.lastModified(), a.lastModified()));
+                    for (File f : out) {
+                        JSONObject it = new JSONObject();
+                        it.put("p", f.getAbsolutePath());
+                        it.put("n", f.getName());
+                        it.put("s", f.length());
+                        it.put("m", f.lastModified());
+                        arr.put(it);
+                    }
+                } catch (Throwable ignored) { }
+                String json = arr.toString().replace("\u2028", " ").replace("\u2029", " ");
+                js("window.onDocs && window.onDocs(" + id + "," + json + ")");
+            }).start();
         }
 
         @JavascriptInterface

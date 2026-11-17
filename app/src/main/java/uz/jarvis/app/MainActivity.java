@@ -13,6 +13,8 @@ import android.graphics.Color;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -44,6 +46,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -62,6 +65,9 @@ public class MainActivity extends Activity {
     private SpeechRecognizer recognizer;
     private SharedPreferences prefs;
     private CloudVoice cloud;
+    private MediaRecorder rec;
+    private File recFile;
+    private MediaPlayer recPlayer;
     private final Handler ui = new Handler(Looper.getMainLooper());
     private long lastLevel = 0;
     private static final int REQ_PERMS = 11;
@@ -471,6 +477,95 @@ public class MainActivity extends Activity {
                     Intent i = new Intent(Intent.ACTION_SEND);
                     i.setType("text/plain");
                     i.putExtra(Intent.EXTRA_TEXT, text);
+                    i.setPackage(p);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                    return p;
+                } catch (Exception ignored) { }
+            }
+            return "";
+        }
+
+
+        // ---------- ovozli xabar ----------
+        @JavascriptInterface
+        public boolean recStart() {
+            if (!has(Manifest.permission.RECORD_AUDIO)) { ui.post(() -> requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQ_PERMS)); return false; }
+            try {
+                if (recognizer != null) { try { recognizer.cancel(); } catch (Exception ignored) { } }
+                recFile = new File(getCacheDir(), "jvoice_" + System.currentTimeMillis() + ".m4a");
+                rec = Build.VERSION.SDK_INT >= 31 ? new MediaRecorder(MainActivity.this) : new MediaRecorder();
+                rec.setAudioSource(MediaRecorder.AudioSource.MIC);
+                rec.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                rec.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                rec.setAudioEncodingBitRate(64000);
+                rec.setAudioSamplingRate(44100);
+                rec.setOutputFile(recFile.getAbsolutePath());
+                rec.prepare();
+                rec.start();
+                return true;
+            } catch (Exception e) { rec = null; return false; }
+        }
+
+        @JavascriptInterface
+        public int recLevel() {
+            try { return rec != null ? rec.getMaxAmplitude() : 0; } catch (Exception e) { return 0; }
+        }
+
+        @JavascriptInterface
+        public String recStop() {
+            try { if (rec != null) { rec.stop(); rec.release(); } } catch (Exception e) { rec = null; return ""; }
+            rec = null;
+            return recFile != null && recFile.exists() && recFile.length() > 1000 ? recFile.getName() : "";
+        }
+
+        @JavascriptInterface
+        public boolean recPlay(String name) {
+            try {
+                if (recPlayer != null) { recPlayer.release(); recPlayer = null; }
+                File f = new File(getCacheDir(), name);
+                recPlayer = new MediaPlayer();
+                recPlayer.setDataSource(f.getAbsolutePath());
+                recPlayer.setOnCompletionListener(m -> js("window.onRecPlayDone&&window.onRecPlayDone()"));
+                recPlayer.prepare();
+                recPlayer.start();
+                return true;
+            } catch (Exception e) { return false; }
+        }
+
+        @JavascriptInterface
+        public void recPlayStop() { try { if (recPlayer != null) { recPlayer.stop(); recPlayer.release(); recPlayer = null; } } catch (Exception ignored) { } }
+
+        @JavascriptInterface
+        public String shareAudio(String name, String app, String phone) {
+            File f = new File(getCacheDir(), name);
+            if (!f.exists()) return "";
+            Uri u = FileShare.uriFor(f);
+            String[] pk = "whatsapp".equals(app) ? new String[]{"com.whatsapp", "com.whatsapp.w4b"} : new String[]{"org.telegram.messenger", "org.telegram.messenger.web", "org.thunderdog.challegram"};
+            for (String p : pk) {
+                try {
+                    getPackageManager().getPackageInfo(p, 0);
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("audio/mp4");
+                    i.putExtra(Intent.EXTRA_STREAM, u);
+                    i.setPackage(p);
+                    if ("whatsapp".equals(app) && phone != null && !phone.isEmpty()) i.putExtra("jid", phone.replaceAll("[^0-9]", "") + "@s.whatsapp.net");
+                    i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    grantUriPermission(p, u, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(i);
+                    return p;
+                } catch (Exception ignored) { }
+            }
+            return "";
+        }
+
+        @JavascriptInterface
+        public String whatsappText(String phone, String text) {
+            String[] pk = {"com.whatsapp", "com.whatsapp.w4b"};
+            for (String p : pk) {
+                try {
+                    getPackageManager().getPackageInfo(p, 0);
+                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/" + phone.replaceAll("[^0-9]", "") + "?text=" + Uri.encode(text)));
                     i.setPackage(p);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(i);

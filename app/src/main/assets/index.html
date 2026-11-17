@@ -76,6 +76,7 @@ button{font-family:inherit;cursor:pointer}
 #jv{font-size:15px;line-height:1.38;color:#fff;max-height:4.2em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
 .cur{color:#7CC4FF;animation:bl .8s step-end infinite}@keyframes bl{50%{opacity:0}}
 .drow{display:flex;gap:6px;margin-top:2px}
+.sb.on{border-color:#4ADE80;color:#4ADE80;background:rgba(74,222,128,.12);box-shadow:0 0 14px rgba(74,222,128,.35)}
 .sb{width:36px;height:36px;border-radius:11px;border:1px solid rgba(159,216,255,.22);background:rgba(255,255,255,.04);color:#CFE8FF;display:flex;align-items:center;justify-content:center}
 .dright{position:relative;display:flex;align-items:center;justify-content:center;width:84px;flex:none}
 #mic{position:relative;width:72px;height:72px;border-radius:50%;border:none;background:radial-gradient(circle at 35% 28%,#9FD3FF,#2F6BFF 48%,#1B2E8F);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px rgba(190,225,255,.5),0 8px 30px rgba(50,120,255,.55)}
@@ -172,6 +173,7 @@ button{font-family:inherit;cursor:pointer}
       <div class="drow">
         <button class="sb" aria-label="Yozib yuborish" onclick="toggleType()"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M7 14h10M6 10h.01M10 10h.01M14 10h.01M18 10h.01"/></svg></button>
         <button class="sb" aria-label="Kamera" onclick="Native.openCamera()"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
+        <button class="sb" id="wakeBtn" aria-label="Doim tinglash" onclick="toggleWake()"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 1 1 12 0c0 3-2 4-3 5.5S14 18 12 19.5 8 21 7 19M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-1.5 2-1.5 3"/></svg></button>
         <button class="sb" aria-label="Ish maydonini tozalash" onclick="clearFeed()"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button>
       </div>
     </div>
@@ -201,7 +203,7 @@ button{font-family:inherit;cursor:pointer}
       <div class="field"><label>Telefon ovozi tili (zaxira)</label><select id="sVoice"></select></div>
       <div class="field"><label>Ovoz tezligi: <span id="rateV">1.0</span></label><input id="sRate" type="range" min="0.6" max="1.5" step="0.05" style="height:30px;padding:0"></div>
       <div class="row"><button class="btn" onclick="testVoice()">Ovozni sinash</button><button class="btn" onclick="Native.openTtsSettings()">Ovoz paketlari</button></div>
-      <div class="field"><label>Doim tinglash (mikrofonni bosmasdan)</label><select id="sWake"><option value="1">Yoqilgan — nomimni eshitsa uyg'onsin</option><option value="0">O'chirilgan</option></select></div>
+      <div class="field"><label>Doim tinglash (mikrofonni bosmasdan)</label><select id="sWake"><option value="0">O'chirilgan (tugma bilan yoqiladi)</option><option value="1">Yoqilgan — nomimni eshitsa uyg'onsin</option></select></div>
       <div class="field"><label>Uyg'otish so'zlari (vergul bilan)</label><input id="sWakeWords" placeholder="jarvis, aka"></div>
       <p class="hint">Shu so'zlardan birini gap boshida aytsangiz, Jarvis uyg'onadi. Masalan: "Jarvis, fonarikni yoq" yoki "Aka, soat necha?". Ilova ochiq turganda ishlaydi.</p>
       <div class="field"><label>Teginganda tushuntirish</label><select id="sTap"><option value="1">Yoqilgan — teginsam nima ekanini aytsin</option><option value="0">O'chirilgan</option></select></div>
@@ -357,7 +359,7 @@ function startListen() {
 function stopListenUI() { listening = false; micBtn.classList.remove('on'); bars.forEach(b => b.style.transform = ''); if (!busy && !speaking) setStatus('TAYYOR'); }
 
 // --- uyg'otish so'zi (doim tinglash) ---
-function wakeOn() { return N.get('wake') !== '0'; }
+function wakeOn() { return N.get('wake') === '1'; }
 function wakeWords() { return (N.get('wakeWords') || 'jarvis, aka').split(',').map(w => norm(w)).filter(Boolean); }
 function wakeLabel() { const w = (N.get('wakeWords') || 'jarvis, aka').split(',')[0].trim(); return w ? w.toUpperCase() : 'JARVIS'; }
 function canPassive() {
@@ -371,6 +373,12 @@ function startPassive() {
   listenNative(true);
 }
 setInterval(() => { if (canPassive()) startPassive(); }, 3000);
+function syncWakeBtn() { const b = $('wakeBtn'); if (b) b.classList.toggle('on', wakeOn()); }
+function toggleWake() {
+  const on = !wakeOn(); N.set('wake', on ? '1' : '0'); syncWakeBtn();
+  if (on) { toastJ('Doim tinglash yoqildi — «' + wakeLabel() + '» deng'); schedulePassive(300); }
+  else { stopPassive(); setStatus('TAYYOR'); toastJ("Doim tinglash o'chirildi"); }
+}
 function stopPassive() { if (passive) { passive = false; curSid++; N.stopListen(); N.quiet && N.quiet(false); } clearTimeout(passTimer); }
 const VARIANTS = { jarvis: ['jarvis', 'jarvas', 'javis', 'jarves', 'jarviz', 'djarvis', 'charvis', 'jervis', 'jarvisga', 'jarvisjon', 'jorvis', 'jarvez', 'jarbis', 'jarviss', 'garvis', 'zharvis', 'jarvi', 'jarviis', 'jaarvis', 'jarvisaka'] };
 function skel(w) {
@@ -541,6 +549,38 @@ async function confirmFlow(title, name, sub, msg, question) {
   return box;
 }
 
+
+// ---------- ovozli xabar yozish ----------
+function recordVoice(who) {
+  return new Promise(async res => {
+    stopPassive();
+    await say('Gapiring, ' + who + ' uchun yozib olyapman.');
+    await sleep(250);
+    if (!N.recStart || !N.recStart()) { toastJ('Mikrofon band yoki ruxsat yo\'q'); res(null); return; }
+    const d = feedCard('<div style="flex:1;min-width:0"><div class="lab">🔴 OVOZ YOZILMOQDA · ' + esc(who) + '</div><div class="big" id="recT">0:00</div><div id="recBars" style="display:flex;gap:3px;align-items:flex-end;height:28px;margin-top:6px;overflow:hidden"></div></div><button class="btn" id="recStop" style="flex:none;border-color:#FF6B7E;color:#FF9BA7">■ To\'xtatish</button>', 'Ovozli xabar yozilmoqda.');
+    const barsEl = d.querySelector('#recBars'); const lv = [];
+    const t0 = Date.now(); let spoke = false, silent = 0, done = false;
+    setStatus('YOZYAPTI', '#FF6B7E');
+    const finish = () => {
+      if (done) return; done = true; clearInterval(iv);
+      const name = N.recStop(); const sec = Math.max(1, Math.round((Date.now() - t0) / 1000));
+      d.querySelector('.lab').textContent = '✓ OVOZ YOZILDI · ' + sec + ' soniya';
+      const b = d.querySelector('#recStop'); if (b) b.remove();
+      setStatus('TAYYOR'); res({ name, sec });
+    };
+    d.querySelector('#recStop').onclick = finish;
+    const iv = setInterval(() => {
+      const v = N.recLevel(), now = Date.now();
+      lv.push(Math.min(1, v / 14000)); if (lv.length > 26) lv.shift();
+      barsEl.innerHTML = lv.map(x => '<span style="width:4px;border-radius:2px;background:#FF8A96;height:' + Math.max(3, Math.round(x * 28)) + 'px"></span>').join('');
+      const sec = Math.floor((now - t0) / 1000); d.querySelector('#recT').textContent = Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
+      if (v > 2200) { spoke = true; silent = 0; } else if (spoke) { if (!silent) silent = now; else if (now - silent > 2600) finish(); }
+      if (now - t0 > 120000) finish();
+      if (!spoke && now - t0 > 12000) finish();
+    }, 120);
+  });
+}
+
 // ---------- eslatmalar ----------
 function notes() { try { return JSON.parse(N.get('notes') || '[]'); } catch (e) { return []; } }
 function saveNotes(a) { N.set('notes', JSON.stringify(a)); }
@@ -551,7 +591,8 @@ const TOOLS = [
   { name: 'set_timer', description: 'Taymer qo\'yadi.', parameters: { type: 'object', properties: { seconds: { type: 'integer' }, label: { type: 'string' } }, required: ['seconds'] } },
   { name: 'flashlight', description: 'Fonarikni yoqadi yoki o\'chiradi.', parameters: { type: 'object', properties: { on: { type: 'boolean' } }, required: ['on'] } },
   { name: 'call_contact', description: 'Kontaktga yoki raqamga qo\'ng\'iroq qiladi.', parameters: { type: 'object', properties: { name: { type: 'string', description: 'kontakt ismi yoki telefon raqami' } }, required: ['name'] } },
-  { name: 'send_message', description: 'Kontaktga SMS yoki Telegram xabar yuboradi. Avval foydalanuvchidan tasdiq so\'raladi. Matnni xushmuomala va to\'liq qilib yozing.', parameters: { type: 'object', properties: { to: { type: 'string', description: 'kontakt ismi (masalan Doni) yoki raqam' }, text: { type: 'string' }, channel: { type: 'string', enum: ['sms', 'telegram'] } }, required: ['to', 'text'] } },
+  { name: 'send_message', description: 'Kontaktga matnli xabar yuboradi: SMS (avtomatik), WhatsApp yoki Telegram. Avval foydalanuvchidan tasdiq so\'raladi. Matnni xushmuomala va to\'liq qilib yozing. Kanal aytilmasa sms.', parameters: { type: 'object', properties: { to: { type: 'string', description: 'kontakt ismi (masalan Doni) yoki raqam' }, text: { type: 'string' }, channel: { type: 'string', enum: ['sms', 'whatsapp', 'telegram'] } }, required: ['to', 'text'] } },
+  { name: 'send_voice', description: 'Foydalanuvchining o\'z ovozini yozib olib, kontaktga OVOZLI XABAR qilib yuboradi (WhatsApp yoki Telegram). "Ovozli xabar yubor", "golosovoy" so\'ralganda ishlat. Matn bermang — foydalanuvchi o\'zi gapiradi.', parameters: { type: 'object', properties: { to: { type: 'string' }, channel: { type: 'string', enum: ['telegram', 'whatsapp'] } }, required: ['to'] } },
   { name: 'open_app', description: 'Telefondagi ilovani ochadi (masalan YouTube, Telegram, kamera).', parameters: { type: 'object', properties: { name: { type: 'string' } }, required: ['name'] } },
   { name: 'open_settings', description: 'Telefon sozlamasini ochadi.', parameters: { type: 'object', properties: { page: { type: 'string', enum: ['wifi', 'bluetooth', 'display', 'sound', 'location', 'main'] } }, required: ['page'] } },
   { name: 'device_info', description: 'Hozirgi vaqt, sana, batareya holati.', parameters: { type: 'object', properties: {} } },
@@ -596,17 +637,41 @@ async function runToolRaw(name, a) {
         s1.done(c.status === 'ok', c.status === 'ok' ? c.name + ' · ' + c.phone : 'topilmadi');
         if (c.status !== 'ok') return c;
         const s2 = subStep('Tasdiq kutilmoqda', 'ekrandagi kartani tasdiqlang');
-        const ch = a.channel === 'telegram' ? 'telegram' : 'sms';
-        const box = confirmFlow(ch === 'sms' ? 'SMS · TASDIQLANG' : 'TELEGRAM · TASDIQLANG', c.name, (ch === 'sms' ? 'SMS · ' : 'Telegram · ') + c.phone, a.text,
+        const ch = a.channel === 'telegram' ? 'telegram' : a.channel === 'whatsapp' ? 'whatsapp' : 'sms';
+        const CHN = { sms: 'SMS', whatsapp: 'WhatsApp', telegram: 'Telegram' };
+        const box = confirmFlow(CHN[ch].toUpperCase() + ' · TASDIQLANG', c.name, CHN[ch] + ' · ' + c.phone, a.text,
           c.name + 'ga shunday yozaymi: ' + a.text + ' Yuboraymi?');
         const yes = await box;
         s2.done(!!yes, yes ? 'tasdiqlandi' : 'bekor qilindi');
         if (!yes) return { status: 'cancelled_by_user' };
         if (ch === 'telegram') { const p = N.telegram(a.text); return p ? { status: 'telegram_opened', note: 'Telegram ochildi, foydalanuvchi ' + c.name + ' chatini tanlab yuboradi' } : { status: 'telegram_not_installed' }; }
+        if (ch === 'whatsapp') { const p = N.whatsappText ? N.whatsappText(c.phone, a.text) : ''; return p ? { status: 'whatsapp_opened', note: 'WhatsApp\'da ' + c.name + ' chati matn bilan ochildi, foydalanuvchi yuborish tugmasini bosadi' } : { status: 'whatsapp_not_installed' }; }
         let r = N.sendSms(c.phone, a.text);
         if (r === 'perm') { N.askPerms('sms'); await new Promise(res => { const o = window.onPerms; window.onPerms = () => { window.onPerms = o; res(); }; setTimeout(res, 15000); }); r = N.sendSms(c.phone, a.text); }
         if (r === 'ok') { N.vibrate(60); toastJ('Yuborildi: ' + c.name); return { status: 'sent', to: c.name }; }
         return { status: 'failed', error: r };
+      }
+      case 'send_voice': {
+        const ch = a.channel === 'whatsapp' ? 'whatsapp' : 'telegram';
+        const s1 = subStep('Kontakt qidirilmoqda', a.to);
+        const c = await findContact(a.to || '');
+        s1.done(c.status === 'ok', c.status === 'ok' ? c.name + ' · ' + c.phone : 'topilmadi');
+        if (c.status !== 'ok') return c;
+        const s2 = subStep('Ovoz yozib olinmoqda', 'gapiring, keyin to\'xtating');
+        const recd = await recordVoice(c.name);
+        s2.done(!!(recd && recd.name), recd && recd.name ? recd.sec + ' soniya' : 'yozilmadi');
+        if (!recd || !recd.name) return { status: 'record_failed' };
+        const s3 = subStep('Tasdiq kutilmoqda', 'eshitib ko\'ring va yuboring');
+        const box = confirmBox('OVOZLI XABAR · ' + (ch === 'whatsapp' ? 'WHATSAPP' : 'TELEGRAM'), c.name, c.phone, '');
+        $('cMsg').innerHTML = '🎙 ' + recd.sec + ' soniyalik ovozli xabar &nbsp; <button class="btn" style="height:36px" onclick="N.recPlay(\'' + recd.name + '\')">▶ Eshitish</button>';
+        await say(c.name + 'ga yuboraymi?');
+        const yes = await box;
+        N.recPlayStop && N.recPlayStop();
+        s3.done(!!yes, yes ? 'tasdiqlandi' : 'bekor qilindi');
+        if (!yes) return { status: 'cancelled_by_user' };
+        const p = N.shareAudio(recd.name, ch, c.phone);
+        if (!p) return { status: ch + '_not_installed' };
+        return { status: 'voice_shared', to: c.name, app: ch, note: ch === 'whatsapp' ? 'WhatsApp ochildi, yuborish tugmasini bosish kifoya' : 'Telegram ochildi, ' + c.name + ' chatini tanlab yuboriladi' };
       }
       case 'open_app': { const l = N.openApp(a.name || ''); return l ? { opened: l } : { status: 'not_found' }; }
       case 'open_settings': return { ok: N.openSettings(a.page || 'main') };
@@ -876,7 +941,7 @@ function saveSettings() {
   storeKeys(); N.set('name', $('sName').value.trim()); N.set('engine', $('sEngine').value); N.set('pitch', $('sPitch').value);
   N.set('addr', $('sAddr').value); N.set('addrSet', '1'); N.set('voice', $('sVoice').value); N.set('rate', $('sRate').value); N.set('conv', $('sConv').value);
   N.set('tapSay', $('sTap').value); N.set('wake', $('sWake').value); N.set('wakeWords', $('sWakeWords').value.trim() || 'jarvis, aka');
-  toastJ('Saqlandi'); closePanels();
+  toastJ('Saqlandi'); syncWakeBtn(); if (!wakeOn()) stopPassive(); closePanels();
 }
 async function testVoice() {
   storeKeys(); N.set('engine', $('sEngine').value); N.set('pitch', $('sPitch').value); N.set('rate', $('sRate').value);
@@ -910,7 +975,7 @@ function delNote(i) { const n = notes(); n.splice(i, 1); saveNotes(n); renderNot
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 const FUNCS = [
   ['Suhbat', [['Hol-ahvol', 'Jarvis, ahvollaring qalay?'], ['Maslahat', 'Bugun nima qilsam unumli bo\'ladi?'], ['Tarjima', 'Rahmat so\'zini inglizcha va ruscha ayt'], ['Hisob-kitob', '15 kVt yuklama uchun 380 voltda tok qancha bo\'ladi?']]],
-  ['Xabar va aloqa', [['SMS yuborish', 'Doniga SMS yoz: ertaga 9 da obyektda bo\'laman'], ['Telegram', 'Doniga Telegramdan yoz: yo\'ldaman'], ['Qo\'ng\'iroq', 'Doniga qo\'ng\'iroq qil'], ['Raqam', '+998901234567 ga qo\'ng\'iroq qil']]],
+  ['Xabar va aloqa', [['SMS yuborish', 'Doniga SMS yoz: ertaga 9 da obyektda bo\'laman'], ['Telegram', 'Doniga Telegramdan yoz: yo\'ldaman'], ['WhatsApp', 'Doniga WhatsAppdan yoz: 10 daqiqada yetaman'], ['Ovozli xabar', 'Doniga ovozli xabar yubor'], ['Qo\'ng\'iroq', 'Doniga qo\'ng\'iroq qil'], ['Raqam', '+998901234567 ga qo\'ng\'iroq qil']]],
   ['Kun tartibi', [['Budilnik', 'Ertaga soat 6 dan 30 o\'tganda uyg\'ot'], ['Taymer', '10 daqiqaga taymer qo\'y'], ['Eslatma', 'Eslab qol: kabel va avtomat olish kerak'], ['Eslatmalar', 'Eslatmalarimni o\'qib ber']]],
   ['Telefon', [['Fonarik', 'Fonarikni yoq'], ['Ovoz', 'Ovozni 50 foizga qo\'y'], ['Batareya', 'Batareya necha foiz?'], ['Wi-Fi', 'Wi-Fi sozlamasini och']]],
   ['Ilova va internet', [['Ilova ochish', 'YouTube ni och'], ['Qidiruv', 'Internetdan qidir: Quvasoy ob-havo'], ['Xarita', 'Farg\'ona shahrini xaritada och'], ['YouTube', 'YouTube dan elektr shit yig\'ish videosini top']]],
@@ -1001,7 +1066,8 @@ const TOOL_LABEL = {
   open_maps: a => ['Xarita ochilmoqda', a.place],
   youtube: a => ['YouTube qidiruvi', a.query],
   smart_home: a => ['Uy qurilmasi', (a.device || '') + ' · ' + (a.action || '')],
-  open_camera: () => ['Kamera ochilmoqda', '']
+  open_camera: () => ['Kamera ochilmoqda', ''],
+  send_voice: a => ['Ovozli xabar', (a.channel === 'whatsapp' ? 'WhatsApp · ' : 'Telegram · ') + a.to]
 };
 function resultCard(name, a, r) {
   if (!r) return;
@@ -1023,6 +1089,9 @@ function toolDetail(name, r) {
   if (r.status === 'sent') return 'yuborildi → ' + r.to;
   if (r.status === 'not_connected') return 'qurilma ulanmagan';
   if (r.status === 'telegram_opened') return 'Telegram ochildi';
+  if (r.status === 'whatsapp_opened') return 'WhatsApp ochildi';
+  if (r.status === 'voice_shared') return (r.app === 'whatsapp' ? 'WhatsApp' : 'Telegram') + ' ochildi → ' + r.to;
+  if (r.status === 'record_failed') return 'ovoz yozilmadi';
   if (r.opened) return r.opened + ' ochildi';
   if (r.contact) return r.contact;
   if (r.volume !== undefined) return r.volume + '%';
@@ -1048,11 +1117,6 @@ const face = $('face'), tapfx = $('tapfx');
 let lookT = null, pressT = null, pressEl = null, pressXY = null, longFired = false;
 document.addEventListener('click', e => { if (longFired) { longFired = false; e.stopPropagation(); e.preventDefault(); } }, true);
 function lookAt(x, y) {
-  const r = $('stage').getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * 0.35;
-  const dx = (x - cx) / window.innerWidth, dy = (y - cy) / window.innerHeight;
-  const ry = Math.max(-22, Math.min(22, dx * 46)), rx = Math.max(-14, Math.min(14, -dy * 30));
-  face.style.transform = 'rotateY(' + ry + 'deg) rotateX(' + rx + 'deg) translateX(' + (dx * 6) + 'px)';
-  clearTimeout(lookT); lookT = setTimeout(() => face.style.transform = '', 2600);
   tapfx.style.left = x + 'px'; tapfx.style.top = y + 'px'; tapfx.classList.remove('go'); void tapfx.offsetWidth; tapfx.classList.add('go');
 }
 function describe(el) {
@@ -1070,9 +1134,7 @@ document.addEventListener('pointermove', e => { if (pressXY && Math.hypot(e.clie
 document.addEventListener('pointerup', e => {
   clearTimeout(pressT);
   if (!pressEl) return;
-  const btn = pressEl.closest('button,input,select,a'), info = pressEl.closest('[data-say]');
   pressEl = null;
-  if (!btn && info && info.id !== 'stage') describe(info);
 }, true);
 $('stage').addEventListener('click', () => { if ($('app').classList.contains('full')) { workMode(); backToFull(8000); } else { clearTimeout(modeT); setMode('full'); } });
 
@@ -1109,7 +1171,7 @@ function greet() {
   const q = ['Ahvollaringiz yaxshimi?', 'Kayfiyatlar qalay?', 'Bugun nima yordam beray?', 'Charchamadingizmi?'][Math.floor(Math.random() * 4)];
   return g + ', ' + callName() + '! ' + q;
 }
-renderHello();
+renderHello(); syncWakeBtn();
 setTimeout(async () => {
   if (!N.get('perms1')) { N.set('perms1', '1'); N.askPerms('mic,contacts,sms,call'); }
   await ttsReadyP();

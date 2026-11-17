@@ -123,10 +123,9 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-p
   <div class="panel" id="p-settings">
     <div class="phead"><button class="sbtn" onclick="closePanels()" aria-label="Orqaga"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ptitle">SOZLAMALAR</div></div>
     <div class="pbody">
-      <div class="field"><label>Gemini API kaliti (bepul)</label><input id="sKey" placeholder="AIza…" autocomplete="off"></div>
-      <div class="row"><button class="btn" onclick="Native.openUrl('https://aistudio.google.com/apikey')">Kalit olish</button><button class="btn" onclick="testAI()">Tekshirish</button></div>
-      <p class="hint">aistudio.google.com saytida Google akkauntingiz bilan kirib, "Create API key" ni bosing va kalitni shu yerga qo'ying. Kalit faqat telefoningizda saqlanadi.</p>
-      <div class="field"><label>AI model</label><input id="sModel" placeholder="gemini-2.5-flash"></div>
+      <div class="field"><label>Asosiy AI</label><select id="sMain"></select></div>
+      <p class="hint">Asosiy AI band bo'lsa yoki limiti tugasa, Jarvis o'zi kaliti bor keyingi xizmatga o'tadi. Kalitlar faqat telefoningizda saqlanadi.</p>
+      <div id="provBox"></div>
       <div class="field"><label>Ismingiz</label><input id="sName" placeholder="Vohidjon"></div>
       <div class="field"><label>Murojaat</label><select id="sAddr"><option value="aka">aka</option><option value="ser">ser</option><option value="">ism bilan</option></select></div>
       <div class="field"><label>Jarvis ovozi (tili)</label><select id="sVoice"></select></div>
@@ -184,7 +183,7 @@ const WD = ['yakshanba', 'dushanba', 'seshanba', 'chorshanba', 'payshanba', 'jum
 const MO = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
 function hm(d) { return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
 function uzDate(d) { return d.getFullYear() + '-yil ' + d.getDate() + '-' + MO[d.getMonth()] + ', ' + WD[d.getDay()]; }
-function tick() { const d = new Date(); $('clock').textContent = WD[d.getDay()].toUpperCase() + ' · ' + hm(d); }
+function tick() { const d = new Date(); $('clock').textContent = WD[d.getDay()].toUpperCase() + ' · ' + hm(d) + (typeof lastProv !== 'undefined' && lastProv ? ' · ' + lastProv.toUpperCase() : ''); }
 setInterval(tick, 10000); tick();
 
 function playSafe(v) { try { const p = v.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {} }
@@ -283,7 +282,7 @@ $('typeIn').addEventListener('keydown', e => { if (e.key === 'Enter') $('sendT')
 const httpWait = {};
 let httpN = 0;
 window.onHttp = (id, code, body) => { const f = httpWait[id]; delete httpWait[id]; if (f) f({ code, body }); };
-function http(url, obj) { return new Promise(res => { const id = 'h' + (++httpN); httpWait[id] = res; N.http(id, url, obj ? JSON.stringify(obj) : ''); }); }
+function http(url, obj, headers) { return new Promise(res => { const id = 'h' + (++httpN); httpWait[id] = res; if (N.httpH) N.httpH(id, url, obj ? JSON.stringify(obj) : '', JSON.stringify(headers || {})); else N.http(id, url, obj ? JSON.stringify(obj) : ''); }); }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // ---------- kontaktlar ----------
@@ -424,109 +423,162 @@ async function runTool(name, a) {
   return { error: 'unknown tool' };
 }
 
-// ---------- AI miya ----------
-let history = [];
-try { history = JSON.parse(N.get('history') || '[]'); } catch (e) { history = []; }
-function saveHistory() {
-  while (history.length > 24) {
-    history.shift();
-    while (history.length && !(history[0].role === 'user' && history[0].parts.some(p => p.text))) history.shift();
-  }
-  N.set('history', JSON.stringify(history));
+// ---------- AI miya (bir nechta xizmat) ----------
+const PROV = {
+  gemini: { title: 'Gemini (Google)', keyUrl: 'https://aistudio.google.com/apikey', model: 'gemini-2.5-flash', note: 'Bepul · o\'zbekchasi eng yaxshi' },
+  groq: { title: 'Groq', keyUrl: 'https://console.groq.com/keys', model: 'openai/gpt-oss-120b', base: 'https://api.groq.com/openai/v1', note: 'Bepul · juda tez' },
+  grok: { title: 'Grok (xAI)', keyUrl: 'https://console.x.ai', model: 'grok-4.3', base: 'https://api.x.ai/v1', note: 'Pullik · juda aqlli' },
+  openrouter: { title: 'OpenRouter', keyUrl: 'https://openrouter.ai/keys', model: 'openrouter/auto', base: 'https://openrouter.ai/api/v1', note: 'Ko\'p modellar · bepullari ham bor' }
+};
+const PIDS = ['gemini', 'groq', 'grok', 'openrouter'];
+function pKey(p) { return p === 'gemini' ? N.get('key') : N.get('key_' + p); }
+function pModel(p) { return (p === 'gemini' ? N.get('model') : N.get('model_' + p)) || PROV[p].model; }
+function setPModel(p, m) { if (p === 'gemini') N.set('model', m); else N.set('model_' + p, m); }
+function provOrder() {
+  const main = N.get('mainAI') || 'gemini';
+  return [main, ...PIDS.filter(x => x !== main)].filter(p => pKey(p));
 }
-function clearHistory() { history = []; N.set('history', '[]'); toastJ('Suhbat tozalandi'); }
+function anyKey() { return PIDS.some(p => pKey(p)); }
+var lastProv = '';
+
+let history = [];
+try { history = JSON.parse(N.get('history2') || '[]'); } catch (e) { history = []; }
+function saveHistory() { while (history.length > 20) history.shift(); N.set('history2', JSON.stringify(history)); }
+function clearHistory() { history = []; N.set('history2', '[]'); toastJ('Suhbat tozalandi'); }
 function sysPrompt() {
   const d = new Date();
   return 'Sen Jarvis — ' + S.name() + 'ning shaxsiy sun\'iy intellekt yordamchisisan (Temir odam filmidagi Jarvis uslubida: aqlli, xotirjam, samimiy, biroz hazilkash). ' +
-    'Har doim faqat o\'zbek tilida, lotin yozuvida gapir. Foydalanuvchiga "' + callName() + '" deb murojaat qil. ' +
+    'Har doim faqat o\'zbek tilida, lotin yozuvida, sof va tabiiy o\'zbekchada gapir (rus yoki turkcha so\'z aralashtirma). Foydalanuvchiga "' + callName() + '" deb murojaat qil. ' +
     'Javoblaring ovoz chiqarib o\'qiladi: qisqa bo\'lsin (1-3 gap), markdown, emoji, ro\'yxat ishlatma. ' +
     'Samimiy bo\'l: o\'rni kelganda hol-ahvol so\'ra, kayfiyatiga e\'tibor ber. ' +
     'Harakat so\'ralsa, tegishli vositani (tool) chaqir va natijasiga qarab javob ber. Xabar yuborilmasa yoki bekor qilinsa, yuborildi dema. ' +
     'Vositani chaqira olmasang yoki qurilma ulanmagan bo\'lsa, rostini ayt. ' +
     'Hozir: ' + uzDate(d) + ', soat ' + hm(d) + '. Joylashuv: O\'zbekiston.';
 }
+function friendlyErr(m) {
+  m = String(m || '');
+  if (/API key|API_KEY|invalid.*key|Incorrect API key|Unauthorized|401|PERMISSION|403/i.test(m)) return 'kalit';
+  if (/high demand|overloaded|unavailable|503|502|500/i.test(m)) return 'band';
+  if (/quota|limit|429|exhausted|credits|insufficient|balance|402/i.test(m)) return 'limit';
+  if (/Unable to resolve|timeout|failed to connect|network|resolve host/i.test(m)) return 'internet';
+  return 'boshqa';
+}
 const API = 'https://generativelanguage.googleapis.com/v1beta/';
-const BASE_FALLBACKS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-flash-latest', 'gemini-flash-lite-latest'];
-async function discoverModels() {
-  try {
-    const cached = JSON.parse(N.get('models') || 'null');
-    if (cached && Date.now() - cached.t < 86400000) return cached.list;
-  } catch (e) {}
-  const r = await http(API + 'models?pageSize=200&key=' + encodeURIComponent(S.key()), null);
+async function geminiModels() {
+  try { const c = JSON.parse(N.get('models') || 'null'); if (c && Date.now() - c.t < 86400000) return c.list; } catch (e) {}
+  const r = await http(API + 'models?pageSize=200&key=' + encodeURIComponent(pKey('gemini')), null);
   let list = [];
   try {
     const j = JSON.parse(r.body);
-    list = (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes('generateContent'))
-      .map(m => m.name.replace('models/', ''))
+    list = (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes('generateContent')).map(m => m.name.replace('models/', ''))
       .filter(n => /flash/.test(n) && !/(tts|image|live|audio|embed|vision|exp-|thinking)/.test(n));
-    const lite = n => /lite/.test(n) ? 1 : 0, prev = n => /preview/.test(n) ? 1 : 0;
-    const ver = n => { const m = n.match(/(\d+(?:\.\d+)?)/); return m ? parseFloat(m[1]) : 0; };
+    const lite = n => /lite/.test(n) ? 1 : 0, prev = n => /preview/.test(n) ? 1 : 0, ver = n => { const m = n.match(/(\d+(?:\.\d+)?)/); return m ? parseFloat(m[1]) : 0; };
     list.sort((x, y) => lite(x) - lite(y) || prev(x) - prev(y) || ver(y) - ver(x));
   } catch (e) {}
   if (list.length) N.set('models', JSON.stringify({ t: Date.now(), list }));
   return list;
 }
-function friendlyErr(m) {
-  if (/API key|API_KEY|invalid|PERMISSION/i.test(m)) return 'kalit';
-  if (/high demand|overloaded|unavailable|503/i.test(m)) return 'band';
-  if (/quota|limit|429|exhausted/i.test(m)) return 'limit';
-  if (/Unable to resolve|timeout|failed to connect|network|resolve host/i.test(m)) return 'internet';
-  return 'boshqa';
-}
-async function tryModel(m, contents) {
-  let last = { code: 0, msg: '' };
+async function geminiCall(model, contents) {
+  let last = '';
   for (let attempt = 0; attempt < 2; attempt++) {
-    const r = await http(API + 'models/' + m + ':generateContent?key=' + encodeURIComponent(S.key()), {
-      systemInstruction: { parts: [{ text: sysPrompt() }] },
-      contents,
-      tools: [{ functionDeclarations: TOOLS }]
+    const r = await http(API + 'models/' + model + ':generateContent?key=' + encodeURIComponent(pKey('gemini')), {
+      systemInstruction: { parts: [{ text: sysPrompt() }] }, contents, tools: [{ functionDeclarations: TOOLS }]
     });
     let j = null; try { j = JSON.parse(r.body); } catch (e) {}
-    if (r.code === 200 && j && j.candidates) return { ok: true, j };
-    last = { code: r.code, msg: (j && j.error && j.error.message) || ('HTTP ' + r.code) };
-    if (r.code === 503 || r.code === 500 || r.code === 0 && !/resolve host/i.test(last.msg)) { setStatus('QAYTA URINYAPTI', '#FFB547'); await sleep(1200 * (attempt + 1)); continue; }
+    if (r.code === 200 && j && j.candidates) return j;
+    last = (j && j.error && j.error.message) || ('HTTP ' + r.code);
+    if (r.code >= 500 || r.code === 0 && !/resolve host/i.test(last)) { setStatus('QAYTA URINYAPTI', '#FFB547'); await sleep(1200 * (attempt + 1)); continue; }
     break;
   }
-  return { ok: false, ...last };
+  const e = new Error(last); e.kind = friendlyErr(last); throw e;
 }
-async function gemini(contents) {
-  const tried = new Set();
-  let order = [S.model(), ...BASE_FALLBACKS];
-  let lastErr = '', discovered = false;
+async function geminiPick(contents) {
+  const base = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-flash-latest', 'gemini-flash-lite-latest'];
+  let order = [pModel('gemini'), ...base], tried = new Set(), err = null, disc = false;
   for (let i = 0; i < order.length; i++) {
-    const m = order[i];
-    if (!m || tried.has(m)) continue;
-    tried.add(m);
-    const r = await tryModel(m, contents);
-    if (r.ok) { if (m !== N.get('model')) N.set('model', m); return r.j; }
-    lastErr = r.msg;
-    const kind = friendlyErr(r.msg);
-    if (kind === 'kalit' || kind === 'internet') break;
-    if (!discovered) { discovered = true; const more = await discoverModels(); order = order.concat(more); }
+    const m = order[i]; if (!m || tried.has(m)) continue; if (tried.size >= (provOrder().length > 1 ? 3 : 6)) break; tried.add(m);
+    try { const j = await geminiCall(m, contents); if (m !== N.get('model')) N.set('model', m); return j; }
+    catch (e) { err = e; if (e.kind === 'kalit' || e.kind === 'internet') break; if (!disc) { disc = true; order = order.concat(await geminiModels()); } }
   }
-  throw new Error(lastErr);
+  throw err || new Error('gemini');
 }
-async function think(userText) {
-  history.push({ role: 'user', parts: [{ text: userText }] });
+async function runGemini(userText) {
+  const contents = history.map(h => ({ role: h.r === 'user' ? 'user' : 'model', parts: [{ text: h.t }] }));
+  contents.push({ role: 'user', parts: [{ text: userText }] });
   for (let step = 0; step < 6; step++) {
-    const j = await gemini(history);
-    const cand = j.candidates[0] || {};
-    const content = cand.content || { role: 'model', parts: [] };
+    const j = await geminiPick(contents);
+    const content = (j.candidates[0] || {}).content || { parts: [] };
     content.role = 'model';
     const parts = content.parts || [];
-    history.push(content);
+    contents.push(content);
     const calls = parts.filter(p => p.functionCall);
-    if (!calls.length) { saveHistory(); return parts.filter(p => p.text && !p.thought).map(p => p.text).join(' ').trim(); }
+    if (!calls.length) return parts.filter(p => p.text && !p.thought).map(p => p.text).join(' ').trim();
     const responses = [];
+    for (const c of calls) { setStatus('BAJARYAPTI', '#FFB547'); responses.push({ functionResponse: { name: c.functionCall.name, response: { result: await runTool(c.functionCall.name, c.functionCall.args) } } }); }
+    contents.push({ role: 'user', parts: responses });
+  }
+  return 'Bajarildi.';
+}
+async function oaModels(p) {
+  const r = await http(PROV[p].base + '/models', null, { Authorization: 'Bearer ' + pKey(p) });
+  try {
+    const ids = (JSON.parse(r.body).data || []).map(m => m.id);
+    if (p === 'grok') return ids.filter(i => /^grok/.test(i) && !/(image|imagine|vision|voice|video|embed)/.test(i)).sort().reverse();
+    if (p === 'groq') return ids.filter(i => /(gpt-oss|qwen|llama|kimi)/.test(i) && !/(guard|whisper|tts|prompt)/.test(i));
+    return [];
+  } catch (e) { return []; }
+}
+async function oaCall(p, model, messages) {
+  const tools = TOOLS.map(t => ({ type: 'function', function: { name: t.name, description: t.description, parameters: t.parameters } }));
+  let last = '';
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const r = await http(PROV[p].base + '/chat/completions', { model, messages, tools, tool_choice: 'auto' }, { Authorization: 'Bearer ' + pKey(p), 'HTTP-Referer': 'https://jarvis.local', 'X-Title': 'Jarvis' });
+    let j = null; try { j = JSON.parse(r.body); } catch (e) {}
+    if (r.code === 200 && j && j.choices) return j;
+    last = (j && j.error && (j.error.message || j.error)) || ('HTTP ' + r.code);
+    if (typeof last !== 'string') last = JSON.stringify(last);
+    if (r.code >= 500 || r.code === 429 && attempt === 0) { setStatus('QAYTA URINYAPTI', '#FFB547'); await sleep(1500 * (attempt + 1)); continue; }
+    break;
+  }
+  const e = new Error(last); e.kind = /model/i.test(last) && /not|exist|found|decommission|invalid/i.test(last) ? 'model' : friendlyErr(last); throw e;
+}
+async function oaPick(p, messages) {
+  let order = [pModel(p)], tried = new Set(), err = null, disc = false;
+  for (let i = 0; i < order.length; i++) {
+    const m = order[i]; if (!m || tried.has(m)) continue; tried.add(m);
+    try { const j = await oaCall(p, m, messages); if (m !== pModel(p)) setPModel(p, m); return j; }
+    catch (e) { err = e; if (e.kind === 'model' && !disc) { disc = true; order = order.concat(await oaModels(p)); continue; } if (e.kind !== 'model') break; }
+  }
+  throw err || new Error(p);
+}
+async function runOA(p, userText) {
+  const messages = [{ role: 'system', content: sysPrompt() }, ...history.map(h => ({ role: h.r === 'user' ? 'user' : 'assistant', content: h.t })), { role: 'user', content: userText }];
+  for (let step = 0; step < 6; step++) {
+    const j = await oaPick(p, messages);
+    const msg = (j.choices[0] || {}).message || {};
+    const calls = msg.tool_calls || [];
+    if (!calls.length) return String(msg.content || '').replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+    messages.push({ role: 'assistant', content: msg.content || '', tool_calls: calls });
     for (const c of calls) {
       setStatus('BAJARYAPTI', '#FFB547');
-      const res = await runTool(c.functionCall.name, c.functionCall.args);
-      responses.push({ functionResponse: { name: c.functionCall.name, response: { result: res } } });
+      let args = {}; try { args = JSON.parse(c.function.arguments || '{}'); } catch (e) {}
+      const res = await runTool(c.function.name, args);
+      messages.push({ role: 'tool', tool_call_id: c.id, content: JSON.stringify(res) });
     }
-    history.push({ role: 'user', parts: responses });
   }
-  saveHistory();
   return 'Bajarildi.';
+}
+async function think(userText) {
+  let err = null;
+  for (const p of provOrder()) {
+    try {
+      const ans = p === 'gemini' ? await runGemini(userText) : await runOA(p, userText);
+      lastProv = PROV[p].title; tick();
+      history.push({ r: 'user', t: userText }, { r: 'model', t: ans || 'Bajarildi.' }); saveHistory();
+      return ans;
+    } catch (e) { err = e; if (e.kind === 'internet') break; }
+  }
+  throw err || new Error('no provider');
 }
 
 // ---------- tezkor buyruqlar (internetsiz) ----------
@@ -543,8 +595,8 @@ async function handleUser(text) {
   if (busy) return;
   const q = quick(text);
   if (q) { await say(q); return; }
-  if (!S.key()) {
-    await say(callName() + ', aqlli javob berishim uchun bepul Gemini kalitini kiritishingiz kerak. Sozlamalarni ochyapman.');
+  if (!anyKey()) {
+    await say(callName() + ', aqlli javob berishim uchun kamida bitta AI kalitini kiritishingiz kerak. Sozlamalarni ochyapman.');
     openPanel('settings'); return;
   }
   busy = true; setStatus("O'YLAYAPTI", '#7CC4FF');
@@ -552,7 +604,7 @@ async function handleUser(text) {
   let answer;
   try { answer = await think(text); }
   catch (e) {
-    const m = String(e.message || e), k = friendlyErr(m);
+    const m = String(e.message || e), k = e.kind || friendlyErr(m);
     answer = k === 'kalit' ? 'Gemini kaliti noto\'g\'ri ko\'rinadi. Sozlamalarda tekshiring.' :
       k === 'band' ? 'Google serverlari hozir juda band ekan. Bir daqiqadan keyin qayta so\'rang.' :
       k === 'limit' ? 'Bepul limit vaqtincha tugadi. Birozdan keyin urinib ko\'ring.' :
@@ -587,21 +639,50 @@ function fillVoices() {
   sel.value = S.voice();
 }
 function loadSettings() {
-  $('sKey').value = S.key(); $('sModel').value = N.get('model'); $('sName').value = N.get('name');
+  $('sMain').innerHTML = PIDS.map(p => '<option value="' + p + '">' + PROV[p].title + '</option>').join('');
+  $('sMain').value = N.get('mainAI') || 'gemini';
+  $('provBox').innerHTML = PIDS.map(p =>
+    '<div style="margin:18px 0 6px;padding:14px;border:1px solid rgba(124,196,255,.22);border-radius:14px">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:15px">' + PROV[p].title + '</b><span class="hint" id="st_' + p + '">' + PROV[p].note + '</span></div>' +
+    '<div class="field"><label>Kalit</label><input id="k_' + p + '" placeholder="kalitni shu yerga qo\'ying" autocomplete="off"></div>' +
+    '<div class="field"><label>Model</label><input id="m_' + p + '" placeholder="' + PROV[p].model + '"></div>' +
+    '<div class="row"><button class="btn" data-url="' + PROV[p].keyUrl + '">Kalit olish</button><button class="btn" data-test="' + p + '">Tekshirish</button></div></div>').join('');
+  PIDS.forEach(p => { $('k_' + p).value = pKey(p); $('m_' + p).value = p === 'gemini' ? N.get('model') : N.get('model_' + p); });
+  document.querySelectorAll('[data-url]').forEach(b => b.onclick = () => N.openUrl(b.dataset.url));
+  document.querySelectorAll('[data-test]').forEach(b => b.onclick = () => testProv(b.dataset.test));
+  $('sName').value = N.get('name');
   $('sAddr').value = S.addr(); fillVoices(); $('sRate').value = S.rate(); $('rateV').textContent = S.rate().toFixed(2);
   $('sConv').value = S.conv() ? '1' : '0';
 }
+function storeKeys() {
+  PIDS.forEach(p => {
+    const k = $('k_' + p).value.trim(), m = $('m_' + p).value.trim();
+    if (p === 'gemini') { N.set('key', k); N.set('model', m); } else { N.set('key_' + p, k); N.set('model_' + p, m); }
+  });
+  N.set('mainAI', $('sMain').value);
+}
 $('sRate').oninput = e => $('rateV').textContent = parseFloat(e.target.value).toFixed(2);
 function saveSettings() {
-  N.set('key', $('sKey').value.trim()); N.set('model', $('sModel').value.trim()); N.set('name', $('sName').value.trim());
+  storeKeys(); N.set('name', $('sName').value.trim());
   N.set('addr', $('sAddr').value); N.set('addrSet', '1'); N.set('voice', $('sVoice').value); N.set('rate', $('sRate').value); N.set('conv', $('sConv').value);
   toastJ('Saqlandi'); closePanels();
 }
-async function testAI() {
-  N.set('key', $('sKey').value.trim()); if ($('sModel').value.trim()) N.set('model', $('sModel').value.trim());
-  toastJ('Tekshirilmoqda…');
-  try { const j = await gemini([{ role: 'user', parts: [{ text: 'Bir so\'z bilan salom de.' }] }]); toastJ('Ishlayapti: ' + S.model()); $('sModel').value = S.model(); }
-  catch (e) { const k = friendlyErr(String(e.message || e)); toastJ(k === 'kalit' ? 'Kalit noto\'g\'ri' : k === 'band' ? 'Google band, keyinroq urining' : k === 'limit' ? 'Limit tugagan' : k === 'internet' ? 'Internet yo\'q' : 'Xato: ' + String(e.message || e).slice(0, 50)); }
+async function testProv(p) {
+  storeKeys();
+  const st = $('st_' + p);
+  if (!pKey(p)) { st.textContent = 'Kalit kiritilmagan'; st.style.color = '#FF9B9B'; return; }
+  st.textContent = 'Tekshirilmoqda…'; st.style.color = '#BFE2FF';
+  try {
+    const t = 'Bir so\'z bilan salom de.';
+    if (p === 'gemini') await geminiPick([{ role: 'user', parts: [{ text: t }] }]);
+    else await oaPick(p, [{ role: 'user', content: t }]);
+    st.textContent = '✓ Ishlayapti · ' + pModel(p); st.style.color = '#4ADE80';
+    $('m_' + p).value = pModel(p);
+  } catch (e) {
+    const k = e.kind || friendlyErr(e.message);
+    st.textContent = '✕ ' + (k === 'kalit' ? 'Kalit noto\'g\'ri' : k === 'band' ? 'Server band' : k === 'limit' ? 'Limit yoki balans tugagan' : k === 'internet' ? 'Internet yo\'q' : k === 'model' ? 'Model topilmadi' : String(e.message).slice(0, 40));
+    st.style.color = '#FF9B9B';
+  }
 }
 function renderNotes() {
   const n = notes(), b = $('notesBody');

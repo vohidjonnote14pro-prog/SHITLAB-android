@@ -272,6 +272,11 @@ public class MainActivity extends Activity {
         // ---------- internet ----------
         @JavascriptInterface
         public void http(final String id, final String url, final String body) {
+            httpH(id, url, body, "{}");
+        }
+
+        @JavascriptInterface
+        public void httpH(final String id, final String url, final String body, final String headers) {
             new Thread(() -> {
                 int code = 0;
                 String out;
@@ -280,6 +285,11 @@ public class MainActivity extends Activity {
                     c.setConnectTimeout(20000);
                     c.setReadTimeout(60000);
                     c.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                    try {
+                        JSONObject h = new JSONObject(headers == null || headers.isEmpty() ? "{}" : headers);
+                        java.util.Iterator<String> it = h.keys();
+                        while (it.hasNext()) { String k = it.next(); c.setRequestProperty(k, h.getString(k)); }
+                    } catch (Exception ignored) { }
                     if (body != null && !body.isEmpty()) {
                         c.setRequestMethod("POST");
                         c.setDoOutput(true);

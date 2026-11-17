@@ -237,7 +237,8 @@ public class MainActivity extends Activity {
                         @Override public void onError(int e) { js("window.onListenError&&window.onListenError(" + e + "," + sid + ")"); }
                         @Override public void onResults(Bundle b) {
                             ArrayList<String> r = b.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                            String t = (r != null && !r.isEmpty()) ? r.get(0) : "";
+                            String t = "";
+                            if (r != null && !r.isEmpty()) t = passive ? android.text.TextUtils.join("\n", r) : r.get(0);
                             js("window.onHeard&&window.onHeard(" + JSONObject.quote(t) + "," + sid + ")");
                         }
                         @Override public void onPartialResults(Bundle b) {
@@ -251,10 +252,14 @@ public class MainActivity extends Activity {
                     it.putExtra(RecognizerIntent.EXTRA_LANGUAGE, lang);
                     it.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, lang);
                     it.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
-                    it.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
+                    it.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, passive ? 5 : 1);
                     if (passive) {
-                        it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 900);
-                        it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 900);
+                        it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1300);
+                        it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1100);
+                        it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 2500);
+                    } else {
+                        it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1800);
+                        it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1500);
                     }
                     recognizer.startListening(it);
                 } catch (Exception e) {

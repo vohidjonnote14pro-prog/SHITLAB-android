@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Jarvis</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#02050C;color:#E8F4FF;font-family:system-ui,-apple-system,Roboto,sans-serif;overflow:hidden}
+button{font-family:inherit;cursor:pointer}
+#app{position:fixed;inset:0;overflow:hidden}
+video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+#talkV{opacity:0;transition:opacity .3s ease}
+#app.talking #talkV{opacity:1}
+.shade{position:absolute;inset:0;pointer-events:none}
+.vig{background:radial-gradient(ellipse at 55% 38%,rgba(2,5,12,0) 45%,rgba(2,5,12,.7) 100%)}
+.topfade{top:0;bottom:auto;height:140px;background:linear-gradient(180deg,rgba(2,5,12,.85),rgba(2,5,12,0))}
+.botfade{top:auto;bottom:0;height:46%;background:linear-gradient(180deg,rgba(2,5,12,0),rgba(2,5,12,.9) 45%,#02050C)}
+.scan{height:120px;bottom:auto;background:linear-gradient(180deg,rgba(90,170,255,0),rgba(90,170,255,.06),rgba(90,170,255,0));animation:sweep 6s linear infinite}
+@keyframes sweep{0%{transform:translateY(-140px)}100%{transform:translateY(110vh)}}
+.corner{position:absolute;width:22px;height:22px;border:0 solid rgba(159,216,255,.6)}
+#top{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top) + 22px);padding:0 22px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:12px;letter-spacing:5px;color:#DDEEFF;font-weight:600}
+.sub{font-family:monospace;font-size:11px;color:#7FA6C4;margin-top:4px}
+.pill{height:30px;padding:0 12px;border:1px solid rgba(120,190,255,.4);background:rgba(4,14,32,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;gap:8px;font-family:monospace;font-size:11px;color:#BFE2FF;border-radius:4px}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;box-shadow:0 0 8px #4ADE80;animation:pl 1.6s ease-in-out infinite}
+@keyframes pl{0%,100%{opacity:.45}50%{opacity:1}}
+#side{position:absolute;right:18px;top:calc(env(safe-area-inset-top) + 74px);display:flex;flex-direction:column;gap:8px}
+.sbtn{width:46px;height:46px;border-radius:13px;border:1px solid rgba(159,216,255,.35);background:rgba(8,18,38,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#CFE8FF;display:flex;align-items:center;justify-content:center}
+.sbtn svg,.cbtn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#bottom{position:absolute;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom) + 18px);display:flex;flex-direction:column;gap:12px}
+#card{padding:14px 16px;border:1px solid rgba(140,200,255,.22);background:rgba(8,18,38,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:20px}
+.lbl{font-family:monospace;font-size:11px;letter-spacing:2px;color:#7FA6C4}
+#you{font-size:15px;color:#B9CCDD;margin-top:3px;min-height:20px}
+.sep{height:1px;background:rgba(140,200,255,.15);margin:10px 0}
+#jv{font-size:18px;line-height:1.42;color:#fff;margin-top:4px;min-height:52px;max-height:30vh;overflow-y:auto}
+.cur{color:#7CC4FF;animation:bl .8s step-end infinite}
+@keyframes bl{50%{opacity:0}}
+#ctrl{display:flex;align-items:center;justify-content:space-between;padding:0 4px}
+.cbtn{width:54px;height:54px;border-radius:50%;border:1px solid rgba(159,216,255,.3);background:rgba(8,18,38,.6);color:#CFE8FF;display:flex;align-items:center;justify-content:center}
+#mic{width:156px;height:64px;border-radius:32px;border:1px solid rgba(124,196,255,.65);background:linear-gradient(180deg,rgba(40,100,210,.6),rgba(14,40,100,.7));display:flex;align-items:center;justify-content:center;gap:5px;box-shadow:0 0 30px rgba(70,150,255,.35);color:#fff;font-size:14px}
+#mic.on{border-color:#FF8A8A;box-shadow:0 0 34px rgba(255,90,90,.5);background:linear-gradient(180deg,rgba(160,40,60,.6),rgba(80,14,30,.75))}
+.bar{width:4px;height:30px;border-radius:2px;background:#BFE2FF;transform:scaleY(.2);transition:transform .08s}
+#app.talking .bar{animation:eq .8s ease-in-out infinite}
+@keyframes eq{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(1)}}
+#typeRow{display:none;gap:8px}
+#typeRow.show{display:flex}
+#typeIn{flex:1;height:50px;border-radius:25px;border:1px solid rgba(124,196,255,.45);background:rgba(8,18,38,.75);color:#fff;font-size:16px;padding:0 18px;outline:none}
+#sendT{width:50px;height:50px;border-radius:50%;border:none;background:#4E9BFF;color:#02050C;font-weight:700}
+.panel{position:absolute;inset:0;background:rgba(2,5,12,.97);display:none;flex-direction:column;z-index:20}
+.panel.show{display:flex}
+.phead{display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top) + 18px) 16px 12px}
+.ptitle{font-size:14px;letter-spacing:3px;font-weight:600}
+.pbody{flex:1;overflow-y:auto;padding:4px 16px 30px}
+.field{margin:14px 0}
+.field label{display:block;font-size:13px;color:#9FC4DD;margin-bottom:6px}
+.field input,.field select{width:100%;height:48px;border-radius:12px;border:1px solid rgba(124,196,255,.35);background:#071022;color:#fff;font-size:15px;padding:0 14px;outline:none}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{height:46px;padding:0 16px;border-radius:12px;border:1px solid rgba(124,196,255,.45);background:rgba(40,100,210,.25);color:#E8F4FF;font-size:14px}
+.btn.pri{background:#4E9BFF;color:#02050C;border:none;font-weight:600}
+.hint{font-size:13px;color:#8FB0C8;line-height:1.5}
+.cat{margin:18px 0 8px;font-size:13px;font-weight:600;letter-spacing:.5px;color:#BFE2FF}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fn{min-height:62px;border-radius:14px;border:1px solid rgba(124,196,255,.22);background:rgba(20,50,110,.18);color:#E8F4FF;text-align:left;padding:10px 12px;font-size:13px;line-height:1.3}
+.fn b{display:block;font-size:14px;margin-bottom:3px;color:#fff}
+.note{padding:12px 14px;border:1px solid rgba(124,196,255,.2);border-radius:12px;margin:8px 0;display:flex;gap:10px;align-items:flex-start}
+.note div{flex:1;font-size:15px;line-height:1.4}
+.note small{display:block;color:#7FA6C4;font-size:12px;margin-top:4px}
+#confirm{position:absolute;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom) + 100px);z-index:15;display:none;padding:16px;border-radius:20px;border:1px solid rgba(124,196,255,.5);background:rgba(6,14,32,.95);box-shadow:0 0 40px rgba(60,140,255,.3)}
+#confirm.show{display:block}
+.who{display:flex;align-items:center;gap:12px;margin-top:8px}
+.av{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#5EB8FF,#7B5CFF);display:flex;align-items:center;justify-content:center;font-weight:700;color:#02161B;font-size:18px}
+#cMsg{margin:12px 0;padding:12px;border-radius:12px;background:rgba(255,181,71,.07);border:1px solid rgba(255,181,71,.3);font-size:16px;line-height:1.45}
+#toastJ{position:absolute;left:50%;top:calc(env(safe-area-inset-top) + 70px);transform:translateX(-50%);background:rgba(8,18,38,.9);border:1px solid rgba(124,196,255,.4);padding:8px 14px;border-radius:20px;font-size:13px;display:none;z-index:30;white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="app">
+  <video id="idleV" src="idle.mp4" poster="poster.jpg" muted autoplay loop playsinline></video>
+  <video id="talkV" src="talk.mp4" muted loop playsinline></video>
+  <div class="shade vig"></div>
+  <div class="shade scan"></div>
+  <div class="shade topfade"></div>
+  <div class="shade botfade"></div>
+  <div class="corner" style="top:calc(env(safe-area-inset-top) + 12px);left:12px;border-top-width:1px;border-left-width:1px"></div>
+  <div class="corner" style="top:calc(env(safe-area-inset-top) + 12px);right:12px;border-top-width:1px;border-right-width:1px"></div>
+
+  <div id="top">
+    <div><div class="brand">J.A.R.V.I.S</div><div class="sub" id="clock">--:--</div></div>
+    <div class="pill"><span class="dot" id="dot"></span><span id="status">TAYYOR</span></div>
+  </div>
+
+  <div id="side">
+    <button class="sbtn" aria-label="Funksiyalar" onclick="openPanel('funcs')"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></button>
+    <button class="sbtn" aria-label="Eslatmalar" onclick="openPanel('notes')"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h4"/></svg></button>
+    <button class="sbtn" aria-label="Sozlamalar" onclick="openPanel('settings')"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 4v6M8 14v6"/></svg></button>
+  </div>
+
+  <div id="bottom">
+    <div id="card">
+      <div class="lbl">SIZ</div>
+      <div id="you">Mikrofonni bosib gapiring</div>
+      <div class="sep"></div>
+      <div class="lbl" style="color:#7CC4FF">JARVIS</div>
+      <div id="jv"></div>
+    </div>
+    <div id="typeRow"><input id="typeIn" placeholder="Jarvisga yozing…" autocomplete="off"><button id="sendT" aria-label="Yuborish">➤</button></div>
+    <div id="ctrl">
+      <button class="cbtn" aria-label="Kamera" onclick="Native.openCamera()"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
+      <button id="mic" aria-label="Gapirish"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
+      <button class="cbtn" aria-label="Yozish" onclick="toggleType()"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M7 14h10M6 10h.01M10 10h.01M14 10h.01M18 10h.01"/></svg></button>
+    </div>
+  </div>
+
+  <div id="confirm">
+    <div class="lbl" id="cTitle" style="color:#FFB547">XABAR · TASDIQLANG</div>
+    <div class="who"><div class="av" id="cAv">D</div><div><div style="font-size:17px;font-weight:600" id="cName">—</div><div style="font-size:13px;color:#9FC4DD" id="cSub">—</div></div></div>
+    <div id="cMsg">—</div>
+    <div class="row"><button class="btn pri" style="flex:1" onclick="confirmAns(true)">Yuborish</button><button class="btn" onclick="confirmAns(false)">Bekor</button></div>
+    <div class="hint" style="margin-top:8px;text-align:center">Yoki ayting: "ha, yubor" / "yo'q"</div>
+  </div>
+
+  <div class="panel" id="p-settings">
+    <div class="phead"><button class="sbtn" onclick="closePanels()" aria-label="Orqaga"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ptitle">SOZLAMALAR</div></div>
+    <div class="pbody">
+      <div class="field"><label>Gemini API kaliti (bepul)</label><input id="sKey" placeholder="AIza…" autocomplete="off"></div>
+      <div class="row"><button class="btn" onclick="Native.openUrl('https://aistudio.google.com/apikey')">Kalit olish</button><button class="btn" onclick="testAI()">Tekshirish</button></div>
+      <p class="hint">aistudio.google.com saytida Google akkauntingiz bilan kirib, "Create API key" ni bosing va kalitni shu yerga qo'ying. Kalit faqat telefoningizda saqlanadi.</p>
+      <div class="field"><label>AI model</label><input id="sModel" placeholder="gemini-2.5-flash"></div>
+      <div class="field"><label>Ismingiz</label><input id="sName" placeholder="Vohidjon"></div>
+      <div class="field"><label>Murojaat</label><select id="sAddr"><option value="aka">aka</option><option value="ser">ser</option><option value="">ism bilan</option></select></div>
+      <div class="field"><label>Jarvis ovozi (tili)</label><select id="sVoice"></select></div>
+      <div class="field"><label>Ovoz tezligi: <span id="rateV">1.0</span></label><input id="sRate" type="range" min="0.6" max="1.5" step="0.05" style="height:30px;padding:0"></div>
+      <div class="row"><button class="btn" onclick="say('Salom! Men Jarvis, sizning yordamchingizman.')">Ovozni sinash</button><button class="btn" onclick="Native.openTtsSettings()">Ovoz paketlari</button></div>
+      <div class="field"><label>Suhbat rejimi</label><select id="sConv"><option value="1">Savol bersa, o'zi tinglasin</option><option value="0">Faqat tugma bilan</option></select></div>
+      <div class="row"><button class="btn" onclick="Native.askPerms('mic,contacts,sms,call,camera')">Ruxsatlarni berish</button><button class="btn" onclick="clearHistory()">Suhbatni tozalash</button></div>
+      <div style="height:16px"></div>
+      <button class="btn pri" style="width:100%" onclick="saveSettings()">Saqlash</button>
+    </div>
+  </div>
+
+  <div class="panel" id="p-funcs">
+    <div class="phead"><button class="sbtn" onclick="closePanels()" aria-label="Orqaga"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ptitle">FUNKSIYALAR</div></div>
+    <div class="pbody" id="funcsBody"></div>
+  </div>
+
+  <div class="panel" id="p-notes">
+    <div class="phead"><button class="sbtn" onclick="closePanels()" aria-label="Orqaga"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="ptitle">ESLATMALAR</div></div>
+    <div class="pbody" id="notesBody"></div>
+  </div>
+
+  <div id="toastJ"></div>
+</div>
+
+<script>
+'use strict';
+const N = window.Native || {
+  get:k=>localStorage.getItem(k)||'', set:(k,v)=>localStorage.setItem(k,v), speak:()=>false, ttsLangs:()=>'[]',
+  listen:()=>{}, stopListen:()=>{}, stopSpeak:()=>{}, http:()=>{}, canListen:()=>false, askPerms:()=>{}, hasPerm:()=>false,
+  contacts:()=>'[]', battery:()=>'{"level":-1}', torch:()=>false, setAlarm:()=>false, setTimer:()=>false, call:()=>false,
+  sendSms:()=>'err', telegram:()=>'', openApp:()=>'', openUrl:()=>false, openSettings:()=>false, volume:()=>-1,
+  vibrate:()=>{}, toast:()=>{}, openCamera:()=>false, openTtsSettings:()=>{}
+};
+const $ = id => document.getElementById(id);
+const app = $('app'), idleV = $('idleV'), talkV = $('talkV');
+
+// ---------- sozlamalar ----------
+const S = {
+  key: () => N.get('key'),
+  model: () => N.get('model') || 'gemini-2.5-flash',
+  name: () => N.get('name') || 'Vohidjon',
+  addr: () => { const a = N.get('addr'); return a === '' && N.get('addrSet') ? '' : (a || 'aka'); },
+  voice: () => N.get('voice') || '',
+  rate: () => parseFloat(N.get('rate') || '1') || 1,
+  conv: () => N.get('conv') !== '0'
+};
+function callName() { const a = S.addr(); return a ? S.name() + ' ' + a : S.name(); }
+
+// ---------- holat ----------
+let busy = false, listening = false, speaking = false, typeTimer = null;
+function setStatus(t, color) { $('status').textContent = t; const d = $('dot'); d.style.background = color || '#4ADE80'; d.style.boxShadow = '0 0 8px ' + (color || '#4ADE80'); }
+function toastJ(t) { const el = $('toastJ'); el.textContent = t; el.style.display = 'block'; clearTimeout(el._t); el._t = setTimeout(() => el.style.display = 'none', 2600); }
+const WD = ['yakshanba', 'dushanba', 'seshanba', 'chorshanba', 'payshanba', 'juma', 'shanba'];
+const MO = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
+function hm(d) { return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+function uzDate(d) { return d.getFullYear() + '-yil ' + d.getDate() + '-' + MO[d.getMonth()] + ', ' + WD[d.getDay()]; }
+function tick() { const d = new Date(); $('clock').textContent = WD[d.getDay()].toUpperCase() + ' · ' + hm(d); }
+setInterval(tick, 10000); tick();
+
+function playSafe(v) { try { const p = v.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {} }
+playSafe(idleV);
+function setTalking(on) {
+  if (on && !app.classList.contains('talking')) { try { talkV.currentTime = 0; } catch (e) {} playSafe(talkV); }
+  app.classList.toggle('talking', on);
+  if (!on) setTimeout(() => { if (!app.classList.contains('talking')) try { talkV.pause(); } catch (e) {} }, 400);
+}
+
+// ---------- matn chiqarish ----------
+function showJ(text, speed) {
+  clearInterval(typeTimer);
+  const el = $('jv'); let i = 0; const ms = speed || 45;
+  el.textContent = '';
+  const cur = document.createElement('span'); cur.className = 'cur'; cur.textContent = '▍';
+  typeTimer = setInterval(() => {
+    i += 1; el.textContent = text.slice(0, i); el.appendChild(cur); el.scrollTop = el.scrollHeight;
+    if (i >= text.length) { clearInterval(typeTimer); setTimeout(() => cur.remove(), 1500); }
+  }, ms);
+}
+
+// ---------- ovoz ----------
+let ttsLangs = [];
+let fallbackTalk = null;
+let ttsOk = null; const ttsWait = [];
+window.onTtsReady = ok => { ttsOk = ok; try { ttsLangs = JSON.parse(N.ttsLangs()); } catch (e) { ttsLangs = []; } fillVoices(); ttsWait.splice(0).forEach(f => f()); };
+function ttsReadyP() { return new Promise(r => { if (ttsOk !== null) return r(); ttsWait.push(r); setTimeout(r, 5000); }); }
+function pickVoice() {
+  const v = S.voice(); if (v) return v;
+  for (const t of ['uz-UZ', 'tr-TR', 'en-US', 'ru-RU']) if (ttsLangs.includes(t)) return t;
+  return 'uz-UZ';
+}
+function clean(t) { return String(t || '').replace(/[*_#`>]/g, '').replace(/\s+/g, ' ').trim(); }
+let speakResolve = null;
+function say(text) {
+  text = clean(text);
+  return new Promise(res => {
+    speakResolve = res;
+    showJ(text, 62);
+    const ok = N.speak(text, pickVoice(), S.rate(), 0.92);
+    if (!ok) {
+      speaking = true; setTalking(true); setStatus('GAPIRYAPTI');
+      clearTimeout(fallbackTalk);
+      fallbackTalk = setTimeout(() => window.onTtsDone(), Math.min(15000, 600 + text.length * 65));
+    }
+  });
+}
+window.onTtsStart = () => { speaking = true; setTalking(true); setStatus('GAPIRYAPTI'); };
+window.onTtsDone = () => {
+  speaking = false; setTalking(false); if (!listening && !busy) setStatus('TAYYOR');
+  const r = speakResolve; speakResolve = null; if (r) r();
+};
+
+// ---------- tinglash ----------
+const micBtn = $('mic'), bars = [...document.querySelectorAll('.bar')];
+let pendingAnswer = null;
+micBtn.onclick = () => {
+  if (listening) { N.stopListen(); return; }
+  if (speaking) { N.stopSpeak(); }
+  startListen();
+};
+function startListen() {
+  if (!N.canListen()) { say("Telefoningizda ovozni tanish xizmati topilmadi. Google ilovasini yangilang yoki yozib yuboring."); return; }
+  listening = true; micBtn.classList.add('on'); setStatus('TINGLAYAPTI', '#FF8A8A');
+  $('you').textContent = '…';
+  N.listen(N.get('listenLang') || 'uz-UZ');
+}
+function stopListenUI() { listening = false; micBtn.classList.remove('on'); bars.forEach(b => b.style.transform = ''); if (!busy && !speaking) setStatus('TAYYOR'); }
+window.onListenStart = () => { listening = true; };
+window.onLevel = r => { const v = Math.max(0.15, Math.min(1, (r + 2) / 12)); bars.forEach((b, i) => b.style.transform = 'scaleY(' + Math.max(0.15, v * (0.55 + 0.45 * Math.sin(i * 1.3 + Date.now() / 90))) + ')'); };
+window.onPartial = t => { $('you').textContent = t; };
+window.onListenEnd = () => {};
+window.onListenError = c => {
+  stopListenUI();
+  if (c === -1) { $('you').textContent = 'Mikrofonga ruxsat bering'; return; }
+  if (c === 7 || c === 6) { $('you').textContent = 'Eshitmadim — qayta bosing'; if (pendingAnswer) { const p = pendingAnswer; pendingAnswer = null; p(null); } return; }
+  $('you').textContent = 'Ovoz xatosi (' + c + ')';
+  if (pendingAnswer) { const p = pendingAnswer; pendingAnswer = null; p(null); }
+};
+window.onHeard = t => {
+  stopListenUI();
+  $('you').textContent = t || '—';
+  if (!t) return;
+  if (pendingAnswer) { const p = pendingAnswer; pendingAnswer = null; p(t); return; }
+  handleUser(t);
+};
+function askVoice() { return new Promise(res => { pendingAnswer = res; startListen(); }); }
+
+// ---------- yozish ----------
+function toggleType() { const r = $('typeRow'); r.classList.toggle('show'); if (r.classList.contains('show')) $('typeIn').focus(); }
+$('sendT').onclick = () => { const v = $('typeIn').value.trim(); if (!v) return; $('typeIn').value = ''; $('you').textContent = v; handleUser(v); };
+$('typeIn').addEventListener('keydown', e => { if (e.key === 'Enter') $('sendT').click(); });
+
+// ---------- HTTP ----------
+const httpWait = {};
+let httpN = 0;
+window.onHttp = (id, code, body) => { const f = httpWait[id]; delete httpWait[id]; if (f) f({ code, body }); };
+function http(url, obj) { return new Promise(res => { const id = 'h' + (++httpN); httpWait[id] = res; N.http(id, url, JSON.stringify(obj)); }); }
+
+// ---------- kontaktlar ----------
+const LAT = { 'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo','ж':'j','з':'z','и':'i','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'x','ц':'s','ч':'ch','ш':'sh','щ':'sh','ъ':'','ы':'i','ь':'','э':'e','ю':'yu','я':'ya','ў':'o','қ':'q','ғ':'g','ҳ':'h' };
+function norm(s) { return String(s || '').toLowerCase().split('').map(c => LAT[c] !== undefined ? LAT[c] : c).join('').replace(/[ʻʼ'`’‘]/g, '').replace(/[^a-z0-9+ ]/g, ' ').replace(/\s+/g, ' ').trim(); }
+function stem(w) { return w.replace(/(ga|ka|qa|ni|ning|dan|da|ta|lar|ga)$/,'').replace(/(aka|opa|uka|xola|amaki|aka)$/,''); }
+function lev(a, b) { const m = a.length, n = b.length; if (!m) return n; if (!n) return m; let p = Array.from({ length: n + 1 }, (_, j) => j); for (let i = 1; i <= m; i++) { const c = [i]; for (let j = 1; j <= n; j++) c[j] = Math.min(p[j] + 1, c[j - 1] + 1, p[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); p = c; } return p[n]; }
+let contactCache = null;
+async function getContacts() {
+  if (contactCache) return contactCache;
+  let raw = N.contacts();
+  if (raw === 'null') {
+    N.askPerms('contacts');
+    await new Promise(r => { const o = window.onPerms; window.onPerms = () => { window.onPerms = o; r(); }; setTimeout(r, 15000); });
+    raw = N.contacts();
+    if (raw === 'null') return null;
+  }
+  try { contactCache = JSON.parse(raw); } catch (e) { contactCache = []; }
+  return contactCache;
+}
+async function findContact(q) {
+  if (/^\+?[0-9 ()-]{6,}$/.test(q.trim())) return { status: 'ok', name: q.trim(), phone: q.trim(), alts: [] };
+  const list = await getContacts();
+  if (list === null) return { status: 'no_permission' };
+  const nq = norm(q), qw = nq.split(' ').map(stem).filter(Boolean);
+  const scored = list.map(c => {
+    const nn = norm(c.n), words = nn.split(' ');
+    let s = 0;
+    if (nn === nq) s = 100;
+    else if (nn.startsWith(nq)) s = 85;
+    else {
+      for (const w of qw) {
+        let best = 0;
+        for (const x of words) {
+          if (x === w) best = Math.max(best, 70);
+          else if (x.startsWith(w) || w.startsWith(x) && x.length > 2) best = Math.max(best, 55);
+          else { const d = lev(x, w); if (d <= 1 && w.length > 3) best = Math.max(best, 45); else if (d <= 2 && w.length > 5) best = Math.max(best, 30); }
+        }
+        s += best;
+      }
+      if (nn.includes(nq) && nq.length > 2) s = Math.max(s, 60);
+    }
+    return { c, s };
+  }).filter(x => x.s >= 30).sort((a, b) => b.s - a.s);
+  if (!scored.length) return { status: 'not_found' };
+  const top = scored[0];
+  return { status: 'ok', name: top.c.n, phone: top.c.p, score: top.s, alts: scored.slice(1, 4).map(x => x.c.n) };
+}
+
+// ---------- tasdiq kartasi ----------
+let confirmRes = null;
+function confirmBox(title, name, sub, msg) {
+  $('cTitle').textContent = title; $('cName').textContent = name; $('cSub').textContent = sub; $('cMsg').textContent = msg;
+  $('cAv').textContent = (name || '?').trim().charAt(0).toUpperCase();
+  $('confirm').classList.add('show');
+  return new Promise(res => { confirmRes = res; });
+}
+function confirmAns(yes) { $('confirm').classList.remove('show'); const r = confirmRes; confirmRes = null; if (r) r(yes); }
+function isYes(t) { t = norm(t); return /\b(ha|xa|haa|yubor|yuboring|ok|okey|albatta|tasdiq|mayli|bo ldi|boldi|to gri|togri|yes|da)\b/.test(t); }
+function isNo(t) { t = norm(t); return /\b(yo q|yoq|bekor|kerak emas|to xta|toxta|no|net)\b/.test(t); }
+async function confirmFlow(title, name, sub, msg, question) {
+  const box = confirmBox(title, name, sub, msg);
+  await say(question);
+  if (!confirmRes) return box;
+  if (S.conv()) {
+    const ans = await askVoice();
+    if (ans && confirmRes) { if (isYes(ans) && !isNo(ans)) confirmAns(true); else if (isNo(ans)) confirmAns(false); }
+  }
+  return box;
+}
+
+// ---------- eslatmalar ----------
+function notes() { try { return JSON.parse(N.get('notes') || '[]'); } catch (e) { return []; } }
+function saveNotes(a) { N.set('notes', JSON.stringify(a)); }
+
+// ---------- vositalar (tools) ----------
+const TOOLS = [
+  { name: 'set_alarm', description: 'Budilnik qo\'yadi.', parameters: { type: 'object', properties: { hour: { type: 'integer', description: '0-23' }, minute: { type: 'integer' }, label: { type: 'string' } }, required: ['hour', 'minute'] } },
+  { name: 'set_timer', description: 'Taymer qo\'yadi.', parameters: { type: 'object', properties: { seconds: { type: 'integer' }, label: { type: 'string' } }, required: ['seconds'] } },
+  { name: 'flashlight', description: 'Fonarikni yoqadi yoki o\'chiradi.', parameters: { type: 'object', properties: { on: { type: 'boolean' } }, required: ['on'] } },
+  { name: 'call_contact', description: 'Kontaktga yoki raqamga qo\'ng\'iroq qiladi.', parameters: { type: 'object', properties: { name: { type: 'string', description: 'kontakt ismi yoki telefon raqami' } }, required: ['name'] } },
+  { name: 'send_message', description: 'Kontaktga SMS yoki Telegram xabar yuboradi. Avval foydalanuvchidan tasdiq so\'raladi. Matnni xushmuomala va to\'liq qilib yozing.', parameters: { type: 'object', properties: { to: { type: 'string', description: 'kontakt ismi (masalan Doni) yoki raqam' }, text: { type: 'string' }, channel: { type: 'string', enum: ['sms', 'telegram'] } }, required: ['to', 'text'] } },
+  { name: 'open_app', description: 'Telefondagi ilovani ochadi (masalan YouTube, Telegram, kamera).', parameters: { type: 'object', properties: { name: { type: 'string' } }, required: ['name'] } },
+  { name: 'open_settings', description: 'Telefon sozlamasini ochadi.', parameters: { type: 'object', properties: { page: { type: 'string', enum: ['wifi', 'bluetooth', 'display', 'sound', 'location', 'main'] } }, required: ['page'] } },
+  { name: 'device_info', description: 'Hozirgi vaqt, sana, batareya holati.', parameters: { type: 'object', properties: {} } },
+  { name: 'set_volume', description: 'Media ovoz balandligini foizda o\'rnatadi.', parameters: { type: 'object', properties: { percent: { type: 'integer' } }, required: ['percent'] } },
+  { name: 'save_note', description: 'Eslatma yoki qaydni saqlaydi.', parameters: { type: 'object', properties: { text: { type: 'string' } }, required: ['text'] } },
+  { name: 'list_notes', description: 'Saqlangan eslatmalarni qaytaradi.', parameters: { type: 'object', properties: {} } },
+  { name: 'delete_note', description: 'Eslatmani raqami (1 dan) bo\'yicha o\'chiradi.', parameters: { type: 'object', properties: { index: { type: 'integer' } }, required: ['index'] } },
+  { name: 'web_search', description: 'Brauzerda Google qidiruvini ochadi.', parameters: { type: 'object', properties: { query: { type: 'string' } }, required: ['query'] } },
+  { name: 'open_maps', description: 'Xaritada joy yoki yo\'nalishni ochadi.', parameters: { type: 'object', properties: { place: { type: 'string' } }, required: ['place'] } },
+  { name: 'youtube', description: 'YouTube\'da video qidiradi.', parameters: { type: 'object', properties: { query: { type: 'string' } }, required: ['query'] } },
+  { name: 'smart_home', description: 'Uy qurilmalarini boshqaradi: chiroq, konditsioner, qozon, rozetka, darvoza.', parameters: { type: 'object', properties: { device: { type: 'string' }, action: { type: 'string', description: 'on, off, set' }, room: { type: 'string' }, value: { type: 'string' } }, required: ['device', 'action'] } },
+  { name: 'open_camera', description: 'Kamerani ochadi.', parameters: { type: 'object', properties: {} } }
+];
+
+async function runTool(name, a) {
+  a = a || {};
+  try {
+    switch (name) {
+      case 'set_alarm': return { ok: N.setAlarm(a.hour | 0, a.minute | 0, a.label || 'Jarvis') };
+      case 'set_timer': return { ok: N.setTimer(a.seconds | 0, a.label || 'Jarvis') };
+      case 'flashlight': return { ok: N.torch(!!a.on) };
+      case 'call_contact': {
+        const c = await findContact(a.name || '');
+        if (c.status !== 'ok') return c;
+        if (!N.hasPerm('call')) N.askPerms('call');
+        return { ok: N.call(c.phone), contact: c.name };
+      }
+      case 'send_message': {
+        const c = await findContact(a.to || '');
+        if (c.status !== 'ok') return c;
+        const ch = a.channel === 'telegram' ? 'telegram' : 'sms';
+        const box = confirmFlow(ch === 'sms' ? 'SMS · TASDIQLANG' : 'TELEGRAM · TASDIQLANG', c.name, (ch === 'sms' ? 'SMS · ' : 'Telegram · ') + c.phone, a.text,
+          c.name + 'ga shunday yozaymi: ' + a.text + ' Yuboraymi?');
+        const yes = await box;
+        if (!yes) return { status: 'cancelled_by_user' };
+        if (ch === 'telegram') { const p = N.telegram(a.text); return p ? { status: 'telegram_opened', note: 'Telegram ochildi, foydalanuvchi ' + c.name + ' chatini tanlab yuboradi' } : { status: 'telegram_not_installed' }; }
+        let r = N.sendSms(c.phone, a.text);
+        if (r === 'perm') { N.askPerms('sms'); await new Promise(res => { const o = window.onPerms; window.onPerms = () => { window.onPerms = o; res(); }; setTimeout(res, 15000); }); r = N.sendSms(c.phone, a.text); }
+        if (r === 'ok') { N.vibrate(60); toastJ('Yuborildi: ' + c.name); return { status: 'sent', to: c.name }; }
+        return { status: 'failed', error: r };
+      }
+      case 'open_app': { const l = N.openApp(a.name || ''); return l ? { opened: l } : { status: 'not_found' }; }
+      case 'open_settings': return { ok: N.openSettings(a.page || 'main') };
+      case 'device_info': { const b = JSON.parse(N.battery()); const d = new Date(); return { time: hm(d), date: uzDate(d), battery: b.level, charging: b.charging }; }
+      case 'set_volume': return { volume: N.volume(a.percent | 0) };
+      case 'save_note': { const n = notes(); n.unshift({ t: a.text, d: Date.now() }); saveNotes(n); return { saved: true, count: n.length }; }
+      case 'list_notes': return { notes: notes().slice(0, 20).map((x, i) => (i + 1) + '. ' + x.t) };
+      case 'delete_note': { const n = notes(); const i = (a.index | 0) - 1; if (i < 0 || i >= n.length) return { status: 'not_found' }; const r = n.splice(i, 1); saveNotes(n); return { deleted: r[0].t }; }
+      case 'web_search': return { ok: N.openUrl('https://www.google.com/search?q=' + encodeURIComponent(a.query || '')) };
+      case 'open_maps': return { ok: N.openUrl('geo:0,0?q=' + encodeURIComponent(a.place || '')) };
+      case 'youtube': return { ok: N.openUrl('https://www.youtube.com/results?search_query=' + encodeURIComponent(a.query || '')) };
+      case 'smart_home': return { status: 'not_connected', note: 'Bu qurilma hali Jarvisga ulanmagan. Wi-Fi rele, aqlli lampa yoki IR-pult ulangach boshqariladi.' };
+      case 'open_camera': return { ok: N.openCamera() };
+    }
+  } catch (e) { return { error: String(e) }; }
+  return { error: 'unknown tool' };
+}
+
+// ---------- AI miya ----------
+let history = [];
+try { history = JSON.parse(N.get('history') || '[]'); } catch (e) { history = []; }
+function saveHistory() {
+  while (history.length > 24) {
+    history.shift();
+    while (history.length && !(history[0].role === 'user' && history[0].parts.some(p => p.text))) history.shift();
+  }
+  N.set('history', JSON.stringify(history));
+}
+function clearHistory() { history = []; N.set('history', '[]'); toastJ('Suhbat tozalandi'); }
+function sysPrompt() {
+  const d = new Date();
+  return 'Sen Jarvis — ' + S.name() + 'ning shaxsiy sun\'iy intellekt yordamchisisan (Temir odam filmidagi Jarvis uslubida: aqlli, xotirjam, samimiy, biroz hazilkash). ' +
+    'Har doim faqat o\'zbek tilida, lotin yozuvida gapir. Foydalanuvchiga "' + callName() + '" deb murojaat qil. ' +
+    'Javoblaring ovoz chiqarib o\'qiladi: qisqa bo\'lsin (1-3 gap), markdown, emoji, ro\'yxat ishlatma. ' +
+    'Samimiy bo\'l: o\'rni kelganda hol-ahvol so\'ra, kayfiyatiga e\'tibor ber. ' +
+    'Harakat so\'ralsa, tegishli vositani (tool) chaqir va natijasiga qarab javob ber. Xabar yuborilmasa yoki bekor qilinsa, yuborildi dema. ' +
+    'Vositani chaqira olmasang yoki qurilma ulanmagan bo\'lsa, rostini ayt. ' +
+    'Hozir: ' + uzDate(d) + ', soat ' + hm(d) + '. Joylashuv: O\'zbekiston.';
+}
+const FALLBACKS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-3-flash-preview'];
+async function gemini(contents) {
+  const key = S.key();
+  let models = [S.model(), ...FALLBACKS.filter(m => m !== S.model())];
+  let lastErr = '';
+  for (const m of models) {
+    const r = await http('https://generativelanguage.googleapis.com/v1beta/models/' + m + ':generateContent?key=' + encodeURIComponent(key), {
+      systemInstruction: { parts: [{ text: sysPrompt() }] },
+      contents,
+      tools: [{ functionDeclarations: TOOLS }]
+    });
+    let j = null; try { j = JSON.parse(r.body); } catch (e) {}
+    if (r.code === 200 && j && j.candidates) { if (m !== S.model()) N.set('model', m); return j; }
+    lastErr = (j && j.error && j.error.message) || ('HTTP ' + r.code);
+    if (r.code === 404 || (r.code === 400 && /model/i.test(lastErr))) continue;
+    if (r.code === 429 || r.code === 503) continue;
+    break;
+  }
+  throw new Error(lastErr);
+}
+async function think(userText) {
+  history.push({ role: 'user', parts: [{ text: userText }] });
+  for (let step = 0; step < 6; step++) {
+    const j = await gemini(history);
+    const cand = j.candidates[0] || {};
+    const content = cand.content || { role: 'model', parts: [] };
+    content.role = 'model';
+    const parts = content.parts || [];
+    history.push(content);
+    const calls = parts.filter(p => p.functionCall);
+    if (!calls.length) { saveHistory(); return parts.filter(p => p.text && !p.thought).map(p => p.text).join(' ').trim(); }
+    const responses = [];
+    for (const c of calls) {
+      setStatus('BAJARYAPTI', '#FFB547');
+      const res = await runTool(c.functionCall.name, c.functionCall.args);
+      responses.push({ functionResponse: { name: c.functionCall.name, response: { result: res } } });
+    }
+    history.push({ role: 'user', parts: responses });
+  }
+  saveHistory();
+  return 'Bajarildi.';
+}
+
+// ---------- tezkor buyruqlar (internetsiz) ----------
+function quick(t) {
+  const n = norm(t);
+  if (/fonar/.test(n) && /(ochir|o chir)/.test(n)) { N.torch(false); return 'Fonarik o\'chirildi.'; }
+  if (/fonar/.test(n) && /(yoq|yoning|yonsin)/.test(n) && n.split(' ').length <= 5) { N.torch(true); return 'Fonarik yoqildi.'; }
+  if (/(soat necha|vaqt necha|hozir soat)/.test(n)) { const d = new Date(); return 'Hozir soat ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0') + '.'; }
+  if (/(batareya|zaryad)/.test(n) && /(necha|qancha|qanday|holat)/.test(n)) { const b = JSON.parse(N.battery()); return 'Batareya ' + b.level + ' foiz' + (b.charging ? ', zaryadlanyapti.' : '.'); }
+  return null;
+}
+
+async function handleUser(text) {
+  if (busy) return;
+  const q = quick(text);
+  if (q) { await say(q); return; }
+  if (!S.key()) {
+    await say(callName() + ', aqlli javob berishim uchun bepul Gemini kalitini kiritishingiz kerak. Sozlamalarni ochyapman.');
+    openPanel('settings'); return;
+  }
+  busy = true; setStatus("O'YLAYAPTI", '#7CC4FF');
+  $('jv').innerHTML = '<span class="cur">▍</span>';
+  let answer;
+  try { answer = await think(text); }
+  catch (e) {
+    const m = String(e.message || e);
+    answer = /API key|API_KEY|invalid/i.test(m) ? 'Gemini kaliti noto\'g\'ri ko\'rinadi. Sozlamalarda tekshiring.' :
+      /quota|limit|429|exhausted/i.test(m) ? 'Bugungi bepul limit tugadi yoki juda tez so\'radingiz. Birozdan keyin urinib ko\'ring.' :
+      /Unable to resolve|timeout|failed to connect|network/i.test(m) ? 'Internet aloqasi yo\'q shekilli. Ulanishni tekshiring.' :
+      'Kechirasiz, xatolik bo\'ldi: ' + m.slice(0, 120);
+  }
+  busy = false;
+  if (!answer) answer = 'Bajarildi.';
+  await say(answer);
+  if (S.conv() && /\?\s*$/.test(answer) && !listening) setTimeout(() => { if (!speaking && !busy) startListen(); }, 300);
+}
+
+// ---------- panellar ----------
+function openPanel(n) {
+  closePanels();
+  if (n === 'settings') loadSettings();
+  if (n === 'notes') renderNotes();
+  if (n === 'funcs') renderFuncs();
+  $('p-' + n).classList.add('show');
+}
+function closePanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('show')); }
+window.onBack = () => {
+  if ($('confirm').classList.contains('show')) { confirmAns(false); return true; }
+  const open = document.querySelector('.panel.show'); if (open) { closePanels(); return true; }
+  if ($('typeRow').classList.contains('show')) { $('typeRow').classList.remove('show'); return true; }
+  return false;
+};
+function fillVoices() {
+  const sel = $('sVoice'); if (!sel) return;
+  const names = { 'uz-UZ': "O'zbek", 'tr-TR': 'Turk (o\'zbekchaga yaqin)', 'en-US': 'Ingliz', 'ru-RU': 'Rus' };
+  sel.innerHTML = '<option value="">Avtomatik</option>' + ['uz-UZ', 'tr-TR', 'en-US', 'ru-RU'].map(t => '<option value="' + t + '">' + names[t] + (ttsLangs.includes(t) ? '' : ' — o\'rnatilmagan') + '</option>').join('');
+  sel.value = S.voice();
+}
+function loadSettings() {
+  $('sKey').value = S.key(); $('sModel').value = N.get('model'); $('sName').value = N.get('name');
+  $('sAddr').value = S.addr(); fillVoices(); $('sRate').value = S.rate(); $('rateV').textContent = S.rate().toFixed(2);
+  $('sConv').value = S.conv() ? '1' : '0';
+}
+$('sRate').oninput = e => $('rateV').textContent = parseFloat(e.target.value).toFixed(2);
+function saveSettings() {
+  N.set('key', $('sKey').value.trim()); N.set('model', $('sModel').value.trim()); N.set('name', $('sName').value.trim());
+  N.set('addr', $('sAddr').value); N.set('addrSet', '1'); N.set('voice', $('sVoice').value); N.set('rate', $('sRate').value); N.set('conv', $('sConv').value);
+  toastJ('Saqlandi'); closePanels();
+}
+async function testAI() {
+  N.set('key', $('sKey').value.trim()); if ($('sModel').value.trim()) N.set('model', $('sModel').value.trim());
+  toastJ('Tekshirilmoqda…');
+  try { const j = await gemini([{ role: 'user', parts: [{ text: 'Bir so\'z bilan salom de.' }] }]); toastJ('Ishlayapti: ' + S.model()); $('sModel').value = S.model(); }
+  catch (e) { toastJ('Xato: ' + String(e.message || e).slice(0, 60)); }
+}
+function renderNotes() {
+  const n = notes(), b = $('notesBody');
+  if (!n.length) { b.innerHTML = '<p class="hint">Hali eslatma yo\'q. Ayting: "Jarvis, eslab qol: ertaga kabel olish kerak".</p>'; return; }
+  b.innerHTML = n.map((x, i) => '<div class="note"><div>' + esc(x.t) + '<small>' + uzDate(new Date(x.d)) + ' ' + hm(new Date(x.d)) + '</small></div><button class="btn" onclick="delNote(' + i + ')">✕</button></div>').join('');
+}
+function delNote(i) { const n = notes(); n.splice(i, 1); saveNotes(n); renderNotes(); }
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+const FUNCS = [
+  ['Suhbat', [['Hol-ahvol', 'Jarvis, ahvollaring qalay?'], ['Maslahat', 'Bugun nima qilsam unumli bo\'ladi?'], ['Tarjima', 'Rahmat so\'zini inglizcha va ruscha ayt'], ['Hisob-kitob', '15 kVt yuklama uchun 380 voltda tok qancha bo\'ladi?']]],
+  ['Xabar va aloqa', [['SMS yuborish', 'Doniga SMS yoz: ertaga 9 da obyektda bo\'laman'], ['Telegram', 'Doniga Telegramdan yoz: yo\'ldaman'], ['Qo\'ng\'iroq', 'Doniga qo\'ng\'iroq qil'], ['Raqam', '+998901234567 ga qo\'ng\'iroq qil']]],
+  ['Kun tartibi', [['Budilnik', 'Ertaga soat 6 dan 30 o\'tganda uyg\'ot'], ['Taymer', '10 daqiqaga taymer qo\'y'], ['Eslatma', 'Eslab qol: kabel va avtomat olish kerak'], ['Eslatmalar', 'Eslatmalarimni o\'qib ber']]],
+  ['Telefon', [['Fonarik', 'Fonarikni yoq'], ['Ovoz', 'Ovozni 50 foizga qo\'y'], ['Batareya', 'Batareya necha foiz?'], ['Wi-Fi', 'Wi-Fi sozlamasini och']]],
+  ['Ilova va internet', [['Ilova ochish', 'YouTube ni och'], ['Qidiruv', 'Internetdan qidir: Quvasoy ob-havo'], ['Xarita', 'Farg\'ona shahrini xaritada och'], ['YouTube', 'YouTube dan elektr shit yig\'ish videosini top']]],
+  ['Aqlli uy', [['Chiroq', 'Mehmonxonada chiroqni yoq'], ['Konditsioner', 'Konditsionerni 24 gradusga qo\'y'], ['Qozon', 'Qozonni 60 gradusga qo\'y'], ['Darvoza', 'Darvozani och']]]
+];
+function renderFuncs() {
+  $('funcsBody').innerHTML = '<p class="hint">Bosing — Jarvis bajaradi. Yoki shunga o\'xshab ovozda ayting.</p>' + FUNCS.map(c =>
+    '<div class="cat">' + c[0] + '</div><div class="grid">' + c[1].map(f => '<button class="fn" data-q="' + esc(f[1]) + '"><b>' + f[0] + '</b>' + esc(f[1]) + '</button>').join('') + '</div>').join('');
+  document.querySelectorAll('.fn').forEach(b => b.onclick = () => { closePanels(); $('you').textContent = b.dataset.q; handleUser(b.dataset.q); });
+}
+
+// ---------- boshlash ----------
+window.onAppResume = () => { playSafe(idleV); contactCache = null; };
+window.onPerms = () => {};
+function greet() {
+  const h = new Date().getHours();
+  const g = h < 5 ? 'Xayrli tun' : h < 11 ? 'Xayrli tong' : h < 17 ? 'Xayrli kun' : 'Xayrli kech';
+  const q = ['Ahvollaringiz yaxshimi?', 'Kayfiyatlar qalay?', 'Bugun nima yordam beray?', 'Charchamadingizmi?'][Math.floor(Math.random() * 4)];
+  return g + ', ' + callName() + '! ' + q;
+}
+setTimeout(async () => {
+  if (!N.get('perms1')) { N.set('perms1', '1'); N.askPerms('mic,contacts,sms,call'); }
+  await ttsReadyP();
+  await say(greet());
+}, 900);
+</script>
+</body>
+</html>

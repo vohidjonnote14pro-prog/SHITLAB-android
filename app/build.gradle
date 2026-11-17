@@ -1,0 +1,48 @@
+plugins {
+    id 'com.android.application'
+}
+
+def runNo = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger()
+
+android {
+    namespace 'uz.jarvis.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'uz.jarvis.app'
+        minSdk 26
+        targetSdk 34
+        versionCode runNo
+        versionName "1." + runNo
+    }
+
+    signingConfigs {
+        jarvis {
+            storeFile file('jarvis.jks')
+            storePassword 'jarvis2026'
+            keyAlias 'jarvis'
+            keyPassword 'jarvis2026'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.jarvis
+        }
+    }
+
+    androidResources {
+        noCompress 'mp4'
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

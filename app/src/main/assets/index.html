@@ -8,45 +8,88 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:#02050C;color:#E8F4FF;font-family:system-ui,-apple-system,Roboto,sans-serif;overflow:hidden}
 button{font-family:inherit;cursor:pointer}
-#app{position:fixed;inset:0;overflow:hidden}
-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
-#talkV{opacity:0;transition:opacity .3s ease}
+#app{position:fixed;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 0%,#0B1C36 0%,#02050C 55%)}
+#app::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(90,160,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(90,160,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(180deg,#000,transparent 80%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 80%);pointer-events:none}
+/* --- Jarvis sahnasi (video) --- */
+#stage{position:absolute;z-index:8;overflow:hidden;border-radius:22px;perspective:700px;transition:all .55s cubic-bezier(.2,.8,.2,1);
+  left:14px;bottom:calc(env(safe-area-inset-bottom) + 16px);width:118px;height:calc(22vh - 32px);min-height:138px;box-shadow:0 0 0 1px rgba(124,196,255,.45),0 0 26px rgba(70,150,255,.35)}
+#face{position:absolute;inset:0;transition:transform .45s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}
+#face video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;transform:scale(1.45);transform-origin:52% 33%;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+#talkV{opacity:0;transition:opacity .3s ease,transform .55s cubic-bezier(.2,.8,.2,1)!important}
 #app.talking #talkV{opacity:1}
-.shade{position:absolute;inset:0;pointer-events:none}
-.vig{background:radial-gradient(ellipse at 55% 38%,rgba(2,5,12,0) 45%,rgba(2,5,12,.7) 100%)}
-.topfade{top:0;bottom:auto;height:140px;background:linear-gradient(180deg,rgba(2,5,12,.85),rgba(2,5,12,0))}
-.botfade{top:auto;bottom:0;height:46%;background:linear-gradient(180deg,rgba(2,5,12,0),rgba(2,5,12,.9) 45%,#02050C)}
-.scan{height:120px;bottom:auto;background:linear-gradient(180deg,rgba(90,170,255,0),rgba(90,170,255,.06),rgba(90,170,255,0));animation:sweep 6s linear infinite}
-@keyframes sweep{0%{transform:translateY(-140px)}100%{transform:translateY(110vh)}}
-.corner{position:absolute;width:22px;height:22px;border:0 solid rgba(159,216,255,.6)}
-#top{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top) + 22px);padding:0 22px;display:flex;justify-content:space-between;align-items:center}
-.brand{font-size:12px;letter-spacing:5px;color:#DDEEFF;font-weight:600}
-.sub{font-family:monospace;font-size:11px;color:#7FA6C4;margin-top:4px}
-.pill{height:30px;padding:0 12px;border:1px solid rgba(120,190,255,.4);background:rgba(4,14,32,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;gap:8px;font-family:monospace;font-size:11px;color:#BFE2FF;border-radius:4px}
-.dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;box-shadow:0 0 8px #4ADE80;animation:pl 1.6s ease-in-out infinite}
+.stfx{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(90,170,255,0),rgba(90,170,255,.10),rgba(90,170,255,0));height:40%;animation:sweep 4.5s linear infinite}
+@keyframes sweep{0%{transform:translateY(-100%)}100%{transform:translateY(260%)}}
+#stage .ring{position:absolute;inset:0;border-radius:22px;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(160,215,255,.25),inset 0 -40px 40px rgba(2,5,12,.55)}
+#app.talking #stage{box-shadow:0 0 0 1px rgba(124,196,255,.8),0 0 40px rgba(70,150,255,.6)}
+#app.full #stage{z-index:1;left:0;bottom:0;width:100%;height:100%;border-radius:0;box-shadow:none}
+#app.full #face video{transform:scale(1);object-position:50% 50%}
+#app.full #stage .ring{border-radius:0;box-shadow:inset 0 -260px 160px -40px rgba(2,5,12,.95),inset 0 160px 120px -60px rgba(2,5,12,.85)}
+/* --- sarlavha --- */
+#hdr{position:absolute;z-index:8;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top) + 14px) 16px 10px;display:flex;align-items:center;gap:10px}
+.brand{font-size:12px;letter-spacing:5px;color:#DDEEFF;font-weight:700}
+.sub{font-family:monospace;font-size:10.5px;color:#7FA6C4;margin-top:3px;letter-spacing:.5px}
+.hicons{margin-left:auto;display:flex;gap:6px}
+.ib{width:40px;height:40px;border-radius:12px;border:1px solid rgba(159,216,255,.28);background:rgba(10,22,46,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#CFE8FF;display:flex;align-items:center;justify-content:center}
+.ib svg,.sb svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+/* --- ish maydoni --- */
+#work{position:absolute;z-index:5;left:0;right:0;top:calc(env(safe-area-inset-top) + 66px);bottom:calc(22vh + env(safe-area-inset-bottom));overflow-y:auto;padding:6px 14px 18px;transition:opacity .4s}
+#app.full #work{opacity:0;pointer-events:none}
+#feed{display:flex;flex-direction:column;gap:10px}
+.hello{padding:18px;border-radius:20px;border:1px solid rgba(124,196,255,.22);background:linear-gradient(160deg,rgba(40,90,190,.18),rgba(10,20,44,.4))}
+.hello h2{margin:0;font-size:22px;font-weight:600;letter-spacing:.2px}
+.hello p{margin:6px 0 0;color:#9FC4DD;font-size:14px;line-height:1.5}
+.chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.chip{min-height:52px;border-radius:14px;border:1px solid rgba(124,196,255,.22);background:rgba(14,30,64,.55);color:#E8F4FF;font-size:13px;text-align:left;padding:8px 12px;line-height:1.3}
+.chip b{display:block;font-size:12px;color:#7CC4FF;font-weight:600;margin-bottom:2px}
+.msg{max-width:86%;padding:10px 14px;border-radius:18px;font-size:15px;line-height:1.45;animation:pop .35s ease}
+.msg.u{align-self:flex-end;background:linear-gradient(135deg,#2F6BFF,#5B3FD9);border-bottom-right-radius:6px}
+.msg.j{align-self:flex-start;background:rgba(14,30,64,.75);border:1px solid rgba(124,196,255,.22);border-bottom-left-radius:6px}
+.msg .who{font-family:monospace;font-size:10px;letter-spacing:2px;color:#7CC4FF;margin-bottom:3px}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.task{align-self:stretch;padding:10px 12px;border-radius:16px;border:1px solid rgba(124,196,255,.16);background:rgba(6,14,32,.6);animation:pop .35s ease}
+.task .tt{font-family:monospace;font-size:10px;letter-spacing:2px;color:#7FA6C4;margin-bottom:4px;display:flex;justify-content:space-between}
+.step{display:flex;align-items:center;gap:10px;padding:6px 2px;font-size:14px;animation:pop .3s ease}
+.step .ic{width:22px;height:22px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:12px}
+.step.run .ic{border:2px solid rgba(124,196,255,.25);border-top-color:#7CC4FF;animation:spin .8s linear infinite}
+.step.ok .ic{background:rgba(74,222,128,.15);color:#4ADE80;border:1px solid rgba(74,222,128,.5)}
+.step.bad .ic{background:rgba(255,107,107,.12);color:#FF8A8A;border:1px solid rgba(255,107,107,.45)}
+.step .lb{flex:1;min-width:0}.step .dt{display:block;font-size:12px;color:#8FB0C8;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rc{align-self:stretch;padding:14px;border-radius:18px;border:1px solid rgba(124,196,255,.28);background:linear-gradient(150deg,rgba(30,70,160,.25),rgba(8,16,36,.6));animation:pop .35s ease;display:flex;gap:14px;align-items:center}
+.rc .big{font-size:30px;font-weight:700;letter-spacing:.5px}
+.rc .lab{font-size:12px;color:#9FC4DD;font-family:monospace;letter-spacing:1.5px}
+.rc.warn{border-color:rgba(255,181,71,.4);background:linear-gradient(150deg,rgba(120,70,10,.22),rgba(8,16,36,.6))}
+.rc ol{margin:6px 0 0;padding-left:18px;font-size:14px;line-height:1.55}
+.ringv{width:60px;height:60px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700}
+/* --- pastki panel --- */
+#dock{position:absolute;z-index:7;left:8px;right:8px;bottom:calc(env(safe-area-inset-bottom) + 8px);height:22vh;min-height:154px;border-radius:28px;
+  background:linear-gradient(180deg,rgba(16,32,68,.72),rgba(6,12,28,.88));backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border:1px solid rgba(124,196,255,.25);box-shadow:0 -10px 40px rgba(20,60,160,.25),inset 0 1px 0 rgba(255,255,255,.08);display:flex;align-items:stretch;padding:8px 10px 8px 134px;gap:10px;overflow:hidden}
+#dock::before{content:"";position:absolute;left:20%;right:20%;top:0;height:1px;background:linear-gradient(90deg,transparent,#7CC4FF,transparent);opacity:.8}
+#app.full #dock{left:10px;right:10px;padding-left:16px;background:linear-gradient(180deg,rgba(10,22,46,.55),rgba(4,10,24,.8))}
+#wave{position:absolute;left:0;right:0;bottom:0;width:100%;height:48%;pointer-events:none;opacity:.9}
+.dmid{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.dstat{display:flex;align-items:center;gap:7px;font-family:monospace;font-size:10.5px;letter-spacing:1.5px;color:#BFE2FF}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;box-shadow:0 0 8px #4ADE80;animation:pl 1.6s ease-in-out infinite;flex:none}
 @keyframes pl{0%,100%{opacity:.45}50%{opacity:1}}
-#side{position:absolute;right:18px;top:calc(env(safe-area-inset-top) + 74px);display:flex;flex-direction:column;gap:8px}
-.sbtn{width:46px;height:46px;border-radius:13px;border:1px solid rgba(159,216,255,.35);background:rgba(8,18,38,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#CFE8FF;display:flex;align-items:center;justify-content:center}
-.sbtn svg,.cbtn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-#bottom{position:absolute;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom) + 18px);display:flex;flex-direction:column;gap:12px}
-#card{padding:14px 16px;border:1px solid rgba(140,200,255,.22);background:rgba(8,18,38,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:20px}
-.lbl{font-family:monospace;font-size:11px;letter-spacing:2px;color:#7FA6C4}
-#you{font-size:15px;color:#B9CCDD;margin-top:3px;min-height:20px}
-.sep{height:1px;background:rgba(140,200,255,.15);margin:10px 0}
-#jv{font-size:18px;line-height:1.42;color:#fff;margin-top:4px;min-height:52px;max-height:30vh;overflow-y:auto}
-.cur{color:#7CC4FF;animation:bl .8s step-end infinite}
-@keyframes bl{50%{opacity:0}}
-#ctrl{display:flex;align-items:center;justify-content:space-between;padding:0 4px}
-.cbtn{width:54px;height:54px;border-radius:50%;border:1px solid rgba(159,216,255,.3);background:rgba(8,18,38,.6);color:#CFE8FF;display:flex;align-items:center;justify-content:center}
-#mic{width:156px;height:64px;border-radius:32px;border:1px solid rgba(124,196,255,.65);background:linear-gradient(180deg,rgba(40,100,210,.6),rgba(14,40,100,.7));display:flex;align-items:center;justify-content:center;gap:5px;box-shadow:0 0 30px rgba(70,150,255,.35);color:#fff;font-size:14px}
-#mic.on{border-color:#FF8A8A;box-shadow:0 0 34px rgba(255,90,90,.5);background:linear-gradient(180deg,rgba(160,40,60,.6),rgba(80,14,30,.75))}
-.bar{width:4px;height:30px;border-radius:2px;background:#BFE2FF;transform:scaleY(.2);transition:transform .08s}
-#app.talking .bar{animation:eq .8s ease-in-out infinite}
-@keyframes eq{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(1)}}
-#typeRow{display:none;gap:8px}
+#you{font-size:12.5px;color:#8FB0C8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:16px}
+#jv{font-size:15px;line-height:1.38;color:#fff;max-height:4.2em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.cur{color:#7CC4FF;animation:bl .8s step-end infinite}@keyframes bl{50%{opacity:0}}
+.drow{display:flex;gap:6px;margin-top:2px}
+.sb{width:36px;height:36px;border-radius:11px;border:1px solid rgba(159,216,255,.22);background:rgba(255,255,255,.04);color:#CFE8FF;display:flex;align-items:center;justify-content:center}
+.dright{position:relative;display:flex;align-items:center;justify-content:center;width:84px;flex:none}
+#mic{position:relative;width:72px;height:72px;border-radius:50%;border:none;background:radial-gradient(circle at 35% 28%,#9FD3FF,#2F6BFF 48%,#1B2E8F);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px rgba(190,225,255,.5),0 8px 30px rgba(50,120,255,.55)}
+#mic svg{width:28px;height:28px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
+#mic::before,#mic::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(124,196,255,.45);animation:ring 2.4s ease-out infinite}
+#mic::after{animation-delay:1.2s}
+@keyframes ring{0%{transform:scale(.85);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+#mic.on{background:radial-gradient(circle at 35% 28%,#FFC2C2,#FF4D5E 50%,#8F1B2E);box-shadow:0 0 0 1px rgba(255,200,200,.6),0 8px 34px rgba(255,70,90,.6)}
+#mic.on::before,#mic.on::after{border-color:rgba(255,120,130,.6)}
+#typeRow{position:absolute;z-index:9;left:10px;right:10px;bottom:calc(22vh + env(safe-area-inset-bottom) + 14px);display:none;gap:8px}
 #typeRow.show{display:flex}
-#typeIn{flex:1;height:50px;border-radius:25px;border:1px solid rgba(124,196,255,.45);background:rgba(8,18,38,.75);color:#fff;font-size:16px;padding:0 18px;outline:none}
+#typeIn{flex:1;height:50px;border-radius:25px;border:1px solid rgba(124,196,255,.45);background:rgba(8,18,38,.92);color:#fff;font-size:16px;padding:0 18px;outline:none}
 #sendT{width:50px;height:50px;border-radius:50%;border:none;background:#4E9BFF;color:#02050C;font-weight:700}
+/* --- panellar --- */
 .panel{position:absolute;inset:0;background:rgba(2,5,12,.97);display:none;flex-direction:column;z-index:20}
 .panel.show{display:flex}
 .phead{display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top) + 18px) 16px 12px}
@@ -66,55 +109,80 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-p
 .note{padding:12px 14px;border:1px solid rgba(124,196,255,.2);border-radius:12px;margin:8px 0;display:flex;gap:10px;align-items:flex-start}
 .note div{flex:1;font-size:15px;line-height:1.4}
 .note small{display:block;color:#7FA6C4;font-size:12px;margin-top:4px}
-#confirm{position:absolute;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom) + 100px);z-index:15;display:none;padding:16px;border-radius:20px;border:1px solid rgba(124,196,255,.5);background:rgba(6,14,32,.95);box-shadow:0 0 40px rgba(60,140,255,.3)}
+#confirm{position:absolute;left:12px;right:12px;bottom:calc(22vh + env(safe-area-inset-bottom) + 16px);z-index:15;display:none;padding:16px;border-radius:22px;border:1px solid rgba(124,196,255,.5);background:rgba(6,14,32,.96);box-shadow:0 0 40px rgba(60,140,255,.3);animation:pop .3s ease}
 #confirm.show{display:block}
-.who{display:flex;align-items:center;gap:12px;margin-top:8px}
+.whoc{display:flex;align-items:center;gap:12px;margin-top:8px}
 .av{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#5EB8FF,#7B5CFF);display:flex;align-items:center;justify-content:center;font-weight:700;color:#02161B;font-size:18px}
 #cMsg{margin:12px 0;padding:12px;border-radius:12px;background:rgba(255,181,71,.07);border:1px solid rgba(255,181,71,.3);font-size:16px;line-height:1.45}
-#toastJ{position:absolute;left:50%;top:calc(env(safe-area-inset-top) + 70px);transform:translateX(-50%);background:rgba(8,18,38,.9);border:1px solid rgba(124,196,255,.4);padding:8px 14px;border-radius:16px;font-size:13px;display:none;z-index:30;max-width:86vw;text-align:center}
+.lbl{font-family:monospace;font-size:11px;letter-spacing:2px;color:#7FA6C4}
+#toastJ{position:absolute;left:50%;top:calc(env(safe-area-inset-top) + 70px);transform:translateX(-50%);background:rgba(8,18,38,.92);border:1px solid rgba(124,196,255,.4);padding:8px 14px;border-radius:16px;font-size:13px;display:none;z-index:30;max-width:86vw;text-align:center}
+#tapfx{position:absolute;z-index:12;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;border:2px solid #7CC4FF;pointer-events:none;opacity:0}
+#tapfx.go{animation:tap .6s ease-out}
+@keyframes tap{0%{opacity:1;transform:scale(.3)}100%{opacity:0;transform:scale(1.6)}}
+
+/* --- qurilish (blueprint) effekti --- */
+#work{background-image:linear-gradient(rgba(70,140,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(70,140,255,.07) 1px,transparent 1px);background-size:24px 24px}
+.build{position:relative}
+.build>*{animation:fillin .45s ease .55s both}
+.build::before{content:"";position:absolute;inset:0;border-radius:inherit;border:1.5px dashed rgba(124,196,255,.9);animation:frame .9s ease both;pointer-events:none}
+.build::after{content:"";position:absolute;left:0;right:0;top:0;height:100%;border-radius:inherit;background:linear-gradient(180deg,rgba(124,196,255,0),rgba(124,196,255,.22),rgba(124,196,255,0));background-size:100% 40%;background-repeat:no-repeat;animation:scanb .9s ease both;pointer-events:none}
+@keyframes frame{0%{clip-path:inset(0 100% 100% 0);opacity:1}55%{clip-path:inset(0 0 0 0);opacity:1}100%{clip-path:inset(0 0 0 0);opacity:0}}
+@keyframes scanb{0%{background-position:0 -40%;opacity:1}100%{background-position:0 140%;opacity:0}}
+@keyframes fillin{from{opacity:0;filter:blur(4px)}to{opacity:1;filter:none}}
+.guide{position:absolute;z-index:1;pointer-events:none;opacity:0}
+.guide.h{left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,90,110,.85),transparent)}
+.guide.v{top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(90,170,255,.9),transparent)}
+.guide.go{animation:gd .9s ease both}
+@keyframes gd{0%{opacity:0}20%{opacity:1}80%{opacity:1}100%{opacity:0}}
+.mark{position:absolute;z-index:2;width:8px;height:8px;margin:-4px 0 0 -4px;border:1.5px solid #FF6B7E;transform:rotate(45deg);pointer-events:none;animation:gd .9s ease both}
+#jcur{position:absolute;z-index:4;left:0;top:0;pointer-events:none;transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .3s;opacity:0;display:flex;align-items:flex-start;gap:4px}
+#jcur svg{width:18px;height:18px;filter:drop-shadow(0 0 6px rgba(124,196,255,.9))}
+#jcur span{font-size:10px;font-family:monospace;letter-spacing:1px;background:#2F6BFF;color:#fff;padding:2px 6px;border-radius:6px;margin-top:12px}
+#work{position:absolute}
+#feedWrap{position:relative;min-height:100%}
 </style>
 </head>
 <body>
-<div id="app">
-  <video id="idleV" src="idle.mp4" poster="poster.jpg" muted autoplay loop playsinline></video>
-  <video id="talkV" src="talk.mp4" muted loop playsinline></video>
-  <div class="shade vig"></div>
-  <div class="shade scan"></div>
-  <div class="shade topfade"></div>
-  <div class="shade botfade"></div>
-  <div class="corner" style="top:calc(env(safe-area-inset-top) + 12px);left:12px;border-top-width:1px;border-left-width:1px"></div>
-  <div class="corner" style="top:calc(env(safe-area-inset-top) + 12px);right:12px;border-top-width:1px;border-right-width:1px"></div>
-
-  <div id="top">
-    <div><div class="brand">J.A.R.V.I.S</div><div class="sub" id="clock">--:--</div></div>
-    <div class="pill"><span class="dot" id="dot"></span><span id="status">TAYYOR</span></div>
+<div id="app" class="work">
+  <div id="stage" data-say="Bu men — Jarvis. Bossangiz, kattalashaman yoki kichrayaman.">
+    <div id="face">
+      <video id="idleV" src="idle.mp4" poster="poster.jpg" muted autoplay loop playsinline></video>
+      <video id="talkV" src="talk.mp4" muted loop playsinline></video>
+    </div>
+    <div class="stfx"></div><div class="ring"></div>
   </div>
 
-  <div id="side">
-    <button class="sbtn" aria-label="Funksiyalar" onclick="openPanel('funcs')"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></button>
-    <button class="sbtn" aria-label="Eslatmalar" onclick="openPanel('notes')"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h4"/></svg></button>
-    <button class="sbtn" aria-label="Sozlamalar" onclick="openPanel('settings')"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 4v6M8 14v6"/></svg></button>
-  </div>
+  <header id="hdr">
+    <div data-say="Bu yerda vaqt va hozir javob berayotgan AI xizmati ko'rinadi."><div class="brand">J.A.R.V.I.S</div><div class="sub" id="clock">--:--</div></div>
+    <div class="hicons">
+      <button class="ib" aria-label="Funksiyalar ro'yxati" onclick="openPanel('funcs')"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></button>
+      <button class="ib" aria-label="Eslatmalar" onclick="openPanel('notes')"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h4"/></svg></button>
+      <button class="ib" aria-label="Sozlamalar" onclick="openPanel('settings')"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 4v6M8 14v6"/></svg></button>
+    </div>
+  </header>
 
-  <div id="bottom">
-    <div id="card">
-      <div class="lbl">SIZ</div>
-      <div id="you">Mikrofonni bosib gapiring</div>
-      <div class="sep"></div>
-      <div class="lbl" style="color:#7CC4FF">JARVIS</div>
+  <main id="work"><div id="feedWrap"><div id="feed"></div><div id="jcur"><svg viewBox="0 0 24 24"><path d="M4 3l14 7-6 2-2 6z" fill="#7CC4FF" stroke="#fff" stroke-width="1.2"/></svg><span>JARVIS</span></div></div></main>
+
+  <div id="dock">
+    <canvas id="wave" aria-hidden="true"></canvas>
+    <div class="dmid">
+      <div class="dstat" data-say="Bu mening holatim: tinglayapmanmi, o'ylayapmanmi yoki gapiryapmanmi."><span class="dot" id="dot"></span><span id="status">TAYYOR</span></div>
+      <div id="you">Mikrofonni bosing yoki nomimni ayting</div>
       <div id="jv"></div>
+      <div class="drow">
+        <button class="sb" aria-label="Yozib yuborish" onclick="toggleType()"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M7 14h10M6 10h.01M10 10h.01M14 10h.01M18 10h.01"/></svg></button>
+        <button class="sb" aria-label="Kamera" onclick="Native.openCamera()"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
+        <button class="sb" aria-label="Ish maydonini tozalash" onclick="clearFeed()"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button>
+      </div>
     </div>
-    <div id="typeRow"><input id="typeIn" placeholder="Jarvisga yozing…" autocomplete="off"><button id="sendT" aria-label="Yuborish">➤</button></div>
-    <div id="ctrl">
-      <button class="cbtn" aria-label="Kamera" onclick="Native.openCamera()"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
-      <button id="mic" aria-label="Gapirish"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
-      <button class="cbtn" aria-label="Yozish" onclick="toggleType()"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M7 14h10M6 10h.01M10 10h.01M14 10h.01M18 10h.01"/></svg></button>
-    </div>
+    <div class="dright"><button id="mic" aria-label="Gapirish"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button></div>
   </div>
+  <div id="typeRow"><input id="typeIn" placeholder="Jarvisga yozing…" autocomplete="off"><button id="sendT" aria-label="Yuborish">➤</button></div>
+  <div id="tapfx"></div>
 
-  <div id="confirm">
+<div id="confirm">
     <div class="lbl" id="cTitle" style="color:#FFB547">XABAR · TASDIQLANG</div>
-    <div class="who"><div class="av" id="cAv">D</div><div><div style="font-size:17px;font-weight:600" id="cName">—</div><div style="font-size:13px;color:#9FC4DD" id="cSub">—</div></div></div>
+    <div class="whoc"><div class="av" id="cAv">D</div><div><div style="font-size:17px;font-weight:600" id="cName">—</div><div style="font-size:13px;color:#9FC4DD" id="cSub">—</div></div></div>
     <div id="cMsg">—</div>
     <div class="row"><button class="btn pri" style="flex:1" onclick="confirmAns(true)">Yuborish</button><button class="btn" onclick="confirmAns(false)">Bekor</button></div>
     <div class="hint" style="margin-top:8px;text-align:center">Yoki ayting: "ha, yubor" / "yo'q"</div>
@@ -136,6 +204,7 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-p
       <div class="field"><label>Doim tinglash (mikrofonni bosmasdan)</label><select id="sWake"><option value="1">Yoqilgan — nomimni eshitsa uyg'onsin</option><option value="0">O'chirilgan</option></select></div>
       <div class="field"><label>Uyg'otish so'zlari (vergul bilan)</label><input id="sWakeWords" placeholder="jarvis, aka"></div>
       <p class="hint">Shu so'zlardan birini gap boshida aytsangiz, Jarvis uyg'onadi. Masalan: "Jarvis, fonarikni yoq" yoki "Aka, soat necha?". Ilova ochiq turganda ishlaydi.</p>
+      <div class="field"><label>Teginganda tushuntirish</label><select id="sTap"><option value="1">Yoqilgan — teginsam nima ekanini aytsin</option><option value="0">O'chirilgan</option></select></div>
       <div class="field"><label>Suhbat rejimi</label><select id="sConv"><option value="1">Savol bersa, o'zi tinglasin</option><option value="0">Faqat tugma bilan</option></select></div>
       <div class="row"><button class="btn" onclick="Native.askPerms('mic,contacts,sms,call,camera')">Ruxsatlarni berish</button><button class="btn" onclick="clearHistory()">Suhbatni tozalash</button></div>
       <div style="height:16px"></div>
@@ -334,7 +403,7 @@ async function onWake(rest) {
 }
 
 window.onListenStart = sid => { if (sid !== undefined && sid !== curSid) return; if (!passive) listening = true; };
-window.onLevel = (r, sid) => { if (passive || sid !== undefined && sid !== curSid) return; const v = Math.max(0.15, Math.min(1, (r + 2) / 12)); bars.forEach((b, i) => b.style.transform = 'scaleY(' + Math.max(0.15, v * (0.55 + 0.45 * Math.sin(i * 1.3 + Date.now() / 90))) + ')'); };
+window.onLevel = (r, sid) => { if (passive || sid !== undefined && sid !== curSid) return; micLevel = Math.max(0.1, Math.min(1, (r + 2) / 10)); const v = Math.max(0.15, Math.min(1, (r + 2) / 12)); bars.forEach((b, i) => b.style.transform = 'scaleY(' + Math.max(0.15, v * (0.55 + 0.45 * Math.sin(i * 1.3 + Date.now() / 90))) + ')'); };
 window.onPartial = (t, sid) => { if (passive || sid !== undefined && sid !== curSid) return; $('you').textContent = t; };
 window.onListenEnd = () => {};
 window.onListenError = (c, sid) => {
@@ -478,24 +547,39 @@ const TOOLS = [
 
 async function runTool(name, a) {
   a = a || {};
+  const L = (TOOL_LABEL[name] || (() => [name, '']))(a);
+  const st = taskStep(L[0], L[1]);
+  const r = await runToolRaw(name, a);
+  st.done(toolOk(r), toolDetail(name, r));
+  resultCard(name, a, r);
+  return r;
+}
+async function runToolRaw(name, a) {
+  a = a || {};
   try {
     switch (name) {
       case 'set_alarm': return { ok: N.setAlarm(a.hour | 0, a.minute | 0, a.label || 'Jarvis') };
       case 'set_timer': return { ok: N.setTimer(a.seconds | 0, a.label || 'Jarvis') };
       case 'flashlight': return { ok: N.torch(!!a.on) };
       case 'call_contact': {
+        const s1 = subStep('Kontakt qidirilmoqda', a.name);
         const c = await findContact(a.name || '');
+        s1.done(c.status === 'ok', c.status === 'ok' ? c.name + ' · ' + c.phone : 'topilmadi');
         if (c.status !== 'ok') return c;
         if (!N.hasPerm('call')) N.askPerms('call');
         return { ok: N.call(c.phone), contact: c.name };
       }
       case 'send_message': {
+        const s1 = subStep('Kontakt qidirilmoqda', a.to);
         const c = await findContact(a.to || '');
+        s1.done(c.status === 'ok', c.status === 'ok' ? c.name + ' · ' + c.phone : 'topilmadi');
         if (c.status !== 'ok') return c;
+        const s2 = subStep('Tasdiq kutilmoqda', 'ekrandagi kartani tasdiqlang');
         const ch = a.channel === 'telegram' ? 'telegram' : 'sms';
         const box = confirmFlow(ch === 'sms' ? 'SMS · TASDIQLANG' : 'TELEGRAM · TASDIQLANG', c.name, (ch === 'sms' ? 'SMS · ' : 'Telegram · ') + c.phone, a.text,
           c.name + 'ga shunday yozaymi: ' + a.text + ' Yuboraymi?');
         const yes = await box;
+        s2.done(!!yes, yes ? 'tasdiqlandi' : 'bekor qilindi');
         if (!yes) return { status: 'cancelled_by_user' };
         if (ch === 'telegram') { const p = N.telegram(a.text); return p ? { status: 'telegram_opened', note: 'Telegram ochildi, foydalanuvchi ' + c.name + ' chatini tanlab yuboradi' } : { status: 'telegram_not_installed' }; }
         let r = N.sendSms(c.phone, a.text);
@@ -668,12 +752,14 @@ async function runOA(p, userText) {
 async function think(userText) {
   let err = null;
   for (const p of provOrder()) {
+    const ts = taskStep('O\'ylayapti', PROV[p].title);
     try {
       const ans = p === 'gemini' ? await runGemini(userText) : await runOA(p, userText);
+      ts.done(true, PROV[p].title);
       lastProv = PROV[p].title; tick();
       history.push({ r: 'user', t: userText }, { r: 'model', t: ans || 'Bajarildi.' }); saveHistory();
       return ans;
-    } catch (e) { err = e; if (e.kind === 'internet') break; }
+    } catch (e) { err = e; ts.done(false, PROV[p].title + ' · ' + ({ kalit: 'kalit xato', band: 'server band', limit: 'limit tugagan', internet: 'internet yo\'q', model: 'model topilmadi' }[e.kind] || 'xato')); if (e.kind === 'internet') break; }
   }
   throw err || new Error('no provider');
 }
@@ -690,8 +776,10 @@ function quick(t) {
 
 async function handleUser(text) {
   if (busy) return;
+  feedMsg('u', text);
+  newTask(text.length > 34 ? text.slice(0, 34) + '…' : text);
   const q = quick(text);
-  if (q) { await say(q); return; }
+  if (q) { const st = taskStep('Tezkor buyruq', 'internetsiz'); st.done(true, q); feedMsg('j', q); await say(q); return; }
   if (!anyKey()) {
     await say(callName() + ', aqlli javob berishim uchun kamida bitta AI kalitini kiritishingiz kerak. Sozlamalarni ochyapman.');
     openPanel('settings'); return;
@@ -710,6 +798,7 @@ async function handleUser(text) {
   }
   busy = false;
   if (!answer) answer = 'Bajarildi.';
+  feedMsg('j', answer);
   await say(answer);
   if (S.conv() && /\?\s*$/.test(answer) && !listening) setTimeout(() => { if (!speaking && !busy) startListen(); }, 300);
 }
@@ -747,7 +836,7 @@ function loadSettings() {
   PIDS.forEach(p => { $('k_' + p).value = pKey(p); $('m_' + p).value = p === 'gemini' ? N.get('model') : N.get('model_' + p); });
   document.querySelectorAll('[data-url]').forEach(b => b.onclick = () => N.openUrl(b.dataset.url));
   document.querySelectorAll('[data-test]').forEach(b => b.onclick = () => testProv(b.dataset.test));
-  $('sWake').value = wakeOn() ? '1' : '0'; $('sWakeWords').value = N.get('wakeWords') || 'jarvis, aka';
+  $('sTap').value = N.get('tapSay') === '0' ? '0' : '1'; $('sWake').value = wakeOn() ? '1' : '0'; $('sWakeWords').value = N.get('wakeWords') || 'jarvis, aka';
   $('sName').value = N.get('name'); $('sEngine').value = N.get('engine') || 'sardor'; $('sPitch').value = N.get('pitch') || '-2Hz';
   $('sAddr').value = S.addr(); fillVoices(); $('sRate').value = S.rate(); $('rateV').textContent = S.rate().toFixed(2);
   $('sConv').value = S.conv() ? '1' : '0';
@@ -763,7 +852,7 @@ $('sRate').oninput = e => $('rateV').textContent = parseFloat(e.target.value).to
 function saveSettings() {
   storeKeys(); N.set('name', $('sName').value.trim()); N.set('engine', $('sEngine').value); N.set('pitch', $('sPitch').value);
   N.set('addr', $('sAddr').value); N.set('addrSet', '1'); N.set('voice', $('sVoice').value); N.set('rate', $('sRate').value); N.set('conv', $('sConv').value);
-  N.set('wake', $('sWake').value); N.set('wakeWords', $('sWakeWords').value.trim() || 'jarvis, aka');
+  N.set('tapSay', $('sTap').value); N.set('wake', $('sWake').value); N.set('wakeWords', $('sWakeWords').value.trim() || 'jarvis, aka');
   toastJ('Saqlandi'); closePanels();
 }
 async function testVoice() {
@@ -810,6 +899,170 @@ function renderFuncs() {
   document.querySelectorAll('.fn').forEach(b => b.onclick = () => { closePanels(); $('you').textContent = b.dataset.q; handleUser(b.dataset.q); });
 }
 
+
+// ---------- ish maydoni (feed) ----------
+const feed = $('feed'), work = $('work'), wrap = $('feedWrap'), jcur = $('jcur');
+function scrollEnd() { setTimeout(() => work.scrollTo({ top: work.scrollHeight, behavior: 'smooth' }), 30); }
+function buildFx(el) {
+  el.classList.add('build');
+  requestAnimationFrame(() => {
+    const top = el.offsetTop, left = el.offsetLeft, w = el.offsetWidth, h = el.offsetHeight;
+    const mk = (cls, st) => { const g = document.createElement('div'); g.className = cls; Object.assign(g.style, st); wrap.appendChild(g); requestAnimationFrame(() => g.classList.add('go')); setTimeout(() => g.remove(), 1000); };
+    mk('guide h', { top: top + 'px' }); mk('guide h', { top: (top + h) + 'px' });
+    mk('guide v', { left: left + 'px' }); mk('guide v', { left: (left + w) + 'px' });
+    [[left, top], [left + w, top], [left, top + h], [left + w, top + h]].forEach(([x, y]) => { const m = document.createElement('div'); m.className = 'mark'; m.style.left = x + 'px'; m.style.top = y + 'px'; wrap.appendChild(m); setTimeout(() => m.remove(), 1000); });
+    jcur.style.opacity = '1'; jcur.style.transform = 'translate(' + Math.min(left + w - 30, wrap.clientWidth - 92) + 'px,' + (top + h - 14) + 'px)';
+    clearTimeout(jcur._t); jcur._t = setTimeout(() => jcur.style.opacity = '0', 2200);
+  });
+  setTimeout(() => el.classList.remove('build'), 1500);
+}
+function addFeed(el) { const h = feed.querySelector('.hello'); if (h) h.remove(); feed.appendChild(el); buildFx(el); scrollEnd(); return el; }
+function feedMsg(who, text) {
+  const d = document.createElement('div'); d.className = 'msg ' + (who === 'u' ? 'u' : 'j');
+  d.dataset.say = who === 'u' ? 'Bu sizning gapingiz: ' + text : 'Bu mening javobim: ' + text;
+  d.innerHTML = (who === 'u' ? '' : '<div class="who">JARVIS</div>') + esc(text);
+  return addFeed(d);
+}
+let curTask = null;
+function newTask(title) {
+  const d = document.createElement('div'); d.className = 'task';
+  d.dataset.say = 'Bu vazifaning bajarilish jarayoni.';
+  d.innerHTML = '<div class="tt"><span>VAZIFA · ' + esc(title || '') + '</span><span class="tm">' + hm(new Date()) + '</span></div>';
+  addFeed(d); curTask = d; return d;
+}
+function taskStep(label, detail) {
+  if (!curTask) newTask('');
+  const st = document.createElement('div'); st.className = 'step run';
+  st.dataset.say = label + (detail ? '. ' + detail : '');
+  st.innerHTML = '<span class="ic"></span><span class="lb">' + esc(label) + '<span class="dt">' + esc(detail || '') + '</span></span>';
+  curTask.appendChild(st); buildFx(st); scrollEnd();
+  return {
+    el: st,
+    done(ok, d2) {
+      st.classList.remove('run'); st.classList.add(ok ? 'ok' : 'bad');
+      st.querySelector('.ic').textContent = ok ? '✓' : '✕';
+      if (d2 !== undefined) st.querySelector('.dt').textContent = d2;
+      st.dataset.say = label + (ok ? ' — bajarildi. ' : ' — bajarilmadi. ') + (d2 || '');
+    }
+  };
+}
+function feedCard(html, say, warn) {
+  const d = document.createElement('div'); d.className = 'rc' + (warn ? ' warn' : ''); d.dataset.say = say || 'Bu natija kartasi.';
+  d.innerHTML = html; return addFeed(d);
+}
+function clearFeed() { feed.innerHTML = ''; curTask = null; renderHello(); }
+function renderHello() {
+  const h = new Date().getHours(), g = h < 5 ? 'Xayrli tun' : h < 11 ? 'Xayrli tong' : h < 17 ? 'Xayrli kun' : 'Xayrli kech';
+  const ch = [['Xabar', 'Doniga SMS yoz: ertaga 9 da obyektda bo\'laman'], ['Budilnik', 'Ertaga 6:30 da uyg\'ot'], ['Eslatma', 'Eslab qol: kabel va avtomat olish kerak'], ['Telefon', 'Batareya necha foiz?'], ['Qidiruv', 'Internetdan qidir: Quvasoy ob-havo'], ['Suhbat', 'Ahvollaring qalay, Jarvis?']];
+  const d = document.createElement('div'); d.className = 'hello';
+  d.dataset.say = 'Bu ish maydoni. Bu yerda men bajarayotgan ishlar bosqichma-bosqich ko\'rinadi.';
+  d.innerHTML = '<h2>' + g + ', ' + esc(callName()) + '</h2><p>Buyruq bering — bajarilish jarayoni shu yerda bosqichma-bosqich ko\'rinadi.</p><div class="chips">' +
+    ch.map(c => '<button class="chip" data-q="' + esc(c[1]) + '"><b>' + c[0] + '</b>' + esc(c[1]) + '</button>').join('') + '</div>';
+  feed.appendChild(d);
+  d.querySelectorAll('.chip').forEach(b => b.onclick = () => { $('you').textContent = b.dataset.q; handleUser(b.dataset.q); });
+}
+const TOOL_LABEL = {
+  set_alarm: a => ['Budilnik qo\'yilmoqda', String(a.hour).padStart(2, '0') + ':' + String(a.minute || 0).padStart(2, '0')],
+  set_timer: a => ['Taymer qo\'yilmoqda', Math.round((a.seconds || 0) / 60) + ' daqiqa'],
+  flashlight: a => ['Fonarik', a.on ? 'yoqilmoqda' : 'o\'chirilmoqda'],
+  call_contact: a => ['Qo\'ng\'iroq', a.name],
+  send_message: a => ['Xabar yuborish', (a.channel === 'telegram' ? 'Telegram · ' : 'SMS · ') + a.to],
+  open_app: a => ['Ilova ochilmoqda', a.name],
+  open_settings: a => ['Sozlama ochilmoqda', a.page],
+  device_info: () => ['Telefon holati tekshirilmoqda', 'vaqt, sana, batareya'],
+  set_volume: a => ['Ovoz balandligi', a.percent + '%'],
+  save_note: a => ['Eslatma saqlanmoqda', a.text],
+  list_notes: () => ['Eslatmalar o\'qilmoqda', ''],
+  delete_note: a => ['Eslatma o\'chirilmoqda', '№' + a.index],
+  web_search: a => ['Internetda qidirilmoqda', a.query],
+  open_maps: a => ['Xarita ochilmoqda', a.place],
+  youtube: a => ['YouTube qidiruvi', a.query],
+  smart_home: a => ['Uy qurilmasi', (a.device || '') + ' · ' + (a.action || '')],
+  open_camera: () => ['Kamera ochilmoqda', '']
+};
+function resultCard(name, a, r) {
+  if (!r) return;
+  if (name === 'set_alarm' && r.ok) feedCard('<div><div class="lab">BUDILNIK</div><div class="big">' + String(a.hour).padStart(2, '0') + ':' + String(a.minute || 0).padStart(2, '0') + '</div><div class="hint">' + esc(a.label || 'Jarvis') + '</div></div>', 'Budilnik soat ' + a.hour + ':' + String(a.minute || 0).padStart(2, '0') + ' ga qo\'yildi.');
+  if (name === 'set_timer' && r.ok) feedCard('<div><div class="lab">TAYMER</div><div class="big">' + Math.floor(a.seconds / 60) + ':' + String(a.seconds % 60).padStart(2, '0') + '</div></div>', 'Taymer qo\'yildi.');
+  if (name === 'device_info') { const c = r.battery > 50 ? '#4ADE80' : r.battery > 20 ? '#FFB547' : '#FF6B6B'; feedCard('<div class="ringv" style="background:conic-gradient(' + c + ' 0 ' + r.battery + '%,rgba(255,255,255,.08) ' + r.battery + '% 100%)"><div style="width:48px;height:48px;border-radius:50%;background:#0A1530;display:flex;align-items:center;justify-content:center">' + r.battery + '%</div></div><div><div class="lab">TELEFON</div><div class="big" style="font-size:24px">' + r.time + '</div><div class="hint">' + esc(r.date) + (r.charging ? ' · zaryadlanyapti' : '') + '</div></div>', 'Batareya ' + r.battery + ' foiz. Soat ' + r.time + '.'); }
+  if (name === 'list_notes') feedCard('<div style="flex:1"><div class="lab">ESLATMALAR</div>' + (r.notes && r.notes.length ? '<ol>' + r.notes.map(n => '<li>' + esc(n.replace(/^\d+\.\s*/, '')) + '</li>').join('') + '</ol>' : '<div class="hint">Eslatma yo\'q</div>') + '</div>', 'Bu eslatmalaringiz ro\'yxati.');
+  if (name === 'save_note' && r.saved) feedCard('<div><div class="lab">ESLATMA SAQLANDI</div><div style="font-size:16px;margin-top:4px">' + esc(a.text) + '</div></div>', 'Eslatma saqlandi: ' + a.text);
+  if (name === 'send_message' && r.status === 'sent') feedCard('<div class="av">' + esc((r.to || '?').charAt(0)) + '</div><div><div class="lab">SMS YUBORILDI · ' + esc(r.to) + '</div><div style="font-size:15px;margin-top:4px">' + esc(a.text) + '</div></div>', r.to + 'ga SMS yuborildi.');
+  if (name === 'smart_home') feedCard('<div><div class="lab">UY QURILMASI</div><div style="font-size:16px;margin-top:4px">' + esc((a.device || '') + ' — hali ulanmagan') + '</div><div class="hint">Wi-Fi rele yoki aqlli qurilma ulangach boshqariladi</div></div>', 'Bu qurilma hali ulanmagan.', true);
+  if (name === 'web_search' || name === 'youtube') feedCard('<div><div class="lab">' + (name === 'youtube' ? 'YOUTUBE' : 'GOOGLE') + ' QIDIRUVI</div><div style="font-size:16px;margin-top:4px">' + esc(a.query) + '</div><div class="hint">Brauzerda ochildi</div></div>', 'Qidiruv brauzerda ochildi: ' + a.query);
+}
+function toolOk(r) { if (!r) return false; if (r.error) return false; if (r.ok === false) return false; if (/not_found|no_permission|failed|not_installed|cancelled|not_connected/.test(r.status || '')) return false; return true; }
+function toolDetail(name, r) {
+  if (!r) return '';
+  if (r.status === 'not_found') return 'topilmadi';
+  if (r.status === 'no_permission') return 'ruxsat berilmagan';
+  if (r.status === 'cancelled_by_user') return 'bekor qilindi';
+  if (r.status === 'sent') return 'yuborildi → ' + r.to;
+  if (r.status === 'not_connected') return 'qurilma ulanmagan';
+  if (r.status === 'telegram_opened') return 'Telegram ochildi';
+  if (r.opened) return r.opened + ' ochildi';
+  if (r.contact) return r.contact;
+  if (r.volume !== undefined) return r.volume + '%';
+  return undefined;
+}
+function subStep(label, detail) { return curTask ? taskStep(label, detail) : { done() {} }; }
+
+// ---------- Jarvis qarashi va tushuntirishi ----------
+const face = $('face'), tapfx = $('tapfx');
+let lookT = null, pressT = null, pressEl = null, pressXY = null, longFired = false;
+document.addEventListener('click', e => { if (longFired) { longFired = false; e.stopPropagation(); e.preventDefault(); } }, true);
+function lookAt(x, y) {
+  const r = $('stage').getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * 0.35;
+  const dx = (x - cx) / window.innerWidth, dy = (y - cy) / window.innerHeight;
+  const ry = Math.max(-22, Math.min(22, dx * 46)), rx = Math.max(-14, Math.min(14, -dy * 30));
+  face.style.transform = 'rotateY(' + ry + 'deg) rotateX(' + rx + 'deg) translateX(' + (dx * 6) + 'px)';
+  clearTimeout(lookT); lookT = setTimeout(() => face.style.transform = '', 2600);
+  tapfx.style.left = x + 'px'; tapfx.style.top = y + 'px'; tapfx.classList.remove('go'); void tapfx.offsetWidth; tapfx.classList.add('go');
+}
+function describe(el) {
+  if (!el || N.get('tapSay') === '0' || busy) return;
+  const t = el.dataset && el.dataset.say ? el.dataset.say : (el.getAttribute && el.getAttribute('aria-label') ? 'Bu — ' + el.getAttribute('aria-label') + ' tugmasi.' : '');
+  if (t) say(t.length > 220 ? t.slice(0, 220) : t);
+}
+document.addEventListener('pointerdown', e => {
+  lookAt(e.clientX, e.clientY);
+  pressEl = e.target; pressXY = [e.clientX, e.clientY];
+  clearTimeout(pressT);
+  pressT = setTimeout(() => { const el = pressEl && pressEl.closest('button,[data-say]'); pressEl = null; if (el) { longFired = true; N.vibrate(25); describe(el); } }, 600);
+}, true);
+document.addEventListener('pointermove', e => { if (pressXY && Math.hypot(e.clientX - pressXY[0], e.clientY - pressXY[1]) > 12) { clearTimeout(pressT); pressEl = null; } }, true);
+document.addEventListener('pointerup', e => {
+  clearTimeout(pressT);
+  if (!pressEl) return;
+  const btn = pressEl.closest('button,input,select,a'), info = pressEl.closest('[data-say]');
+  pressEl = null;
+  if (!btn && info && info.id !== 'stage') describe(info);
+}, true);
+$('stage').addEventListener('click', () => { $('app').classList.toggle('full'); $('app').classList.toggle('work'); });
+
+// ---------- ovoz to'lqini ----------
+const wave = $('wave'); let micLevel = 0;
+(function waveLoop() {
+  const c = wave, ctx = c.getContext('2d'), W = c.clientWidth * 2, H = c.clientHeight * 2;
+  if (W && (c.width !== W || c.height !== H)) { c.width = W; c.height = H; }
+  if (W) {
+    ctx.clearRect(0, 0, W, H);
+    const t = Date.now() / 1000, talk = $('app').classList.contains('talking');
+    const amp = talk ? 0.55 + 0.45 * Math.abs(Math.sin(t * 7.3) * Math.sin(t * 3.1)) : listening ? Math.min(1, micLevel) : 0.08;
+    for (let k = 0; k < 3; k++) {
+      ctx.beginPath();
+      for (let x = 0; x <= W; x += 6) {
+        const env = Math.sin((x / W) * Math.PI);
+        const y = H * 0.62 + env * H * 0.3 * amp * (1 - k * 0.25) * Math.sin(x * 0.018 + t * (3 + k) + k * 2);
+        x ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.strokeStyle = ['rgba(124,196,255,.85)', 'rgba(155,123,255,.55)', 'rgba(255,255,255,.35)'][k];
+      ctx.lineWidth = 3 - k; ctx.stroke();
+    }
+  }
+  requestAnimationFrame(waveLoop);
+})();
+
 // ---------- boshlash ----------
 window.onAppResume = () => { appPaused = false; playSafe(idleV); contactCache = null; schedulePassive(900); };
 window.onAppPause = () => { appPaused = true; stopPassive(); };
@@ -820,6 +1073,7 @@ function greet() {
   const q = ['Ahvollaringiz yaxshimi?', 'Kayfiyatlar qalay?', 'Bugun nima yordam beray?', 'Charchamadingizmi?'][Math.floor(Math.random() * 4)];
   return g + ', ' + callName() + '! ' + q;
 }
+renderHello();
 setTimeout(async () => {
   if (!N.get('perms1')) { N.set('perms1', '1'); N.askPerms('mic,contacts,sms,call'); }
   await ttsReadyP();

@@ -71,7 +71,7 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-p
 .who{display:flex;align-items:center;gap:12px;margin-top:8px}
 .av{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#5EB8FF,#7B5CFF);display:flex;align-items:center;justify-content:center;font-weight:700;color:#02161B;font-size:18px}
 #cMsg{margin:12px 0;padding:12px;border-radius:12px;background:rgba(255,181,71,.07);border:1px solid rgba(255,181,71,.3);font-size:16px;line-height:1.45}
-#toastJ{position:absolute;left:50%;top:calc(env(safe-area-inset-top) + 70px);transform:translateX(-50%);background:rgba(8,18,38,.9);border:1px solid rgba(124,196,255,.4);padding:8px 14px;border-radius:20px;font-size:13px;display:none;z-index:30;white-space:nowrap}
+#toastJ{position:absolute;left:50%;top:calc(env(safe-area-inset-top) + 70px);transform:translateX(-50%);background:rgba(8,18,38,.9);border:1px solid rgba(124,196,255,.4);padding:8px 14px;border-radius:16px;font-size:13px;display:none;z-index:30;max-width:86vw;text-align:center}
 </style>
 </head>
 <body>
@@ -283,7 +283,8 @@ $('typeIn').addEventListener('keydown', e => { if (e.key === 'Enter') $('sendT')
 const httpWait = {};
 let httpN = 0;
 window.onHttp = (id, code, body) => { const f = httpWait[id]; delete httpWait[id]; if (f) f({ code, body }); };
-function http(url, obj) { return new Promise(res => { const id = 'h' + (++httpN); httpWait[id] = res; N.http(id, url, JSON.stringify(obj)); }); }
+function http(url, obj) { return new Promise(res => { const id = 'h' + (++httpN); httpWait[id] = res; N.http(id, url, obj ? JSON.stringify(obj) : ''); }); }
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // ---------- kontaktlar ----------
 const LAT = { 'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo','ж':'j','з':'z','и':'i','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'x','ц':'s','ч':'ch','ш':'sh','щ':'sh','ъ':'','ы':'i','ь':'','э':'e','ю':'yu','я':'ya','ў':'o','қ':'q','ғ':'g','ҳ':'h' };
@@ -444,23 +445,64 @@ function sysPrompt() {
     'Vositani chaqira olmasang yoki qurilma ulanmagan bo\'lsa, rostini ayt. ' +
     'Hozir: ' + uzDate(d) + ', soat ' + hm(d) + '. Joylashuv: O\'zbekiston.';
 }
-const FALLBACKS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-3-flash-preview'];
-async function gemini(contents) {
-  const key = S.key();
-  let models = [S.model(), ...FALLBACKS.filter(m => m !== S.model())];
-  let lastErr = '';
-  for (const m of models) {
-    const r = await http('https://generativelanguage.googleapis.com/v1beta/models/' + m + ':generateContent?key=' + encodeURIComponent(key), {
+const API = 'https://generativelanguage.googleapis.com/v1beta/';
+const BASE_FALLBACKS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-flash-latest', 'gemini-flash-lite-latest'];
+async function discoverModels() {
+  try {
+    const cached = JSON.parse(N.get('models') || 'null');
+    if (cached && Date.now() - cached.t < 86400000) return cached.list;
+  } catch (e) {}
+  const r = await http(API + 'models?pageSize=200&key=' + encodeURIComponent(S.key()), null);
+  let list = [];
+  try {
+    const j = JSON.parse(r.body);
+    list = (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes('generateContent'))
+      .map(m => m.name.replace('models/', ''))
+      .filter(n => /flash/.test(n) && !/(tts|image|live|audio|embed|vision|exp-|thinking)/.test(n));
+    const lite = n => /lite/.test(n) ? 1 : 0, prev = n => /preview/.test(n) ? 1 : 0;
+    const ver = n => { const m = n.match(/(\d+(?:\.\d+)?)/); return m ? parseFloat(m[1]) : 0; };
+    list.sort((x, y) => lite(x) - lite(y) || prev(x) - prev(y) || ver(y) - ver(x));
+  } catch (e) {}
+  if (list.length) N.set('models', JSON.stringify({ t: Date.now(), list }));
+  return list;
+}
+function friendlyErr(m) {
+  if (/API key|API_KEY|invalid|PERMISSION/i.test(m)) return 'kalit';
+  if (/high demand|overloaded|unavailable|503/i.test(m)) return 'band';
+  if (/quota|limit|429|exhausted/i.test(m)) return 'limit';
+  if (/Unable to resolve|timeout|failed to connect|network|resolve host/i.test(m)) return 'internet';
+  return 'boshqa';
+}
+async function tryModel(m, contents) {
+  let last = { code: 0, msg: '' };
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const r = await http(API + 'models/' + m + ':generateContent?key=' + encodeURIComponent(S.key()), {
       systemInstruction: { parts: [{ text: sysPrompt() }] },
       contents,
       tools: [{ functionDeclarations: TOOLS }]
     });
     let j = null; try { j = JSON.parse(r.body); } catch (e) {}
-    if (r.code === 200 && j && j.candidates) { if (m !== S.model()) N.set('model', m); return j; }
-    lastErr = (j && j.error && j.error.message) || ('HTTP ' + r.code);
-    if (r.code === 404 || (r.code === 400 && /model/i.test(lastErr))) continue;
-    if (r.code === 429 || r.code === 503) continue;
+    if (r.code === 200 && j && j.candidates) return { ok: true, j };
+    last = { code: r.code, msg: (j && j.error && j.error.message) || ('HTTP ' + r.code) };
+    if (r.code === 503 || r.code === 500 || r.code === 0 && !/resolve host/i.test(last.msg)) { setStatus('QAYTA URINYAPTI', '#FFB547'); await sleep(1200 * (attempt + 1)); continue; }
     break;
+  }
+  return { ok: false, ...last };
+}
+async function gemini(contents) {
+  const tried = new Set();
+  let order = [S.model(), ...BASE_FALLBACKS];
+  let lastErr = '', discovered = false;
+  for (let i = 0; i < order.length; i++) {
+    const m = order[i];
+    if (!m || tried.has(m)) continue;
+    tried.add(m);
+    const r = await tryModel(m, contents);
+    if (r.ok) { if (m !== N.get('model')) N.set('model', m); return r.j; }
+    lastErr = r.msg;
+    const kind = friendlyErr(r.msg);
+    if (kind === 'kalit' || kind === 'internet') break;
+    if (!discovered) { discovered = true; const more = await discoverModels(); order = order.concat(more); }
   }
   throw new Error(lastErr);
 }
@@ -510,11 +552,12 @@ async function handleUser(text) {
   let answer;
   try { answer = await think(text); }
   catch (e) {
-    const m = String(e.message || e);
-    answer = /API key|API_KEY|invalid/i.test(m) ? 'Gemini kaliti noto\'g\'ri ko\'rinadi. Sozlamalarda tekshiring.' :
-      /quota|limit|429|exhausted/i.test(m) ? 'Bugungi bepul limit tugadi yoki juda tez so\'radingiz. Birozdan keyin urinib ko\'ring.' :
-      /Unable to resolve|timeout|failed to connect|network/i.test(m) ? 'Internet aloqasi yo\'q shekilli. Ulanishni tekshiring.' :
-      'Kechirasiz, xatolik bo\'ldi: ' + m.slice(0, 120);
+    const m = String(e.message || e), k = friendlyErr(m);
+    answer = k === 'kalit' ? 'Gemini kaliti noto\'g\'ri ko\'rinadi. Sozlamalarda tekshiring.' :
+      k === 'band' ? 'Google serverlari hozir juda band ekan. Bir daqiqadan keyin qayta so\'rang.' :
+      k === 'limit' ? 'Bepul limit vaqtincha tugadi. Birozdan keyin urinib ko\'ring.' :
+      k === 'internet' ? 'Internet aloqasi yo\'q shekilli. Ulanishni tekshiring.' :
+      'Kechirasiz, xatolik bo\'ldi.';
   }
   busy = false;
   if (!answer) answer = 'Bajarildi.';
@@ -558,7 +601,7 @@ async function testAI() {
   N.set('key', $('sKey').value.trim()); if ($('sModel').value.trim()) N.set('model', $('sModel').value.trim());
   toastJ('Tekshirilmoqda…');
   try { const j = await gemini([{ role: 'user', parts: [{ text: 'Bir so\'z bilan salom de.' }] }]); toastJ('Ishlayapti: ' + S.model()); $('sModel').value = S.model(); }
-  catch (e) { toastJ('Xato: ' + String(e.message || e).slice(0, 60)); }
+  catch (e) { const k = friendlyErr(String(e.message || e)); toastJ(k === 'kalit' ? 'Kalit noto\'g\'ri' : k === 'band' ? 'Google band, keyinroq urining' : k === 'limit' ? 'Limit tugagan' : k === 'internet' ? 'Internet yo\'q' : 'Xato: ' + String(e.message || e).slice(0, 50)); }
 }
 function renderNotes() {
   const n = notes(), b = $('notesBody');

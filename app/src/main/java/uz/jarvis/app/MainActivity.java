@@ -61,6 +61,7 @@ public class MainActivity extends Activity {
     private boolean ttsReady = false;
     private SpeechRecognizer recognizer;
     private SharedPreferences prefs;
+    private CloudVoice cloud;
     private final Handler ui = new Handler(Looper.getMainLooper());
     private long lastLevel = 0;
     private static final int REQ_PERMS = 11;
@@ -89,6 +90,14 @@ public class MainActivity extends Activity {
         web.setWebChromeClient(new WebChromeClient());
         setContentView(web);
         web.loadUrl("file:///android_asset/index.html");
+
+        cloud = new CloudVoice(this, new CloudVoice.Events() {
+            @Override public void onStart() { js("window.onTtsStart&&window.onTtsStart()"); }
+            @Override public void onDone() { js("window.onTtsDone&&window.onTtsDone()"); }
+            @Override public void onFail(String engine, String msg) {
+                js("window.onCloudFail&&window.onCloudFail(" + JSONObject.quote(engine) + "," + JSONObject.quote(msg) + ")");
+            }
+        });
 
         tts = new TextToSpeech(this, status -> {
             ttsReady = status == TextToSpeech.SUCCESS;
@@ -134,6 +143,7 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         try { if (tts != null) { tts.stop(); tts.shutdown(); } } catch (Exception ignored) { }
         try { if (recognizer != null) recognizer.destroy(); } catch (Exception ignored) { }
+        try { if (cloud != null) cloud.stop(); } catch (Exception ignored) { }
         super.onDestroy();
     }
 
@@ -245,6 +255,7 @@ public class MainActivity extends Activity {
         @JavascriptInterface
         public boolean speak(String text, String lang, float rate, float pitch) {
             if (!ttsReady) return false;
+            try { cloud.stop(); } catch (Exception ignored) { }
             try {
                 int r = tts.setLanguage(localeOf(lang));
                 if (r < TextToSpeech.LANG_AVAILABLE) tts.setLanguage(Locale.getDefault());
@@ -256,8 +267,15 @@ public class MainActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void speakCloud(String engine, String text, String opts) {
+            try { if (tts != null) tts.stop(); } catch (Exception ignored) { }
+            cloud.speak(engine, text, opts);
+        }
+
+        @JavascriptInterface
         public void stopSpeak() {
             try { if (tts != null) tts.stop(); } catch (Exception ignored) { }
+            try { cloud.stop(); } catch (Exception ignored) { }
             js("window.onTtsDone&&window.onTtsDone()");
         }
 

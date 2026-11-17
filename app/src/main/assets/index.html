@@ -128,9 +128,11 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-p
       <div id="provBox"></div>
       <div class="field"><label>Ismingiz</label><input id="sName" placeholder="Vohidjon"></div>
       <div class="field"><label>Murojaat</label><select id="sAddr"><option value="aka">aka</option><option value="ser">ser</option><option value="">ism bilan</option></select></div>
-      <div class="field"><label>Jarvis ovozi (tili)</label><select id="sVoice"></select></div>
+      <div class="field"><label>Jarvis ovozi</label><select id="sEngine"><option value="sardor">Sardor — o'zbekcha erkak ovozi (bepul)</option><option value="madina">Madina — o'zbekcha ayol ovozi (bepul)</option><option value="gemini">Gemini ovozi (Google kaliti bilan)</option><option value="phone">Telefonning o'z ovozi</option></select></div>
+      <div class="field"><label>Ovoz ohangi</label><select id="sPitch"><option value="-6Hz">Past, jiddiy</option><option value="-2Hz">O'rtacha</option><option value="+0Hz">Oddiy</option><option value="+4Hz">Yuqoriroq</option></select></div>
+      <div class="field"><label>Telefon ovozi tili (zaxira)</label><select id="sVoice"></select></div>
       <div class="field"><label>Ovoz tezligi: <span id="rateV">1.0</span></label><input id="sRate" type="range" min="0.6" max="1.5" step="0.05" style="height:30px;padding:0"></div>
-      <div class="row"><button class="btn" onclick="say('Salom! Men Jarvis, sizning yordamchingizman.')">Ovozni sinash</button><button class="btn" onclick="Native.openTtsSettings()">Ovoz paketlari</button></div>
+      <div class="row"><button class="btn" onclick="testVoice()">Ovozni sinash</button><button class="btn" onclick="Native.openTtsSettings()">Ovoz paketlari</button></div>
       <div class="field"><label>Suhbat rejimi</label><select id="sConv"><option value="1">Savol bersa, o'zi tinglasin</option><option value="0">Faqat tugma bilan</option></select></div>
       <div class="row"><button class="btn" onclick="Native.askPerms('mic,contacts,sms,call,camera')">Ruxsatlarni berish</button><button class="btn" onclick="clearHistory()">Suhbatni tozalash</button></div>
       <div style="height:16px"></div>
@@ -219,21 +221,44 @@ function pickVoice() {
 }
 function clean(t) { return String(t || '').replace(/[*_#`>]/g, '').replace(/\s+/g, ' ').trim(); }
 let speakResolve = null;
+const ENGINES = { sardor: 'ms:uz-UZ-SardorNeural', madina: 'ms:uz-UZ-MadinaNeural', gemini: 'gemini', phone: 'phone' };
+const ENGINE_NAMES = { sardor: 'Sardor', madina: 'Madina', gemini: 'Gemini ovozi', phone: 'Telefon ovozi' };
+function engineChain() {
+  const v = N.get('engine') || 'sardor';
+  return [...new Set([v, 'sardor', 'gemini', 'madina', 'phone'])].filter(e => e !== 'gemini' || pKey('gemini')).filter(e => e === 'phone' || N.speakCloud);
+}
+function voiceOpts(e) {
+  const pct = Math.round((S.rate() - 1) * 100), pitch = N.get('pitch') || '-2Hz';
+  if (e === 'gemini') return { key: pKey('gemini'), models: 'gemini-3.8-flash-tts,gemini-3.8-flash-lite-tts,gemini-3.1-flash-tts-preview,gemini-2.5-flash-preview-tts', voice: N.get('gvoice') || 'Charon', style: "Speak in natural Uzbek with a calm, warm, confident male assistant voice" };
+  return { rate: (pct >= 0 ? '+' : '') + pct + '%', pitch };
+}
+let sayText = '', chain = [], chainI = 0, sayGuard = null, usedEngine = '', lastVoiceErr = '';
 function say(text) {
   text = clean(text);
   return new Promise(res => {
-    speakResolve = res;
-    showJ(text, 62);
-    const ok = N.speak(text, pickVoice(), S.rate(), 0.92);
-    if (!ok) {
-      speaking = true; setTalking(true); setStatus('GAPIRYAPTI');
-      clearTimeout(fallbackTalk);
-      fallbackTalk = setTimeout(() => window.onTtsDone(), Math.min(15000, 600 + text.length * 65));
-    }
+    speakResolve = res; sayText = text; chain = engineChain(); chainI = 0;
+    $('jv').innerHTML = '<span class="cur">▍</span>';
+    trySpeak();
   });
 }
-window.onTtsStart = () => { speaking = true; setTalking(true); setStatus('GAPIRYAPTI'); };
+function fakeTalk() {
+  showJ(sayText, 62); speaking = true; setTalking(true); setStatus('GAPIRYAPTI');
+  clearTimeout(fallbackTalk);
+  fallbackTalk = setTimeout(() => window.onTtsDone(), Math.min(15000, 600 + sayText.length * 65));
+}
+function trySpeak() {
+  clearTimeout(sayGuard);
+  const e = chain[chainI];
+  if (!e) { fakeTalk(); return; }
+  usedEngine = e;
+  if (e === 'phone') { showJ(sayText, 62); if (!N.speak(sayText, pickVoice(), S.rate(), 0.92)) fakeTalk(); return; }
+  N.speakCloud(ENGINES[e], sayText, JSON.stringify(voiceOpts(e)));
+  sayGuard = setTimeout(() => { lastVoiceErr = e + ': kutish vaqti tugadi'; chainI++; trySpeak(); }, e === 'gemini' ? 25000 : 15000);
+}
+window.onCloudFail = (engine, msg) => { clearTimeout(sayGuard); lastVoiceErr = (ENGINE_NAMES[usedEngine] || engine) + ': ' + msg; chainI++; trySpeak(); };
+window.onTtsStart = () => { clearTimeout(sayGuard); if (usedEngine !== 'phone') showJ(sayText, 68); speaking = true; setTalking(true); setStatus('GAPIRYAPTI'); };
 window.onTtsDone = () => {
+  clearTimeout(sayGuard); clearTimeout(fallbackTalk);
   speaking = false; setTalking(false); if (!listening && !busy) setStatus('TAYYOR');
   const r = speakResolve; speakResolve = null; if (r) r();
 };
@@ -650,7 +675,7 @@ function loadSettings() {
   PIDS.forEach(p => { $('k_' + p).value = pKey(p); $('m_' + p).value = p === 'gemini' ? N.get('model') : N.get('model_' + p); });
   document.querySelectorAll('[data-url]').forEach(b => b.onclick = () => N.openUrl(b.dataset.url));
   document.querySelectorAll('[data-test]').forEach(b => b.onclick = () => testProv(b.dataset.test));
-  $('sName').value = N.get('name');
+  $('sName').value = N.get('name'); $('sEngine').value = N.get('engine') || 'sardor'; $('sPitch').value = N.get('pitch') || '-2Hz';
   $('sAddr').value = S.addr(); fillVoices(); $('sRate').value = S.rate(); $('rateV').textContent = S.rate().toFixed(2);
   $('sConv').value = S.conv() ? '1' : '0';
 }
@@ -663,9 +688,15 @@ function storeKeys() {
 }
 $('sRate').oninput = e => $('rateV').textContent = parseFloat(e.target.value).toFixed(2);
 function saveSettings() {
-  storeKeys(); N.set('name', $('sName').value.trim());
+  storeKeys(); N.set('name', $('sName').value.trim()); N.set('engine', $('sEngine').value); N.set('pitch', $('sPitch').value);
   N.set('addr', $('sAddr').value); N.set('addrSet', '1'); N.set('voice', $('sVoice').value); N.set('rate', $('sRate').value); N.set('conv', $('sConv').value);
   toastJ('Saqlandi'); closePanels();
+}
+async function testVoice() {
+  storeKeys(); N.set('engine', $('sEngine').value); N.set('pitch', $('sPitch').value); N.set('rate', $('sRate').value);
+  lastVoiceErr = '';
+  await say('Assalomu alaykum, ' + callName() + '! Men Jarvisman. Ovozim yoqdimi?');
+  toastJ('Ishlagan ovoz: ' + (ENGINE_NAMES[usedEngine] || usedEngine) + (lastVoiceErr ? ' · ' + lastVoiceErr.slice(0, 60) : ''));
 }
 async function testProv(p) {
   storeKeys();

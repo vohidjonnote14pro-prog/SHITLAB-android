@@ -133,6 +133,9 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-p
       <div class="field"><label>Telefon ovozi tili (zaxira)</label><select id="sVoice"></select></div>
       <div class="field"><label>Ovoz tezligi: <span id="rateV">1.0</span></label><input id="sRate" type="range" min="0.6" max="1.5" step="0.05" style="height:30px;padding:0"></div>
       <div class="row"><button class="btn" onclick="testVoice()">Ovozni sinash</button><button class="btn" onclick="Native.openTtsSettings()">Ovoz paketlari</button></div>
+      <div class="field"><label>Doim tinglash (mikrofonni bosmasdan)</label><select id="sWake"><option value="1">Yoqilgan — nomimni eshitsa uyg'onsin</option><option value="0">O'chirilgan</option></select></div>
+      <div class="field"><label>Uyg'otish so'zlari (vergul bilan)</label><input id="sWakeWords" placeholder="jarvis, aka"></div>
+      <p class="hint">Shu so'zlardan birini gap boshida aytsangiz, Jarvis uyg'onadi. Masalan: "Jarvis, fonarikni yoq" yoki "Aka, soat necha?". Ilova ochiq turganda ishlaydi.</p>
       <div class="field"><label>Suhbat rejimi</label><select id="sConv"><option value="1">Savol bersa, o'zi tinglasin</option><option value="0">Faqat tugma bilan</option></select></div>
       <div class="row"><button class="btn" onclick="Native.askPerms('mic,contacts,sms,call,camera')">Ruxsatlarni berish</button><button class="btn" onclick="clearHistory()">Suhbatni tozalash</button></div>
       <div style="height:16px"></div>
@@ -235,6 +238,7 @@ function voiceOpts(e) {
 let sayText = '', chain = [], chainI = 0, sayGuard = null, usedEngine = '', lastVoiceErr = '';
 function say(text) {
   text = clean(text);
+  stopPassive();
   return new Promise(res => {
     speakResolve = res; sayText = text; chain = engineChain(); chainI = 0;
     $('jv').innerHTML = '<span class="cur">▍</span>';
@@ -261,11 +265,14 @@ window.onTtsDone = () => {
   clearTimeout(sayGuard); clearTimeout(fallbackTalk);
   speaking = false; setTalking(false); if (!listening && !busy) setStatus('TAYYOR');
   const r = speakResolve; speakResolve = null; if (r) r();
+  schedulePassive(700);
 };
 
 // ---------- tinglash ----------
 const micBtn = $('mic'), bars = [...document.querySelectorAll('.bar')];
-let pendingAnswer = null;
+let pendingAnswer = null, curSid = 0, passive = false, passTimer = null, appPaused = false;
+function lang() { return N.get('listenLang') || 'uz-UZ'; }
+function listenNative(isPassive) { curSid++; if (N.listenS) N.listenS(lang(), curSid, !!isPassive); else N.listen(lang()); return curSid; }
 micBtn.onclick = () => {
   if (listening) { N.stopListen(); return; }
   if (speaking) { N.stopSpeak(); }
@@ -273,33 +280,98 @@ micBtn.onclick = () => {
 };
 function startListen() {
   if (!N.canListen()) { say("Telefoningizda ovozni tanish xizmati topilmadi. Google ilovasini yangilang yoki yozib yuboring."); return; }
+  clearTimeout(passTimer); passive = false; N.quiet && N.quiet(false);
   listening = true; micBtn.classList.add('on'); setStatus('TINGLAYAPTI', '#FF8A8A');
   $('you').textContent = '…';
-  N.listen(N.get('listenLang') || 'uz-UZ');
+  listenNative(false);
 }
 function stopListenUI() { listening = false; micBtn.classList.remove('on'); bars.forEach(b => b.style.transform = ''); if (!busy && !speaking) setStatus('TAYYOR'); }
-window.onListenStart = () => { listening = true; };
-window.onLevel = r => { const v = Math.max(0.15, Math.min(1, (r + 2) / 12)); bars.forEach((b, i) => b.style.transform = 'scaleY(' + Math.max(0.15, v * (0.55 + 0.45 * Math.sin(i * 1.3 + Date.now() / 90))) + ')'); };
-window.onPartial = t => { $('you').textContent = t; };
+
+// --- uyg'otish so'zi (doim tinglash) ---
+function wakeOn() { return N.get('wake') !== '0'; }
+function wakeWords() { return (N.get('wakeWords') || 'jarvis, aka').split(',').map(w => norm(w)).filter(Boolean); }
+function wakeLabel() { const w = (N.get('wakeWords') || 'jarvis, aka').split(',')[0].trim(); return w ? w.toUpperCase() : 'JARVIS'; }
+function canPassive() {
+  return wakeOn() && !appPaused && !busy && !speaking && !listening && !passive && !pendingAnswer &&
+    !document.querySelector('.panel.show') && !$('confirm').classList.contains('show') && N.hasPerm('mic') && N.canListen();
+}
+function schedulePassive(ms) { clearTimeout(passTimer); passTimer = setTimeout(() => { if (canPassive()) startPassive(); else if (wakeOn() && !appPaused) schedulePassive(1500); }, ms || 500); }
+function startPassive() {
+  passive = true; N.quiet && N.quiet(true);
+  setStatus('«' + wakeLabel() + '» DENG', '#7CC4FF');
+  listenNative(true);
+}
+function stopPassive() { if (passive) { passive = false; curSid++; N.stopListen(); N.quiet && N.quiet(false); } clearTimeout(passTimer); }
+const VARIANTS = { jarvis: ['jarvis', 'jarvas', 'javis', 'jarves', 'jarviz', 'djarvis', 'charvis', 'jervis', 'jarvisga', 'jarvisjon'] };
+function wordMatch(tok, w) {
+  if (!tok) return false;
+  if (tok === w) return true;
+  if ((VARIANTS[w] || []).includes(tok)) return true;
+  if (w.length >= 5 && tok.length >= 4 && lev(tok, w) <= 2) return true;
+  if (w.length >= 4 && tok.startsWith(w)) return true;
+  return false;
+}
+function findWake(text) {
+  const toks = String(text || '').trim().split(/\s+/);
+  const nt = toks.map(t => norm(t).replace(/\s+/g, ''));
+  for (const w of wakeWords()) {
+    const wp = w.split(' ');
+    const maxPos = w.replace(/\s/g, '').length >= 5 ? 3 : 0;
+    for (let i = 0; i <= Math.min(maxPos, nt.length - wp.length); i++) {
+      let ok = true;
+      for (let k = 0; k < wp.length; k++) if (!wordMatch(nt[i + k], wp[k])) { ok = false; break; }
+      if (ok) return { rest: toks.slice(i + wp.length).join(' ').replace(/^[,.!?\s]+/, '') };
+    }
+  }
+  return null;
+}
+async function onWake(rest) {
+  N.quiet && N.quiet(false); N.vibrate(35);
+  if (rest && rest.replace(/[^a-zA-Zа-яА-Я0-9]/g, '').length > 1) { $('you').textContent = rest; handleUser(rest); return; }
+  $('you').textContent = wakeLabel();
+  await say(['Labbay, ' + callName() + '?', 'Eshitaman, ' + callName() + '.', 'Ha, ' + callName() + '?'][Math.floor(Math.random() * 3)]);
+  startListen();
+}
+
+window.onListenStart = sid => { if (sid !== undefined && sid !== curSid) return; if (!passive) listening = true; };
+window.onLevel = (r, sid) => { if (passive || sid !== undefined && sid !== curSid) return; const v = Math.max(0.15, Math.min(1, (r + 2) / 12)); bars.forEach((b, i) => b.style.transform = 'scaleY(' + Math.max(0.15, v * (0.55 + 0.45 * Math.sin(i * 1.3 + Date.now() / 90))) + ')'); };
+window.onPartial = (t, sid) => { if (passive || sid !== undefined && sid !== curSid) return; $('you').textContent = t; };
 window.onListenEnd = () => {};
-window.onListenError = c => {
+window.onListenError = (c, sid) => {
+  if (sid !== undefined && sid !== curSid) return;
+  if (passive) {
+    passive = false;
+    if (c === -1 || c === 9) { N.quiet && N.quiet(false); setStatus('TAYYOR'); return; }
+    schedulePassive(c === 8 ? 1200 : c === 7 || c === 6 ? 150 : 800);
+    return;
+  }
   stopListenUI();
   if (c === -1) { $('you').textContent = 'Mikrofonga ruxsat bering'; return; }
-  if (c === 7 || c === 6) { $('you').textContent = 'Eshitmadim — qayta bosing'; if (pendingAnswer) { const p = pendingAnswer; pendingAnswer = null; p(null); } return; }
-  $('you').textContent = 'Ovoz xatosi (' + c + ')';
+  if (c === 7 || c === 6) { $('you').textContent = 'Eshitmadim — qayta ayting'; }
+  else $('you').textContent = 'Ovoz xatosi (' + c + ')';
   if (pendingAnswer) { const p = pendingAnswer; pendingAnswer = null; p(null); }
+  schedulePassive(800);
 };
-window.onHeard = t => {
+window.onHeard = (t, sid) => {
+  if (sid !== undefined && sid !== curSid) return;
+  if (passive) {
+    passive = false;
+    const w = findWake(t);
+    if (!w) { schedulePassive(150); return; }
+    onWake(w.rest);
+    return;
+  }
   stopListenUI();
   $('you').textContent = t || '—';
-  if (!t) return;
+  if (!t) { schedulePassive(600); return; }
   if (pendingAnswer) { const p = pendingAnswer; pendingAnswer = null; p(t); return; }
-  handleUser(t);
+  const w = findWake(t);
+  handleUser(w && w.rest ? w.rest : t);
 };
 function askVoice() { return new Promise(res => { pendingAnswer = res; startListen(); }); }
 
 // ---------- yozish ----------
-function toggleType() { const r = $('typeRow'); r.classList.toggle('show'); if (r.classList.contains('show')) $('typeIn').focus(); }
+function toggleType() { stopPassive(); const r = $('typeRow'); r.classList.toggle('show'); if (r.classList.contains('show')) $('typeIn').focus(); }
 $('sendT').onclick = () => { const v = $('typeIn').value.trim(); if (!v) return; $('typeIn').value = ''; $('you').textContent = v; handleUser(v); };
 $('typeIn').addEventListener('keydown', e => { if (e.key === 'Enter') $('sendT').click(); });
 
@@ -644,13 +716,13 @@ async function handleUser(text) {
 
 // ---------- panellar ----------
 function openPanel(n) {
-  closePanels();
+  closePanels(); stopPassive();
   if (n === 'settings') loadSettings();
   if (n === 'notes') renderNotes();
   if (n === 'funcs') renderFuncs();
   $('p-' + n).classList.add('show');
 }
-function closePanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('show')); }
+function closePanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('show')); schedulePassive(600); }
 window.onBack = () => {
   if ($('confirm').classList.contains('show')) { confirmAns(false); return true; }
   const open = document.querySelector('.panel.show'); if (open) { closePanels(); return true; }
@@ -675,6 +747,7 @@ function loadSettings() {
   PIDS.forEach(p => { $('k_' + p).value = pKey(p); $('m_' + p).value = p === 'gemini' ? N.get('model') : N.get('model_' + p); });
   document.querySelectorAll('[data-url]').forEach(b => b.onclick = () => N.openUrl(b.dataset.url));
   document.querySelectorAll('[data-test]').forEach(b => b.onclick = () => testProv(b.dataset.test));
+  $('sWake').value = wakeOn() ? '1' : '0'; $('sWakeWords').value = N.get('wakeWords') || 'jarvis, aka';
   $('sName').value = N.get('name'); $('sEngine').value = N.get('engine') || 'sardor'; $('sPitch').value = N.get('pitch') || '-2Hz';
   $('sAddr').value = S.addr(); fillVoices(); $('sRate').value = S.rate(); $('rateV').textContent = S.rate().toFixed(2);
   $('sConv').value = S.conv() ? '1' : '0';
@@ -690,6 +763,7 @@ $('sRate').oninput = e => $('rateV').textContent = parseFloat(e.target.value).to
 function saveSettings() {
   storeKeys(); N.set('name', $('sName').value.trim()); N.set('engine', $('sEngine').value); N.set('pitch', $('sPitch').value);
   N.set('addr', $('sAddr').value); N.set('addrSet', '1'); N.set('voice', $('sVoice').value); N.set('rate', $('sRate').value); N.set('conv', $('sConv').value);
+  N.set('wake', $('sWake').value); N.set('wakeWords', $('sWakeWords').value.trim() || 'jarvis, aka');
   toastJ('Saqlandi'); closePanels();
 }
 async function testVoice() {
@@ -737,8 +811,9 @@ function renderFuncs() {
 }
 
 // ---------- boshlash ----------
-window.onAppResume = () => { playSafe(idleV); contactCache = null; };
-window.onPerms = () => {};
+window.onAppResume = () => { appPaused = false; playSafe(idleV); contactCache = null; schedulePassive(900); };
+window.onAppPause = () => { appPaused = true; stopPassive(); };
+window.onPerms = () => { schedulePassive(800); };
 function greet() {
   const h = new Date().getHours();
   const g = h < 5 ? 'Xayrli tun' : h < 11 ? 'Xayrli tong' : h < 17 ? 'Xayrli kun' : 'Xayrli kech';

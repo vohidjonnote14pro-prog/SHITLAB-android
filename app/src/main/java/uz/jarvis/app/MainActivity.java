@@ -133,6 +133,28 @@ public class MainActivity extends Activity {
         });
     }
 
+    private boolean muted = false;
+    private void setQuiet(boolean on) {
+        ui.post(() -> {
+            if (on == muted) return;
+            try {
+                AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                int dir = on ? AudioManager.ADJUST_MUTE : AudioManager.ADJUST_UNMUTE;
+                am.adjustStreamVolume(AudioManager.STREAM_MUSIC, dir, 0);
+                am.adjustStreamVolume(AudioManager.STREAM_NOTIFICATION, dir, 0);
+                am.adjustStreamVolume(AudioManager.STREAM_SYSTEM, dir, 0);
+                muted = on;
+            } catch (Exception ignored) { }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setQuiet(false);
+        if (web != null) web.evaluateJavascript("window.onAppPause&&window.onAppPause()", null);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -141,6 +163,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        setQuiet(false);
         try { if (tts != null) { tts.stop(); tts.shutdown(); } } catch (Exception ignored) { }
         try { if (recognizer != null) recognizer.destroy(); } catch (Exception ignored) { }
         try { if (cloud != null) cloud.stop(); } catch (Exception ignored) { }
@@ -189,34 +212,37 @@ public class MainActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void listen(final String lang) {
+        public void listen(final String lang) { listenS(lang, 0, false); }
+
+        @JavascriptInterface
+        public void listenS(final String lang, final int sid, final boolean passive) {
             ui.post(() -> {
                 if (!has(Manifest.permission.RECORD_AUDIO)) {
                     requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQ_PERMS);
-                    js("window.onListenError&&window.onListenError(-1)");
+                    js("window.onListenError&&window.onListenError(-1," + sid + ")");
                     return;
                 }
                 try {
                     if (recognizer != null) { recognizer.destroy(); recognizer = null; }
                     recognizer = SpeechRecognizer.createSpeechRecognizer(MainActivity.this);
                     recognizer.setRecognitionListener(new RecognitionListener() {
-                        @Override public void onReadyForSpeech(Bundle b) { js("window.onListenStart&&window.onListenStart()"); }
+                        @Override public void onReadyForSpeech(Bundle b) { js("window.onListenStart&&window.onListenStart(" + sid + ")"); }
                         @Override public void onBeginningOfSpeech() { }
                         @Override public void onRmsChanged(float r) {
                             long now = System.currentTimeMillis();
-                            if (now - lastLevel > 80) { lastLevel = now; js("window.onLevel&&window.onLevel(" + r + ")"); }
+                            if (!passive && now - lastLevel > 80) { lastLevel = now; js("window.onLevel&&window.onLevel(" + r + "," + sid + ")"); }
                         }
                         @Override public void onBufferReceived(byte[] b) { }
-                        @Override public void onEndOfSpeech() { js("window.onListenEnd&&window.onListenEnd()"); }
-                        @Override public void onError(int e) { js("window.onListenError&&window.onListenError(" + e + ")"); }
+                        @Override public void onEndOfSpeech() { js("window.onListenEnd&&window.onListenEnd(" + sid + ")"); }
+                        @Override public void onError(int e) { js("window.onListenError&&window.onListenError(" + e + "," + sid + ")"); }
                         @Override public void onResults(Bundle b) {
                             ArrayList<String> r = b.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                             String t = (r != null && !r.isEmpty()) ? r.get(0) : "";
-                            js("window.onHeard&&window.onHeard(" + JSONObject.quote(t) + ")");
+                            js("window.onHeard&&window.onHeard(" + JSONObject.quote(t) + "," + sid + ")");
                         }
                         @Override public void onPartialResults(Bundle b) {
                             ArrayList<String> r = b.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                            if (r != null && !r.isEmpty()) js("window.onPartial&&window.onPartial(" + JSONObject.quote(r.get(0)) + ")");
+                            if (r != null && !r.isEmpty()) js("window.onPartial&&window.onPartial(" + JSONObject.quote(r.get(0)) + "," + sid + ")");
                         }
                         @Override public void onEvent(int t, Bundle b) { }
                     });
@@ -226,12 +252,19 @@ public class MainActivity extends Activity {
                     it.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, lang);
                     it.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
                     it.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
+                    if (passive) {
+                        it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 900);
+                        it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 900);
+                    }
                     recognizer.startListening(it);
                 } catch (Exception e) {
-                    js("window.onListenError&&window.onListenError(-2)");
+                    js("window.onListenError&&window.onListenError(-2," + sid + ")");
                 }
             });
         }
+
+        @JavascriptInterface
+        public void quiet(boolean on) { setQuiet(on); }
 
         @JavascriptInterface
         public void stopListen() {
